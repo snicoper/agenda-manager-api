@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>EmployeeManager.Domain</RootNamespace>
+    <AssemblyName>EmployeeManager.Domain</AssemblyName>
+  </PropertyGroup>
+
+</Project>
