@@ -4,10 +4,14 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- ASP.NET -->
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
     <!-- Entity Framework -->
     <!-- Identity Framework -->
     <!-- Auth -->
     <!-- Awesome open-source packages -->
+    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.2" />
+    <PackageVersion Include="MediatR" Version="12.3.0" />
     <PackageVersion Include="MediatR.Contracts" Version="2.0.1" />
     <!-- Analyzers -->
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />

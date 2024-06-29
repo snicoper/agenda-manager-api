@@ -9,4 +9,8 @@
     <PackageReference Include="MediatR.Contracts" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="AgendaManager.Domain.UnitTests" />
+  </ItemGroup>
+
 </Project>

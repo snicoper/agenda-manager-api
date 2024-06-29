@@ -1,6 +1,4 @@
-using AgendaManager.Domain.Common.Abstractions;
-
-namespace AgendaManager.Domain.Common.Interfaces;
+namespace AgendaManager.Domain.Common.Abstractions;
 
 public interface IDomainEvent
 {

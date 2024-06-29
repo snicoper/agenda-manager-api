@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>AgendaManager.Application</RootNamespace>
+    <AssemblyName>AgendaManager.Application</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+    <PackageReference Include="MediatR" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="AgendaManager.Application.UnitTests" />
+  </ItemGroup>
+
+</Project>

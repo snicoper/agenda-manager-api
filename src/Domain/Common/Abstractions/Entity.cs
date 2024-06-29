@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using AgendaManager.Domain.Common.Interfaces;
 
 namespace AgendaManager.Domain.Common.Abstractions;
 

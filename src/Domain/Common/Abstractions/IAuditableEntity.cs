@@ -1,4 +1,4 @@
-namespace AgendaManager.Domain.Common.Interfaces;
+namespace AgendaManager.Domain.Common.Abstractions;
 
 public interface IAuditableEntity
 {

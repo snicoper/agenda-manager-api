@@ -22,6 +22,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\Domain\Domain
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.UnitTests", "tests\Domain.UnitTests\Domain.UnitTests.csproj", "{6AF1EDA8-4BDF-4C20-AD0C-AA9E2560122B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "src\Application\Application.csproj", "{12BEF4F1-5E82-4F9D-A7EE-15D630A970DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.UnitTests", "tests\Application.UnitTests\Application.UnitTests.csproj", "{4BFF6708-184C-48C5-83F3-FF0DAACD1E85}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +40,14 @@ Global
 		{6AF1EDA8-4BDF-4C20-AD0C-AA9E2560122B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AF1EDA8-4BDF-4C20-AD0C-AA9E2560122B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AF1EDA8-4BDF-4C20-AD0C-AA9E2560122B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12BEF4F1-5E82-4F9D-A7EE-15D630A970DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12BEF4F1-5E82-4F9D-A7EE-15D630A970DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12BEF4F1-5E82-4F9D-A7EE-15D630A970DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12BEF4F1-5E82-4F9D-A7EE-15D630A970DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BFF6708-184C-48C5-83F3-FF0DAACD1E85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BFF6708-184C-48C5-83F3-FF0DAACD1E85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BFF6708-184C-48C5-83F3-FF0DAACD1E85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BFF6708-184C-48C5-83F3-FF0DAACD1E85}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -43,5 +55,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{F25528FC-D03C-4D6F-AE9C-E604A5EECAAB} = {B487406B-BF62-475C-90E8-B37BE16198B1}
 		{6AF1EDA8-4BDF-4C20-AD0C-AA9E2560122B} = {3CB88166-BA1A-4F0D-B9BA-A00EE722128B}
+		{12BEF4F1-5E82-4F9D-A7EE-15D630A970DC} = {B487406B-BF62-475C-90E8-B37BE16198B1}
+		{4BFF6708-184C-48C5-83F3-FF0DAACD1E85} = {3CB88166-BA1A-4F0D-B9BA-A00EE722128B}
 	EndGlobalSection
 EndGlobal
