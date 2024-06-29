@@ -1,0 +1,14 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- ASP.NET -->
+    <!-- Entity Framework -->
+    <!-- Identity Framework -->
+    <!-- Auth -->
+    <!-- Awesome open-source packages -->
+    <!-- Analyzers -->
+    <!-- Tests -->
+  </ItemGroup>
+</Project>
