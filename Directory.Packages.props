@@ -8,6 +8,7 @@
     <!-- Identity Framework -->
     <!-- Auth -->
     <!-- Awesome open-source packages -->
+    <PackageVersion Include="MediatR.Contracts" Version="2.0.1" />
     <!-- Analyzers -->
     <!-- Tests -->
     <PackageVersion Include="coverlet.collector" Version="6.0.0" />

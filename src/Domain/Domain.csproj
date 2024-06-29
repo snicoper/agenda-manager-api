@@ -1,8 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <RootNamespace>EmployeeManager.Domain</RootNamespace>
-    <AssemblyName>EmployeeManager.Domain</AssemblyName>
+    <RootNamespace>AgendaManager.Domain</RootNamespace>
+    <AssemblyName>AgendaManager.Domain</AssemblyName>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR.Contracts" />
+  </ItemGroup>
 
 </Project>
