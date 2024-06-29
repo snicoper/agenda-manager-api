@@ -10,6 +10,7 @@
     <!-- Awesome open-source packages -->
     <PackageVersion Include="MediatR.Contracts" Version="2.0.1" />
     <!-- Analyzers -->
+    <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
     <!-- Tests -->
     <PackageVersion Include="coverlet.collector" Version="6.0.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
