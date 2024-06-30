@@ -2,7 +2,6 @@
 USER $APP_UID
 WORKDIR /app
 EXPOSE 443
-EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
@@ -25,6 +24,4 @@ RUN dotnet publish "./WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-# Run this to generate it: dotnet dev-certs https -ep cert.pfx -p Test1234!
-#COPY ["src/WebApi/cert.pfx", "/https/cert.pfx"]
 ENTRYPOINT ["dotnet", "WebApi.dll"]
