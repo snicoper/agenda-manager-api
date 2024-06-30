@@ -30,6 +30,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\Infra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "src\WebApi\WebApi.csproj", "{948B9B7B-A8C7-422F-8EED-7A5ECF3CE172}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.UnitTests", "tests\Infrastructure.UnitTests\Infrastructure.UnitTests.csproj", "{B547D0EF-308C-4114-9CF3-CB5800E6B332}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.IntegrationTests", "tests\WebApi.IntegrationTests\WebApi.IntegrationTests.csproj", "{2EAE427E-948F-4588-8401-5E12B69CDCAB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,6 +64,14 @@ Global
 		{948B9B7B-A8C7-422F-8EED-7A5ECF3CE172}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{948B9B7B-A8C7-422F-8EED-7A5ECF3CE172}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{948B9B7B-A8C7-422F-8EED-7A5ECF3CE172}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B547D0EF-308C-4114-9CF3-CB5800E6B332}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B547D0EF-308C-4114-9CF3-CB5800E6B332}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B547D0EF-308C-4114-9CF3-CB5800E6B332}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B547D0EF-308C-4114-9CF3-CB5800E6B332}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EAE427E-948F-4588-8401-5E12B69CDCAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EAE427E-948F-4588-8401-5E12B69CDCAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EAE427E-948F-4588-8401-5E12B69CDCAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EAE427E-948F-4588-8401-5E12B69CDCAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,5 +83,7 @@ Global
 		{4BFF6708-184C-48C5-83F3-FF0DAACD1E85} = {3CB88166-BA1A-4F0D-B9BA-A00EE722128B}
 		{21114914-236A-4D83-BAC2-02A8F47B2740} = {B487406B-BF62-475C-90E8-B37BE16198B1}
 		{948B9B7B-A8C7-422F-8EED-7A5ECF3CE172} = {B487406B-BF62-475C-90E8-B37BE16198B1}
+		{B547D0EF-308C-4114-9CF3-CB5800E6B332} = {3CB88166-BA1A-4F0D-B9BA-A00EE722128B}
+		{2EAE427E-948F-4588-8401-5E12B69CDCAB} = {3CB88166-BA1A-4F0D-B9BA-A00EE722128B}
 	EndGlobalSection
 EndGlobal

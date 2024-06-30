@@ -3,7 +3,6 @@
   <PropertyGroup>
     <RootNamespace>AgendaManager.Domain.UnitTests</RootNamespace>
     <AssemblyName>AgendaManager.Domain.UnitTests</AssemblyName>
-
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>

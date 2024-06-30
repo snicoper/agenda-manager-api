@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <RootNamespace>AgendaManager.Application.UnitTests</RootNamespace>
-    <AssemblyName>AgendaManager.Application.UnitTests</AssemblyName>
+    <RootNamespace>AgendaManager.Infrastructure.UnitTests</RootNamespace>
+    <AssemblyName>AgendaManager.Infrastructure.UnitTests</AssemblyName>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Application\Application.csproj" />
+    <ProjectReference Include="..\..\src\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

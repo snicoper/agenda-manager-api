@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <RootNamespace>AgendaManager.Application.UnitTests</RootNamespace>
-    <AssemblyName>AgendaManager.Application.UnitTests</AssemblyName>
+    <RootNamespace>AgendaManager.WebApi.UnitTests</RootNamespace>
+    <AssemblyName>AgendaManager.WebApi.UnitTests</AssemblyName>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
@@ -16,10 +16,6 @@
 
   <ItemGroup>
     <Using Include="Xunit" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Application\Application.csproj" />
   </ItemGroup>
 
 </Project>
