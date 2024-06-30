@@ -2,8 +2,13 @@ using AgendaManager.Application;
 using AgendaManager.Infrastructure;
 using AgendaManager.WebApi;
 using AgendaManager.WebApi.Endpoints;
+using Serilog;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog(
+    (context, configuration) =>
+        configuration.ReadFrom.Configuration(context.Configuration));
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
@@ -18,6 +23,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseSerilogRequestLogging();
 
 app.UseAuthentication();
 app.UseAuthorization();
