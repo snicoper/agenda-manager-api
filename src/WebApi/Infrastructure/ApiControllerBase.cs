@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using AgendaManager.WebApi.Constants;
+using Asp.Versioning;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,6 +8,7 @@ namespace AgendaManager.WebApi.Infrastructure;
 
 [ApiController]
 [Authorize]
+[ApiVersion(ApiVersions.V1)]
 [Produces("application/json")]
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
 public class ApiControllerBase : ControllerBase
