@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using AgendaManager.Application.Common.Abstractions.Clock;
-using AgendaManager.Application.Common.Models.Settings;
 using AgendaManager.Application.Common.Services;
+using AgendaManager.Application.Common.Settings;
 using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Users;
 using AgendaManager.Infrastructure.Common.Clock;
@@ -28,6 +28,8 @@ public static class DependencyInjection
         IConfiguration configuration,
         IWebHostEnvironment environment)
     {
+        ValidateOptionsOnStartUp(services, configuration);
+
         services.AddSingleton(TimeProvider.System);
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 
@@ -38,6 +40,19 @@ public static class DependencyInjection
         return services;
     }
 
+    private static void ValidateOptionsOnStartUp(IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddOptions<JwtSettings>()
+            .Bind(configuration.GetSection(JwtSettings.SectionName))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
+        services.AddOptions<EmailSenderSettings>()
+            .Bind(configuration.GetSection(EmailSenderSettings.SectionName))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+    }
+
     private static void AddDatabase(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
     {
         services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
@@ -46,8 +61,11 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>(
             (provider, options) =>
             {
+                string connectionString = configuration.GetConnectionString("DefaultConnection") ??
+                    throw new NullReferenceException("No connection string found in configuration");
+
                 options.AddInterceptors(provider.GetServices<ISaveChangesInterceptor>());
-                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
+                options.UseNpgsql(connectionString);
 
                 if (!environment.IsProduction())
                 {
