@@ -1,10 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <RootNamespace>AgendaManager.Infrastructure</RootNamespace>
-    <AssemblyName>AgendaManager.Infrastructure</AssemblyName>
+    <RootNamespace>AgendaManager.WebApi</RootNamespace>
+    <AssemblyName>AgendaManager.WebApi</AssemblyName>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" />

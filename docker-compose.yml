@@ -2,7 +2,7 @@ services:
 
   agenda-manager-api:
     image: ${DOCKER_REGISTRY-}agenda-manager-api
-    container_name: Api
+    container_name: agenda-manager-api
     build:
       context: .
       dockerfile: src/WebApi/Dockerfile
