@@ -10,7 +10,7 @@ public class CustomClaimsPrincipalFactory(UserManager<User> userManager, IOption
 {
     protected override async Task<ClaimsIdentity> GenerateClaimsAsync(User user)
     {
-        ClaimsIdentity identity = await base.GenerateClaimsAsync(user);
+        var identity = await base.GenerateClaimsAsync(user);
 
         // identity.AddClaim(new Claim(CustomClaims.CompanyId, user.CompanyId));
         return identity;

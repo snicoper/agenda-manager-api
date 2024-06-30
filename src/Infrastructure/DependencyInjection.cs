@@ -61,7 +61,7 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>(
             (provider, options) =>
             {
-                string connectionString = configuration.GetConnectionString("DefaultConnection") ??
+                var connectionString = configuration.GetConnectionString("DefaultConnection") ??
                     throw new NullReferenceException("No connection string found in configuration");
 
                 options.AddInterceptors(provider.GetServices<ISaveChangesInterceptor>());

@@ -1,6 +1,5 @@
 using AgendaManager.Application.Common.Exceptions;
 using FluentValidation;
-using FluentValidation.Results;
 using MediatR;
 
 namespace AgendaManager.Application.Common.Behaviours;
@@ -19,12 +18,12 @@ public class ValidationBehaviour<TRequest, TResponse>(IEnumerable<IValidator<TRe
             return await next();
         }
 
-        ValidationContext<TRequest> context = new(request);
+        var context = new ValidationContext<TRequest>(request);
 
-        ValidationResult[] validationResults =
+        var validationResults =
             await Task.WhenAll(validators.Select(v => v.ValidateAsync(context, cancellationToken)));
 
-        List<ValidationFailure> failures = validationResults
+        var failures = validationResults
             .Where(r => r.Errors.Count != 0)
             .SelectMany(r => r.Errors)
             .ToList();

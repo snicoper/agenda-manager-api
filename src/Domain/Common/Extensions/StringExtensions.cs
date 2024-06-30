@@ -35,7 +35,8 @@ public static class StringExtensions
     {
         const string pattern = @"[^a-zA-Z0-9\-]";
         const string replacement = "-";
-        var regex = new Regex(pattern);
+        Regex regex = new(pattern);
+
         var result = regex
             .Replace(RemoveDiacritics(text), replacement)
             .Replace("--", "-")
@@ -48,7 +49,8 @@ public static class StringExtensions
     {
         var normalizedString = text.ToLower().Trim().Normalize(NormalizationForm.FormD);
 
-        var stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new();
+
         foreach (var character in normalizedString)
         {
             var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(character);

@@ -9,7 +9,7 @@ public abstract class ValueObject
             return false;
         }
 
-        ValueObject other = (ValueObject)obj;
+        var other = (ValueObject)obj;
 
         return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
     }
