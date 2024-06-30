@@ -1,6 +1,7 @@
 using AgendaManager.Application;
 using AgendaManager.Infrastructure;
 using AgendaManager.WebApi;
+using AgendaManager.WebApi.Endpoints;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,6 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapGroup("api/home").MapHomeEndpoints();
 
 app.Run();
