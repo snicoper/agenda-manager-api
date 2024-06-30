@@ -6,9 +6,15 @@
     <!-- ASP.NET -->
     <PackageVersion Include="Asp.Versioning.Mvc" Version="8.1.0" />
     <PackageVersion Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
     <!-- Entity Framework -->
+    <PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.6" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.6" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.6" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
     <!-- Identity Framework -->
     <!-- Auth -->
     <!-- Awesome open-source packages -->

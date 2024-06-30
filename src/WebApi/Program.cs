@@ -10,7 +10,7 @@ builder.Host.UseSerilog(
         configuration.ReadFrom.Configuration(context.Configuration));
 
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
 builder.Services.AddWebApi();
 
 WebApplication app = builder.Build();

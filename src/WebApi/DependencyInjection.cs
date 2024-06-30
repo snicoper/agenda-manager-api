@@ -1,4 +1,6 @@
-﻿using Asp.Versioning;
+﻿using AgendaManager.Application.Common.Abstractions.Users;
+using AgendaManager.WebApi.Services;
+using Asp.Versioning;
 
 namespace AgendaManager.WebApi;
 
@@ -12,6 +14,8 @@ public static class DependencyInjection
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
+
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
 
         AddApiVersioning(services);
 

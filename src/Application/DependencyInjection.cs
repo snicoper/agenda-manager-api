@@ -12,7 +12,7 @@ public static class DependencyInjection
     {
         AddFluentValidation(services);
 
-        AddMediatR(services);
+        AddMediator(services);
 
         return services;
     }
@@ -22,7 +22,7 @@ public static class DependencyInjection
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
-    private static void AddMediatR(IServiceCollection services)
+    private static void AddMediator(IServiceCollection services)
     {
         services.AddMediatR(
             config =>
