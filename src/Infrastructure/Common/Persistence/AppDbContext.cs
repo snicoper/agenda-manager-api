@@ -1,11 +1,14 @@
 ﻿using System.Reflection;
 using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Users;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace AgendaManager.Infrastructure.Common.Persistence;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options)
-    : DbContext(options), IUnitOfWork
+    : IdentityDbContext<User, IdentityRole<Guid>, Guid>(options), IUnitOfWork
 {
     protected override void OnModelCreating(ModelBuilder buider)
     {

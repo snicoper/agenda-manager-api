@@ -20,4 +20,8 @@
     <InternalsVisibleTo Include="AgendaManager.Application.UnitTests" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Common\Models\" />
+  </ItemGroup>
+
 </Project>
