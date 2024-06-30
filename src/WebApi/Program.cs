@@ -19,9 +19,17 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    // await app.InitialiseDatabaseAsync();
+}
+else
+{
+    app.UseHsts();
 }
 
 app.UseHttpsRedirection();
+
+app.UseExceptionHandler(_ => { });
 
 app.UseSerilogRequestLogging();
 
@@ -32,6 +40,6 @@ app.MapControllers();
 
 app.Run();
 
-public partial class Program
+public abstract partial class Program
 {
 }
