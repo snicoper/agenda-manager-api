@@ -9,11 +9,6 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
 builder.Services.AddWebApi();
 
-builder.Services.AddControllers();
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 WebApplication app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -24,8 +19,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapGroup("api/home").MapHomeEndpoints();
 
 app.Run();
+
+public partial class Program
+{
+}
