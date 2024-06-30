@@ -13,7 +13,6 @@ COPY ["src/Domain/Domain.csproj", "Domain/"]
 COPY ["src/Infrastructure/Infrastructure.csproj", "Infrastructure/"]
 COPY ["Directory.Packages.props", "Directory.Packages.props"]
 COPY ["Directory.Build.props", "Directory.Build.props"]
-COPY ["src/WebApi/cert.pfx", "/https/cert.pfx"]
 RUN dotnet restore "./WebApi/WebApi.csproj"
 COPY . .
 WORKDIR "/src/WebApi"
@@ -27,5 +26,5 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 # Run this to generate it: dotnet dev-certs https -ep cert.pfx -p Test1234!
-#COPY ["src/WebApi/cert.pfx", "/https/cert.pfx"]
+COPY ["src/WebApi/cert.pfx", "/https/cert.pfx"]
 ENTRYPOINT ["dotnet", "WebApi.dll"]
