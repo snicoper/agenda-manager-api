@@ -1,7 +1,6 @@
 using AgendaManager.Application;
 using AgendaManager.Infrastructure;
 using AgendaManager.WebApi;
-using AgendaManager.WebApi.Endpoints;
 using Serilog;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -29,7 +28,7 @@ app.UseSerilogRequestLogging();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapGroup("api/home").MapHomeEndpoints();
+app.MapControllers();
 
 app.Run();
 
