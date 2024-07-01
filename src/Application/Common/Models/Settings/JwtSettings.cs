@@ -13,10 +13,10 @@ public class JwtSettings
     public int RefreshTokenLifeTimeDays { get; set; }
 
     [Required]
-    public string? Issuer { get; set; }
+    public string Issuer { get; set; } = default!;
 
     [Required]
-    public string? Audience { get; set; }
+    public string Audience { get; set; } = default!;
 
     [MinLength(32)]
     public string Key { get; set; } = default!;
