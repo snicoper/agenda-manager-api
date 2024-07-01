@@ -84,23 +84,6 @@ public class Error
         return new Error<TValue>(nameof(StatusCodes.Status403Forbidden), description, StatusCodes.Status403Forbidden);
     }
 
-    public static Error Unknown(string? code, string description = "Internal Server Error")
-    {
-        code ??= nameof(StatusCodes.Status500InternalServerError);
-
-        return new Error(code, description, StatusCodes.Status500InternalServerError);
-    }
-
-    public static Error<TValue> Unknown<TValue>(string? code, string description = "Internal Server Error")
-    {
-        _ = code ?? nameof(StatusCodes.Status500InternalServerError);
-
-        return new Error<TValue>(
-            nameof(StatusCodes.Status500InternalServerError),
-            description,
-            StatusCodes.Status500InternalServerError);
-    }
-
     public void AddValidationError(string code, string description)
     {
         Status = StatusCodes.Status400BadRequest;

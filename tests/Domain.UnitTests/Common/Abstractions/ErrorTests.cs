@@ -84,18 +84,4 @@ public class ErrorTests
         error.Description.Should().NotBeEmpty();
         error.ToResult().Should().BeOfType<Result>();
     }
-
-    [Fact]
-    public void Error_Unknown()
-    {
-        // Act
-        var error = Error.Unknown(default);
-
-        // Assert
-        error.Status.Should().Be(StatusCodes.Status500InternalServerError);
-        error.HasErrors.Should().BeTrue();
-        error.Code.Should().Be(nameof(StatusCodes.Status500InternalServerError));
-        error.Description.Should().NotBeEmpty();
-        error.ToResult().Should().BeOfType<Result>();
-    }
 }

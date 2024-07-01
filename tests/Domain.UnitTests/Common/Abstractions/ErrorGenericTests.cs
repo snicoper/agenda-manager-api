@@ -78,18 +78,4 @@ public class ErrorGenericTests
         error.Description.Should().NotBeEmpty();
         error.ToResult().Should().BeOfType<Result<ErrorTests>>();
     }
-
-    [Fact]
-    public void Error_Generic_Unknown()
-    {
-        // Act
-        var error = Error.Unknown<ErrorTests>(default);
-
-        // Assert
-        error.Status.Should().Be(StatusCodes.Status500InternalServerError);
-        error.HasErrors.Should().BeTrue();
-        error.Code.Should().Be(nameof(StatusCodes.Status500InternalServerError));
-        error.Description.Should().NotBeEmpty();
-        error.ToResult().Should().BeOfType<Result<ErrorTests>>();
-    }
 }
