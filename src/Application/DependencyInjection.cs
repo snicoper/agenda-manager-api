@@ -10,11 +10,17 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
+        AddGlobalDiServices(services);
+
         AddFluentValidation(services);
 
         AddMediator(services);
 
         return services;
+    }
+
+    private static void AddGlobalDiServices(IServiceCollection services)
+    {
     }
 
     private static void AddFluentValidation(IServiceCollection services)

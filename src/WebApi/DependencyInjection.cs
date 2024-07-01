@@ -15,13 +15,15 @@ public static class DependencyInjection
         services.AddDatabaseDeveloperPageExceptionFilter();
         services.AddHttpContextAccessor();
 
-        services.AddScoped<ICurrentUserService, CurrentUserService>();
+        AddGlobalDiServices(services);
 
         services.AddControllersWithViews()
             .AddJsonOptions(options => { options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; })
             .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
             .AddDataAnnotationsLocalization(
                 options => { options.DataAnnotationLocalizerProvider = (_, factory) => factory.Create(typeof(SharedResource)); });
+
+        services.AddRouting(options => { options.LowercaseUrls = true; });
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
@@ -33,6 +35,11 @@ public static class DependencyInjection
         AddRazorViewsForEmails(services);
 
         return services;
+    }
+
+    private static void AddGlobalDiServices(IServiceCollection services)
+    {
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
     }
 
     private static void AddApiVersioning(IServiceCollection services)

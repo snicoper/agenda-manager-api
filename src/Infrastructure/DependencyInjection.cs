@@ -30,8 +30,7 @@ public static class DependencyInjection
     {
         ValidateOptionsOnStartUp(services, configuration);
 
-        services.AddSingleton(TimeProvider.System);
-        services.AddScoped<IDateTimeProvider, DateTimeProvider>();
+        AddGlobalDiServices(services);
 
         AddDatabase(services, configuration, environment);
 
@@ -51,6 +50,12 @@ public static class DependencyInjection
             .Bind(configuration.GetSection(EmailSenderSettings.SectionName))
             .ValidateDataAnnotations()
             .ValidateOnStart();
+    }
+
+    private static void AddGlobalDiServices(IServiceCollection services)
+    {
+        services.AddSingleton(TimeProvider.System);
+        services.AddScoped<IDateTimeProvider, DateTimeProvider>();
     }
 
     private static void AddDatabase(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
