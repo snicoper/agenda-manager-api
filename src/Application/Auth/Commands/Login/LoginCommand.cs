@@ -1,3 +1,5 @@
-﻿namespace AgendaManager.Application.Auth.Commands.Login;
+using AgendaManager.Application.Common.Interfaces.Messaging;
 
-public sealed record class LoginCommand(string Email, string Password);
+namespace AgendaManager.Application.Auth.Commands.Login;
+
+public record LoginCommand(string Email, string Password) : ICommand<LoginResponse>;
