@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using AgendaManager.Application.Common.Abstractions.Persistence;
+using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Domain.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

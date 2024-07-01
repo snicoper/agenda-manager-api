@@ -1,6 +1,6 @@
 using System.Reflection;
-using AgendaManager.Application.Common.Abstractions.Users;
 using AgendaManager.Application.Common.Exceptions;
+using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Security;
 using AgendaManager.Domain.Users.Persistence;
 using MediatR;

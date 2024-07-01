@@ -1,4 +1,4 @@
-﻿namespace AgendaManager.Application.Common.Abstractions.Views;
+﻿namespace AgendaManager.Application.Common.Interfaces.Views;
 
 public interface IRazorViewToStringRenderer
 {

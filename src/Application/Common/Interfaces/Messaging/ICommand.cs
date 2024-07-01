@@ -1,7 +1,7 @@
 using AgendaManager.Domain.Common.Abstractions;
 using MediatR;
 
-namespace AgendaManager.Application.Common.Abstractions.Messaging;
+namespace AgendaManager.Application.Common.Interfaces.Messaging;
 
 public interface ICommand : IRequest<Result>
 {

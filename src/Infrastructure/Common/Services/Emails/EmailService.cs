@@ -1,8 +1,8 @@
 using System.Net;
 using System.Net.Mail;
 using System.Text;
-using AgendaManager.Application.Common.Abstractions.Emails;
-using AgendaManager.Application.Common.Abstractions.Views;
+using AgendaManager.Application.Common.Interfaces.Emails;
+using AgendaManager.Application.Common.Interfaces.Views;
 using AgendaManager.Application.Common.Models.Settings;
 using AgendaManager.Infrastructure.Common.Exceptions;
 using Microsoft.Extensions.Hosting;

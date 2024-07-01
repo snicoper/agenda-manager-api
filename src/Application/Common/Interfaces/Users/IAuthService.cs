@@ -1,7 +1,7 @@
 ﻿using AgendaManager.Application.Common.Models.Users;
 using AgendaManager.Domain.Common.Abstractions;
 
-namespace AgendaManager.Application.Common.Abstractions.Users;
+namespace AgendaManager.Application.Common.Interfaces.Users;
 
 public interface IAuthService
 {

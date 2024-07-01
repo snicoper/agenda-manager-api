@@ -1,4 +1,5 @@
 using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.Interfaces;
 using FluentAssertions;
 
 namespace AgendaManager.Domain.UnitTests.Common.Abstractions;

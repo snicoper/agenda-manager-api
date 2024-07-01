@@ -1,5 +1,5 @@
 using System.Security.Claims;
-using AgendaManager.Application.Common.Abstractions.Users;
+using AgendaManager.Application.Common.Interfaces.Users;
 
 namespace AgendaManager.WebApi.Services;
 

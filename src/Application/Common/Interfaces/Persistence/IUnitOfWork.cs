@@ -1,4 +1,4 @@
-﻿namespace AgendaManager.Application.Common.Abstractions.Persistence;
+﻿namespace AgendaManager.Application.Common.Interfaces.Persistence;
 
 public interface IUnitOfWork
 {

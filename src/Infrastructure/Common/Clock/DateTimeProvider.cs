@@ -1,4 +1,4 @@
-﻿using AgendaManager.Application.Common.Abstractions.Clock;
+﻿using AgendaManager.Application.Common.Interfaces.Clock;
 
 namespace AgendaManager.Infrastructure.Common.Clock;
 

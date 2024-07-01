@@ -1,4 +1,5 @@
 using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;

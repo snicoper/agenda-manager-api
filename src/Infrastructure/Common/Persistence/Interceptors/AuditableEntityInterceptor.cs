@@ -1,6 +1,7 @@
-using AgendaManager.Application.Common.Abstractions.Clock;
-using AgendaManager.Application.Common.Abstractions.Users;
+using AgendaManager.Application.Common.Interfaces.Clock;
+using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.Interfaces;
 using AgendaManager.Infrastructure.Common.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;

@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using AgendaManager.Application.Common.Abstractions.Users;
+using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Localization;
 using AgendaManager.WebApi.Infrastructure;
 using AgendaManager.WebApi.Services;

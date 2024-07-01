@@ -1,4 +1,4 @@
-using AgendaManager.Application.Common.Abstractions.Views;
+using AgendaManager.Application.Common.Interfaces.Views;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;

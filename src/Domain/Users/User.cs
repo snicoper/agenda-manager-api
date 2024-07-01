@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
 namespace AgendaManager.Domain.Users;
