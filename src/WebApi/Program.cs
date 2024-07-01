@@ -1,5 +1,6 @@
 using AgendaManager.Application;
 using AgendaManager.Infrastructure;
+using AgendaManager.Infrastructure.Common.Persistence.Seeds;
 using AgendaManager.WebApi;
 using Serilog;
 
@@ -20,7 +21,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 
-    // await app.InitialiseDatabaseAsync();
+    await app.InitialiseDatabaseAsync();
 }
 else
 {

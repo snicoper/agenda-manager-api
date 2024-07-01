@@ -11,6 +11,6 @@ public class HomeController : ApiControllerBase
     [AllowAnonymous]
     public ActionResult<string> Get()
     {
-        return "Hello world 123";
+        return "Hello world";
     }
 }
