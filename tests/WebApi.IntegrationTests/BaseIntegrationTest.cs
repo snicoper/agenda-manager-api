@@ -10,14 +10,14 @@ namespace AgendaManager.WebApi.UnitTests;
 public abstract class BaseIntegrationTest(IntegrationTestWebAppFactory factory)
     : IClassFixture<IntegrationTestWebAppFactory>
 {
-    protected HttpClient Client => factory.CreateClient();
+    protected HttpClient HttpClient => factory.CreateClient();
 
     protected async Task LoginAsync(string? email = null, string? password = null)
     {
         email ??= SharedTestContext.AliceEmail;
         password ??= SharedTestContext.UserPassword;
 
-        var result = await Client.PostAsJsonAsync("api/auth/login", new LoginCommand(email, password));
+        var result = await HttpClient.PostAsJsonAsync("api/auth/login", new LoginCommand(email, password));
         var response = await result.Content.ReadFromJsonAsync<Result<LoginResponse>>();
 
         if (response?.Value is null)
@@ -25,7 +25,7 @@ public abstract class BaseIntegrationTest(IntegrationTestWebAppFactory factory)
             throw new ApplicationException("Invalid login response");
         }
 
-        Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+        HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
             JwtBearerDefaults.AuthenticationScheme,
             response.Value.AccessToken);
     }
