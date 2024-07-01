@@ -1,8 +1,8 @@
 ﻿using System.Text;
 using AgendaManager.Application.Common.Abstractions.Clock;
 using AgendaManager.Application.Common.Abstractions.Persistence;
+using AgendaManager.Application.Common.Models.Settings;
 using AgendaManager.Application.Common.Services;
-using AgendaManager.Application.Common.Settings;
 using AgendaManager.Domain.Users;
 using AgendaManager.Infrastructure.Common.Clock;
 using AgendaManager.Infrastructure.Common.Persistence;

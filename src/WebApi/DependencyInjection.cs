@@ -1,6 +1,10 @@
-﻿using AgendaManager.Application.Common.Abstractions.Users;
+﻿using System.Text.Json.Serialization;
+using AgendaManager.Application.Common.Abstractions.Users;
+using AgendaManager.Application.Common.Localization;
+using AgendaManager.WebApi.Infrastructure;
 using AgendaManager.WebApi.Services;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace AgendaManager.WebApi;
 
@@ -8,23 +12,32 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddWebApi(this IServiceCollection services)
     {
+        services.AddDatabaseDeveloperPageExceptionFilter();
         services.AddHttpContextAccessor();
 
-        services.AddControllers();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+        services.AddControllersWithViews()
+            .AddJsonOptions(options => { options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; })
+            .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+            .AddDataAnnotationsLocalization(
+                options => { options.DataAnnotationLocalizerProvider = (_, factory) => factory.Create(typeof(SharedResource)); });
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
 
-        services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddExceptionHandler<CustomExceptionHandler>();
 
         AddApiVersioning(services);
+
+        AddRazorViewsForEmails(services);
 
         return services;
     }
 
     private static void AddApiVersioning(IServiceCollection services)
     {
-        IApiVersioningBuilder apiVersioningBuilder = services.AddApiVersioning(
+        var apiVersioningBuilder = services.AddApiVersioning(
             options =>
             {
                 options.ReportApiVersions = true;
@@ -38,6 +51,18 @@ public static class DependencyInjection
             {
                 options.GroupNameFormat = "'v'VVV";
                 options.SubstituteApiVersionInUrl = true;
+            });
+    }
+
+    private static void AddRazorViewsForEmails(IServiceCollection services)
+    {
+        services.Configure<RazorViewEngineOptions>(
+            options =>
+            {
+                options.ViewLocationFormats.Clear();
+                options.ViewLocationFormats.Add("/Views/{1}/{0}" + RazorViewEngine.ViewExtension);
+                options.ViewLocationFormats.Add("/Views/Emails/{0}" + RazorViewEngine.ViewExtension);
+                options.ViewLocationFormats.Add("/Views/Shared/{0}" + RazorViewEngine.ViewExtension);
             });
     }
 }
