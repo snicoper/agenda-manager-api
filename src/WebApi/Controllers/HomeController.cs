@@ -1,4 +1,5 @@
-﻿using AgendaManager.WebApi.Infrastructure;
+﻿using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.WebApi.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,8 +10,10 @@ public class HomeController : ApiControllerBase
 {
     [HttpGet]
     [AllowAnonymous]
-    public ActionResult<string> Get()
+    public ActionResult<Result<string>> Get()
     {
-        return "Hello world";
+        var result = Result.Create("Error");
+
+        return HandleResult(result);
     }
 }
