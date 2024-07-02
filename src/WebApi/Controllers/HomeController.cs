@@ -7,6 +7,10 @@ namespace AgendaManager.WebApi.Controllers;
 [Route("api/v{version:apiVersion}/home")]
 public class HomeController : ApiControllerBase
 {
+    /// <summary>
+    /// Retrieves a result containing a greeting message.
+    /// </summary>
+    /// <returns>An Result object with a greeting message.</returns>
     [HttpGet]
     public ActionResult<Result<string>> Get()
     {

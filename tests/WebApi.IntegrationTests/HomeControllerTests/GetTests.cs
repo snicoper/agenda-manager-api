@@ -26,9 +26,9 @@ public class GetTests(IntegrationTestWebAppFactory factory) : BaseIntegrationTes
 
         // Act
         var response = await httpClient.GetAsync("api/v1/home");
+        var resultResponse = await response.Content.ReadFromJsonAsync<Result<string>>();
 
         // Assert
-        var resultResponse = await response.Content.ReadFromJsonAsync<Result<string>>();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         resultResponse?.Value.Should().Be(expected.Value);
     }
