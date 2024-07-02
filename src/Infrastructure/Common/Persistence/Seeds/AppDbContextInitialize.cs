@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Common.Constants;
+﻿using AgendaManager.Application.Common.Interfaces.Clock;
+using AgendaManager.Domain.Common.Constants;
 using AgendaManager.Domain.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ public class AppDbContextInitialize(
     AppDbContext context,
     UserManager<User> userManager,
     RoleManager<IdentityRole<Guid>> roleManager,
+    IDateTimeProvider dateTimeProvider,
     ILogger<AppDbContextInitialize> logger)
 {
     public async Task InitialiseAsync()
@@ -59,7 +61,16 @@ public class AppDbContextInitialize(
         const string password = "Password4!";
 
         // Admin user.
-        var user = new User { UserName = "alice@example.com", Email = "alice@example.com", EmailConfirmed = true };
+        var user = new User
+        {
+            UserName = "alice@example.com",
+            FirstName = "Alice",
+            LastName = "Doe",
+            Email = "alice@example.com",
+            EntryDate = dateTimeProvider.UtcNow,
+            Active = true,
+            EmailConfirmed = true
+        };
 
         if (!await userManager.Users.AnyAsync(u => u.Email == user.Email))
         {
@@ -69,7 +80,16 @@ public class AppDbContextInitialize(
         }
 
         // Staff user.
-        user = new User { UserName = "bob@example.com", Email = "bob@example.com", EmailConfirmed = true };
+        user = new User
+        {
+            UserName = "bob@example.com",
+            FirstName = "Bob",
+            LastName = "Doe",
+            Email = "bob@example.com",
+            EntryDate = dateTimeProvider.UtcNow,
+            Active = true,
+            EmailConfirmed = true
+        };
 
         if (!await userManager.Users.AnyAsync(u => u.Email == user.Email))
         {

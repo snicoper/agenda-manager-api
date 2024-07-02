@@ -9,6 +9,18 @@ public sealed class User : IdentityUser<Guid>, IDomainEvent
 {
     private readonly List<DomainEvent> _domainEvents = [];
 
+    public string? FirstName { get; set; }
+
+    public string? LastName { get; set; }
+
+    public string? RefreshToken { get; set; }
+
+    public bool Active { get; set; }
+
+    public DateTimeOffset? RefreshTokenExpiryTime { get; set; }
+
+    public DateTimeOffset EntryDate { get; set; }
+
     [NotMapped]
     public IReadOnlyCollection<DomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 

@@ -12,12 +12,12 @@ public abstract class BaseIntegrationTest(IntegrationTestWebAppFactory factory)
 {
     protected HttpClient HttpClient => factory.CreateClient();
 
-    protected async Task LoginAsync()
+    protected async Task<HttpClient> GetHttpClientWithLoginAsync()
     {
-        await LoginAsync(SharedTestContext.AliceEmail, SharedTestContext.UserPassword);
+        return await GetHttpClientWithLoginAsync(SharedTestContext.AliceEmail, SharedTestContext.UserPassword);
     }
 
-    protected async Task LoginAsync(string email, string password)
+    protected async Task<HttpClient> GetHttpClientWithLoginAsync(string email, string password)
     {
         var result = await HttpClient.PostAsJsonAsync("api/v1/auth/login", new LoginCommand(email, password));
         var response = await result.Content.ReadFromJsonAsync<Result<LoginResponse>>();
@@ -27,8 +27,12 @@ public abstract class BaseIntegrationTest(IntegrationTestWebAppFactory factory)
             throw new ApplicationException("Invalid login response");
         }
 
-        HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+        var httpClient = factory.CreateClient();
+
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
             JwtBearerDefaults.AuthenticationScheme,
             response.Value.AccessToken);
+
+        return httpClient;
     }
 }

@@ -1,13 +1,17 @@
 ﻿using System.Text;
 using AgendaManager.Application.Common.Interfaces.Clock;
 using AgendaManager.Application.Common.Interfaces.Persistence;
+using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Models.Settings;
 using AgendaManager.Application.Common.Services;
 using AgendaManager.Domain.Users;
+using AgendaManager.Domain.Users.Persistence;
 using AgendaManager.Infrastructure.Common.Clock;
 using AgendaManager.Infrastructure.Common.Persistence;
 using AgendaManager.Infrastructure.Common.Persistence.Interceptors;
 using AgendaManager.Infrastructure.Common.Persistence.Seeds;
+using AgendaManager.Infrastructure.Users;
+using AgendaManager.Infrastructure.Users.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -56,6 +60,8 @@ public static class DependencyInjection
     {
         services.AddSingleton(TimeProvider.System);
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
+
+        services.AddScoped<IUsersRepository, UserRepository>();
     }
 
     private static void AddDatabase(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
@@ -84,6 +90,9 @@ public static class DependencyInjection
 
     private static void AddAuthentication(IServiceCollection services, IConfiguration configuration)
     {
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+
         services.AddAuthorization();
 
         services
