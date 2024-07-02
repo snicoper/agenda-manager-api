@@ -2,10 +2,9 @@ using AgendaManager.Application.Auth.Commands.Login;
 using AgendaManager.Application.Common.Constants;
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Models.Users;
-using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.Extensions;
+using AgendaManager.Domain.Common.Responses;
 using FluentAssertions;
-using Microsoft.AspNetCore.Http;
 using NSubstitute;
 
 namespace AgendaManager.Application.UnitTests.Auth.Commands.Login;
@@ -35,7 +34,7 @@ public class LoginHandlerTests
         var handleResult = await _sut.Handle(loginCommand, default);
 
         // Assert
-        handleResult.Status.Should().Be(StatusCodes.Status401Unauthorized);
+        handleResult.ErrorType.Should().Be(ErrorType.Unauthorized);
     }
 
     [Fact]
@@ -53,7 +52,7 @@ public class LoginHandlerTests
         var handleResult = await _sut.Handle(loginCommand, default);
 
         // Assert
-        handleResult.Status.Should().Be(StatusCodes.Status400BadRequest);
+        handleResult.ErrorType.Should().Be(ErrorType.ValidationError);
         handleResult.Error?.ValidationErrors.First().Key.Should().Be(validationErrorKey);
     }
 
@@ -71,7 +70,7 @@ public class LoginHandlerTests
 
         // Assert
         handleResult.Should().BeEquivalentTo(result);
-        handleResult.Status.Should().Be(StatusCodes.Status200OK);
+        handleResult.ErrorType.Should().Be(ErrorType.None);
     }
 
     private static LoginCommand CreateLoginCommand()

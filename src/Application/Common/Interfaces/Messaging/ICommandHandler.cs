@@ -1,4 +1,4 @@
-using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.Responses;
 using MediatR;
 
 namespace AgendaManager.Application.Common.Interfaces.Messaging;

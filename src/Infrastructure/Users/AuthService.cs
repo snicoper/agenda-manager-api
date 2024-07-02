@@ -4,7 +4,7 @@ using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Localization;
 using AgendaManager.Application.Common.Models.Settings;
 using AgendaManager.Application.Common.Models.Users;
-using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;

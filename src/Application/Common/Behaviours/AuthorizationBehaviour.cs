@@ -2,7 +2,7 @@ using System.Reflection;
 using AgendaManager.Application.Common.Exceptions;
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Security;
-using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users.Persistence;
 using MediatR;
 

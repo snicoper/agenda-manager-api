@@ -1,60 +1,58 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace AgendaManager.Domain.Common.Abstractions;
+﻿namespace AgendaManager.Domain.Common.Responses;
 
 public class Result
 {
     public Result()
     {
         Succeeded = true;
-        Status = StatusCodes.Status200OK;
+        ErrorType = ErrorType.None;
     }
 
     protected Result(Error? error)
     {
         Error = error;
         Succeeded = error?.HasErrors is not true;
-        Status = error?.Status ?? StatusCodes.Status200OK;
+        ErrorType = error?.ErrorType ?? ErrorType.None;
     }
 
-    protected Result(bool succeeded, int status = StatusCodes.Status200OK)
+    protected Result(bool succeeded, ErrorType errorType = ErrorType.None)
     {
         Succeeded = succeeded;
-        Status = status;
+        ErrorType = errorType;
     }
 
     public bool Succeeded { get; }
 
-    public int Status { get; private init; }
+    public ErrorType ErrorType { get; private init; }
 
     public Error? Error { get; protected init; }
 
-    public static Result Create(int status = StatusCodes.Status200OK)
+    public static Result Create(ErrorType status = ErrorType.None)
     {
-        return new Result { Status = status };
+        return new Result { ErrorType = status };
     }
 
-    public static Result<TValue> Create<TValue>(TValue? value, int status = StatusCodes.Status200OK)
+    public static Result<TValue> Create<TValue>(TValue? value, ErrorType status = ErrorType.None)
     {
-        return new Result<TValue>(value, default) { Status = status };
+        return new Result<TValue>(value, default) { ErrorType = status };
     }
 
-    public static Result Success(int status = StatusCodes.Status200OK)
+    public static Result Success(ErrorType status = ErrorType.None)
     {
-        return new Result { Status = status };
+        return new Result { ErrorType = status };
     }
 
-    public static Result<TValue> Success<TValue>(TValue? value, int status = StatusCodes.Status200OK)
+    public static Result<TValue> Success<TValue>(TValue? value, ErrorType status = ErrorType.None)
     {
-        return new Result<TValue>(value, default) { Status = status };
+        return new Result<TValue>(value, default) { ErrorType = status };
     }
 
-    public static Result Failure(int status = StatusCodes.Status409Conflict)
+    public static Result Failure(ErrorType status = ErrorType.Conflict)
     {
         return new Result(false, status);
     }
 
-    public static Result<TValue> Failure<TValue>(int status = StatusCodes.Status409Conflict)
+    public static Result<TValue> Failure<TValue>(ErrorType status = ErrorType.Conflict)
     {
         return new Result<TValue>(default, status);
     }
@@ -85,8 +83,8 @@ public class Result<TValue> : Result
         Value = value;
     }
 
-    protected internal Result(bool succeeded, int status = StatusCodes.Status200OK)
-        : base(succeeded, status)
+    protected internal Result(bool succeeded, ErrorType errorType = ErrorType.None)
+        : base(succeeded, errorType)
     {
     }
 
@@ -101,7 +99,7 @@ public class Result<TValue> : Result
 
     public Result<TDestination> MapTo<TDestination>()
     {
-        var result = new Result<TDestination>(Succeeded, Status) { Error = Error };
+        var result = new Result<TDestination>(Succeeded, ErrorType) { Error = Error };
 
         return result;
     }

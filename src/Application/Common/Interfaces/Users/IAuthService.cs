@@ -1,5 +1,5 @@
 ﻿using AgendaManager.Application.Common.Models.Users;
-using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.Responses;
 
 namespace AgendaManager.Application.Common.Interfaces.Users;
 

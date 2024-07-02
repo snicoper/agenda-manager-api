@@ -1,9 +1,8 @@
-using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.Extensions;
+using AgendaManager.Domain.Common.Responses;
 using FluentAssertions;
-using Microsoft.AspNetCore.Http;
 
-namespace AgendaManager.Domain.UnitTests.Common.Abstractions;
+namespace AgendaManager.Domain.UnitTests.Common.Responses;
 
 public class ErrorTests
 {
@@ -17,7 +16,7 @@ public class ErrorTests
         var error = Error.Validation(Code, Description);
 
         // Assert
-        error.Status.Should().Be(StatusCodes.Status400BadRequest);
+        error.ErrorType.Should().Be(ErrorType.ValidationError);
         error.HasErrors.Should().BeTrue();
         error.ValidationErrors.Should().HaveCount(1);
         error.ValidationErrors.First().Key.Should().Be(Code.ToLowerFirstLetter());
@@ -50,7 +49,7 @@ public class ErrorTests
         var error = Error.NotFound(Code, Description);
 
         // Assert
-        error.Status.Should().Be(StatusCodes.Status404NotFound);
+        error.ErrorType.Should().Be(ErrorType.NotFound);
         error.HasErrors.Should().BeTrue();
         error.Code.Should().Be(Code);
         error.Description.Should().NotBeEmpty();
@@ -64,9 +63,9 @@ public class ErrorTests
         var error = Error.Unauthorized();
 
         // Assert
-        error.Status.Should().Be(StatusCodes.Status401Unauthorized);
+        error.ErrorType.Should().Be(ErrorType.Unauthorized);
         error.HasErrors.Should().BeTrue();
-        error.Code.Should().Be(nameof(StatusCodes.Status401Unauthorized));
+        error.Code.Should().Be(nameof(ErrorType.Unauthorized));
         error.Description.Should().NotBeEmpty();
         error.ToResult().Should().BeOfType<Result>();
     }
@@ -78,9 +77,9 @@ public class ErrorTests
         var error = Error.Forbidden();
 
         // Assert
-        error.Status.Should().Be(StatusCodes.Status403Forbidden);
+        error.ErrorType.Should().Be(ErrorType.Forbidden);
         error.HasErrors.Should().BeTrue();
-        error.Code.Should().Be(nameof(StatusCodes.Status403Forbidden));
+        error.Code.Should().Be(nameof(ErrorType.Forbidden));
         error.Description.Should().NotBeEmpty();
         error.ToResult().Should().BeOfType<Result>();
     }

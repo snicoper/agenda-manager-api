@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.Responses;
 using FluentAssertions;
 
 namespace AgendaManager.WebApi.UnitTests.HomeControllerTests;

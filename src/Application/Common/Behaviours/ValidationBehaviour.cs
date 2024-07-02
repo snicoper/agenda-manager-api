@@ -1,6 +1,6 @@
 using AgendaManager.Application.Common.Exceptions;
 using AgendaManager.Application.Common.Interfaces.Messaging;
-using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.Responses;
 using FluentValidation;
 using MediatR;
 

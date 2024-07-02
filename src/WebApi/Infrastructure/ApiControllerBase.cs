@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
+﻿using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Constants;
 using Asp.Versioning;
 using MediatR;
@@ -18,37 +18,56 @@ public class ApiControllerBase : ControllerBase
 
     protected ISender Sender => _sender ??= HttpContext.RequestServices.GetRequiredService<ISender>();
 
-    protected ActionResult<Result> HandleResult(Result result)
+    protected ActionResult<Result> ToHttpResponse(Result result, int responseStatusCode = StatusCodes.Status200OK)
     {
-        HttpContext.Response.StatusCode = result.Status;
+        var statusCode = result.Succeeded ? responseStatusCode : ErrorTypeToStatusCodeMapper(result.ErrorType);
 
-        return result.Status switch
+        HttpContext.Response.StatusCode = statusCode;
+
+        return statusCode switch
         {
-            StatusCodes.Status200OK => new ObjectResult(result) { StatusCode = result.Status },
+            StatusCodes.Status200OK => new ObjectResult(result) { StatusCode = statusCode },
             StatusCodes.Status201Created => new ObjectResult(result) { StatusCode = StatusCodes.Status201Created },
             StatusCodes.Status204NoContent => NoContent(),
             StatusCodes.Status400BadRequest => HandleBadRequestResult(result.Error?.ValidationErrors),
             StatusCodes.Status401Unauthorized => Unauthorized(),
             StatusCodes.Status403Forbidden => Forbid(),
             StatusCodes.Status404NotFound => HandleNotFoundResult(result.Error?.Description),
-            _ => HandleUnknownResult(result.Status, result.Error?.Description)
+            _ => HandleUnknownResult(statusCode, result.Error?.Description)
         };
     }
 
-    protected ActionResult<Result<TValue>> HandleResult<TValue>(Result<TValue> result)
+    protected ActionResult<Result<TValue>> ToHttpResponse<TValue>(
+        Result<TValue> result,
+        int responseStatusCode = StatusCodes.Status200OK)
     {
-        HttpContext.Response.StatusCode = result.Status;
+        var statusCode = result.Succeeded ? responseStatusCode : ErrorTypeToStatusCodeMapper(result.ErrorType);
 
-        return result.Status switch
+        HttpContext.Response.StatusCode = statusCode;
+
+        return statusCode switch
         {
-            StatusCodes.Status200OK => new ObjectResult(result) { StatusCode = result.Status },
+            StatusCodes.Status200OK => new ObjectResult(result) { StatusCode = statusCode },
             StatusCodes.Status201Created => new ObjectResult(result) { StatusCode = StatusCodes.Status201Created },
             StatusCodes.Status204NoContent => NoContent(),
             StatusCodes.Status400BadRequest => HandleBadRequestResult(result.Error?.ValidationErrors),
             StatusCodes.Status401Unauthorized => Unauthorized(),
             StatusCodes.Status403Forbidden => Forbid(),
             StatusCodes.Status404NotFound => HandleNotFoundResult(result.Error?.Description),
-            _ => HandleUnknownResult(result.Status, result.Error?.Description)
+            _ => HandleUnknownResult(statusCode, result.Error?.Description)
+        };
+    }
+
+    private static int ErrorTypeToStatusCodeMapper(ErrorType errorType)
+    {
+        return errorType switch
+        {
+            ErrorType.NotFound => StatusCodes.Status404NotFound,
+            ErrorType.ValidationError => StatusCodes.Status400BadRequest,
+            ErrorType.Unauthorized => StatusCodes.Status401Unauthorized,
+            ErrorType.Forbidden => StatusCodes.Status403Forbidden,
+            ErrorType.Conflict => StatusCodes.Status409Conflict,
+            _ => StatusCodes.Status500InternalServerError
         };
     }
 

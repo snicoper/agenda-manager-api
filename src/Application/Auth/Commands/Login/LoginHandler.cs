@@ -1,6 +1,6 @@
 using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Application.Common.Interfaces.Users;
-using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.Responses;
 
 namespace AgendaManager.Application.Auth.Commands.Login;
 

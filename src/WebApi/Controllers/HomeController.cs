@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
+﻿using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +13,6 @@ public class HomeController : ApiControllerBase
     {
         var result = Result.Create("Hello world");
 
-        return HandleResult(result);
+        return ToHttpResponse(result, StatusCodes.Status201Created);
     }
 }

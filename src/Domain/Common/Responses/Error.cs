@@ -1,8 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using AgendaManager.Domain.Common.Extensions;
-using Microsoft.AspNetCore.Http;
 
-namespace AgendaManager.Domain.Common.Abstractions;
+namespace AgendaManager.Domain.Common.Responses;
 
 public class Error
 {
@@ -12,11 +11,11 @@ public class Error
     {
     }
 
-    protected Error(string code, string description, int status = StatusCodes.Status400BadRequest)
+    protected Error(string code, string description, ErrorType errorType = ErrorType.ValidationError)
     {
         Code = code;
         Description = description;
-        Status = status;
+        ErrorType = errorType;
     }
 
     public ReadOnlyDictionary<string, string[]> ValidationErrors => _validationErrors.AsReadOnly();
@@ -25,7 +24,7 @@ public class Error
 
     public string Description { get; } = default!;
 
-    public int Status { get; private set; } = StatusCodes.Status200OK;
+    public ErrorType ErrorType { get; private set; } = ErrorType.ValidationError;
 
     public bool HasErrors => ValidationErrors.Count > 0 || Code != default! || Description != default!;
 
@@ -44,7 +43,7 @@ public class Error
 
     public static Error<TValue> Validation<TValue>(string code, string description)
     {
-        var error = new Error<TValue> { Status = StatusCodes.Status400BadRequest };
+        var error = new Error<TValue> { ErrorType = ErrorType.ValidationError };
         error.AddValidationError(code, description);
 
         return error;
@@ -54,56 +53,53 @@ public class Error
     {
         var error = $"Entity \"{code}\" ({description}) was not found.";
 
-        return new Error(code, error, StatusCodes.Status404NotFound);
+        return new Error(code, error, ErrorType.NotFound);
     }
 
     public static Error<TValue> NotFound<TValue>(string code, string description)
     {
         var error = $"Entity \"{code}\" ({description}) was not found.";
 
-        return new Error<TValue>(code, error, StatusCodes.Status404NotFound);
+        return new Error<TValue>(code, error, ErrorType.NotFound);
     }
 
     public static Error Unauthorized(string description = "Unauthorized")
     {
-        return new Error(nameof(StatusCodes.Status401Unauthorized), description, StatusCodes.Status401Unauthorized);
+        return new Error(nameof(ErrorType.Unauthorized), description, ErrorType.Unauthorized);
     }
 
     public static Error<TValue> Unauthorized<TValue>(string description = "Unauthorized")
     {
-        return new Error<TValue>(nameof(StatusCodes.Status401Unauthorized), description, StatusCodes.Status401Unauthorized);
+        return new Error<TValue>(nameof(ErrorType.Unauthorized), description, ErrorType.Unauthorized);
     }
 
     public static Error Forbidden(string description = "Forbidden")
     {
-        return new Error(nameof(StatusCodes.Status403Forbidden), description, StatusCodes.Status403Forbidden);
+        return new Error(nameof(ErrorType.Forbidden), description, ErrorType.Forbidden);
     }
 
     public static Error<TValue> Forbidden<TValue>(string description = "Forbidden")
     {
-        return new Error<TValue>(nameof(StatusCodes.Status403Forbidden), description, StatusCodes.Status403Forbidden);
+        return new Error<TValue>(nameof(ErrorType.Forbidden), description, ErrorType.Forbidden);
     }
 
     public static Error Unknown(string? code, string description = "Internal Server Error")
     {
-        code ??= nameof(StatusCodes.Status500InternalServerError);
+        code ??= nameof(ErrorType.InternalServerError);
 
-        return new Error(code, description, StatusCodes.Status500InternalServerError);
+        return new Error(code, description, ErrorType.InternalServerError);
     }
 
     public static Error<TValue> Unknown<TValue>(string? code, string description = "Internal Server Error")
     {
-        _ = code ?? nameof(StatusCodes.Status500InternalServerError);
+        _ = code ?? nameof(ErrorType.InternalServerError);
 
-        return new Error<TValue>(
-            nameof(StatusCodes.Status500InternalServerError),
-            description,
-            StatusCodes.Status500InternalServerError);
+        return new Error<TValue>(nameof(ErrorType.InternalServerError), description, ErrorType.InternalServerError);
     }
 
     public void AddValidationError(string code, string description)
     {
-        Status = StatusCodes.Status400BadRequest;
+        ErrorType = ErrorType.ValidationError;
         code = code.ToLowerFirstLetter();
 
         if (_validationErrors.TryGetValue(code, out var value))
@@ -130,8 +126,8 @@ public class Error<TValue> : Error
     {
     }
 
-    protected internal Error(string code, string description, int status = StatusCodes.Status400BadRequest)
-        : base(code, description, status)
+    protected internal Error(string code, string description, ErrorType errorType = ErrorType.ValidationError)
+        : base(code, description, errorType)
     {
     }
 

@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
+﻿using AgendaManager.Domain.Common.Responses;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Serilog.Context;

@@ -1,5 +1,5 @@
 using AgendaManager.Application.Auth.Commands.Login;
-using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +15,6 @@ public class AuthController : ApiControllerBase
     {
         var result = await Sender.Send(command);
 
-        return HandleResult(result);
+        return ToHttpResponse(result);
     }
 }

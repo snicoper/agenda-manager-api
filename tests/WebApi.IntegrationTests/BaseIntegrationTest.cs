@@ -1,7 +1,7 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using AgendaManager.Application.Auth.Commands.Login;
-using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.UnitTests.Shared;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
