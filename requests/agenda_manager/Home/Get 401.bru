@@ -1,0 +1,18 @@
+meta {
+  name: Get 401
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/home
+  body: none
+  auth: none
+}
+
+tests {
+  test('Should get 401 when no is authenticate', () => {
+    const data = res.getBody();
+    expect(res.getStatus()).to.equal(401);
+  });
+}

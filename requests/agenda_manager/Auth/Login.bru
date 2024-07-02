@@ -26,4 +26,14 @@ tests {
     const data = res.getBody();
     expect(res.getStatus()).to.equal(200);
   });
+
+  test('Should be able to get token', () => {
+    const data = res.getBody();
+    expect(res.body.value.accessToken).to.not.be.undefined;
+  });
+
+  test('Should be able to get refresh token', () => {
+    const data = res.getBody();
+    expect(res.body.value.refreshToken).to.not.be.undefined;
+  });
 }
