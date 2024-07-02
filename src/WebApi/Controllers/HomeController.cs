@@ -13,6 +13,6 @@ public class HomeController : ApiControllerBase
     {
         var result = Result.Create("Hello world");
 
-        return ToHttpResponse(result, StatusCodes.Status201Created);
+        return ToHttpResponse(result);
     }
 }
