@@ -1,3 +1,4 @@
+using AgendaManager.Domain.Common.Abstractions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -5,7 +6,8 @@ namespace AgendaManager.Application.Common.Behaviours;
 
 public class UnhandledExceptionBehaviour<TRequest, TResponse>(ILogger<TRequest> logger)
     : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : notnull
+    where TRequest : IBaseRequest
+    where TResponse : Result
 {
     public async Task<TResponse> Handle(
         TRequest request,
