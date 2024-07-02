@@ -12,6 +12,11 @@ public abstract class BaseIntegrationTest(IntegrationTestWebAppFactory factory)
 {
     protected HttpClient HttpClient => factory.CreateClient();
 
+    protected static string ComposeUrl(string uri)
+    {
+        return $"{SharedTestContext.BaseUrl}/{uri}";
+    }
+
     protected async Task<HttpClient> GetHttpClientWithLoginAsync()
     {
         return await GetHttpClientWithLoginAsync(SharedTestContext.AliceEmail, SharedTestContext.UserPassword);
@@ -19,7 +24,8 @@ public abstract class BaseIntegrationTest(IntegrationTestWebAppFactory factory)
 
     protected async Task<HttpClient> GetHttpClientWithLoginAsync(string email, string password)
     {
-        var result = await HttpClient.PostAsJsonAsync("api/v1/auth/login", new LoginCommand(email, password));
+        var uri = ComposeUrl("auth/login");
+        var result = await HttpClient.PostAsJsonAsync(uri, new LoginCommand(email, password));
         var response = await result.Content.ReadFromJsonAsync<Result<LoginResponse>>();
 
         if (response?.Value is null)

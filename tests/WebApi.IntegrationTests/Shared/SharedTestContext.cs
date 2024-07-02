@@ -2,6 +2,8 @@
 
 public static class SharedTestContext
 {
+    public static string BaseUrl { get; } = "api/v1";
+
     public static string AliceEmail { get; } = "alice@example.com";
 
     public static string BobEmail { get; } = "bob@example.com";
