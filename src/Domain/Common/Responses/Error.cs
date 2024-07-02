@@ -24,7 +24,7 @@ public class Error
 
     public string Description { get; } = default!;
 
-    public ErrorType ErrorType { get; private set; } = ErrorType.ValidationError;
+    public ErrorType ErrorType { get; private set; } = ErrorType.None;
 
     public bool HasErrors => ValidationErrors.Count > 0 || Code != default! || Description != default!;
 
@@ -126,7 +126,7 @@ public class Error<TValue> : Error
     {
     }
 
-    protected internal Error(string code, string description, ErrorType errorType = ErrorType.ValidationError)
+    protected internal Error(string code, string description, ErrorType errorType = ErrorType.None)
         : base(code, description, errorType)
     {
     }
