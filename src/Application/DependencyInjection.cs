@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using AgendaManager.Application.Common.Behaviours;
 using FluentValidation;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AgendaManager.Application;
@@ -35,9 +34,9 @@ public static class DependencyInjection
             {
                 configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
 
-                configuration.AddBehavior(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
-                configuration.AddBehavior(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehaviour<,>));
-                configuration.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+                configuration.AddOpenBehavior(typeof(UnhandledExceptionBehaviour<,>));
+                configuration.AddOpenBehavior(typeof(AuthorizationBehaviour<,>));
+                configuration.AddOpenBehavior(typeof(ValidationBehaviour<,>));
             });
     }
 }
