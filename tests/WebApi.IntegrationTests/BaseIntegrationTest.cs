@@ -19,7 +19,7 @@ public abstract class BaseIntegrationTest(IntegrationTestWebAppFactory factory)
 
     protected async Task LoginAsync(string email, string password)
     {
-        var result = await HttpClient.PostAsJsonAsync("api/auth/login", new LoginCommand(email, password));
+        var result = await HttpClient.PostAsJsonAsync("api/v1/auth/login", new LoginCommand(email, password));
         var response = await result.Content.ReadFromJsonAsync<Result<LoginResponse>>();
 
         if (response?.Value is null)

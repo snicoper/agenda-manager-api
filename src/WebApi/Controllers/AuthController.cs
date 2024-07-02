@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AgendaManager.WebApi.Controllers;
 
-[Route("api/auth")]
+[Route("api/v{version:apiVersion}/auth")]
 public class AuthController : ApiControllerBase
 {
     [AllowAnonymous]
