@@ -1,6 +1,6 @@
 using System.Globalization;
 using System.Text;
-using System.Text.RegularExpressions;
+using AgendaManager.Domain.Common.RegularExpressions;
 
 namespace AgendaManager.Domain.Common.Extensions;
 
@@ -33,11 +33,9 @@ public static class StringExtensions
 
     public static string Slugify(this string text)
     {
-        const string pattern = @"[^a-zA-Z0-9\-]";
         const string replacement = "-";
-        Regex regex = new(pattern);
 
-        var result = regex
+        var result = DomainRegex.SlugifyRegex()
             .Replace(RemoveDiacritics(text), replacement)
             .Replace("--", "-")
             .Trim('-');

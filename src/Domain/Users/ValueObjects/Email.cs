@@ -1,5 +1,5 @@
-﻿using System.Text.RegularExpressions;
-using AgendaManager.Domain.Common.Abstractions;
+﻿using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.RegularExpressions;
 using AgendaManager.Domain.Users.Exceptions;
 
 namespace AgendaManager.Domain.Users.ValueObjects;
@@ -30,9 +30,6 @@ public class Email : ValueObject
 
     private bool Validate()
     {
-        var pattern = @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$";
-        var regex = new Regex(pattern);
-
-        return regex.IsMatch(Value);
+        return DomainRegex.EmailRegex().IsMatch(Value);
     }
 }
