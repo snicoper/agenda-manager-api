@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users;
@@ -30,6 +31,10 @@ public sealed class User : AuditableEntity
 
     public static User Create(UserId userId, Email email, string userName, string? firstName, string? lastName)
     {
-        return new User(userId, email, userName, firstName, lastName);
+        var user = new User(userId, email, userName, firstName, lastName);
+
+        user.AddDomainEvent(new UserCreatedDomainEvent(userId));
+
+        return user;
     }
 }
