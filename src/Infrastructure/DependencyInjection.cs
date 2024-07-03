@@ -3,6 +3,8 @@ using AgendaManager.Application.Common.Interfaces.Clock;
 using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Models.Settings;
+using AgendaManager.Application.Common.Services;
+using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Persistence;
 using AgendaManager.Infrastructure.Common.Clock;
 using AgendaManager.Infrastructure.Common.Persistence;
@@ -12,6 +14,7 @@ using AgendaManager.Infrastructure.Users;
 using AgendaManager.Infrastructure.Users.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -89,6 +92,28 @@ public static class DependencyInjection
     {
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+
+        services.AddAuthorization();
+
+        services
+            .AddIdentityCore<User>()
+            .AddRoles<IdentityRole<Guid>>()
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddClaimsPrincipalFactory<CustomClaimsPrincipalFactory>()
+            .AddDefaultTokenProviders();
+
+        services.Configure<IdentityOptions>(
+            options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 0;
+                options.User.RequireUniqueEmail = true;
+                options.SignIn.RequireConfirmedAccount = true;
+            });
 
         JwtSettings jwtSettings = new();
         configuration.Bind(JwtSettings.SectionName, jwtSettings);

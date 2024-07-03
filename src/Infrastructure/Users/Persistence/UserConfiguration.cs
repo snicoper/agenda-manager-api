@@ -8,8 +8,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.HasKey(u => u.Id.Value);
-
         builder.HasIndex(au => au.Email)
             .IsUnique();
 
@@ -34,5 +32,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(au => au.Active);
 
         builder.Property(au => au.RefreshTokenExpiryTime);
+
+        builder.Property(au => au.EntryDate)
+            .IsRequired();
     }
 }

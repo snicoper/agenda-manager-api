@@ -1,53 +1,41 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Users.Events;
-using AgendaManager.Domain.Users.ValueObjects;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 namespace AgendaManager.Domain.Users;
 
-public class User : AuditableEntity
+public sealed class User : IdentityUser<Guid>, IDomainEvent
 {
-    private User(UserId userId, Email email, string userName)
+    private readonly List<DomainEvent> _domainEvents = [];
+
+    public string? FirstName { get; set; }
+
+    public string? LastName { get; set; }
+
+    public string? RefreshToken { get; set; }
+
+    public bool Active { get; set; }
+
+    public DateTimeOffset? RefreshTokenExpiryTime { get; set; }
+
+    public DateTimeOffset EntryDate { get; set; }
+
+    [NotMapped]
+    public IReadOnlyCollection<DomainEvent> DomainEvents => _domainEvents.AsReadOnly();
+
+    public void AddDomainEvent(DomainEvent domainEvent)
     {
-        Id = userId;
-        UserName = userName;
-        Email = email;
-        EmailConfirmed = false;
+        _domainEvents.Add(domainEvent);
     }
 
-    private User()
+    public void RemoveDomainEvent(DomainEvent domainEvent)
     {
+        _domainEvents.Remove(domainEvent);
     }
 
-    public UserId Id { get; } = default!;
-
-    public string UserName { get; private set; } = default!;
-
-    public Email Email { get; private set; } = default!;
-
-    public string FirstName { get; private set; } = default!;
-
-    public string LastName { get; private set; } = default!;
-
-    public bool EmailConfirmed { get; private set; }
-
-    public bool Active { get; private set; } = true;
-
-    public string? RefreshToken { get; private set; }
-
-    public DateTimeOffset? RefreshTokenExpiryTime { get; private set; }
-
-    public static User Create(UserId userId, Email email, string userName)
+    public void ClearDomainEvents()
     {
-        var user = new User(userId, email, userName);
-
-        user.AddDomainEvent(new UserCreatedDomainEvent(user.Id));
-
-        return user;
-    }
-
-    public void UpdateRefreshToken(string refreshToken, DateTimeOffset refreshTokenExpiryTime)
-    {
-        RefreshToken = refreshToken;
-        RefreshTokenExpiryTime = refreshTokenExpiryTime;
+        _domainEvents.Clear();
     }
 }

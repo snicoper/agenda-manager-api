@@ -22,7 +22,7 @@ public class AuthService(
 {
     public async Task<Result<TokenResponse>> LoginAsync(string email, string password)
     {
-        var user = userManager.Users.SingleOrDefault(au => au.Email.Value == email);
+        var user = userManager.Users.SingleOrDefault(au => au.Email == email);
 
         if (user is null || !await userManager.CheckPasswordAsync(user, password))
         {
@@ -67,9 +67,8 @@ public class AuthService(
         var jwt = await jwtTokenGenerator.GenerateAccessTokenAsync(user);
         var refreshToken = jwtTokenGenerator.GenerateRefreshToken();
 
-        var refreshTokenExpiryTime = dateTimeProvider.UtcNow.AddDays(jwtSettings.Value.RefreshTokenLifeTimeDays);
-
-        user.UpdateRefreshToken(refreshToken, refreshTokenExpiryTime);
+        user.RefreshToken = refreshToken;
+        user.RefreshTokenExpiryTime = dateTimeProvider.UtcNow.AddDays(jwtSettings.Value.RefreshTokenLifeTimeDays);
 
         await userManager.UpdateAsync(user);
         var userTokensResult = new TokenResponse(jwt, refreshToken);
