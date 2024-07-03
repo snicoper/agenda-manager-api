@@ -1,43 +1,14 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Text;
 using AgendaManager.Application.Common.Interfaces.Users;
-using AgendaManager.Application.Common.Models.Settings;
 using AgendaManager.Domain.Users;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
 namespace AgendaManager.Infrastructure.Users;
 
-public class JwtTokenGenerator(IOptions<JwtSettings> jwtSettings, UserManager<User> userManager)
-    : IJwtTokenGenerator
+public class JwtTokenGenerator : IJwtTokenGenerator
 {
-    public async Task<string> GenerateAccessTokenAsync(User user)
+    public Task<string> GenerateAccessTokenAsync(User user)
     {
-        var claims = new List<Claim>
-        {
-            new(ClaimTypes.Sid, user.Id.ToString()), new(ClaimTypes.Name, user.UserName ?? string.Empty)
-        };
-
-        var roles = await userManager.GetRolesAsync(user);
-
-        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
-
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Value.Key));
-        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
-
-        var tokenDescriptor = new JwtSecurityToken(
-            jwtSettings.Value.Issuer,
-            jwtSettings.Value.Audience,
-            claims,
-            expires: DateTime.Now.AddMinutes(jwtSettings.Value.AccessTokenLifeTimeMinutes),
-            signingCredentials: credentials);
-
-        var token = new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
-
-        return token;
+        throw new NotImplementedException();
     }
 
     public string GenerateRefreshToken()

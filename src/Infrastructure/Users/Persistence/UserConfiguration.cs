@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Users;
+using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,32 +9,13 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.HasIndex(au => au.Email)
-            .IsUnique();
+        builder.ToTable("Users");
 
-        builder.HasIndex(au => au.RefreshToken)
-            .IsUnique();
+        builder.HasKey(u => u.Id);
 
-        builder.Property(au => au.Email)
-            .IsRequired()
-            .HasMaxLength(256);
-
-        builder.Property(au => au.FirstName)
-            .HasMaxLength(256)
-            .IsRequired();
-
-        builder.Property(au => au.LastName)
-            .HasMaxLength(256)
-            .IsRequired();
-
-        builder.Property(au => au.RefreshToken)
-            .HasMaxLength(256);
-
-        builder.Property(au => au.Active);
-
-        builder.Property(au => au.RefreshTokenExpiryTime);
-
-        builder.Property(au => au.EntryDate)
-            .IsRequired();
+        builder.Property(u => u.Id)
+            .HasConversion(
+                id => id.Value,
+                id => UserId.From(id));
     }
 }
