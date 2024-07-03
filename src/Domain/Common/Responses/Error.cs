@@ -97,9 +97,9 @@ public class Error
 
     public static Error<TValue> Unknown<TValue>(string? code, string description = "Internal Server Error")
     {
-        _ = code ?? nameof(ResultType.InternalServerError);
+        code ??= nameof(ResultType.InternalServerError);
 
-        return new Error<TValue>(nameof(ResultType.InternalServerError), description, ResultType.InternalServerError);
+        return new Error<TValue>(code, description, ResultType.InternalServerError);
     }
 
     public void AddValidationError(string code, string description)
