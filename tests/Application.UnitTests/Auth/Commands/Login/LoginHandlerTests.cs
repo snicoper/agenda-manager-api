@@ -34,7 +34,7 @@ public class LoginHandlerTests
         var handleResult = await _sut.Handle(loginCommand, default);
 
         // Assert
-        handleResult.ErrorType.Should().Be(ErrorType.Unauthorized);
+        handleResult.ResultType.Should().Be(ResultType.Unauthorized);
     }
 
     [Fact]
@@ -52,7 +52,7 @@ public class LoginHandlerTests
         var handleResult = await _sut.Handle(loginCommand, default);
 
         // Assert
-        handleResult.ErrorType.Should().Be(ErrorType.ValidationError);
+        handleResult.ResultType.Should().Be(ResultType.ValidationError);
         handleResult.Error?.ValidationErrors.First().Key.Should().Be(validationErrorKey);
     }
 
@@ -70,7 +70,7 @@ public class LoginHandlerTests
 
         // Assert
         handleResult.Should().BeEquivalentTo(result);
-        handleResult.ErrorType.Should().Be(ErrorType.None);
+        handleResult.ResultType.Should().Be(ResultType.Succeeded);
     }
 
     private static LoginCommand CreateLoginCommand()

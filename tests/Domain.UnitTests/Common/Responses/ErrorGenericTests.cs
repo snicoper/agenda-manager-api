@@ -16,7 +16,7 @@ public class ErrorGenericTests
         var error = Error.Validation<ErrorTests>(Code, Description);
 
         // Assert
-        error.ErrorType.Should().Be(ErrorType.ValidationError);
+        error.ResultType.Should().Be(ResultType.ValidationError);
         error.HasErrors.Should().BeTrue();
         error.ValidationErrors.Should().HaveCount(1);
         error.ValidationErrors.First().Key.Should().Be(Code.ToLowerFirstLetter());
@@ -43,7 +43,7 @@ public class ErrorGenericTests
         var error = Error.NotFound<ErrorTests>(Code, Description);
 
         // Assert
-        error.ErrorType.Should().Be(ErrorType.NotFound);
+        error.ResultType.Should().Be(ResultType.NotFound);
         error.HasErrors.Should().BeTrue();
         error.Code.Should().Be(Code);
         error.Description.Should().NotBeEmpty();
@@ -57,9 +57,9 @@ public class ErrorGenericTests
         var error = Error.Unauthorized<ErrorTests>();
 
         // Assert
-        error.ErrorType.Should().Be(ErrorType.Unauthorized);
+        error.ResultType.Should().Be(ResultType.Unauthorized);
         error.HasErrors.Should().BeTrue();
-        error.Code.Should().Be(nameof(ErrorType.Unauthorized));
+        error.Code.Should().Be(nameof(ResultType.Unauthorized));
         error.Description.Should().NotBeEmpty();
         error.ToResult().Should().BeOfType<Result<ErrorTests>>();
     }
@@ -71,9 +71,9 @@ public class ErrorGenericTests
         var error = Error.Forbidden<ErrorTests>();
 
         // Assert
-        error.ErrorType.Should().Be(ErrorType.Forbidden);
+        error.ResultType.Should().Be(ResultType.Forbidden);
         error.HasErrors.Should().BeTrue();
-        error.Code.Should().Be(nameof(ErrorType.Forbidden));
+        error.Code.Should().Be(nameof(ResultType.Forbidden));
         error.Description.Should().NotBeEmpty();
         error.ToResult().Should().BeOfType<Result<ErrorTests>>();
     }

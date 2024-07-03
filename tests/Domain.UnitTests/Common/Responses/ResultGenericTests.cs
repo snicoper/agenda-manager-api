@@ -19,21 +19,21 @@ public class ResultGenericTests
     public void Result_Generic_Failure_Empty_Should_Return_Succeeded_False()
     {
         // Arrange
-        const ErrorType errorType = ErrorType.Conflict;
+        const ResultType errorType = ResultType.Conflict;
 
         // Act
         var result = Result.Failure<string>();
 
         // Assert
         result.Succeeded.Should().BeFalse();
-        result.ErrorType.Should().Be(errorType);
+        result.ResultType.Should().Be(errorType);
     }
 
     [Fact]
     public void Result_Generic_Failure_Should_Return_Succeeded_False()
     {
         // Arrange
-        const ErrorType errorType = ErrorType.Forbidden;
+        const ResultType errorType = ResultType.Forbidden;
 
         // Act
         var error = Error.Forbidden();
@@ -41,14 +41,14 @@ public class ResultGenericTests
 
         // Assert
         result.Succeeded.Should().BeFalse();
-        result.ErrorType.Should().Be(errorType);
+        result.ResultType.Should().Be(errorType);
     }
 
     [Fact]
     public void Result_Failure_MapTo_Should_Change_Generic_Type_With_Empty_Value()
     {
         // Arrange
-        const ErrorType errorType = ErrorType.Forbidden;
+        const ResultType errorType = ResultType.Forbidden;
 
         // Act
         var error = Error.Forbidden();
@@ -58,7 +58,7 @@ public class ResultGenericTests
         // Assert
         resultChanged.Succeeded.Should().BeFalse();
         resultChanged.Value.GetType().Should().Be(typeof(int));
-        resultChanged.ErrorType.Should().Be(errorType);
+        resultChanged.ResultType.Should().Be(errorType);
         resultChanged.HasValue.Should().BeFalse();
     }
 
@@ -66,7 +66,7 @@ public class ResultGenericTests
     public void Result_Success_MapTo_Should_Change_Generic_Type_With_Empty_Value()
     {
         // Arrange
-        const ErrorType errorType = ErrorType.None;
+        const ResultType errorType = ResultType.Succeeded;
 
         // Act
         var result = Result.Success(string.Empty);
@@ -75,7 +75,7 @@ public class ResultGenericTests
         // Assert
         resultChanged.Succeeded.Should().BeTrue();
         resultChanged.Value.GetType().Should().Be(typeof(int));
-        resultChanged.ErrorType.Should().Be(errorType);
+        resultChanged.ResultType.Should().Be(errorType);
         resultChanged.HasValue.Should().BeFalse();
     }
 }

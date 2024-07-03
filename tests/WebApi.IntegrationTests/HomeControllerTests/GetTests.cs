@@ -25,7 +25,7 @@ public class GetTests(IntegrationTestWebAppFactory factory)
     {
         // Arrange
         var httpClient = await GetHttpClientWithLoginAsync();
-        var expected = Result.Create("Hello world");
+        var expected = Result.Success("Hello world");
 
         // Act
         var response = await httpClient.GetAsync(_uri);

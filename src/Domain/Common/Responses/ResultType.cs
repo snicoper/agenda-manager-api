@@ -1,8 +1,9 @@
 ﻿namespace AgendaManager.Domain.Common.Responses;
 
-public enum ErrorType
+public enum ResultType
 {
-    None,
+    Succeeded,
+    Created,
     NotFound,
     ValidationError,
     Unauthorized,

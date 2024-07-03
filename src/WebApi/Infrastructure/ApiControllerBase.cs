@@ -18,9 +18,9 @@ public class ApiControllerBase : ControllerBase
 
     protected ISender Sender => _sender ??= HttpContext.RequestServices.GetRequiredService<ISender>();
 
-    protected ActionResult<Result> ToHttpResponse(Result result, int responseStatusCode = StatusCodes.Status200OK)
+    protected ActionResult<Result> ToHttpResponse(Result result)
     {
-        var statusCode = result.Succeeded ? responseStatusCode : ErrorTypeToStatusCodeMapper(result.ErrorType);
+        var statusCode = ResultTypeToStatusCodeMapper(result.ResultType);
 
         HttpContext.Response.StatusCode = statusCode;
 
@@ -37,11 +37,9 @@ public class ApiControllerBase : ControllerBase
         };
     }
 
-    protected ActionResult<Result<TValue>> ToHttpResponse<TValue>(
-        Result<TValue> result,
-        int responseStatusCode = StatusCodes.Status200OK)
+    protected ActionResult<Result<TValue>> ToHttpResponse<TValue>(Result<TValue> result)
     {
-        var statusCode = result.Succeeded ? responseStatusCode : ErrorTypeToStatusCodeMapper(result.ErrorType);
+        var statusCode = ResultTypeToStatusCodeMapper(result.ResultType);
 
         HttpContext.Response.StatusCode = statusCode;
 
@@ -58,15 +56,17 @@ public class ApiControllerBase : ControllerBase
         };
     }
 
-    private static int ErrorTypeToStatusCodeMapper(ErrorType errorType)
+    private static int ResultTypeToStatusCodeMapper(ResultType resultType)
     {
-        return errorType switch
+        return resultType switch
         {
-            ErrorType.NotFound => StatusCodes.Status404NotFound,
-            ErrorType.ValidationError => StatusCodes.Status400BadRequest,
-            ErrorType.Unauthorized => StatusCodes.Status401Unauthorized,
-            ErrorType.Forbidden => StatusCodes.Status403Forbidden,
-            ErrorType.Conflict => StatusCodes.Status409Conflict,
+            ResultType.Succeeded => StatusCodes.Status200OK,
+            ResultType.Created => StatusCodes.Status201Created,
+            ResultType.NotFound => StatusCodes.Status404NotFound,
+            ResultType.ValidationError => StatusCodes.Status400BadRequest,
+            ResultType.Unauthorized => StatusCodes.Status401Unauthorized,
+            ResultType.Forbidden => StatusCodes.Status403Forbidden,
+            ResultType.Conflict => StatusCodes.Status409Conflict,
             _ => StatusCodes.Status500InternalServerError
         };
     }
@@ -78,9 +78,9 @@ public class ApiControllerBase : ControllerBase
             return new BadRequestObjectResult(nameof(BadRequest));
         }
 
-        var resultResponse = new ValidationProblemDetails(errors);
+        var validationProblemDetails = new ValidationProblemDetails(errors);
 
-        return new BadRequestObjectResult(resultResponse);
+        return new BadRequestObjectResult(validationProblemDetails);
     }
 
     private NotFoundObjectResult HandleNotFoundResult(string? description)

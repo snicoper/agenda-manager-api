@@ -11,11 +11,11 @@ public class Error
     {
     }
 
-    protected Error(string code, string description, ErrorType errorType = ErrorType.ValidationError)
+    protected Error(string code, string description, ResultType resultType = ResultType.ValidationError)
     {
         Code = code;
         Description = description;
-        ErrorType = errorType;
+        ResultType = resultType;
     }
 
     public ReadOnlyDictionary<string, string[]> ValidationErrors => _validationErrors.AsReadOnly();
@@ -24,7 +24,7 @@ public class Error
 
     public string Description { get; } = default!;
 
-    public ErrorType ErrorType { get; private set; } = ErrorType.None;
+    public ResultType ResultType { get; private set; } = ResultType.Succeeded;
 
     public bool HasErrors => ValidationErrors.Count > 0 || Code != default! || Description != default!;
 
@@ -48,7 +48,7 @@ public class Error
 
     public static Error<TValue> Validation<TValue>(string code, string description)
     {
-        var error = new Error<TValue> { ErrorType = ErrorType.ValidationError };
+        var error = new Error<TValue> { ResultType = ResultType.ValidationError };
         error.AddValidationError(code, description);
 
         return error;
@@ -58,53 +58,53 @@ public class Error
     {
         var error = $"Entity \"{code}\" ({description}) was not found.";
 
-        return new Error(code, error, ErrorType.NotFound);
+        return new Error(code, error, ResultType.NotFound);
     }
 
     public static Error<TValue> NotFound<TValue>(string code, string description)
     {
         var error = $"Entity \"{code}\" ({description}) was not found.";
 
-        return new Error<TValue>(code, error, ErrorType.NotFound);
+        return new Error<TValue>(code, error, ResultType.NotFound);
     }
 
     public static Error Unauthorized(string description = "Unauthorized")
     {
-        return new Error(nameof(ErrorType.Unauthorized), description, ErrorType.Unauthorized);
+        return new Error(nameof(ResultType.Unauthorized), description, ResultType.Unauthorized);
     }
 
     public static Error<TValue> Unauthorized<TValue>(string description = "Unauthorized")
     {
-        return new Error<TValue>(nameof(ErrorType.Unauthorized), description, ErrorType.Unauthorized);
+        return new Error<TValue>(nameof(ResultType.Unauthorized), description, ResultType.Unauthorized);
     }
 
     public static Error Forbidden(string description = "Forbidden")
     {
-        return new Error(nameof(ErrorType.Forbidden), description, ErrorType.Forbidden);
+        return new Error(nameof(ResultType.Forbidden), description, ResultType.Forbidden);
     }
 
     public static Error<TValue> Forbidden<TValue>(string description = "Forbidden")
     {
-        return new Error<TValue>(nameof(ErrorType.Forbidden), description, ErrorType.Forbidden);
+        return new Error<TValue>(nameof(ResultType.Forbidden), description, ResultType.Forbidden);
     }
 
     public static Error Unknown(string? code, string description = "Internal Server Error")
     {
-        code ??= nameof(ErrorType.InternalServerError);
+        code ??= nameof(ResultType.InternalServerError);
 
-        return new Error(code, description, ErrorType.InternalServerError);
+        return new Error(code, description, ResultType.InternalServerError);
     }
 
     public static Error<TValue> Unknown<TValue>(string? code, string description = "Internal Server Error")
     {
-        _ = code ?? nameof(ErrorType.InternalServerError);
+        _ = code ?? nameof(ResultType.InternalServerError);
 
-        return new Error<TValue>(nameof(ErrorType.InternalServerError), description, ErrorType.InternalServerError);
+        return new Error<TValue>(nameof(ResultType.InternalServerError), description, ResultType.InternalServerError);
     }
 
     public void AddValidationError(string code, string description)
     {
-        ErrorType = ErrorType.ValidationError;
+        ResultType = ResultType.ValidationError;
         code = code.ToLowerFirstLetter();
 
         if (_validationErrors.TryGetValue(code, out var value))
@@ -131,8 +131,8 @@ public class Error<TValue> : Error
     {
     }
 
-    protected internal Error(string code, string description, ErrorType errorType = ErrorType.None)
-        : base(code, description, errorType)
+    protected internal Error(string code, string description, ResultType resultType = ResultType.Succeeded)
+        : base(code, description, resultType)
     {
     }
 

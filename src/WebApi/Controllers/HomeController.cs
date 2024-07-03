@@ -11,7 +11,7 @@ public class HomeController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public ActionResult<Result<string>> Get()
     {
-        var result = Result.Create("Hello world");
+        var result = Result.Success("Hello world");
 
         return ToHttpResponse(result);
     }

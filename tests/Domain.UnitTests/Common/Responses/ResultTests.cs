@@ -9,35 +9,35 @@ public class ResultTests
     public void Result_Create_Empty_Should_Return_Succeeded_True()
     {
         // Arrange
-        const ErrorType errorType = ErrorType.None;
+        const ResultType errorType = ResultType.Succeeded;
 
         // Act
-        var result = Result.Create();
+        var result = Result.Success();
 
         // Assert
         result.Succeeded.Should().BeTrue();
-        result.ErrorType.Should().Be(errorType);
+        result.ResultType.Should().Be(errorType);
     }
 
     [Fact]
     public void Result_Failure_Empty_Should_Return_Succeeded_False()
     {
         // Arrange
-        const ErrorType errorType = ErrorType.Conflict;
+        const ResultType errorType = ResultType.Conflict;
 
         // Act
         var result = Result.Failure();
 
         // Assert
         result.Succeeded.Should().BeFalse();
-        result.ErrorType.Should().Be(errorType);
+        result.ResultType.Should().Be(errorType);
     }
 
     [Fact]
     public void Result_Failure_Should_Return_Succeeded_False()
     {
         // Arrange
-        const ErrorType errorType = ErrorType.Forbidden;
+        const ResultType errorType = ResultType.Forbidden;
 
         // Act
         var error = Error.Forbidden();
@@ -45,6 +45,6 @@ public class ResultTests
 
         // Assert
         result.Succeeded.Should().BeFalse();
-        result.ErrorType.Should().Be(errorType);
+        result.ResultType.Should().Be(errorType);
     }
 }
