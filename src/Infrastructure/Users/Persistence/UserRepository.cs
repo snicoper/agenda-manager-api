@@ -1,9 +1,10 @@
 ﻿using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Persistence;
+using AgendaManager.Infrastructure.Common.Persistence;
 
 namespace AgendaManager.Infrastructure.Users.Persistence;
 
-public class UserRepository : IUsersRepository
+public class UserRepository(AppDbContext context) : IUsersRepository
 {
     public Task<User?> GetByIdAsync(Guid id)
     {
@@ -18,5 +19,10 @@ public class UserRepository : IUsersRepository
     public Task<bool> AuthorizeAsync(Guid userId, string policyName)
     {
         throw new NotImplementedException();
+    }
+
+    public void Create(User user)
+    {
+        context.Users.Add(user);
     }
 }

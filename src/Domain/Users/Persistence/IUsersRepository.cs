@@ -7,4 +7,6 @@ public interface IUsersRepository
     Task<bool> IsInRoleAsync(Guid userId, string role);
 
     Task<bool> AuthorizeAsync(Guid userId, string policyName);
+
+    void Create(User user);
 }
