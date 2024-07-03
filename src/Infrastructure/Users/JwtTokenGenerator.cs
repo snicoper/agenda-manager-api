@@ -16,10 +16,7 @@ public class JwtTokenGenerator(IOptions<JwtSettings> jwtSettings, UserManager<Us
 {
     public async Task<string> GenerateAccessTokenAsync(User user)
     {
-        var claims = new List<Claim>
-        {
-            new(ClaimTypes.Sid, user.Id.ToString()), new(ClaimTypes.Name, user.UserName ?? string.Empty)
-        };
+        var claims = new List<Claim> { new(ClaimTypes.Sid, user.Id.Value.ToString()), new(ClaimTypes.Name, user.UserName) };
 
         var roles = await userManager.GetRolesAsync(user);
 

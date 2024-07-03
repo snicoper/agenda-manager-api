@@ -16,8 +16,6 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.6" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
     <!-- Identity Framework -->
-    <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.6" />
-    <PackageVersion Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.6" />
     <!-- Auth -->
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
     <!-- Awesome open-source packages -->
