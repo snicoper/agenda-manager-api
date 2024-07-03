@@ -55,16 +55,18 @@ public static class DependencyInjection
 
     private static void AddGlobalDiServices(IServiceCollection services)
     {
+        // Common.
         services.AddSingleton(TimeProvider.System);
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 
+        // Repositories.
         services.AddTransient<IUsersRepository, UserRepository>();
     }
 
     private static void AddDatabase(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
     {
-        services.AddTransient<ISaveChangesInterceptor, AuditableEntityInterceptor>();
-        services.AddTransient<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
+        services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
+        services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
 
         services.AddDbContext<AppDbContext>(
             (provider, options) =>
