@@ -2,7 +2,7 @@
 using AgendaManager.Domain.Users.Persistence;
 using AgendaManager.Infrastructure.Common.Persistence;
 
-namespace AgendaManager.Infrastructure.Users.Persistence;
+namespace AgendaManager.Infrastructure.Users;
 
 public class UserRepository(AppDbContext context) : IUsersRepository
 {

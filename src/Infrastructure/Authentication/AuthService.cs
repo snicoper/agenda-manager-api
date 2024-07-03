@@ -3,7 +3,7 @@ using AgendaManager.Application.Common.Models.Users;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users;
 
-namespace AgendaManager.Infrastructure.Users;
+namespace AgendaManager.Infrastructure.Authentication;
 
 public class AuthService : IAuthService
 {
