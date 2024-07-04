@@ -1,10 +1,10 @@
 using System.Globalization;
 using System.Text;
-using System.Text.RegularExpressions;
+using AgendaManager.Domain.Common.Constants;
 
 namespace AgendaManager.Domain.Common.Extensions;
 
-public static partial class StringExtensions
+public static class StringExtensions
 {
     public static string ToLowerFirstLetter(this string value)
     {
@@ -35,16 +35,13 @@ public static partial class StringExtensions
     {
         const string replacement = "-";
 
-        var result = SlugifyRegex()
+        var result = DomainRegex.Slugify()
             .Replace(RemoveDiacritics(text), replacement)
             .Replace("--", "-")
             .Trim('-');
 
         return result;
     }
-
-    [GeneratedRegex(@"[^a-zA-Z0-9\-]", RegexOptions.Compiled)]
-    private static partial Regex SlugifyRegex();
 
     private static string RemoveDiacritics(string text)
     {
