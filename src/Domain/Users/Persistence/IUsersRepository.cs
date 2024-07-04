@@ -2,7 +2,7 @@
 
 public interface IUsersRepository
 {
-    Task<User?> GetByIdAsync(Guid id);
+    Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     Task<bool> IsInRoleAsync(Guid userId, string role);
 

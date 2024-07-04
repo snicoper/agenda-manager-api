@@ -1,14 +1,15 @@
 ﻿using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Persistence;
 using AgendaManager.Infrastructure.Common.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace AgendaManager.Infrastructure.Users;
 
 public class UserRepository(AppDbContext context) : IUsersRepository
 {
-    public Task<User?> GetByIdAsync(Guid id)
+    public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return await context.Users.FirstOrDefaultAsync(u => u.Id.Value == id, cancellationToken);
     }
 
     public Task<bool> IsInRoleAsync(Guid userId, string role)

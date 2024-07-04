@@ -77,4 +77,24 @@ public class ErrorGenericTests
         error.Description.Should().NotBeEmpty();
         error.ToResult().Should().BeOfType<Result<ErrorTests>>();
     }
+
+    [Fact]
+    public void Error_Generic_Validation_WhenDictionaryIdPassed()
+    {
+        // Arrange
+        var errors = new Dictionary<string, string[]>
+        {
+            { "Code", ["Description 1", "Description 2"] }, { "Code2", ["Description 3", "Description 4"] }
+        };
+
+        // Act
+        var error = Error.Validation<ErrorTests>(errors);
+
+        // Assert
+        error.HasErrors.Should().BeTrue();
+        error.ResultType.Should().Be(ResultType.Validation);
+        error.ValidationErrors.Should().HaveCount(2);
+        error.ValidationErrors.First().Value.Should().HaveCount(2);
+        error.ValidationErrors.Last().Value.Should().HaveCount(2);
+    }
 }
