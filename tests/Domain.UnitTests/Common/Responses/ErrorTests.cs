@@ -131,6 +131,19 @@ public class ErrorTests
     }
 
     [Fact]
+    public void Error_ToResult_ShouldReturnResult_WhenImplicitCall()
+    {
+        // Arrange
+        var error = Error.None();
+
+        // Act
+        Result result = error;
+
+        // Assert
+        result.Should().BeOfType<Result>();
+    }
+
+    [Fact]
     public void Error_ToResult_ShouldReturnResult()
     {
         // Arrange
