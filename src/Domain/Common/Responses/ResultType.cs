@@ -5,9 +5,9 @@ public enum ResultType
     Succeeded,
     Created,
     NotFound,
-    ValidationError,
+    Validation,
     Unauthorized,
     Forbidden,
     Conflict,
-    InternalServerError
+    Unexpected
 }

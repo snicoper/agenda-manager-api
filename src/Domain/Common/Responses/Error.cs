@@ -11,7 +11,14 @@ public class Error
     {
     }
 
-    protected Error(string code, string description, ResultType resultType = ResultType.ValidationError)
+    protected Error(Dictionary<string, string[]> validationErrors)
+    {
+        _validationErrors = validationErrors;
+
+        ResultType = ResultType.Validation;
+    }
+
+    protected Error(string code, string description, ResultType resultType = ResultType.Validation)
     {
         Code = code;
         Description = description;
@@ -48,10 +55,20 @@ public class Error
 
     public static Error<TValue> Validation<TValue>(string code, string description)
     {
-        var error = new Error<TValue> { ResultType = ResultType.ValidationError };
+        var error = new Error<TValue> { ResultType = ResultType.Validation };
         error.AddValidationError(code, description);
 
         return error;
+    }
+
+    public static Error Validation(Dictionary<string, string[]> validationErrors)
+    {
+        return new Error(validationErrors);
+    }
+
+    public static Error<TValue> Validation<TValue>(Dictionary<string, string[]> validationErrors)
+    {
+        return new Error<TValue>(validationErrors);
     }
 
     public static Error NotFound(string code, string description)
@@ -88,23 +105,23 @@ public class Error
         return new Error<TValue>(nameof(ResultType.Forbidden), description, ResultType.Forbidden);
     }
 
-    public static Error Unknown(string? code, string description = "Internal Server Error")
+    public static Error Unexpected(string? code, string description = "Internal Server Error")
     {
-        code ??= nameof(ResultType.InternalServerError);
+        code ??= nameof(ResultType.Unexpected);
 
-        return new Error(code, description, ResultType.InternalServerError);
+        return new Error(code, description, ResultType.Unexpected);
     }
 
-    public static Error<TValue> Unknown<TValue>(string? code, string description = "Internal Server Error")
+    public static Error<TValue> Unexpected<TValue>(string? code, string description = "Internal Server Error")
     {
-        code ??= nameof(ResultType.InternalServerError);
+        code ??= nameof(ResultType.Unexpected);
 
-        return new Error<TValue>(code, description, ResultType.InternalServerError);
+        return new Error<TValue>(code, description, ResultType.Unexpected);
     }
 
     public void AddValidationError(string code, string description)
     {
-        ResultType = ResultType.ValidationError;
+        ResultType = ResultType.Validation;
         code = code.ToLowerFirstLetter();
 
         if (_validationErrors.TryGetValue(code, out var value))
@@ -128,6 +145,11 @@ public class Error
 public class Error<TValue> : Error
 {
     protected internal Error()
+    {
+    }
+
+    protected internal Error(Dictionary<string, string[]> validationErrors)
+        : base(validationErrors)
     {
     }
 

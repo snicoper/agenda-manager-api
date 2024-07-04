@@ -16,7 +16,7 @@ public class ErrorGenericTests
         var error = Error.Validation<ErrorTests>(Code, Description);
 
         // Assert
-        error.ResultType.Should().Be(ResultType.ValidationError);
+        error.ResultType.Should().Be(ResultType.Validation);
         error.HasErrors.Should().BeTrue();
         error.ValidationErrors.Should().HaveCount(1);
         error.ValidationErrors.First().Key.Should().Be(Code.ToLowerFirstLetter());

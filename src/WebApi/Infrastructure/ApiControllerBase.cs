@@ -63,7 +63,7 @@ public class ApiControllerBase : ControllerBase
             ResultType.Succeeded => StatusCodes.Status200OK,
             ResultType.Created => StatusCodes.Status201Created,
             ResultType.NotFound => StatusCodes.Status404NotFound,
-            ResultType.ValidationError => StatusCodes.Status400BadRequest,
+            ResultType.Validation => StatusCodes.Status400BadRequest,
             ResultType.Unauthorized => StatusCodes.Status401Unauthorized,
             ResultType.Forbidden => StatusCodes.Status403Forbidden,
             ResultType.Conflict => StatusCodes.Status409Conflict,
