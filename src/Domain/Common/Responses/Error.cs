@@ -40,6 +40,11 @@ public class Error
         return error.HasErrors ? Result.Failure(error) : Result.Success();
     }
 
+    public static Error None()
+    {
+        return new Error { ResultType = ResultType.Succeeded };
+    }
+
     public static Error Validation(string code, string description)
     {
         var error = new Error();
