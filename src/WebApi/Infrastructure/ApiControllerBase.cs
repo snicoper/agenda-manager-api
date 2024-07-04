@@ -33,7 +33,7 @@ public class ApiControllerBase : ControllerBase
             StatusCodes.Status401Unauthorized => Unauthorized(),
             StatusCodes.Status403Forbidden => Forbid(),
             StatusCodes.Status404NotFound => HandleNotFoundResult(result.Error?.Description),
-            _ => HandleUnknownResult(statusCode, result.Error?.Description)
+            _ => HandleUnexpectedResult(statusCode, result.Error?.Code, result.Error?.Description)
         };
     }
 
@@ -52,7 +52,7 @@ public class ApiControllerBase : ControllerBase
             StatusCodes.Status401Unauthorized => Unauthorized(),
             StatusCodes.Status403Forbidden => Forbid(),
             StatusCodes.Status404NotFound => HandleNotFoundResult(result.Error?.Description),
-            _ => HandleUnknownResult(statusCode, result.Error?.Description)
+            _ => HandleUnexpectedResult(statusCode, result.Error?.Code, result.Error?.Description)
         };
     }
 
@@ -62,6 +62,7 @@ public class ApiControllerBase : ControllerBase
         {
             ResultType.Succeeded => StatusCodes.Status200OK,
             ResultType.Created => StatusCodes.Status201Created,
+            ResultType.NoContent => StatusCodes.Status204NoContent,
             ResultType.NotFound => StatusCodes.Status404NotFound,
             ResultType.Validation => StatusCodes.Status400BadRequest,
             ResultType.Unauthorized => StatusCodes.Status401Unauthorized,
@@ -96,13 +97,13 @@ public class ApiControllerBase : ControllerBase
         return NotFound(problemDetails);
     }
 
-    private ObjectResult HandleUnknownResult(int statusCode, string? description)
+    private ObjectResult HandleUnexpectedResult(int statusCode, string? code, string? description)
     {
         var log = HttpContext
             .RequestServices
             .GetRequiredService<ILogger<ApiControllerBase>>();
 
-        log.LogError("Validation errors in {Type} with values: {@Error}", GetType(), description);
+        log.LogError("Validation errors in {Type} with values:{Code} - {@Error}", GetType(), code, description);
 
         return Problem(statusCode: statusCode, detail: description);
     }

@@ -10,6 +10,18 @@ public class ErrorTests
     private const string Description = "Description error";
 
     [Fact]
+    public void Error_None_Should_Return_Succeeded()
+    {
+        // Act
+        var error = Error.None();
+
+        // Assert
+        error.ResultType.Should().Be(ResultType.Succeeded);
+        error.HasErrors.Should().BeFalse();
+        error.ToResult().Should().BeOfType<Result>();
+    }
+
+    [Fact]
     public void Error_Validation()
     {
         // Act
@@ -102,5 +114,45 @@ public class ErrorTests
         error.ValidationErrors.Should().HaveCount(2);
         error.ValidationErrors.First().Value.Should().HaveCount(2);
         error.ValidationErrors.Last().Value.Should().HaveCount(2);
+    }
+
+    [Fact]
+    public void Error_Unexpected_ShouldSetResultTypeToUnexpected()
+    {
+        // Act
+        var error = Error.Unexpected(null);
+
+        // Assert
+        error.ResultType.Should().Be(ResultType.Unexpected);
+        error.HasErrors.Should().BeTrue();
+        error.Code.Should().Be(nameof(ResultType.Unexpected));
+        error.Description.Should().NotBeEmpty();
+        error.ToResult().Should().BeOfType<Result>();
+    }
+
+    [Fact]
+    public void Error_ToResult_ShouldReturnResult()
+    {
+        // Arrange
+        var error = Error.None();
+
+        // Act
+        var result = error.ToResult();
+
+        // Assert
+        result.Should().BeOfType<Result>();
+    }
+
+    [Fact]
+    public void Error_ToResultGeneric_ShouldReturnResultWithResultType()
+    {
+        // Arrange
+        var error = Error.Unauthorized();
+
+        // Act
+        var result = error.ToResult<ErrorTests>();
+
+        // Assert
+        result.Should().BeOfType<Result<ErrorTests>>();
     }
 }

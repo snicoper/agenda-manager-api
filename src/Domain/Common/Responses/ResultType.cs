@@ -5,6 +5,7 @@ public enum ResultType
     Succeeded,
     Created,
     NotFound,
+    NoContent,
     Validation,
     Unauthorized,
     Forbidden,
