@@ -45,6 +45,11 @@ public class Error
         return new Error();
     }
 
+    public static Error<TValue> None<TValue>()
+    {
+        return new Error<TValue>();
+    }
+
     public static Error Validation(string code, string description)
     {
         var error = new Error();
