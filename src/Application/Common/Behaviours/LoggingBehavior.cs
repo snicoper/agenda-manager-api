@@ -8,7 +8,7 @@ namespace AgendaManager.Application.Common.Behaviours;
 
 public class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior<TRequest, TResponse>> logger)
     : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IAppBaseRequest
+    where TRequest : IBaseCommandQuery
     where TResponse : Result
 {
     public async Task<TResponse> Handle(

@@ -6,7 +6,7 @@ namespace AgendaManager.Application.Common.Behaviours;
 
 public class UnhandledExceptionBehaviour<TRequest, TResponse>(ILogger<TRequest> logger)
     : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IAppBaseRequest
+    where TRequest : IBaseCommandQuery
 {
     public async Task<TResponse> Handle(
         TRequest request,

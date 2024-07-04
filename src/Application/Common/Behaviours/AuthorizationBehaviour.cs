@@ -10,7 +10,7 @@ namespace AgendaManager.Application.Common.Behaviours;
 
 public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserService currentUserService, IUsersRepository usersRepository)
     : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IAppBaseRequest
+    where TRequest : IBaseCommandQuery
 {
     public async Task<TResponse> Handle(
         TRequest request,
