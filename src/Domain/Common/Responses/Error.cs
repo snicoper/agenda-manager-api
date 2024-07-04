@@ -33,7 +33,7 @@ public class Error
 
     public ResultType ResultType { get; private set; } = ResultType.Succeeded;
 
-    public bool HasErrors => ValidationErrors.Count > 0 || Code != default! || Description != default!;
+    public bool HasErrors => ValidationErrors.Count > 0 || !string.IsNullOrEmpty(Code) || !string.IsNullOrEmpty(Description);
 
     public static implicit operator Result(Error error)
     {

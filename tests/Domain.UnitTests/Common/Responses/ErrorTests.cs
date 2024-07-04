@@ -155,4 +155,34 @@ public class ErrorTests
         // Assert
         result.Should().BeOfType<Result<ErrorTests>>();
     }
+
+    [Fact]
+    public void Error_HasErrors_ShouldReturnFalse_WhenNoContainsErrors()
+    {
+        // Act
+        var error = Error.None();
+
+        // Assert
+        error.HasErrors.Should().BeFalse();
+    }
+
+    [Fact]
+    public void Error_HasErrors_ShouldReturnTrue_WhenValidationErrorsContainsErrors()
+    {
+        // Act
+        var error = Error.Validation(Code, Description);
+
+        // Assert
+        error.HasErrors.Should().BeTrue();
+    }
+
+    [Fact]
+    public void Error_HasErrors_ShouldReturnTrue_WhenCodeContainsErrors()
+    {
+        // Act
+        var error = Error.Forbidden();
+
+        // Assert
+        error.HasErrors.Should().BeTrue();
+    }
 }
