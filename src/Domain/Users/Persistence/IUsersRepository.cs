@@ -8,5 +8,5 @@ public interface IUsersRepository
 
     Task<bool> AuthorizeAsync(Guid userId, string policyName);
 
-    void Create(User user);
+    Task<User> CreateAsync(User user, CancellationToken cancellationToken = default);
 }

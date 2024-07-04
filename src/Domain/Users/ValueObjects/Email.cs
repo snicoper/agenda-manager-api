@@ -1,10 +1,10 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Common.RegularExpressions;
+﻿using System.Text.RegularExpressions;
+using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Users.Exceptions;
 
 namespace AgendaManager.Domain.Users.ValueObjects;
 
-public class Email : ValueObject
+public partial class Email : ValueObject
 {
     private Email(string value)
     {
@@ -30,6 +30,9 @@ public class Email : ValueObject
 
     private bool Validate()
     {
-        return DomainRegex.EmailRegex().IsMatch(Value);
+        return EmailRegex().IsMatch(Value);
     }
+
+    [GeneratedRegex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$", RegexOptions.Compiled)]
+    private partial Regex EmailRegex();
 }

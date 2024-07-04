@@ -21,8 +21,10 @@ public class UserRepository(AppDbContext context) : IUsersRepository
         throw new NotImplementedException();
     }
 
-    public void Create(User user)
+    public async Task<User> CreateAsync(User user, CancellationToken cancellationToken = default)
     {
-        context.Users.Add(user);
+        await context.Users.AddAsync(user, cancellationToken);
+
+        return user;
     }
 }

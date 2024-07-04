@@ -8,21 +8,21 @@ using AgendaManager.Domain.Users.ValueObjects;
 namespace AgendaManager.Application.Users.Commands.CreateUser;
 
 internal class CreateUserHandler(IUsersRepository usersRepository, IUnitOfWork unitOfWork)
-    : ICommandHandler<CreateUserCommand>
+    : ICommandHandler<CreateUserCommand, Guid>
 {
-    public async Task<Result> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         var user = User.Create(
             UserId.Create(),
-            Email.From("test@example.com"),
-            "test",
-            "perico",
-            "palote");
+            Email.From("test2@example.com"),
+            "test2",
+            "peric2o",
+            "palote2");
 
-        usersRepository.Create(user);
+        var userCreatedResult = await usersRepository.CreateAsync(user, cancellationToken);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Success();
+        return Result.Create(userCreatedResult.Id.Value);
     }
 }

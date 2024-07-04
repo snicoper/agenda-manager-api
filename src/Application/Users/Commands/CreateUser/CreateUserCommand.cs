@@ -2,4 +2,4 @@
 
 namespace AgendaManager.Application.Users.Commands.CreateUser;
 
-public record CreateUserCommand : ICommand;
+public record CreateUserCommand : ICommand<Guid>;
