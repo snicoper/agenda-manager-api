@@ -40,27 +40,9 @@ public class Error
         return error.HasErrors ? Result.Failure(error) : Result.Success();
     }
 
-    public static Error None()
-    {
-        return new Error();
-    }
-
-    public static Error<TValue> None<TValue>()
-    {
-        return new Error<TValue>();
-    }
-
     public static Error Validation(string code, string description)
     {
         var error = new Error();
-        error.AddValidationError(code, description);
-
-        return error;
-    }
-
-    public static Error<TValue> Validation<TValue>(string code, string description)
-    {
-        var error = new Error<TValue> { ResultType = ResultType.Validation };
         error.AddValidationError(code, description);
 
         return error;
@@ -71,11 +53,6 @@ public class Error
         return new Error(validationErrors);
     }
 
-    public static Error<TValue> Validation<TValue>(Dictionary<string, string[]> validationErrors)
-    {
-        return new Error<TValue>(validationErrors);
-    }
-
     public static Error NotFound(string code, string description)
     {
         var error = $"Entity \"{code}\" ({description}) was not found.";
@@ -83,21 +60,9 @@ public class Error
         return new Error(code, error, ResultType.NotFound);
     }
 
-    public static Error<TValue> NotFound<TValue>(string code, string description)
-    {
-        var error = $"Entity \"{code}\" ({description}) was not found.";
-
-        return new Error<TValue>(code, error, ResultType.NotFound);
-    }
-
     public static Error Unauthorized(string description = "Unauthorized")
     {
         return new Error(nameof(ResultType.Unauthorized), description, ResultType.Unauthorized);
-    }
-
-    public static Error<TValue> Unauthorized<TValue>(string description = "Unauthorized")
-    {
-        return new Error<TValue>(nameof(ResultType.Unauthorized), description, ResultType.Unauthorized);
     }
 
     public static Error Forbidden(string description = "Forbidden")
@@ -105,23 +70,11 @@ public class Error
         return new Error(nameof(ResultType.Forbidden), description, ResultType.Forbidden);
     }
 
-    public static Error<TValue> Forbidden<TValue>(string description = "Forbidden")
-    {
-        return new Error<TValue>(nameof(ResultType.Forbidden), description, ResultType.Forbidden);
-    }
-
     public static Error Unexpected(string? code, string description = "Internal Server Error")
     {
         code ??= nameof(ResultType.Unexpected);
 
         return new Error(code, description, ResultType.Unexpected);
-    }
-
-    public static Error<TValue> Unexpected<TValue>(string? code, string description = "Internal Server Error")
-    {
-        code ??= nameof(ResultType.Unexpected);
-
-        return new Error<TValue>(code, description, ResultType.Unexpected);
     }
 
     public void AddValidationError(string code, string description)
@@ -144,33 +97,9 @@ public class Error
     {
         return HasErrors ? Result.Failure(this) : Result.Success();
     }
-}
 
-#pragma warning disable SA1402 // File may only contain a single type
-public class Error<TValue> : Error
-{
-    protected internal Error()
-    {
-    }
-
-    protected internal Error(Dictionary<string, string[]> validationErrors)
-        : base(validationErrors)
-    {
-    }
-
-    protected internal Error(string code, string description, ResultType resultType = ResultType.Succeeded)
-        : base(code, description, resultType)
-    {
-    }
-
-    public static implicit operator Result<TValue>(Error<TValue> error)
-    {
-        return error.HasErrors ? Result.Failure<TValue>(error) : Result.Success<TValue>(default);
-    }
-
-    public new Result<TValue> ToResult()
+    public Result<TValue> ToResult<TValue>()
     {
         return HasErrors ? Result.Failure<TValue>(this) : Result.Success<TValue>(default);
     }
 }
-#pragma warning disable SA1402 // File may only contain a single type

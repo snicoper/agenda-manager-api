@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Infrastructure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgendaManager.WebApi.Controllers;
@@ -9,10 +10,12 @@ public class HomeController : ApiControllerBase
 {
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [AllowAnonymous]
     public ActionResult<Result<string>> Get()
     {
-        var result = Result.Success("Hello world");
+        var error = Error.Validation("CodeError", "Description error");
+        var res = error.ToResult<string>();
 
-        return ToHttpResponse(result);
+        return ToHttpResponse(res);
     }
 }
