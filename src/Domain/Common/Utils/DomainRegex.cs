@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace AgendaManager.Domain.Common.Constants;
+namespace AgendaManager.Domain.Common.Utils;
 
 public static partial class DomainRegex
 {

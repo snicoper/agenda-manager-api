@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Text;
 using AgendaManager.Domain.Common.Constants;
+using DomainRegex = AgendaManager.Domain.Common.Utils.DomainRegex;
 
 namespace AgendaManager.Domain.Common.Extensions;
 
