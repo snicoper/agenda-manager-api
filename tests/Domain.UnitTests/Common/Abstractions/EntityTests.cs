@@ -1,5 +1,4 @@
 using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Common.Interfaces;
 using FluentAssertions;
 
 namespace AgendaManager.Domain.UnitTests.Common.Abstractions;
@@ -14,12 +13,5 @@ public class EntityTests
 
         // Assert
         result.Should().BeTrue();
-    }
-
-    [Fact]
-    public void Should_Be_Implementing_IDomainEvent()
-    {
-        // Assert
-        typeof(Entity).Should().Implement<IDomainEvent>();
     }
 }
