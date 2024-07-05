@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Application.Common.Interfaces.Messaging;
+using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Persistence;
@@ -6,7 +7,7 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Application.Users.Commands.CreateUser;
 
-internal class CreateUserHandler(IUsersRepository usersRepository)
+internal class CreateUserHandler(IUsersRepository usersRepository, IUnitOfWork unitOfWork)
     : IQueryHandler<CreateUserCommand, CreateUserResponse>
 {
     public async Task<Result<CreateUserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -20,7 +21,7 @@ internal class CreateUserHandler(IUsersRepository usersRepository)
 
         var userCreatedResult = await usersRepository.CreateAsync(user, cancellationToken);
 
-        // await unitOfWork.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
         return Result.Create(new CreateUserResponse(userCreatedResult.Id.Value));
     }
 }

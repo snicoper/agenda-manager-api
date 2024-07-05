@@ -1,16 +1,14 @@
-﻿using AgendaManager.Domain.Users.Events;
-using MediatR;
+﻿using AgendaManager.Application.Common.Interfaces.Messaging;
+using AgendaManager.Domain.Users.Events;
 using Microsoft.Extensions.Logging;
 
 namespace AgendaManager.Application.Users.Events;
 
-public class UserCreatedDomainEventHandler(ILogger<UserCreatedDomainEventHandler> logger)
-    : INotificationHandler<UserCreatedDomainEvent>
+public class UserCreatedDomainEventHandler(ILogger<BaseEventHandler<UserCreatedDomainEvent>> logger)
+    : BaseEventHandler<UserCreatedDomainEvent>(logger)
 {
-    public Task Handle(UserCreatedDomainEvent notification, CancellationToken cancellationToken)
+    protected override Task HandleEvent(UserCreatedDomainEvent notification, CancellationToken cancellationToken)
     {
-        logger.LogInformation("User created: {UserId}", notification.UserId);
-
         return Task.CompletedTask;
     }
 }
