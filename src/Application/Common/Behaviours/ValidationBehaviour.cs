@@ -41,6 +41,6 @@ public class ValidationBehaviour<TRequest, TResponse>(IValidator<TRequest> valid
         var create = genericType.MakeGenericType(types);
         var instance = Activator.CreateInstance(create, default, errors) as TResponse;
 
-        return instance ?? throw new InvalidOperationException();
+        return instance ?? throw new InvalidOperationException("Failed to create Result<T>");
     }
 }

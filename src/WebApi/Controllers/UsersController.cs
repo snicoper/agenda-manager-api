@@ -13,7 +13,7 @@ public class UsersController : ApiControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<Result<CreateUserResponse>>> CreateUser(CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(new CreateUserCommand("test2@example.com", "123123dasdasdasdasdasd"), cancellationToken);
+        var result = await Sender.Send(new CreateUserCommand("test2@example.com", string.Empty), cancellationToken);
 
         return ToHttpResponse(result);
     }
