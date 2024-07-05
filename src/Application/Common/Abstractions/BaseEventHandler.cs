@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace AgendaManager.Application.Common.Interfaces.Messaging;
+namespace AgendaManager.Application.Common.Abstractions;
 
 public abstract class BaseEventHandler<TEvent>(ILogger<BaseEventHandler<TEvent>> logger)
     : INotificationHandler<TEvent>
@@ -20,11 +20,11 @@ public abstract class BaseEventHandler<TEvent>(ILogger<BaseEventHandler<TEvent>>
 
     private void AfterHandle(TEvent notification)
     {
-        logger.LogInformation("Event handled: {EventName}", typeof(TEvent).Name);
+        logger.LogInformation("Event handled: {EventName} in {EventHandleName}", typeof(TEvent).Name, GetType().Name);
     }
 
     private void BeforeHandle(TEvent notification)
     {
-        logger.LogInformation("Handling event: {EventName}", typeof(TEvent).Name);
+        logger.LogInformation("Handling event: {EventName} in {EventHandleName}", typeof(TEvent).Name, GetType().Name);
     }
 }

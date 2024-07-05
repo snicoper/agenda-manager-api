@@ -1,4 +1,4 @@
-﻿using AgendaManager.Application.Common.Interfaces.Messaging;
+﻿using AgendaManager.Application.Common.Abstractions;
 using AgendaManager.Domain.Users.Events;
 using Microsoft.Extensions.Logging;
 
