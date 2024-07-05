@@ -1,35 +1,46 @@
-using AgendaManager.Application.Common.Exceptions;
 using AgendaManager.Application.Common.Interfaces.Messaging;
+using AgendaManager.Domain.Common.Responses;
 using FluentValidation;
 using MediatR;
 
 namespace AgendaManager.Application.Common.Behaviours;
 
-public class ValidationBehaviour<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
+public class ValidationBehaviour<TRequest, TResponse>(IValidator<TRequest> validator)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IBaseCommandQuery
+    where TResponse : Result
 {
     public async Task<TResponse> Handle(
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
-        if (!validators.Any())
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+        if (validationResult.IsValid)
         {
             return await next();
         }
 
-        var context = new ValidationContext<TRequest>(request);
+        var errors = Error.None();
 
-        var validationResults = await Task.WhenAll(validators.Select(v => v.ValidateAsync(context, cancellationToken)));
+        foreach (var error in validationResult.Errors)
+        {
+            errors.AddValidationError(error.PropertyName, error.ErrorMessage);
+        }
 
-        var failures = validationResults
-            .Where(r => r.Errors.Count != 0)
-            .SelectMany(r => r.Errors)
-            .ToList();
+        var genericArguments = typeof(TResponse).GetGenericArguments();
 
-        return failures.Count != 0
-            ? throw new BadRequestException(failures)
-            : await next();
+        if (genericArguments.Length <= 0)
+        {
+            return (TResponse)errors.ToResult();
+        }
+
+        var genericType = typeof(Result<>);
+        Type[] types = [genericArguments[0]];
+        var create = genericType.MakeGenericType(types);
+        var instance = Activator.CreateInstance(create, default, errors) as TResponse;
+
+        return instance ?? throw new InvalidOperationException();
     }
 }

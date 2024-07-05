@@ -2,7 +2,7 @@
 
 public class Result
 {
-    public Result()
+    protected Result()
     {
         Succeeded = true;
         ResultType = ResultType.Succeeded;
@@ -79,7 +79,7 @@ public class Result<TValue> : Result
         Value = value;
     }
 
-    protected internal Result(TValue? value, Error? error)
+    public Result(TValue? value, Error? error)
         : base(error)
     {
         Value = value;
