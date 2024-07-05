@@ -2,10 +2,11 @@ using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Domain.Common.Responses;
 using FluentValidation;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace AgendaManager.Application.Common.Behaviours;
 
-public class ValidationBehaviour<TRequest, TResponse>(IValidator<TRequest> validator)
+public class ValidationBehaviour<TRequest, TResponse>(IValidator<TRequest> validator, ILogger<TResponse> logger)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IBaseCommandQuery
     where TResponse : Result
@@ -28,6 +29,8 @@ public class ValidationBehaviour<TRequest, TResponse>(IValidator<TRequest> valid
         {
             errors.AddValidationError(error.PropertyName, error.ErrorMessage);
         }
+
+        logger.LogWarning("Validation errors in request {Request}: {@ValidationErrors}", request, errors.ValidationErrors.Values);
 
         var genericArguments = typeof(TResponse).GetGenericArguments();
 
