@@ -3,19 +3,19 @@ using AgendaManager.Domain.Common.Interfaces;
 
 namespace AgendaManager.Domain.Common.Abstractions;
 
-public abstract class Entity : IDomainEvent
+public abstract class Entity
 {
-    private readonly List<DomainEvent> _domainEvents = [];
+    private readonly List<IDomainEvent> _domainEvents = [];
 
     [NotMapped]
-    public IReadOnlyCollection<DomainEvent> DomainEvents => _domainEvents.AsReadOnly();
+    public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
-    public void AddDomainEvent(DomainEvent domainEvent)
+    public void AddDomainEvent(IDomainEvent domainEvent)
     {
         _domainEvents.Add(domainEvent);
     }
 
-    public void RemoveDomainEvent(DomainEvent domainEvent)
+    public void RemoveDomainEvent(IDomainEvent domainEvent)
     {
         _domainEvents.Remove(domainEvent);
     }

@@ -1,9 +1,8 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
+﻿using AgendaManager.Domain.Common.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users.Events;
 
-public class UserCreatedDomainEvent(UserId userId) : DomainEvent
+public record UserCreatedDomainEvent(UserId UserId) : IDomainEvent
 {
-    public UserId UserId { get; set; } = userId;
 }

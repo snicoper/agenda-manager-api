@@ -1,5 +1,4 @@
 using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -32,20 +31,19 @@ public class DispatchDomainEventsInterceptor(IMediator mediator) : SaveChangesIn
             return;
         }
 
-        IEnumerable<IDomainEvent> entities = context.ChangeTracker
-            .Entries<IDomainEvent>()
+        var entities = context.ChangeTracker
+            .Entries<Entity>()
             .Where(e => e.Entity.DomainEvents.Count != 0)
-            .Select(e => e.Entity);
+            .Select(e => e.Entity)
+            .ToArray();
 
-        IDomainEvent[] baseEntities = entities as IDomainEvent[] ?? entities.ToArray();
-
-        List<DomainEvent> domainEvents = baseEntities
+        var domainEvents = entities
             .SelectMany(e => e.DomainEvents)
             .ToList();
 
-        baseEntities.ToList().ForEach(e => e.ClearDomainEvents());
+        entities.ToList().ForEach(e => e.ClearDomainEvents());
 
-        foreach (DomainEvent domainEvent in domainEvents)
+        foreach (var domainEvent in domainEvents)
         {
             await mediator.Publish(domainEvent);
         }

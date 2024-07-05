@@ -1,10 +1,10 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
+﻿using AgendaManager.Domain.Common.Interfaces;
 using AgendaManager.Domain.Resources.ValueObjects;
 
 namespace AgendaManager.Domain.Resources.Events;
 
 public class ResourceNameAddedDomainEvent(ResourceId resourceId)
-    : DomainEvent
+    : IDomainEvent
 {
     public ResourceId ResourceId { get; } = resourceId;
 }
