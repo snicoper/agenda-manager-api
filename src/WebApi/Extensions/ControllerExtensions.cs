@@ -17,7 +17,7 @@ public static class ControllerExtensions
             StatusCodes.Status200OK => new ObjectResult(result) { StatusCode = statusCode },
             StatusCodes.Status201Created => new ObjectResult(result) { StatusCode = StatusCodes.Status201Created },
             StatusCodes.Status204NoContent => controllerBase.NoContent(),
-            StatusCodes.Status400BadRequest => HandleBadRequestResult(controllerBase, result.Error?.ValidationErrors),
+            StatusCodes.Status400BadRequest => HandleBadRequestResult(result.Error?.ValidationErrors),
             StatusCodes.Status401Unauthorized => controllerBase.Unauthorized(),
             StatusCodes.Status403Forbidden => controllerBase.Forbid(),
             StatusCodes.Status404NotFound => HandleNotFoundResult(controllerBase, result.Error?.Description),
@@ -36,7 +36,7 @@ public static class ControllerExtensions
             StatusCodes.Status200OK => new ObjectResult(result) { StatusCode = statusCode },
             StatusCodes.Status201Created => new ObjectResult(result) { StatusCode = StatusCodes.Status201Created },
             StatusCodes.Status204NoContent => controllerBase.NoContent(),
-            StatusCodes.Status400BadRequest => HandleBadRequestResult(controllerBase, result.Error?.ValidationErrors),
+            StatusCodes.Status400BadRequest => HandleBadRequestResult(result.Error?.ValidationErrors),
             StatusCodes.Status401Unauthorized => controllerBase.Unauthorized(),
             StatusCodes.Status403Forbidden => controllerBase.Forbid(),
             StatusCodes.Status404NotFound => HandleNotFoundResult(controllerBase, result.Error?.Description),
@@ -44,13 +44,11 @@ public static class ControllerExtensions
         };
     }
 
-    private static BadRequestObjectResult HandleBadRequestResult(
-        ControllerBase controllerBase,
-        IDictionary<string, string[]>? errors)
+    private static BadRequestObjectResult HandleBadRequestResult(IDictionary<string, string[]>? errors)
     {
         if (errors is null)
         {
-            return new BadRequestObjectResult(nameof(controllerBase.BadRequest));
+            return new BadRequestObjectResult("BadRequest");
         }
 
         var validationProblemDetails = new ValidationProblemDetails(errors);
