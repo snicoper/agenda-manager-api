@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AgendaManager.WebApi.Infrastructure;
 
-[ApiController]
 [Authorize]
+[ApiController]
 [ApiVersion(ApiVersions.V1)]
 [Produces("application/json")]
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
