@@ -6,41 +6,41 @@ namespace AgendaManager.WebApi.Extensions;
 
 public static class ControllerExtensions
 {
-    public static ActionResult<Result> ToHttpResponse(this ControllerBase controllerBase, Result result)
+    public static ActionResult<Result> ToHttpResponse(this ControllerBase controller, Result result)
     {
         var statusCode = result.ResultTypeToStatusCodeMapper();
 
-        controllerBase.HttpContext.Response.StatusCode = statusCode;
+        controller.HttpContext.Response.StatusCode = statusCode;
 
         return statusCode switch
         {
             StatusCodes.Status200OK => new ObjectResult(result) { StatusCode = statusCode },
             StatusCodes.Status201Created => new ObjectResult(result) { StatusCode = StatusCodes.Status201Created },
-            StatusCodes.Status204NoContent => controllerBase.NoContent(),
+            StatusCodes.Status204NoContent => controller.NoContent(),
             StatusCodes.Status400BadRequest => HandleBadRequestResult(result.Error?.ValidationErrors),
-            StatusCodes.Status401Unauthorized => controllerBase.Unauthorized(),
-            StatusCodes.Status403Forbidden => controllerBase.Forbid(),
-            StatusCodes.Status404NotFound => HandleNotFoundResult(controllerBase, result.Error?.Description),
-            _ => HandleUnexpectedResult(controllerBase, statusCode, result.Error?.Code, result.Error?.Description)
+            StatusCodes.Status401Unauthorized => controller.Unauthorized(),
+            StatusCodes.Status403Forbidden => controller.Forbid(),
+            StatusCodes.Status404NotFound => HandleNotFoundResult(controller, result.Error?.Description),
+            _ => HandleUnexpectedResult(controller, statusCode, result.Error?.Code, result.Error?.Description)
         };
     }
 
-    public static ActionResult<Result<TValue>> ToHttpResponse<TValue>(this ControllerBase controllerBase, Result<TValue> result)
+    public static ActionResult<Result<TValue>> ToHttpResponse<TValue>(this ControllerBase controller, Result<TValue> result)
     {
         var statusCode = result.ResultTypeToStatusCodeMapper();
 
-        controllerBase.HttpContext.Response.StatusCode = statusCode;
+        controller.HttpContext.Response.StatusCode = statusCode;
 
         return statusCode switch
         {
             StatusCodes.Status200OK => new ObjectResult(result) { StatusCode = statusCode },
             StatusCodes.Status201Created => new ObjectResult(result) { StatusCode = StatusCodes.Status201Created },
-            StatusCodes.Status204NoContent => controllerBase.NoContent(),
+            StatusCodes.Status204NoContent => controller.NoContent(),
             StatusCodes.Status400BadRequest => HandleBadRequestResult(result.Error?.ValidationErrors),
-            StatusCodes.Status401Unauthorized => controllerBase.Unauthorized(),
-            StatusCodes.Status403Forbidden => controllerBase.Forbid(),
-            StatusCodes.Status404NotFound => HandleNotFoundResult(controllerBase, result.Error?.Description),
-            _ => HandleUnexpectedResult(controllerBase, statusCode, result.Error?.Code, result.Error?.Description)
+            StatusCodes.Status401Unauthorized => controller.Unauthorized(),
+            StatusCodes.Status403Forbidden => controller.Forbid(),
+            StatusCodes.Status404NotFound => HandleNotFoundResult(controller, result.Error?.Description),
+            _ => HandleUnexpectedResult(controller, statusCode, result.Error?.Code, result.Error?.Description)
         };
     }
 
@@ -56,7 +56,7 @@ public static class ControllerExtensions
         return new BadRequestObjectResult(validationProblemDetails);
     }
 
-    private static NotFoundObjectResult HandleNotFoundResult(ControllerBase controllerBase, string? description)
+    private static NotFoundObjectResult HandleNotFoundResult(ControllerBase controller, string? description)
     {
         ProblemDetails problemDetails = new()
         {
@@ -66,21 +66,21 @@ public static class ControllerExtensions
             Detail = description
         };
 
-        return controllerBase.NotFound(problemDetails);
+        return controller.NotFound(problemDetails);
     }
 
     private static ObjectResult HandleUnexpectedResult(
-        ControllerBase controllerBase,
+        ControllerBase controller,
         int statusCode,
         string? code,
         string? description)
     {
-        var log = controllerBase.HttpContext
+        var log = controller.HttpContext
             .RequestServices
             .GetRequiredService<ILogger<ApiControllerBase>>();
 
-        log.LogError("Error in {Type}: {Code} - {@Error}", controllerBase.GetType(), code, description);
+        log.LogError("Error in {Type}: {Code} - {@Error}", controller.GetType(), code, description);
 
-        return controllerBase.Problem(statusCode: statusCode, detail: description);
+        return controller.Problem(statusCode: statusCode, detail: description);
     }
 }
