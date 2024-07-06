@@ -66,8 +66,6 @@ public static class DependencyInjection
     private static void AddDatabase(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
     {
         services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
-        services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
-
         services.AddDbContext<AppDbContext>(
             (provider, options) =>
             {

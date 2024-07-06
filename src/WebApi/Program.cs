@@ -16,6 +16,8 @@ builder.Services.AddWebApi();
 
 var app = builder.Build();
 
+app.UseInfrastructureMiddleware();
+
 if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Test"))
 {
     app.UseSwagger();
