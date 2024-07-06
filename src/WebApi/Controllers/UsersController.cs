@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Application.Users.Commands.CreateUser;
 using AgendaManager.Domain.Common.Responses;
+using AgendaManager.WebApi.Extensions;
 using AgendaManager.WebApi.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,6 @@ public class UsersController : ApiControllerBase
     {
         var result = await Sender.Send(new CreateUserCommand("test2@example.com", "sdafsdfsdfsfsdfsdfsdfsdf"), cancellationToken);
 
-        return ToHttpResponse(result);
+        return this.ToHttpResponse(result);
     }
 }

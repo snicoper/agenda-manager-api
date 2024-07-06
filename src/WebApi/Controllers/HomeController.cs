@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Common.Responses;
+using AgendaManager.WebApi.Extensions;
 using AgendaManager.WebApi.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,6 @@ public class HomeController : ApiControllerBase
         var error = Error.Validation("CodeError", "Description error");
         var res = error.ToResult<string>();
 
-        return ToHttpResponse(res);
+        return this.ToHttpResponse(res);
     }
 }
