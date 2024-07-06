@@ -78,12 +78,12 @@ public static class ResultExtensions
 
     private static BadRequestObjectResult HandleBadRequestResult(IDictionary<string, string[]>? errors)
     {
-        if (errors is null)
+        ValidationProblemDetails validationProblemDetails = new()
         {
-            return new BadRequestObjectResult("BadRequest");
-        }
-
-        var validationProblemDetails = new ValidationProblemDetails(errors);
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            Status = StatusCodes.Status400BadRequest,
+            Errors = errors ?? new Dictionary<string, string[]>()
+        };
 
         return new BadRequestObjectResult(validationProblemDetails);
     }

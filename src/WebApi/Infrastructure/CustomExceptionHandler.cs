@@ -17,9 +17,9 @@ public class CustomExceptionHandler : IExceptionHandler
 
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-        Type exceptionType = exception.GetType();
+        var exceptionType = exception.GetType();
 
-        if (!_exceptionHandlers.TryGetValue(exceptionType, out Func<HttpContext, Exception, Task>? handler))
+        if (!_exceptionHandlers.TryGetValue(exceptionType, out var handler))
         {
             await HandleUnknownException(httpContext, exception);
 
@@ -33,13 +33,15 @@ public class CustomExceptionHandler : IExceptionHandler
 
     private static async Task HandleValidationException(HttpContext httpContext, Exception exception)
     {
-        BadRequestException badRequestException = (BadRequestException)exception;
+        var badRequestException = (BadRequestException)exception;
 
         httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
 
-        ValidationProblemDetails errors = new(badRequestException.Errors)
+        ValidationProblemDetails errors = new()
         {
-            Status = StatusCodes.Status400BadRequest, Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+            Status = StatusCodes.Status400BadRequest,
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            Errors = badRequestException.Errors
         };
 
         await httpContext.Response.WriteAsJsonAsync(errors);
@@ -47,7 +49,7 @@ public class CustomExceptionHandler : IExceptionHandler
 
     private static async Task HandleNotFoundException(HttpContext httpContext, Exception exception)
     {
-        NotFoundException notFoundException = (NotFoundException)exception;
+        var notFoundException = (NotFoundException)exception;
 
         httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
 
@@ -105,7 +107,7 @@ public class CustomExceptionHandler : IExceptionHandler
 
     private static string GetDetailsExceptionByEnvironment(HttpContext httpContext, Exception exception)
     {
-        IWebHostEnvironment hostEnvironment = httpContext
+        var hostEnvironment = httpContext
             .RequestServices
             .GetRequiredService<IWebHostEnvironment>();
 

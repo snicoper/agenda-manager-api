@@ -16,7 +16,7 @@ public class UsersController : ApiControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<Result<List<GetUsersResponse>>>> GetUsers(CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(new GetUsersQuery(), cancellationToken);
+        var result = await Sender.Send(new GetUsersQuery(string.Empty), cancellationToken);
 
         return result.ToHttpResponse(this);
     }

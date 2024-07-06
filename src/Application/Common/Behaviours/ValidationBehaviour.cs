@@ -1,4 +1,3 @@
-using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Domain.Common.Responses;
 using FluentValidation;
 using MediatR;
@@ -6,9 +5,9 @@ using Microsoft.Extensions.Logging;
 
 namespace AgendaManager.Application.Common.Behaviours;
 
-public class ValidationBehaviour<TRequest, TResponse>(IValidator<TRequest> validator, ILogger<TResponse> logger)
+public class ValidationBehaviour<TRequest, TResponse>(ILogger<TResponse> logger, IValidator<TRequest>? validator = null)
     : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IBaseCommand
+    where TRequest : notnull
     where TResponse : Result
 {
     public async Task<TResponse> Handle(
@@ -16,6 +15,14 @@ public class ValidationBehaviour<TRequest, TResponse>(IValidator<TRequest> valid
         RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
+        // Si no se crea un validator para el command/query el valor de validator es null y requiere el valor
+        // por defecto de null para poder ejecutar el método Handle.
+        // De lo contrario lanzara Unable to resolve service for type 'FluentValidation.IValidator`.
+        if (validator is null)
+        {
+            return await next();
+        }
+
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (validationResult.IsValid)
@@ -30,7 +37,10 @@ public class ValidationBehaviour<TRequest, TResponse>(IValidator<TRequest> valid
             errors.AddValidationError(error.PropertyName, error.ErrorMessage);
         }
 
-        logger.LogWarning("Validation errors in request {Request}: {@ValidationErrors}", request, errors.ValidationErrors.Values);
+        logger.LogWarning(
+            "An error occurred during validation {Request}: {@ValidationErrors}",
+            request,
+            errors.ValidationErrors.Values);
 
         var genericArguments = typeof(TResponse).GetGenericArguments();
 

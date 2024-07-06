@@ -2,4 +2,4 @@
 
 namespace AgendaManager.Application.Users.Queries.GetUsers;
 
-public record GetUsersQuery : IQuery<List<GetUsersResponse>>;
+public record GetUsersQuery(string Email) : IQuery<List<GetUsersResponse>>;
