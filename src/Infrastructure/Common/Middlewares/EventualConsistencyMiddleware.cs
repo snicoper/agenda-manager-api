@@ -9,11 +9,11 @@ public class EventualConsistencyMiddleware(RequestDelegate next)
 {
     public async Task InvokeAsync(HttpContext httpContext, IPublisher publisher, AppDbContext dbContext)
     {
+        var transaction = await dbContext.Database.BeginTransactionAsync();
+
         httpContext.Response.OnCompleted(
             async () =>
             {
-                var transaction = await dbContext.Database.BeginTransactionAsync();
-
                 try
                 {
                     if (httpContext.Items["DomainEventsQueue"] is not Queue<IDomainEvent> domainEventsQueue)
