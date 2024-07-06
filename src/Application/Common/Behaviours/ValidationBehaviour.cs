@@ -8,7 +8,7 @@ namespace AgendaManager.Application.Common.Behaviours;
 
 public class ValidationBehaviour<TRequest, TResponse>(IValidator<TRequest> validator, ILogger<TResponse> logger)
     : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IBaseCommandQuery
+    where TRequest : IBaseCommand
     where TResponse : Result
 {
     public async Task<TResponse> Handle(

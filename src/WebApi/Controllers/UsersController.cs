@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Application.Users.Commands.CreateUser;
+using AgendaManager.Application.Users.Commands.UpdateUser;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Extensions;
 using AgendaManager.WebApi.Infrastructure;
@@ -15,6 +16,15 @@ public class UsersController : ApiControllerBase
     public async Task<ActionResult<Result<CreateUserResponse>>> CreateUser(CancellationToken cancellationToken)
     {
         var result = await Sender.Send(new CreateUserCommand("test2@example.com", "sdafsdfsdfsfsdfsdfsdfsdf"), cancellationToken);
+
+        return result.ToHttpResponse(this);
+    }
+
+    [AllowAnonymous]
+    [HttpPost("{userId:guid}")]
+    public async Task<ActionResult<Result<UpdateUserResponse>>> UpdateUser(Guid userId, CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(new UpdateUserCommand(userId, "newtest@example.com"), cancellationToken);
 
         return result.ToHttpResponse(this);
     }

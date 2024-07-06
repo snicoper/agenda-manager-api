@@ -1,5 +1,4 @@
-﻿using AgendaManager.Application.Common.Interfaces.Messaging;
-using AgendaManager.Domain.Common.Responses;
+﻿using AgendaManager.Domain.Common.Responses;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Serilog.Context;
@@ -8,7 +7,7 @@ namespace AgendaManager.Application.Common.Behaviours;
 
 public class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior<TRequest, TResponse>> logger)
     : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IBaseCommandQuery
+    where TRequest : IBaseRequest
     where TResponse : Result
 {
     public async Task<TResponse> Handle(

@@ -19,15 +19,15 @@ public sealed class User : AuditableEntity
         LastName = lastName;
     }
 
-    public UserId Id { get; private set; } = default!;
+    public UserId Id { get; } = default!;
 
-    public string UserName { get; private set; } = default!;
+    public string UserName { get; } = default!;
 
     public Email Email { get; private set; } = default!;
 
-    public string? FirstName { get; private set; }
+    public string? FirstName { get; }
 
-    public string? LastName { get; private set; }
+    public string? LastName { get; }
 
     public static User Create(UserId userId, Email email, string userName, string? firstName, string? lastName)
     {
@@ -36,5 +36,14 @@ public sealed class User : AuditableEntity
         user.AddDomainEvent(new UserCreatedDomainEvent(userId));
 
         return user;
+    }
+
+    public User Update(Email email)
+    {
+        User userUpdated = new(Id, email, UserName, FirstName, LastName) { Created = Created, CreatedBy = CreatedBy };
+
+        AddDomainEvent(new UserUpdatedDomainEvent(Id));
+
+        return userUpdated;
     }
 }

@@ -1,16 +1,16 @@
 using System.Reflection;
 using AgendaManager.Application.Common.Exceptions;
-using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Security;
 using AgendaManager.Domain.Users.Persistence;
+using AgendaManager.Domain.Users.ValueObjects;
 using MediatR;
 
 namespace AgendaManager.Application.Common.Behaviours;
 
 public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserService currentUserService, IUsersRepository usersRepository)
     : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IBaseCommandQuery
+    where TRequest : IBaseRequest
 {
     public async Task<TResponse> Handle(
         TRequest request,
@@ -52,7 +52,7 @@ public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserService cur
         {
             foreach (var role in roles)
             {
-                var isInRole = await usersRepository.IsInRoleAsync(userId, role.Trim());
+                var isInRole = await usersRepository.IsInRoleAsync(UserId.From(userId), role.Trim());
 
                 if (!isInRole)
                 {
@@ -84,7 +84,7 @@ public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserService cur
 
         foreach (var policy in attributesWithPolicies.Select(a => a.Policy))
         {
-            var authorized = await usersRepository.AuthorizeAsync(userId, policy);
+            var authorized = await usersRepository.AuthorizeAsync(UserId.From(userId), policy);
 
             if (!authorized)
             {

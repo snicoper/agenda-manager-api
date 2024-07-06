@@ -9,6 +9,6 @@ public class UserCreatedDomainEventHandler(ILogger<BaseEventHandler<UserCreatedD
 {
     protected override Task HandleEvent(UserCreatedDomainEvent notification, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return Task.CompletedTask;
     }
 }
