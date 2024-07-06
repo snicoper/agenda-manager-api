@@ -81,7 +81,7 @@ public static class ControllerExtensions
             .RequestServices
             .GetRequiredService<ILogger<ApiControllerBase>>();
 
-        log.LogError("Validation errors in {Type} with values:{Code} - {@Error}", controllerBase.GetType(), code, description);
+        log.LogError("Error in {Type}: {Code} - {@Error}", controllerBase.GetType(), code, description);
 
         return controllerBase.Problem(statusCode: statusCode, detail: description);
     }
