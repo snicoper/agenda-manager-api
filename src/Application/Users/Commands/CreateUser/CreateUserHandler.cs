@@ -12,12 +12,14 @@ internal class CreateUserHandler(IUsersRepository usersRepository, IUnitOfWork u
 {
     public async Task<Result<CreateUserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        var user = User.Create(
-            UserId.Create(),
-            Email.From("test2@example.com"),
-            "test2",
-            "peric2o",
-            "palote2");
+        var existingUser = await usersRepository.GetByEmailAsync(Email.From(request.Email), cancellationToken);
+
+        if (existingUser is not null)
+        {
+            return Error.Conflict("The Email already exists").ToResult<CreateUserResponse>();
+        }
+
+        var user = User.Create(UserId.Create(), Email.From("test2@example.com"), "test2", "peric2o", "palote2");
 
         var userCreatedResult = await usersRepository.CreateAsync(user, cancellationToken);
 

@@ -9,9 +9,19 @@ namespace AgendaManager.Infrastructure.Users;
 
 public class UserRepository(AppDbContext context) : IUsersRepository
 {
+    public IQueryable<User> GetAllQueryable()
+    {
+        return context.Users;
+    }
+
     public async Task<User?> GetByIdAsync(UserId userId, CancellationToken cancellationToken = default)
     {
         return await context.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+    }
+
+    public async Task<User?> GetByEmailAsync(Email email, CancellationToken cancellationToken = default)
+    {
+        return await context.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
     public async Task<User> CreateAsync(User user, CancellationToken cancellationToken = default)

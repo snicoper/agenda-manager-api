@@ -117,6 +117,17 @@ public class ErrorTests
     }
 
     [Fact]
+    public void Error_Conflict_ShouldSetResultTypeToConflict()
+    {
+        // Act
+        var error = Error.Conflict();
+
+        // Assert
+        error.ResultType.Should().Be(ResultType.Conflict);
+        error.HasErrors.Should().BeTrue();
+    }
+
+    [Fact]
     public void Error_Unexpected_ShouldSetResultTypeToUnexpected()
     {
         // Act

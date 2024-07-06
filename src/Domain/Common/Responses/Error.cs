@@ -75,6 +75,11 @@ public class Error
         return new Error(nameof(ResultType.Forbidden), description, ResultType.Forbidden);
     }
 
+    public static Error Conflict(string description = "Conflict")
+    {
+        return new Error(nameof(ResultType.Forbidden), description, ResultType.Conflict);
+    }
+
     public static Error Unexpected(string? code, string description = "Internal Server Error")
     {
         code ??= nameof(ResultType.Unexpected);
