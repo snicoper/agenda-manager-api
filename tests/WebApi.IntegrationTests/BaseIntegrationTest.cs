@@ -1,4 +1,4 @@
-using AgendaManager.WebApi.UnitTests.Shared;
+using AgendaManager.TestCommon.TestConstants;
 
 namespace AgendaManager.WebApi.UnitTests;
 

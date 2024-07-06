@@ -14,9 +14,4 @@ public abstract class UserFactory
             Constants.Users.FirstName,
             Constants.Users.LastName);
     }
-
-    public static List<User> CreateUsers(int number)
-    {
-        return Enumerable.Range(1, number).Select(_ => CreateUser()).ToList();
-    }
 }
