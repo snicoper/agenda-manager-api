@@ -1,7 +1,7 @@
 ﻿using AgendaManager.Domain.Users;
 using AgendaManager.TestCommon.TestConstants;
 
-namespace AgendaManager.TestCommon.Users;
+namespace AgendaManager.TestCommon.Factories.Users;
 
 public abstract class UserFactory
 {

@@ -12,7 +12,7 @@ public static partial class Constants
 
         public static readonly string UserName = "test";
 
-        public static readonly string Password = "<PASSWORD>";
+        public static readonly string Password = "Password4!";
 
         public static readonly string FirstName = "test";
 

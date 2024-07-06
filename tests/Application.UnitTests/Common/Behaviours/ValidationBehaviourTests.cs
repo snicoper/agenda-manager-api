@@ -29,10 +29,10 @@ public class ValidationBehaviourTests
         // Arrange
         var request = new TestRequest();
         var next = Substitute.For<RequestHandlerDelegate<Result>>();
-        _validator.ValidateAsync(request, CancellationToken.None).Returns(new ValidationResult());
+        var sut = new ValidationBehaviour<TestRequest, Result>(_logger);
 
         // Act
-        await _sut.Handle(request, next, CancellationToken.None);
+        await sut.Handle(request, next, CancellationToken.None);
 
         // Assert
         await next.Received(1).Invoke();
@@ -43,7 +43,8 @@ public class ValidationBehaviourTests
     {
         // Arrange
         var request = new TestRequest();
-        _validator.ValidateAsync(request, CancellationToken.None).Returns(new ValidationResult());
+        _validator.ValidateAsync(request, CancellationToken.None)
+            .Returns(new ValidationResult());
 
         // Act
         var result = await _sut.Handle(request, () => Task.FromResult(Result.Success()), CancellationToken.None);
@@ -58,8 +59,10 @@ public class ValidationBehaviourTests
     {
         // Arrange
         var request = new TestRequest();
+        var errors = new ValidationFailure("Property", "Error message");
+
         _validator.ValidateAsync(request, CancellationToken.None)
-            .Returns(new ValidationResult([new ValidationFailure("Property", "Error message")]));
+            .Returns(new ValidationResult([errors]));
 
         // Act
         var result = await _sut.Handle(request, () => Task.FromResult(Result.Success()), CancellationToken.None);
