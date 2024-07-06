@@ -1,5 +1,6 @@
 ﻿namespace AgendaManager.WebApi.UnitTests.Shared;
 
+// Mover a TestCommon.
 public static class SharedTestContext
 {
     public static string BaseUrl { get; } = "api/v1";

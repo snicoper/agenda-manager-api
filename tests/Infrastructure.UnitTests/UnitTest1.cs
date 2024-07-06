@@ -1,4 +1,4 @@
-namespace Infrastructure.UnitTests;
+namespace AgendaManager.Infrastructure.UnitTests;
 
 public class UnitTest1
 {
