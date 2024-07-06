@@ -31,7 +31,7 @@ public static class DependencyInjection
     {
         ValidateOptionsOnStartUp(services, configuration);
 
-        AddGlobalDiServices(services);
+        AddGlobalInjections(services);
 
         AddDatabase(services, configuration, environment);
 
@@ -53,7 +53,7 @@ public static class DependencyInjection
             .ValidateOnStart();
     }
 
-    private static void AddGlobalDiServices(IServiceCollection services)
+    private static void AddGlobalInjections(IServiceCollection services)
     {
         // Common.
         services.AddSingleton(TimeProvider.System);

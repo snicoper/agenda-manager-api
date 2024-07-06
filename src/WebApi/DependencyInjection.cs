@@ -15,7 +15,7 @@ public static class DependencyInjection
         services.AddDatabaseDeveloperPageExceptionFilter();
         services.AddHttpContextAccessor();
 
-        AddGlobalDiServices(services);
+        AddGlobalInjections(services);
 
         services.AddControllersWithViews()
             .AddJsonOptions(options => { options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; })
@@ -37,7 +37,7 @@ public static class DependencyInjection
         return services;
     }
 
-    private static void AddGlobalDiServices(IServiceCollection services)
+    private static void AddGlobalInjections(IServiceCollection services)
     {
         services.AddScoped<ICurrentUserService, CurrentUserService>();
     }

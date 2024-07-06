@@ -9,7 +9,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        AddGlobalDiServices(services);
+        AddGlobalInjections(services);
 
         AddFluentValidation(services);
 
@@ -18,7 +18,7 @@ public static class DependencyInjection
         return services;
     }
 
-    private static void AddGlobalDiServices(IServiceCollection services)
+    private static void AddGlobalInjections(IServiceCollection services)
     {
     }
 
