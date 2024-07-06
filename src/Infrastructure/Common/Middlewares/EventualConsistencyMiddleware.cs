@@ -30,7 +30,8 @@ public class EventualConsistencyMiddleware(RequestDelegate next)
                 }
                 catch (Exception)
                 {
-                    // log exception
+                    // Notify the client that even though they got a good response, the changes didn't take place
+                    // due to an unexpected error.
                 }
                 finally
                 {
