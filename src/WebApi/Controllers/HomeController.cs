@@ -17,6 +17,6 @@ public class HomeController : ApiControllerBase
         var error = Error.Validation("CodeError", "Description error");
         var res = error.ToResult<string>();
 
-        return this.ToHttpResponse(res);
+        return res.ToHttpResponse(this);
     }
 }

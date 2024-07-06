@@ -16,6 +16,6 @@ public class UsersController : ApiControllerBase
     {
         var result = await Sender.Send(new CreateUserCommand("test2@example.com", "sdafsdfsdfsfsdfsdfsdfsdf"), cancellationToken);
 
-        return this.ToHttpResponse(result);
+        return result.ToHttpResponse(this);
     }
 }
