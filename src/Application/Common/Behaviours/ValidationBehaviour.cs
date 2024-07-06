@@ -1,3 +1,4 @@
+using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Domain.Common.Responses;
 using FluentValidation;
 using MediatR;
@@ -7,7 +8,7 @@ namespace AgendaManager.Application.Common.Behaviours;
 
 public class ValidationBehaviour<TRequest, TResponse>(ILogger<TResponse> logger, IValidator<TRequest>? validator = null)
     : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : notnull
+    where TRequest : IAppBaseRequest
     where TResponse : Result
 {
     public async Task<TResponse> Handle(
@@ -15,9 +16,6 @@ public class ValidationBehaviour<TRequest, TResponse>(ILogger<TResponse> logger,
         RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
-        // Si no se crea un validator para el command/query el valor de validator es null y requiere el valor
-        // por defecto de null para poder ejecutar el método Handle.
-        // De lo contrario lanzara Unable to resolve service for type 'FluentValidation.IValidator`.
         if (validator is null)
         {
             return await next();
@@ -38,7 +36,7 @@ public class ValidationBehaviour<TRequest, TResponse>(ILogger<TResponse> logger,
         }
 
         logger.LogWarning(
-            "An error occurred during validation {Request}: {@ValidationErrors}",
+            "An error occurred during validation {Request} with errors: {@ValidationErrors}",
             request,
             errors.ValidationErrors.Values);
 

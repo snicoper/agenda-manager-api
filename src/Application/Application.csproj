@@ -21,8 +21,4 @@
     <InternalsVisibleTo Include="AgendaManager.Application.UnitTests" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Common\Interfaces\" />
-  </ItemGroup>
-
 </Project>

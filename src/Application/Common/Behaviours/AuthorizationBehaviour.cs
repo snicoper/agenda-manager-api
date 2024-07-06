@@ -1,5 +1,6 @@
 using System.Reflection;
 using AgendaManager.Application.Common.Exceptions;
+using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Security;
 using AgendaManager.Domain.Users.Persistence;
@@ -10,7 +11,7 @@ namespace AgendaManager.Application.Common.Behaviours;
 
 public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserService currentUserService, IUsersRepository usersRepository)
     : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : notnull
+    where TRequest : IAppBaseRequest
 {
     public async Task<TResponse> Handle(
         TRequest request,
