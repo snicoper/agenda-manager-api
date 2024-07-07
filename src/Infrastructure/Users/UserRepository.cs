@@ -1,5 +1,4 @@
-﻿using AgendaManager.Application.Common.Exceptions;
-using AgendaManager.Domain.Users;
+﻿using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Persistence;
 using AgendaManager.Domain.Users.ValueObjects;
 using AgendaManager.Infrastructure.Common.Persistence;
@@ -24,25 +23,19 @@ public class UserRepository(AppDbContext context) : IUsersRepository
         return await context.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
-    public async Task<User> CreateAsync(User user, CancellationToken cancellationToken = default)
+    public async Task<User?> GetByUserNameAsync(string userName, CancellationToken cancellationToken = default)
     {
-        await context.Users.AddAsync(user, cancellationToken);
-
-        return user;
+        return await context.Users.FirstOrDefaultAsync(u => u.UserName == userName, cancellationToken);
     }
 
-    public async Task<User> UpdateAsync(User user, CancellationToken cancellationToken = default)
+    public async Task AddAsync(User newUser, CancellationToken cancellationToken = default)
     {
-        var existingUSer = await context.Users.FindAsync([user.Id, cancellationToken], cancellationToken);
+        await context.Users.AddAsync(newUser, cancellationToken);
+    }
 
-        if (existingUSer is null)
-        {
-            throw new NotFoundException(nameof(User), nameof(UserId));
-        }
-
-        context.Entry(existingUSer).CurrentValues.SetValues(user);
-
-        return user;
+    public void Update(User existingUser, User updatedUser)
+    {
+        context.Entry(existingUser).CurrentValues.SetValues(updatedUser);
     }
 
     public Task<bool> IsInRoleAsync(UserId userId, string role, CancellationToken cancellationToken = default)
