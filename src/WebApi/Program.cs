@@ -1,5 +1,6 @@
 using AgendaManager.Application;
 using AgendaManager.Infrastructure;
+using AgendaManager.Infrastructure.Common.Middlewares;
 using AgendaManager.Infrastructure.Common.Persistence.Seeds;
 using AgendaManager.WebApi;
 using Serilog;
@@ -17,13 +18,12 @@ builder.Services.AddWebApi();
 var app = builder.Build();
 
 app.UseInfrastructureMiddleware();
+await app.InitialiseDatabaseAsync();
 
-if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Test"))
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-
-    await app.InitialiseDatabaseAsync();
 }
 else
 {
