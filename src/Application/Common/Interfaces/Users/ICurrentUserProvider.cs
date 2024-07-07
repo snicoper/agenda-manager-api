@@ -1,8 +1,8 @@
+using AgendaManager.Application.Common.Models.Users;
+
 namespace AgendaManager.Application.Common.Interfaces.Users;
 
 public interface ICurrentUserProvider
 {
-    Guid Id { get; }
-
-    IEnumerable<Guid> Roles { get; }
+    CurrentUser GetCurrentUser();
 }

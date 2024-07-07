@@ -14,7 +14,7 @@ public interface IUsersRepository
 
     Task<bool> IsInRoleAsync(UserId userId, string role, CancellationToken cancellationToken = default);
 
-    Task<bool> AuthorizeAsync(UserId userId, string policyName, CancellationToken cancellationToken = default);
+    Task<bool> AuthorizeAsync(UserId userId, string permissionName, CancellationToken cancellationToken = default);
 
     Task AddAsync(User newUser, CancellationToken cancellationToken = default);
 

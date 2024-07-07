@@ -73,7 +73,7 @@ public class Result
 #pragma warning disable SA1402 // File may only contain a single type
 public class Result<TValue> : Result
 {
-    protected internal Result(TValue? value, Error? error)
+    public Result(TValue? value, Error? error)
         : base(error)
     {
         Value = value;

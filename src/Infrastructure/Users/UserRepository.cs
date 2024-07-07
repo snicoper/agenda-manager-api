@@ -43,7 +43,10 @@ public class UserRepository(AppDbContext context) : IUsersRepository
         throw new NotImplementedException();
     }
 
-    public Task<bool> AuthorizeAsync(UserId userId, string policyName, CancellationToken cancellationToken = default)
+    public Task<bool> AuthorizeAsync(
+        UserId userId,
+        string permissionName,
+        CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

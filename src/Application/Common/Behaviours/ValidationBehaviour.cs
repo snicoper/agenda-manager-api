@@ -40,6 +40,11 @@ public class ValidationBehaviour<TRequest, TResponse>(ILogger<TResponse> logger,
             request,
             errors.ToDictionary());
 
+        return CreateResult(errors);
+    }
+
+    private static TResponse CreateResult(Error errors)
+    {
         var genericArguments = typeof(TResponse).GetGenericArguments();
 
         if (genericArguments.Length <= 0)

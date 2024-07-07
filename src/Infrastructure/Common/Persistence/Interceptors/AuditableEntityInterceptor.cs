@@ -34,11 +34,13 @@ public class AuditableEntityInterceptor(ICurrentUserProvider currentUserProvider
             return;
         }
 
+        var currentUser = currentUserProvider.GetCurrentUser();
+
         foreach (var entry in context.ChangeTracker.Entries<IAuditableEntity>())
         {
             if (entry.State is EntityState.Added)
             {
-                entry.Entity.CreatedBy = currentUserProvider.Id;
+                entry.Entity.CreatedBy = currentUser.Id.Value;
                 entry.Entity.Created = dateTimeProvider.UtcNow;
             }
 
@@ -48,7 +50,7 @@ public class AuditableEntityInterceptor(ICurrentUserProvider currentUserProvider
                 continue;
             }
 
-            entry.Entity.LastModifiedBy = currentUserProvider.Id;
+            entry.Entity.LastModifiedBy = currentUser.Id.Value;
             entry.Entity.LastModified = dateTimeProvider.UtcNow;
         }
     }

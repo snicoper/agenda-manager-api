@@ -1,19 +1,16 @@
 using System.Reflection;
-using AgendaManager.Application.Common.Exceptions;
 using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Security;
-using AgendaManager.Domain.Users.Persistence;
-using AgendaManager.Domain.Users.ValueObjects;
+using AgendaManager.Domain.Common.Responses;
 using MediatR;
 
 namespace AgendaManager.Application.Common.Behaviours;
 
-public class AuthorizationBehaviour<TRequest, TResponse>(
-    ICurrentUserProvider currentUserProvider,
-    IUsersRepository usersRepository)
+public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserProvider currentUserProvider)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IAppBaseRequest
+    where TResponse : Result
 {
     public async Task<TResponse> Handle(
         TRequest request,
@@ -28,72 +25,52 @@ public class AuthorizationBehaviour<TRequest, TResponse>(
             return await next();
         }
 
-        if (currentUserProvider.Id == Guid.NewGuid())
+        var currentUser = currentUserProvider.GetCurrentUser();
+
+        if (currentUser.Id.Value == Guid.NewGuid())
         {
             throw new UnauthorizedAccessException();
         }
 
-        await RoleBasedAuthorization(attributes, currentUserProvider.Id);
-        await PolicyBasedAuthorization(attributes, currentUserProvider.Id);
+        var requiredPermissions = attributes
+            .SelectMany(authorizationAttribute => authorizationAttribute.Permissions?.Split(',') ?? [])
+            .ToList();
+
+        if (requiredPermissions.Except(currentUser.Permissions).Any())
+        {
+            var error = Error.Unauthorized(description: "User is forbidden from taking this action");
+
+            return CreateResult(error);
+        }
+
+        var requiredRoles = attributes
+            .SelectMany(authorizationAttribute => authorizationAttribute.Roles?.Split(',') ?? [])
+            .ToList();
+
+        if (requiredRoles.Except(currentUser.Roles).Any())
+        {
+            var error = Error.Unauthorized(description: "User is forbidden from taking this action");
+
+            return CreateResult(error);
+        }
 
         return await next();
     }
 
-    private async Task RoleBasedAuthorization(IEnumerable<AuthorizeAttribute> attributes, Guid userId)
+    private static TResponse CreateResult(Error errors)
     {
-        var authorizeAttributesWithRoles = attributes.Where(a => !string.IsNullOrWhiteSpace(a.Roles));
-        var attributesWithRoles = authorizeAttributesWithRoles as AuthorizeAttribute[] ??
-            authorizeAttributesWithRoles.ToArray();
+        var genericArguments = typeof(TResponse).GetGenericArguments();
 
-        if (attributesWithRoles.Length == 0)
+        if (genericArguments.Length <= 0)
         {
-            return;
+            return (TResponse)errors.ToResult();
         }
 
-        var authorized = false;
+        var genericType = typeof(Result<>);
+        Type[] types = [genericArguments[0]];
+        var create = genericType.MakeGenericType(types);
+        var instance = Activator.CreateInstance(create, default, errors) as TResponse;
 
-        foreach (var roles in attributesWithRoles.Select(a => a.Roles.Split(',')))
-        {
-            foreach (var role in roles)
-            {
-                var isInRole = await usersRepository.IsInRoleAsync(UserId.From(userId), role.Trim());
-
-                if (!isInRole)
-                {
-                    continue;
-                }
-
-                authorized = true;
-                break;
-            }
-        }
-
-        if (!authorized)
-        {
-            throw new ForbiddenAccessException();
-        }
-    }
-
-    private async Task PolicyBasedAuthorization(IEnumerable<AuthorizeAttribute> attributes, Guid userId)
-    {
-        var authorizeAttributesWithPolicies = attributes.Where(a => !string.IsNullOrWhiteSpace(a.Policy));
-
-        var attributesWithPolicies =
-            authorizeAttributesWithPolicies as AuthorizeAttribute[] ?? authorizeAttributesWithPolicies.ToArray();
-
-        if (attributesWithPolicies.Length == 0)
-        {
-            return;
-        }
-
-        foreach (var policy in attributesWithPolicies.Select(a => a.Policy))
-        {
-            var authorized = await usersRepository.AuthorizeAsync(UserId.From(userId), policy);
-
-            if (!authorized)
-            {
-                throw new ForbiddenAccessException();
-            }
-        }
+        return instance ?? throw new InvalidOperationException("Failed to create Result<T>");
     }
 }
