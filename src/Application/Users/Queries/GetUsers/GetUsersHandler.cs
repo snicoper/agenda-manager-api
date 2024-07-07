@@ -10,7 +10,7 @@ internal class GetUsersHandler(IUsersRepository usersRepository)
     public Task<Result<List<GetUsersResponse>>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
     {
         var users = usersRepository
-            .GetAllQueryable()
+            .GetQueryable()
             .Select(u => new GetUsersResponse(u.Id.Value, u.Email.Value, u.UserName, u.FirstName, u.LastName))
             .ToList();
 

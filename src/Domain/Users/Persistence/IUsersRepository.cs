@@ -4,7 +4,7 @@ namespace AgendaManager.Domain.Users.Persistence;
 
 public interface IUsersRepository
 {
-    IQueryable<User> GetAllQueryable();
+    IQueryable<User> GetQueryable();
 
     Task<User?> GetByIdAsync(UserId userId, CancellationToken cancellationToken = default);
 

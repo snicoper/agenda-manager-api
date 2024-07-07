@@ -9,7 +9,7 @@ namespace AgendaManager.Infrastructure.Users;
 public class UserRepository(AppDbContext context)
     : IUsersRepository
 {
-    public IQueryable<User> GetAllQueryable()
+    public IQueryable<User> GetQueryable()
     {
         return context.Users;
     }
