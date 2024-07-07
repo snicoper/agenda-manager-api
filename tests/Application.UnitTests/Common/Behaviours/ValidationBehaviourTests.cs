@@ -50,7 +50,7 @@ public class ValidationBehaviourTests
         var result = await _sut.Handle(request, () => Task.FromResult(Result.Success()), CancellationToken.None);
 
         // Assert
-        result.IsSuccess.Should().BeTrue();
+        result.Succeeded.Should().BeTrue();
         result.Error?.HasErrors.Should().BeFalse();
     }
 
@@ -68,7 +68,7 @@ public class ValidationBehaviourTests
         var result = await _sut.Handle(request, () => Task.FromResult(Result.Success()), CancellationToken.None);
 
         // Assert
-        result.IsSuccess.Should().BeFalse();
+        result.Succeeded.Should().BeFalse();
         result.Error?.ToDictionary().Should().ContainKey("property");
         result.Error?.ToDictionary()["property"].Should().Contain("Error message");
     }
