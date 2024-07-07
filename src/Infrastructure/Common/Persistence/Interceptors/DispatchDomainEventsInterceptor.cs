@@ -52,16 +52,21 @@ public class DispatchDomainEventsInterceptor(IHttpContextAccessor httpContextAcc
         }
         else
         {
-            foreach (var domainEvent in domainEvents)
-            {
-                await publisher.Publish(domainEvent, cancellationToken);
-            }
+            await PublishDomainEvents(domainEvents, cancellationToken);
         }
     }
 
     private bool IsUserWaitingOnline()
     {
         return httpContextAccessor.HttpContext is not null;
+    }
+
+    private async Task PublishDomainEvents(List<IDomainEvent> domainEvents, CancellationToken cancellationToken)
+    {
+        foreach (var domainEvent in domainEvents)
+        {
+            await publisher.Publish(domainEvent, cancellationToken);
+        }
     }
 
     private void AddDomainEventsToOfflineProcessingQueue(List<IDomainEvent> domainEvents)
