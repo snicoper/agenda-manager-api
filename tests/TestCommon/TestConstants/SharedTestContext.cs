@@ -2,5 +2,5 @@
 
 public static class SharedTestContext
 {
-    public static string BaseUrl { get; } = "api/v1";
+    public static string BaseUri { get; } = "api/v1";
 }
