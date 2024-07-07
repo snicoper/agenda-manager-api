@@ -4,7 +4,7 @@ using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.Infrastructure.Authentication;
+namespace AgendaManager.Infrastructure.Common.Authentication;
 
 public class AuthorizationService(ICurrentUserProvider currentUserProvider)
     : IAuthorizationService

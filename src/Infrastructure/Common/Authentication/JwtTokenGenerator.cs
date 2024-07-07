@@ -2,7 +2,7 @@ using System.Security.Cryptography;
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Domain.Users;
 
-namespace AgendaManager.Infrastructure.Authentication;
+namespace AgendaManager.Infrastructure.Common.Authentication;
 
 public class JwtTokenGenerator : IJwtTokenGenerator
 {

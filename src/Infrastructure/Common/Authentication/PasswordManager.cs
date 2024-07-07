@@ -2,7 +2,7 @@
 using AgendaManager.Domain.Common.Utils;
 using AgendaManager.Domain.Users.Persistence;
 
-namespace AgendaManager.Infrastructure.Authentication;
+namespace AgendaManager.Infrastructure.Common.Authentication;
 
 public class PasswordManager : IPasswordManager
 {

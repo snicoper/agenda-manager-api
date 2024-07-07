@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace AgendaManager.Application.Common.Models.Settings;
+namespace AgendaManager.Infrastructure.Common.Services.Emails;
 
 public class EmailSenderSettings
 {

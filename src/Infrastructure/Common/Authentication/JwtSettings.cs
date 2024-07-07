@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace AgendaManager.Infrastructure.Authentication;
+namespace AgendaManager.Infrastructure.Common.Authentication;
 
 public class JwtSettings
 {

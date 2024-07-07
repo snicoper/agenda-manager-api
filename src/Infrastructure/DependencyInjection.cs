@@ -2,13 +2,13 @@
 using AgendaManager.Application.Common.Interfaces.Clock;
 using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Application.Common.Interfaces.Users;
-using AgendaManager.Application.Common.Models.Settings;
 using AgendaManager.Domain.Users.Persistence;
-using AgendaManager.Infrastructure.Authentication;
+using AgendaManager.Infrastructure.Common.Authentication;
 using AgendaManager.Infrastructure.Common.Clock;
 using AgendaManager.Infrastructure.Common.Persistence;
 using AgendaManager.Infrastructure.Common.Persistence.Interceptors;
 using AgendaManager.Infrastructure.Common.Persistence.Seeds;
+using AgendaManager.Infrastructure.Common.Services.Emails;
 using AgendaManager.Infrastructure.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
