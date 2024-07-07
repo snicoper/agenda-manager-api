@@ -11,18 +11,18 @@ public class Error
     {
     }
 
-    private Error(List<ValidationError> validationErrors)
+    private Error(List<ValidationError> validationErrors, ResultType resultType = ResultType.Validation)
     {
-        ResultType = ResultType.Validation;
+        ResultType = resultType;
 
         _validationErrors = validationErrors;
     }
 
     private Error(string code, string description, ResultType resultType = ResultType.Validation)
     {
-        var validationError = new ValidationError(code, description);
         ResultType = resultType;
 
+        var validationError = new ValidationError(code, description);
         _validationErrors.Add(validationError);
     }
 
