@@ -16,7 +16,9 @@ internal class UpdateUserHandler(IUsersRepository usersRepository, IUnitOfWork u
 
         if (existingUser is null)
         {
-            return Error.NotFound(nameof(User), nameof(UserId)).ToResult<UpdateUserResponse>();
+            return Error
+                .NotFound(nameof(User), nameof(UserId))
+                .ToResult<UpdateUserResponse>();
         }
 
         var updatedUser = existingUser.Update(Email.From(request.Email));

@@ -19,7 +19,12 @@ internal class CreateUserHandler(IUsersRepository usersRepository, IUnitOfWork u
             return Error.Conflict("The Email already exists").ToResult<CreateUserResponse>();
         }
 
-        var newUser = User.Create(UserId.Create(), Email.From("test2@example.com"), "test2", "peric2o", "palote2");
+        var newUser = User.Create(
+            UserId.Create(),
+            Email.From("test2@example.com"),
+            "test2",
+            "peric2o",
+            "palote2");
 
         await usersRepository.AddAsync(newUser, cancellationToken);
 
