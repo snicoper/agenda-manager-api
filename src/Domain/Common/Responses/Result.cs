@@ -5,23 +5,23 @@ public class Result
     protected Result(Error? error)
     {
         Error = error;
-        Succeeded = error?.HasErrors is not true;
+        IsSuccess = error?.HasErrors is not true;
         ResultType = error?.ResultType ?? ResultType.Succeeded;
     }
 
-    protected Result(bool succeeded, ResultType resultType = ResultType.Succeeded)
+    protected Result(bool isSuccess, ResultType resultType = ResultType.Succeeded)
     {
-        Succeeded = succeeded;
+        IsSuccess = isSuccess;
         ResultType = resultType;
     }
 
     private Result()
     {
-        Succeeded = true;
+        IsSuccess = true;
         ResultType = ResultType.Succeeded;
     }
 
-    public bool Succeeded { get; }
+    public bool IsSuccess { get; }
 
     public ResultType ResultType { get; private init; }
 
@@ -79,8 +79,8 @@ public class Result<TValue> : Result
         Value = value;
     }
 
-    protected internal Result(bool succeeded, ResultType resultType = ResultType.Succeeded)
-        : base(succeeded, resultType)
+    protected internal Result(bool isSuccess, ResultType resultType = ResultType.Succeeded)
+        : base(isSuccess, resultType)
     {
     }
 
@@ -95,7 +95,7 @@ public class Result<TValue> : Result
 
     public Result<TDestination> MapTo<TDestination>()
     {
-        var result = new Result<TDestination>(Succeeded, ResultType) { Error = Error };
+        var result = new Result<TDestination>(IsSuccess, ResultType) { Error = Error };
 
         return result;
     }

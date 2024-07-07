@@ -24,7 +24,7 @@ public class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior<TReque
 
             var result = await next();
 
-            if (result.Succeeded)
+            if (result.IsSuccess)
             {
                 logger.LogInformation("Request {RequestName} processed successfully", requestName);
             }
