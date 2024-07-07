@@ -3,12 +3,16 @@ using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.Interfaces;
 using AgendaManager.Domain.Users;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace AgendaManager.Infrastructure.Common.Persistence;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options, IHttpContextAccessor httpContextAccessor)
+public class AppDbContext(
+    DbContextOptions<AppDbContext> options,
+    IHttpContextAccessor httpContextAccessor,
+    IPublisher publisher)
     : DbContext(options), IUnitOfWork
 {
     public DbSet<User> Users => Set<User>();
@@ -21,7 +25,17 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, IHttpContextAc
             .SelectMany(events => events)
             .ToList();
 
-        AddDomainEventsToOfflineProcessingQueue(domainEvents);
+        if (IsUserWaitingOnline())
+        {
+            AddDomainEventsToOfflineProcessingQueue(domainEvents);
+        }
+        else
+        {
+            foreach (var domainEvent in domainEvents)
+            {
+                await publisher.Publish(domainEvent, cancellationToken);
+            }
+        }
 
         return await base.SaveChangesAsync(cancellationToken);
     }
@@ -31,6 +45,11 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, IHttpContextAc
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         base.OnModelCreating(builder);
+    }
+
+    private bool IsUserWaitingOnline()
+    {
+        return httpContextAccessor.HttpContext is not null;
     }
 
     private void AddDomainEventsToOfflineProcessingQueue(List<IDomainEvent> domainEvents)

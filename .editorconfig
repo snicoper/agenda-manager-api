@@ -21,7 +21,7 @@ trim_trailing_whitespace = false
 # C# files
 [*.cs]
 
-max_line_length = 130
+max_line_length = 120
 
 # Indentation and spacing
 indent_size = 4

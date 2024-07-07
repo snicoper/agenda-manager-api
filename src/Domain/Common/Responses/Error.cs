@@ -33,7 +33,8 @@ public class Error
 
     public ResultType ResultType { get; private set; } = ResultType.Succeeded;
 
-    public bool HasErrors => ValidationErrors.Count > 0 || !string.IsNullOrEmpty(Code) || !string.IsNullOrEmpty(Description);
+    public bool HasErrors =>
+        ValidationErrors.Count > 0 || !string.IsNullOrEmpty(Code) || !string.IsNullOrEmpty(Description);
 
     public static implicit operator Result(Error error)
     {
@@ -77,7 +78,7 @@ public class Error
 
     public static Error Conflict(string description = "Conflict")
     {
-        return new Error(nameof(ResultType.Forbidden), description, ResultType.Conflict);
+        return new Error(nameof(ResultType.Conflict), description, ResultType.Conflict);
     }
 
     public static Error Unexpected(string? code, string description = "Internal Server Error")
