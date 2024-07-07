@@ -6,7 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AgendaManager.Infrastructure.Users;
 
-public class UserRepository(AppDbContext context) : IUsersRepository
+public class UserRepository(AppDbContext context)
+    : IUsersRepository
 {
     public IQueryable<User> GetAllQueryable()
     {
@@ -36,18 +37,5 @@ public class UserRepository(AppDbContext context) : IUsersRepository
     public void Update(User existingUser, User updatedUser)
     {
         context.Entry(existingUser).CurrentValues.SetValues(updatedUser);
-    }
-
-    public Task<bool> IsInRoleAsync(UserId userId, string role, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> AuthorizeAsync(
-        UserId userId,
-        string permissionName,
-        CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
     }
 }

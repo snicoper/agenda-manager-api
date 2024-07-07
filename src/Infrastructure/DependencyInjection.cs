@@ -92,7 +92,7 @@ public static class DependencyInjection
 
     private static void AddAuthentication(IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IAuthorizationService, AuthorizationService>();
         services.AddScoped<IPasswordManager, PasswordManager>();
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 

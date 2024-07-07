@@ -12,10 +12,6 @@ public interface IUsersRepository
 
     Task<User?> GetByUserNameAsync(string userName, CancellationToken cancellationToken = default);
 
-    Task<bool> IsInRoleAsync(UserId userId, string role, CancellationToken cancellationToken = default);
-
-    Task<bool> AuthorizeAsync(UserId userId, string permissionName, CancellationToken cancellationToken = default);
-
     Task AddAsync(User newUser, CancellationToken cancellationToken = default);
 
     void Update(User existingUser, User updatedUser);
