@@ -1,15 +1,13 @@
 using AgendaManager.Application.Common.Interfaces.Clock;
 using AgendaManager.Application.Common.Interfaces.Users;
-using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.Interfaces;
 using AgendaManager.Infrastructure.Common.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace AgendaManager.Infrastructure.Common.Persistence.Interceptors;
 
-public class AuditableEntityInterceptor(ICurrentUserService currentUserService, IDateTimeProvider dateTimeProvider)
+public class AuditableEntityInterceptor(ICurrentUserProvider currentUserProvider, IDateTimeProvider dateTimeProvider)
     : SaveChangesInterceptor
 {
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
@@ -36,20 +34,21 @@ public class AuditableEntityInterceptor(ICurrentUserService currentUserService, 
             return;
         }
 
-        foreach (EntityEntry<IAuditableEntity> entry in context.ChangeTracker.Entries<IAuditableEntity>())
+        foreach (var entry in context.ChangeTracker.Entries<IAuditableEntity>())
         {
             if (entry.State is EntityState.Added)
             {
-                entry.Entity.CreatedBy = currentUserService.Id;
+                entry.Entity.CreatedBy = currentUserProvider.Id;
                 entry.Entity.Created = dateTimeProvider.UtcNow;
             }
 
-            if (entry.State != EntityState.Added && entry.State != EntityState.Modified && !entry.HasChangedOwnedEntities())
+            if (entry.State != EntityState.Added && entry.State != EntityState.Modified &&
+                !entry.HasChangedOwnedEntities())
             {
                 continue;
             }
 
-            entry.Entity.LastModifiedBy = currentUserService.Id;
+            entry.Entity.LastModifiedBy = currentUserProvider.Id;
             entry.Entity.LastModified = dateTimeProvider.UtcNow;
         }
     }

@@ -21,11 +21,7 @@ public static class ResultExtensions
             StatusCodes.Status401Unauthorized => controller.Unauthorized(),
             StatusCodes.Status403Forbidden => controller.Forbid(),
             StatusCodes.Status404NotFound => HandleNotFoundResult(controller, result.Error?.First()?.Description),
-            _ => HandleUnexpectedResult(
-                controller,
-                statusCode,
-                result.Error?.First()?.Code,
-                result.Error?.First()?.Description)
+            _ => HandleUnexpectedResult(controller, statusCode, result.Error?.First())
         };
     }
 
@@ -46,11 +42,7 @@ public static class ResultExtensions
             StatusCodes.Status401Unauthorized => controller.Unauthorized(),
             StatusCodes.Status403Forbidden => controller.Forbid(),
             StatusCodes.Status404NotFound => HandleNotFoundResult(controller, result.Error?.First()?.Description),
-            _ => HandleUnexpectedResult(
-                controller,
-                statusCode,
-                result.Error?.First()?.Code,
-                result.Error?.First()?.Description)
+            _ => HandleUnexpectedResult(controller, statusCode, result.Error?.First())
         };
     }
 
@@ -114,15 +106,18 @@ public static class ResultExtensions
     private static ObjectResult HandleUnexpectedResult(
         ControllerBase controller,
         int statusCode,
-        string? code,
-        string? description)
+        ValidationError? validationError)
     {
         var log = controller.HttpContext
             .RequestServices
             .GetRequiredService<ILogger<ApiControllerBase>>();
 
-        log.LogError("Error in {Type}: {Code} - {@Error}", controller.GetType(), code, description);
+        log.LogError(
+            "Error in {Type}: {Code} - {@Error}",
+            controller.GetType(),
+            validationError?.Code,
+            validationError?.Description);
 
-        return controller.Problem(statusCode: statusCode, detail: description);
+        return controller.Problem(statusCode: statusCode, detail: validationError?.Description);
     }
 }

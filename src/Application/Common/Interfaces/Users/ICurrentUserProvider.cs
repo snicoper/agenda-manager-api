@@ -1,6 +1,6 @@
 namespace AgendaManager.Application.Common.Interfaces.Users;
 
-public interface ICurrentUserService
+public interface ICurrentUserProvider
 {
     Guid Id { get; }
 

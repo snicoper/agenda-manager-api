@@ -9,7 +9,9 @@ using MediatR;
 
 namespace AgendaManager.Application.Common.Behaviours;
 
-public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserService currentUserService, IUsersRepository usersRepository)
+public class AuthorizationBehaviour<TRequest, TResponse>(
+    ICurrentUserProvider currentUserProvider,
+    IUsersRepository usersRepository)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IAppBaseRequest
 {
@@ -26,13 +28,13 @@ public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserService cur
             return await next();
         }
 
-        if (currentUserService.Id == Guid.NewGuid())
+        if (currentUserProvider.Id == Guid.NewGuid())
         {
             throw new UnauthorizedAccessException();
         }
 
-        await RoleBasedAuthorization(attributes, currentUserService.Id);
-        await PolicyBasedAuthorization(attributes, currentUserService.Id);
+        await RoleBasedAuthorization(attributes, currentUserProvider.Id);
+        await PolicyBasedAuthorization(attributes, currentUserProvider.Id);
 
         return await next();
     }
@@ -40,7 +42,8 @@ public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserService cur
     private async Task RoleBasedAuthorization(IEnumerable<AuthorizeAttribute> attributes, Guid userId)
     {
         var authorizeAttributesWithRoles = attributes.Where(a => !string.IsNullOrWhiteSpace(a.Roles));
-        var attributesWithRoles = authorizeAttributesWithRoles as AuthorizeAttribute[] ?? authorizeAttributesWithRoles.ToArray();
+        var attributesWithRoles = authorizeAttributesWithRoles as AuthorizeAttribute[] ??
+            authorizeAttributesWithRoles.ToArray();
 
         if (attributesWithRoles.Length == 0)
         {

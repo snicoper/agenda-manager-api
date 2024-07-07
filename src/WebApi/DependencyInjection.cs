@@ -18,10 +18,14 @@ public static class DependencyInjection
         AddGlobalInjections(services);
 
         services.AddControllersWithViews()
-            .AddJsonOptions(options => { options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; })
+            .AddJsonOptions(
+                options => { options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; })
             .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
             .AddDataAnnotationsLocalization(
-                options => { options.DataAnnotationLocalizerProvider = (_, factory) => factory.Create(typeof(SharedResource)); });
+                options =>
+                {
+                    options.DataAnnotationLocalizerProvider = (_, factory) => factory.Create(typeof(SharedResource));
+                });
 
         services.AddRouting(options => { options.LowercaseUrls = true; });
 
@@ -39,7 +43,7 @@ public static class DependencyInjection
 
     private static void AddGlobalInjections(IServiceCollection services)
     {
-        services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
     }
 
     private static void AddApiVersioning(IServiceCollection services)
