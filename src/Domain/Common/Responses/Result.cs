@@ -2,12 +2,6 @@
 
 public class Result
 {
-    protected Result()
-    {
-        Succeeded = true;
-        ResultType = ResultType.Succeeded;
-    }
-
     protected Result(Error? error)
     {
         Error = error;
@@ -19,6 +13,12 @@ public class Result
     {
         Succeeded = succeeded;
         ResultType = resultType;
+    }
+
+    private Result()
+    {
+        Succeeded = true;
+        ResultType = ResultType.Succeeded;
     }
 
     public bool Succeeded { get; }
@@ -73,7 +73,7 @@ public class Result
 #pragma warning disable SA1402 // File may only contain a single type
 public class Result<TValue> : Result
 {
-    public Result(TValue? value, Error? error)
+    protected internal Result(TValue? value, Error? error)
         : base(error)
     {
         Value = value;
