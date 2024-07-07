@@ -17,15 +17,21 @@ public static class ResultExtensions
             StatusCodes.Status200OK => new ObjectResult(result) { StatusCode = statusCode },
             StatusCodes.Status201Created => new ObjectResult(result) { StatusCode = StatusCodes.Status201Created },
             StatusCodes.Status204NoContent => controller.NoContent(),
-            StatusCodes.Status400BadRequest => HandleBadRequestResult(result.Error?.ValidationErrors),
+            StatusCodes.Status400BadRequest => HandleBadRequestResult(result.Error?.ToDictionary()),
             StatusCodes.Status401Unauthorized => controller.Unauthorized(),
             StatusCodes.Status403Forbidden => controller.Forbid(),
-            StatusCodes.Status404NotFound => HandleNotFoundResult(controller, result.Error?.Description),
-            _ => HandleUnexpectedResult(controller, statusCode, result.Error?.Code, result.Error?.Description)
+            StatusCodes.Status404NotFound => HandleNotFoundResult(controller, result.Error?.First()?.Description),
+            _ => HandleUnexpectedResult(
+                controller,
+                statusCode,
+                result.Error?.First()?.Code,
+                result.Error?.First()?.Description)
         };
     }
 
-    public static ActionResult<Result<TValue>> ToHttpResponse<TValue>(this Result<TValue> result, ControllerBase controller)
+    public static ActionResult<Result<TValue>> ToHttpResponse<TValue>(
+        this Result<TValue> result,
+        ControllerBase controller)
     {
         var statusCode = result.ResultTypeToStatusCodeMapper();
 
@@ -36,11 +42,15 @@ public static class ResultExtensions
             StatusCodes.Status200OK => new ObjectResult(result) { StatusCode = statusCode },
             StatusCodes.Status201Created => new ObjectResult(result) { StatusCode = StatusCodes.Status201Created },
             StatusCodes.Status204NoContent => controller.NoContent(),
-            StatusCodes.Status400BadRequest => HandleBadRequestResult(result.Error?.ValidationErrors),
+            StatusCodes.Status400BadRequest => HandleBadRequestResult(result.Error?.ToDictionary()),
             StatusCodes.Status401Unauthorized => controller.Unauthorized(),
             StatusCodes.Status403Forbidden => controller.Forbid(),
-            StatusCodes.Status404NotFound => HandleNotFoundResult(controller, result.Error?.Description),
-            _ => HandleUnexpectedResult(controller, statusCode, result.Error?.Code, result.Error?.Description)
+            StatusCodes.Status404NotFound => HandleNotFoundResult(controller, result.Error?.First()?.Description),
+            _ => HandleUnexpectedResult(
+                controller,
+                statusCode,
+                result.Error?.First()?.Code,
+                result.Error?.First()?.Description)
         };
     }
 

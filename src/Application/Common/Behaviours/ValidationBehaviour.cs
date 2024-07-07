@@ -38,7 +38,7 @@ public class ValidationBehaviour<TRequest, TResponse>(ILogger<TResponse> logger,
         logger.LogWarning(
             "An error occurred during validation {Request} with errors: {@ValidationErrors}",
             request,
-            errors.ValidationErrors.Values);
+            errors.ToDictionary());
 
         var genericArguments = typeof(TResponse).GetGenericArguments();
 

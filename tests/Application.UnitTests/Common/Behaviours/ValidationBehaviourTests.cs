@@ -69,8 +69,8 @@ public class ValidationBehaviourTests
 
         // Assert
         result.Succeeded.Should().BeFalse();
-        result.Error?.ValidationErrors.Should().ContainKey("property");
-        result.Error?.ValidationErrors["property"].Should().Contain("Error message");
+        result.Error?.ToDictionary().Should().ContainKey("property");
+        result.Error?.ToDictionary()["property"].Should().Contain("Error message");
     }
 
     public record TestRequest : IAppBaseRequest;

@@ -5,36 +5,32 @@ namespace AgendaManager.Domain.Common.Responses;
 
 public class Error
 {
-    private readonly Dictionary<string, string[]> _validationErrors = [];
+    private readonly List<ValidationError> _validationErrors = [];
 
-    protected Error()
+    private Error()
     {
     }
 
-    protected Error(Dictionary<string, string[]> validationErrors)
+    private Error(List<ValidationError> validationErrors)
     {
-        _validationErrors = validationErrors;
-
         ResultType = ResultType.Validation;
+
+        _validationErrors = validationErrors;
     }
 
-    protected Error(string code, string description, ResultType resultType = ResultType.Validation)
+    private Error(string code, string description, ResultType resultType = ResultType.Validation)
     {
-        Code = code;
-        Description = description;
+        var validationError = new ValidationError(code, description);
         ResultType = resultType;
+
+        _validationErrors.Add(validationError);
     }
 
-    public ReadOnlyDictionary<string, string[]> ValidationErrors => _validationErrors.AsReadOnly();
-
-    public string Code { get; } = default!;
-
-    public string Description { get; } = default!;
+    public ReadOnlyCollection<ValidationError> ValidationErrors => _validationErrors.AsReadOnly();
 
     public ResultType ResultType { get; private set; } = ResultType.Succeeded;
 
-    public bool HasErrors =>
-        ValidationErrors.Count > 0 || !string.IsNullOrEmpty(Code) || !string.IsNullOrEmpty(Description);
+    public bool HasErrors => ValidationErrors.Count > 0;
 
     public static implicit operator Result(Error error)
     {
@@ -48,60 +44,67 @@ public class Error
 
     public static Error Validation(string code, string description)
     {
-        var error = new Error();
-        error.AddValidationError(code, description);
-
-        return error;
+        return new Error(code, description);
     }
 
-    public static Error Validation(Dictionary<string, string[]> validationErrors)
+    public static Error Validation(List<ValidationError> validationErrors)
     {
         return new Error(validationErrors);
     }
 
-    public static Error NotFound(string code, string description)
+    public static Error NotFound(string code = "NotFound", string description = "Not Found")
     {
-        var error = $"Entity \"{code}\" ({description}) was not found.";
-
-        return new Error(code, error, ResultType.NotFound);
+        return new Error(code, description, ResultType.NotFound);
     }
 
-    public static Error Unauthorized(string description = "Unauthorized")
+    public static Error Unauthorized(string code = "Unauthorized", string description = "Unauthorized")
     {
-        return new Error(nameof(ResultType.Unauthorized), description, ResultType.Unauthorized);
+        return new Error(code, description, ResultType.Unauthorized);
     }
 
-    public static Error Forbidden(string description = "Forbidden")
+    public static Error Forbidden(string code = "Forbidden", string description = "Forbidden")
     {
-        return new Error(nameof(ResultType.Forbidden), description, ResultType.Forbidden);
+        return new Error(code, description, ResultType.Forbidden);
     }
 
-    public static Error Conflict(string description = "Conflict")
+    public static Error Conflict(string code = "Conflict", string description = "Conflict")
     {
-        return new Error(nameof(ResultType.Conflict), description, ResultType.Conflict);
+        return new Error(code, description, ResultType.Conflict);
     }
 
-    public static Error Unexpected(string? code, string description = "Internal Server Error")
+    public static Error Unexpected(string code = "Unexpected", string description = "Internal Server Error")
     {
-        code ??= nameof(ResultType.Unexpected);
-
         return new Error(code, description, ResultType.Unexpected);
     }
 
     public void AddValidationError(string code, string description)
     {
+        AddValidationError(new ValidationError(code, description));
+    }
+
+    public void AddValidationError(ValidationError validationError)
+    {
         ResultType = ResultType.Validation;
-        code = code.ToLowerFirstLetter();
 
-        if (_validationErrors.TryGetValue(code, out var value))
-        {
-            var newValue = value.Append(description).ToArray();
-            _validationErrors[code] = newValue;
+        _validationErrors.Add(validationError);
+    }
 
-            return;
-        }
+    public ValidationError? First()
+    {
+        return _validationErrors.FirstOrDefault();
+    }
 
-        _validationErrors.Add(code, [description]);
+    public ValidationError? Last()
+    {
+        return _validationErrors.LastOrDefault();
+    }
+
+    public ReadOnlyDictionary<string, string[]> ToDictionary()
+    {
+        return _validationErrors
+            .GroupBy(e => e.Code, e => e.Description)
+            .ToDictionary(error => error.Key.ToLowerFirstLetter(), error => error.ToArray())
+            .AsReadOnly();
     }
 
     public Result ToResult()

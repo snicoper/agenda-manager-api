@@ -1,4 +1,3 @@
-using AgendaManager.Domain.Common.Extensions;
 using AgendaManager.Domain.Common.Responses;
 using FluentAssertions;
 
@@ -31,7 +30,7 @@ public class ErrorTests
         error.ResultType.Should().Be(ResultType.Validation);
         error.HasErrors.Should().BeTrue();
         error.ValidationErrors.Should().HaveCount(1);
-        error.ValidationErrors.First().Key.Should().Be(Code.ToLowerFirstLetter());
+        error.First()?.Code.Should().Be(Code);
         error.ToResult().Should().BeOfType<Result>();
     }
 
@@ -50,8 +49,8 @@ public class ErrorTests
         error.AddValidationError(code2, Description);
 
         // Assert
-        error.ValidationErrors.First().Value.Should().HaveCount(4);
-        error.ValidationErrors.Last().Value.Should().HaveCount(2);
+        error.ToDictionary().First().Value.Should().HaveCount(4);
+        error.ToDictionary().Last().Value.Should().HaveCount(2);
     }
 
     [Fact]
@@ -63,8 +62,8 @@ public class ErrorTests
         // Assert
         error.ResultType.Should().Be(ResultType.NotFound);
         error.HasErrors.Should().BeTrue();
-        error.Code.Should().Be(Code);
-        error.Description.Should().NotBeEmpty();
+        error.First()?.Code.Should().Be(Code);
+        error.First()?.Description.Should().NotBeEmpty();
         error.ToResult().Should().BeOfType<Result>();
     }
 
@@ -77,8 +76,8 @@ public class ErrorTests
         // Assert
         error.ResultType.Should().Be(ResultType.Unauthorized);
         error.HasErrors.Should().BeTrue();
-        error.Code.Should().Be(nameof(ResultType.Unauthorized));
-        error.Description.Should().NotBeEmpty();
+        error.First()?.Code.Should().Be(nameof(ResultType.Unauthorized));
+        error.First()?.Description.Should().NotBeEmpty();
         error.ToResult().Should().BeOfType<Result>();
     }
 
@@ -91,8 +90,8 @@ public class ErrorTests
         // Assert
         error.ResultType.Should().Be(ResultType.Forbidden);
         error.HasErrors.Should().BeTrue();
-        error.Code.Should().Be(nameof(ResultType.Forbidden));
-        error.Description.Should().NotBeEmpty();
+        error.First()?.Code.Should().Be(nameof(ResultType.Forbidden));
+        error.First()?.Description.Should().NotBeEmpty();
         error.ToResult().Should().BeOfType<Result>();
     }
 
@@ -100,10 +99,13 @@ public class ErrorTests
     public void Error_Validation_WhenDictionaryIdPassed()
     {
         // Arrange
-        var errors = new Dictionary<string, string[]>
-        {
-            { "Code", ["Description 1", "Description 2"] }, { "Code2", ["Description 3", "Description 4"] }
-        };
+        List<ValidationError> errors =
+        [
+            new ValidationError("Code", "Description 1"),
+            new ValidationError("Code", "Description 2"),
+            new ValidationError("Code2", "Description 3"),
+            new ValidationError("Code2", "Description 4")
+        ];
 
         // Act
         var error = Error.Validation(errors);
@@ -111,9 +113,9 @@ public class ErrorTests
         // Assert
         error.HasErrors.Should().BeTrue();
         error.ResultType.Should().Be(ResultType.Validation);
-        error.ValidationErrors.Should().HaveCount(2);
-        error.ValidationErrors.First().Value.Should().HaveCount(2);
-        error.ValidationErrors.Last().Value.Should().HaveCount(2);
+        error.ValidationErrors.Should().HaveCount(4);
+        error.ToDictionary().First().Value.Should().HaveCount(2);
+        error.ToDictionary().Last().Value.Should().HaveCount(2);
     }
 
     [Fact]
@@ -131,13 +133,13 @@ public class ErrorTests
     public void Error_Unexpected_ShouldSetResultTypeToUnexpected()
     {
         // Act
-        var error = Error.Unexpected(null);
+        var error = Error.Unexpected();
 
         // Assert
         error.ResultType.Should().Be(ResultType.Unexpected);
         error.HasErrors.Should().BeTrue();
-        error.Code.Should().Be(nameof(ResultType.Unexpected));
-        error.Description.Should().NotBeEmpty();
+        error.First()?.Code.Should().Be(nameof(ResultType.Unexpected));
+        error.First()?.Description.Should().NotBeEmpty();
         error.ToResult().Should().BeOfType<Result>();
     }
 
