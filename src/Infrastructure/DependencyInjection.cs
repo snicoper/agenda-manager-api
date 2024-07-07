@@ -63,9 +63,14 @@ public static class DependencyInjection
         services.AddScoped<IUsersRepository, UserRepository>();
     }
 
-    private static void AddDatabase(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
+    private static void AddDatabase(
+        IServiceCollection services,
+        IConfiguration configuration,
+        IWebHostEnvironment environment)
     {
         services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
+        services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
+
         services.AddDbContext<AppDbContext>(
             (provider, options) =>
             {
