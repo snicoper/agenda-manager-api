@@ -3,7 +3,7 @@ using FluentValidation.Results;
 
 namespace AgendaManager.Application.Common.Exceptions;
 
-public sealed class BadRequestException() : Exception("One or more validation failures have occurred.")
+public class BadRequestException() : Exception("One or more validation failures have occurred.")
 {
     public BadRequestException(IReadOnlyCollection<ValidationFailure> failures)
         : this()

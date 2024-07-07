@@ -4,7 +4,7 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users;
 
-public sealed class User : AuditableEntity
+public class User : AuditableEntity
 {
     private User()
     {
