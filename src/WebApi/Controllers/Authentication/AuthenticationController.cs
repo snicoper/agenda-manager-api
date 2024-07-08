@@ -22,7 +22,7 @@ public class AuthenticationController : ApiControllerBase
                 request.Password,
                 request.ConfirmPassword));
 
-        return result.ToHttpResponse(this);
+        return result.MapToResponse(this);
     }
 
     [HttpPost("login")]

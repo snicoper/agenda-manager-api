@@ -18,7 +18,7 @@ public class UsersController : ApiControllerBase
     {
         var result = await Sender.Send(new GetUsersQuery(string.Empty), cancellationToken);
 
-        return result.ToHttpResponse(this);
+        return result.MapToResponse(this);
     }
 
     [HttpPost]
@@ -29,7 +29,7 @@ public class UsersController : ApiControllerBase
             new CreateUserCommand("test2@example.com", "sdafsdfsdfsfsdfsdfsdfsdf"),
             cancellationToken);
 
-        return result.ToHttpResponse(this);
+        return result.MapToResponse(this);
     }
 
     [AllowAnonymous]
@@ -40,6 +40,6 @@ public class UsersController : ApiControllerBase
     {
         var result = await Sender.Send(new UpdateUserCommand(userId, "newtest@example.com"), cancellationToken);
 
-        return result.ToHttpResponse(this);
+        return result.MapToResponse(this);
     }
 }

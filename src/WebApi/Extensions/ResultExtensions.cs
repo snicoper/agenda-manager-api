@@ -5,7 +5,7 @@ namespace AgendaManager.WebApi.Extensions;
 
 public static class ResultExtensions
 {
-    public static ActionResult<Result> ToHttpResponse(this Result result, ControllerBase controller)
+    public static ActionResult<Result> MapToResponse(this Result result, ControllerBase controller)
     {
         var statusCode = result.ResultTypeToStatusCodeMapper();
 
@@ -24,7 +24,7 @@ public static class ResultExtensions
         };
     }
 
-    public static ActionResult<Result<TValue>> ToHttpResponse<TValue>(
+    public static ActionResult<Result<TValue>> MapToResponse<TValue>(
         this Result<TValue> result,
         ControllerBase controller)
     {
