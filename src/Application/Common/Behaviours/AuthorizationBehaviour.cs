@@ -40,7 +40,7 @@ public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserProvider cu
         {
             var error = Error.Unauthorized(description: "User is forbidden from taking this action");
 
-            return CreateResult(error);
+            return ResultBehaviourHelper.CreateResult<TResponse>(error);
         }
 
         var requiredRoles = attributes
@@ -51,26 +51,9 @@ public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserProvider cu
         {
             var error = Error.Unauthorized(description: "User is forbidden from taking this action");
 
-            return CreateResult(error);
+            return ResultBehaviourHelper.CreateResult<TResponse>(error);
         }
 
         return await next();
-    }
-
-    private static TResponse CreateResult(Error errors)
-    {
-        var genericArguments = typeof(TResponse).GetGenericArguments();
-
-        if (genericArguments.Length <= 0)
-        {
-            return (TResponse)errors.ToResult();
-        }
-
-        var genericType = typeof(Result<>);
-        Type[] types = [genericArguments[0]];
-        var create = genericType.MakeGenericType(types);
-        var instance = Activator.CreateInstance(create, default, errors) as TResponse;
-
-        return instance ?? throw new InvalidOperationException("Failed to create Result<T>");
     }
 }

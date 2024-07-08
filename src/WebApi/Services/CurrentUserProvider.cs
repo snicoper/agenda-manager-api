@@ -11,13 +11,13 @@ public class CurrentUserProvider(IHttpContextAccessor httpContextAccessor)
     public CurrentUser GetCurrentUser()
     {
         var userId = GetClaimValues("id")
-            .Select(param => UserId.From(Guid.Parse(param)))
+            .Select(Guid.Parse)
             .First();
 
         var permissions = GetClaimValues("permissions");
         var roles = GetClaimValues(ClaimTypes.Role);
 
-        return new CurrentUser(userId, Permissions: permissions, Roles: roles);
+        return new CurrentUser(UserId.From(userId), Permissions: permissions, Roles: roles);
     }
 
     private IReadOnlyList<string> GetClaimValues(string claimType)

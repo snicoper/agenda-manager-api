@@ -6,7 +6,9 @@ using Microsoft.Extensions.Logging;
 
 namespace AgendaManager.Application.Common.Behaviours;
 
-public class ValidationBehaviour<TRequest, TResponse>(ILogger<TResponse> logger, IValidator<TRequest>? validator = null)
+public class ValidationBehaviour<TRequest, TResponse>(
+    ILogger<TResponse> logger,
+    IValidator<TRequest>? validator = null)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IAppBaseRequest
     where TResponse : Result
@@ -40,23 +42,6 @@ public class ValidationBehaviour<TRequest, TResponse>(ILogger<TResponse> logger,
             request,
             errors.ToDictionary());
 
-        return CreateResult(errors);
-    }
-
-    private static TResponse CreateResult(Error errors)
-    {
-        var genericArguments = typeof(TResponse).GetGenericArguments();
-
-        if (genericArguments.Length <= 0)
-        {
-            return (TResponse)errors.ToResult();
-        }
-
-        var genericType = typeof(Result<>);
-        Type[] types = [genericArguments[0]];
-        var create = genericType.MakeGenericType(types);
-        var instance = Activator.CreateInstance(create, default, errors) as TResponse;
-
-        return instance ?? throw new InvalidOperationException("Failed to create Result<T>");
+        return ResultBehaviourHelper.CreateResult<TResponse>(errors);
     }
 }
