@@ -42,6 +42,8 @@ public class ValidationBehaviour<TRequest, TResponse>(
             request,
             errors.ToDictionary());
 
-        return ResultBehaviourHelper.CreateResult<TResponse>(errors);
+        var result = ResultBehaviourHelper.CreateResult<TResponse>(errors);
+
+        return result;
     }
 }

@@ -40,7 +40,9 @@ public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserProvider cu
         {
             var error = Error.Unauthorized(description: "User is forbidden from taking this action");
 
-            return ResultBehaviourHelper.CreateResult<TResponse>(error);
+            var result = ResultBehaviourHelper.CreateResult<TResponse>(error);
+
+            return result;
         }
 
         var requiredRoles = attributes
@@ -51,7 +53,9 @@ public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserProvider cu
         {
             var error = Error.Unauthorized(description: "User is forbidden from taking this action");
 
-            return ResultBehaviourHelper.CreateResult<TResponse>(error);
+            var result = ResultBehaviourHelper.CreateResult<TResponse>(error);
+
+            return result;
         }
 
         return await next();
