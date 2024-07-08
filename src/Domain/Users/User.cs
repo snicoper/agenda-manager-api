@@ -30,21 +30,21 @@ public class User : AuditableEntity
         IsEmailConfirmed = false;
     }
 
-    public UserId Id { get; } = null!;
+    public UserId Id { get; init; } = null!;
 
-    public string UserName { get; } = default!;
+    public string UserName { get; init; } = default!;
 
-    public EmailAddress Email { get; } = null!;
+    public EmailAddress Email { get; init; } = null!;
 
     public bool IsEmailConfirmed { get; private set; }
 
-    public string? FirstName { get; }
+    public string? FirstName { get; init; }
 
-    public string? LastName { get; }
+    public string? LastName { get; init; }
 
-    public bool Active { get; private set; }
+    public bool Active { get; init; }
 
-    public string PasswordHash { get; } = default!;
+    public string PasswordHash { get; init; } = default!;
 
     public RefreshToken? RefreshToken { get; private set; }
 
