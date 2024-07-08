@@ -7,6 +7,10 @@ internal class RegisterCommandHandler : ICommandHandler<RegisterCommand, Registe
 {
     public Task<Result<RegisterCommandResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        return Task.FromResult(Result.Success(new RegisterCommandResponse(Guid.NewGuid().ToString())));
+        var result = Result.Success(
+            new RegisterCommandResponse(Guid.NewGuid().ToString()),
+            ResultType.Created);
+
+        return Task.FromResult(result);
     }
 }

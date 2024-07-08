@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Application.Authentication.Commands.Register;
 using AgendaManager.Domain.Common.Responses;
-using AgendaManager.WebApi.Contracts.Authentication;
+using AgendaManager.WebApi.Controllers.Authentication;
 using AgendaManager.WebApi.Extensions;
 using AgendaManager.WebApi.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +13,7 @@ namespace AgendaManager.WebApi.Controllers;
 public class AuthenticationController : ApiControllerBase
 {
     [HttpPost("register")]
-    public async Task<ActionResult<Result<RegisterResponse>>> Register(RegisterRequest request)
+    public async Task<ActionResult<Result<RegisterCommandResponse>>> Register(RegisterRequest request)
     {
         var result = await Sender.Send(
             new RegisterCommand(
@@ -23,20 +23,11 @@ public class AuthenticationController : ApiControllerBase
                 request.Password,
                 request.ConfirmPassword));
 
-        if (result.IsFailure)
-        {
-            return result
-                .MapTo<RegisterResponse>()
-                .ToHttpResponse(this);
-        }
-
-        return Result
-            .Success(new RegisterResponse(result.Value!.UserId))
-            .ToHttpResponse(this);
+        return result.ToHttpResponse(this);
     }
 
     [HttpPost("login")]
-    public ActionResult<Result<LoginResponse>> Login(LoginRequest request)
+    public ActionResult Login(LoginRequest request)
     {
         throw new NotImplementedException();
     }

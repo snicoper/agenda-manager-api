@@ -1,10 +1,8 @@
-﻿namespace AgendaManager.WebApi.Contracts.Authentication;
+﻿namespace AgendaManager.WebApi.Controllers.Authentication;
 
 public record RegisterRequest(
     string FirstName,
     string LastName,
     string Email,
     string Password,
-    string ConfirmPassword)
-{
-}
+    string ConfirmPassword);
