@@ -1,11 +1,12 @@
 ﻿using AgendaManager.Domain.Common.Responses;
+using AgendaManager.WebApi.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgendaManager.WebApi.Extensions;
 
 public static class ResultExtensions
 {
-    public static ActionResult<Result> MapToResponse(this Result result, ControllerBase controller)
+    public static ActionResult<Result> MapToResponse(this Result result, ApiControllerBase controller)
     {
         var statusCode = result.ResultTypeToStatusCodeMapper();
 
@@ -26,7 +27,7 @@ public static class ResultExtensions
 
     public static ActionResult<Result<TValue>> MapToResponse<TValue>(
         this Result<TValue> result,
-        ControllerBase controller)
+        ApiControllerBase controller)
     {
         var statusCode = result.ResultTypeToStatusCodeMapper();
 
@@ -45,7 +46,7 @@ public static class ResultExtensions
         };
     }
 
-    public static int ResultTypeToStatusCodeMapper(this Result result)
+    private static int ResultTypeToStatusCodeMapper(this Result result)
     {
         return result.ResultType switch
         {
@@ -89,7 +90,7 @@ public static class ResultExtensions
         return new BadRequestObjectResult(validationProblemDetails);
     }
 
-    private static NotFoundObjectResult HandleNotFoundResult(ControllerBase controller, string? description)
+    private static NotFoundObjectResult HandleNotFoundResult(ApiControllerBase controller, string? description)
     {
         ProblemDetails problemDetails = new()
         {
@@ -103,7 +104,7 @@ public static class ResultExtensions
     }
 
     private static ObjectResult HandleUnexpectedResult(
-        ControllerBase controller,
+        ApiControllerBase controller,
         int statusCode,
         ValidationError? validationError)
     {
