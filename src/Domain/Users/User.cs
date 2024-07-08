@@ -38,7 +38,7 @@ public class User : AuditableEntity
         return user;
     }
 
-    public User Update(EmailAddress email)
+    public User UpdateEmail(EmailAddress email)
     {
         User userUpdated = new(Id, email, UserName, FirstName, LastName) { Created = Created, CreatedBy = CreatedBy };
 

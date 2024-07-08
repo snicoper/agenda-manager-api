@@ -21,7 +21,7 @@ internal class UpdateUserHandler(IUsersRepository usersRepository, IUnitOfWork u
                 .ToResult<UpdateUserResponse>();
         }
 
-        var updatedUser = existingUser.Update(EmailAddress.From(request.Email));
+        var updatedUser = existingUser.UpdateEmail(EmailAddress.From(request.Email));
         usersRepository.Update(existingUser, updatedUser);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
