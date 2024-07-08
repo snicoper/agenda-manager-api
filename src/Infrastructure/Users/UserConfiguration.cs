@@ -36,10 +36,34 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(256)
             .IsRequired();
 
+        builder.Property(user => user.IsEmailConfirmed)
+            .IsRequired();
+
         builder.Property(user => user.FirstName)
             .HasMaxLength(256);
 
-        builder.Property(u => u.LastName)
+        builder.Property(user => user.LastName)
             .HasMaxLength(256);
+
+        builder.Property(user => user.Active)
+            .IsRequired();
+
+        builder.Property(user => user.PasswordHash)
+            .IsRequired();
+
+        builder.OwnsOne(
+            user => user.RefreshToken,
+            refreshTokenBuilder =>
+            {
+                refreshTokenBuilder.HasIndex(refreshToken => new { refreshToken.Token })
+                    .IsUnique();
+
+                refreshTokenBuilder.Property(refreshToken => refreshToken.Token)
+                    .HasColumnName("RefreshTokenToken")
+                    .HasMaxLength(256);
+
+                refreshTokenBuilder.Property(refreshToken => refreshToken.ExpiryTime)
+                    .HasColumnName("RefreshTokenExpiryTime");
+            });
     }
 }

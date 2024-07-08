@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240708171935_Initial")]
+    [Migration("20240708191536_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -95,6 +95,18 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("PermissionId");
 
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
                     b.HasKey("UserId", "PermissionId");
 
                     b.HasIndex("PermissionId");
@@ -112,6 +124,18 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("RoleId");
 
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
@@ -123,6 +147,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset>("Created")
                         .HasColumnType("timestamp with time zone");
@@ -139,6 +166,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
+                    b.Property<bool>("IsEmailConfirmed")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTimeOffset>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
@@ -148,6 +178,10 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<string>("LastName")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -201,6 +235,37 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AgendaManager.Domain.Users.User", b =>
+                {
+                    b.OwnsOne("AgendaManager.Domain.Users.ValueObjects.RefreshToken", "RefreshToken", b1 =>
+                        {
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<DateTimeOffset>("ExpiryTime")
+                                .HasColumnType("timestamp with time zone")
+                                .HasColumnName("RefreshTokenExpiryTime");
+
+                            b1.Property<string>("Token")
+                                .IsRequired()
+                                .HasMaxLength(256)
+                                .HasColumnType("character varying(256)")
+                                .HasColumnName("RefreshTokenToken");
+
+                            b1.HasKey("UserId");
+
+                            b1.HasIndex("Token")
+                                .IsUnique();
+
+                            b1.ToTable("Users");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.Navigation("RefreshToken");
                 });
 #pragma warning restore 612, 618
         }

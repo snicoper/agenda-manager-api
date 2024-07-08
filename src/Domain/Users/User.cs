@@ -24,19 +24,29 @@ public class User : AuditableEntity
         PasswordHash = passwordHash;
         FirstName = firstName;
         LastName = lastName;
+
+        Active = true;
+        RefreshToken = RefreshToken.Create(string.Empty, DateTimeOffset.UtcNow.AddDays(-1));
+        IsEmailConfirmed = false;
     }
 
     public UserId Id { get; } = null!;
 
     public string UserName { get; } = default!;
 
-    public EmailAddress Email { get; private set; } = null!;
+    public EmailAddress Email { get; } = null!;
+
+    public bool IsEmailConfirmed { get; private set; }
 
     public string? FirstName { get; }
 
     public string? LastName { get; }
 
+    public bool Active { get; private set; }
+
     public string PasswordHash { get; } = default!;
+
+    public RefreshToken? RefreshToken { get; private set; }
 
     public static User Create(
         UserId userId,
@@ -53,6 +63,18 @@ public class User : AuditableEntity
         return user;
     }
 
+    public User UpdatePassword(string passwordHash)
+    {
+        User userUpdated = new(Id, Email, UserName, passwordHash, FirstName, LastName)
+        {
+            Created = Created, CreatedBy = CreatedBy
+        };
+
+        AddDomainEvent(new UserPasswordUpdatedDomainEvent(Id));
+
+        return userUpdated;
+    }
+
     public User UpdateEmail(EmailAddress email)
     {
         User userUpdated = new(Id, email, UserName, PasswordHash, FirstName, LastName)
@@ -61,6 +83,50 @@ public class User : AuditableEntity
         };
 
         AddDomainEvent(new UserUpdatedDomainEvent(Id));
+
+        return userUpdated;
+    }
+
+    public User UpdateRefreshToken(RefreshToken refreshToken)
+    {
+        User userUpdated = new(Id, Email, UserName, PasswordHash, FirstName, LastName)
+        {
+            RefreshToken = refreshToken, Created = Created, CreatedBy = CreatedBy
+        };
+
+        return userUpdated;
+    }
+
+    public User Deactivate()
+    {
+        if (!Active)
+        {
+            return this;
+        }
+
+        User userUpdated = new(Id, Email, UserName, PasswordHash, FirstName, LastName)
+        {
+            Active = false, Created = Created, CreatedBy = CreatedBy
+        };
+
+        AddDomainEvent(new UserDeactivatedDomainEvent(Id));
+
+        return userUpdated;
+    }
+
+    public User Activate()
+    {
+        if (Active)
+        {
+            return this;
+        }
+
+        User userUpdated = new(Id, Email, UserName, PasswordHash, FirstName, LastName)
+        {
+            Active = true, Created = Created, CreatedBy = CreatedBy
+        };
+
+        AddDomainEvent(new UserActivatedDomainEvent(Id));
 
         return userUpdated;
     }

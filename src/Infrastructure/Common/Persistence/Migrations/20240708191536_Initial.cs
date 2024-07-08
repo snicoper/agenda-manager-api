@@ -50,8 +50,13 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    IsEmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
                     FirstName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     LastName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    Active = table.Column<bool>(type: "boolean", nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: false),
+                    RefreshTokenToken = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RefreshTokenExpiryTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
                     Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true),
@@ -67,7 +72,11 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    PermissionId = table.Column<Guid>(type: "uuid", nullable: false)
+                    PermissionId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
+                    Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true),
+                    LastModified = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -91,7 +100,11 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    RoleId = table.Column<Guid>(type: "uuid", nullable: false)
+                    RoleId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
+                    Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true),
+                    LastModified = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -136,6 +149,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 name: "IX_Users_Email",
                 table: "Users",
                 column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_RefreshTokenToken",
+                table: "Users",
+                column: "RefreshTokenToken",
                 unique: true);
 
             migrationBuilder.CreateIndex(
