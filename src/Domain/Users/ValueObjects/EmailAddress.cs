@@ -12,7 +12,7 @@ public class EmailAddress : ValueObject
 
         if (!Validate())
         {
-            throw new InvalidEmailException();
+            throw new InvalidEmailAddressException();
         }
     }
 

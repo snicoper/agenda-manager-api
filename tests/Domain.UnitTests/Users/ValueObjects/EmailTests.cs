@@ -31,6 +31,6 @@ public class EmailTests
         var act = () => EmailAddress.From(email);
 
         // Assert
-        act.Should().Throw<InvalidEmailException>();
+        act.Should().Throw<InvalidEmailAddressException>();
     }
 }
