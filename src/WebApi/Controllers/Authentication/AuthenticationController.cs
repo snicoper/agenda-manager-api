@@ -1,12 +1,11 @@
 ﻿using AgendaManager.Application.Authentication.Commands.Register;
 using AgendaManager.Domain.Common.Responses;
-using AgendaManager.WebApi.Controllers.Authentication;
 using AgendaManager.WebApi.Extensions;
 using AgendaManager.WebApi.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AgendaManager.WebApi.Controllers;
+namespace AgendaManager.WebApi.Controllers.Authentication;
 
 [AllowAnonymous]
 [Route("api/v{version:apiVersion}/authentication")]
