@@ -12,7 +12,7 @@ public class ResultGenericTests
         var result = Result.Success<string>("Hello");
 
         // Assert
-        result.Succeeded.Should().BeTrue();
+        result.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
@@ -25,7 +25,7 @@ public class ResultGenericTests
         var result = Result.Failure<string>();
 
         // Assert
-        result.Succeeded.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
         result.ResultType.Should().Be(errorType);
     }
 
@@ -40,7 +40,7 @@ public class ResultGenericTests
         var result = Result.Failure<string>(error);
 
         // Assert
-        result.Succeeded.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
         result.ResultType.Should().Be(errorType);
     }
 
@@ -56,7 +56,7 @@ public class ResultGenericTests
         var resultChanged = result.MapTo<int>();
 
         // Assert
-        resultChanged.Succeeded.Should().BeFalse();
+        resultChanged.IsSuccess.Should().BeFalse();
         resultChanged.Value.GetType().Should().Be(typeof(int));
         resultChanged.ResultType.Should().Be(errorType);
         resultChanged.HasValue.Should().BeFalse();
@@ -73,7 +73,7 @@ public class ResultGenericTests
         var resultChanged = result.MapTo<int>();
 
         // Assert
-        resultChanged.Succeeded.Should().BeTrue();
+        resultChanged.IsSuccess.Should().BeTrue();
         resultChanged.Value.GetType().Should().Be(typeof(int));
         resultChanged.ResultType.Should().Be(errorType);
         resultChanged.HasValue.Should().BeFalse();

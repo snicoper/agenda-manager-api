@@ -15,7 +15,7 @@ public class ResultTests
         var result = Result.Success();
 
         // Assert
-        result.Succeeded.Should().BeTrue();
+        result.IsSuccess.Should().BeTrue();
         result.ResultType.Should().Be(errorType);
     }
 
@@ -29,7 +29,7 @@ public class ResultTests
         var result = Result.Failure();
 
         // Assert
-        result.Succeeded.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
         result.ResultType.Should().Be(errorType);
     }
 
@@ -44,7 +44,7 @@ public class ResultTests
         var result = Result.Failure(error);
 
         // Assert
-        result.Succeeded.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
         result.ResultType.Should().Be(errorType);
     }
 }

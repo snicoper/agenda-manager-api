@@ -4,7 +4,7 @@ using AgendaManager.WebApi.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AgendaManager.WebApi.Controllers;
+namespace AgendaManager.WebApi.Controllers.Home;
 
 [Route("api/v{version:apiVersion}/home")]
 public class HomeController : ApiControllerBase

@@ -7,7 +7,7 @@ using AgendaManager.WebApi.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AgendaManager.WebApi.Controllers;
+namespace AgendaManager.WebApi.Controllers.Users;
 
 [Route("api/v{version:apiVersion}/users")]
 public class UsersController : ApiControllerBase
@@ -25,14 +25,18 @@ public class UsersController : ApiControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<Result<CreateUserResponse>>> CreateUser(CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(new CreateUserCommand("test2@example.com", "sdafsdfsdfsfsdfsdfsdfsdf"), cancellationToken);
+        var result = await Sender.Send(
+            new CreateUserCommand("test2@example.com", "sdafsdfsdfsfsdfsdfsdfsdf"),
+            cancellationToken);
 
         return result.ToHttpResponse(this);
     }
 
     [AllowAnonymous]
     [HttpPut("{userId:guid}")]
-    public async Task<ActionResult<Result<UpdateUserResponse>>> UpdateUser(Guid userId, CancellationToken cancellationToken)
+    public async Task<ActionResult<Result<UpdateUserResponse>>> UpdateUser(
+        Guid userId,
+        CancellationToken cancellationToken)
     {
         var result = await Sender.Send(new UpdateUserCommand(userId, "newtest@example.com"), cancellationToken);
 
