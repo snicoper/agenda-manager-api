@@ -12,6 +12,7 @@ public abstract class UserFactory
             Constants.Users.Email,
             Constants.Users.UserName,
             Constants.Users.FirstName,
-            Constants.Users.LastName);
+            Constants.Users.LastName,
+            Constants.Users.PasswordHash);
     }
 }

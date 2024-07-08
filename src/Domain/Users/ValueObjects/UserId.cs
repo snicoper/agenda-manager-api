@@ -2,9 +2,14 @@
 
 namespace AgendaManager.Domain.Users.ValueObjects;
 
-public class UserId(Guid value) : ValueObject
+public class UserId : ValueObject
 {
-    public Guid Value { get; } = value;
+    private UserId(Guid value)
+    {
+        Value = value;
+    }
+
+    public Guid Value { get; }
 
     public static UserId From(Guid value)
     {

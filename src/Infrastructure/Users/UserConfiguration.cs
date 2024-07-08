@@ -11,15 +11,15 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.ToTable("Users");
 
-        builder.HasKey(u => u.Id);
+        builder.HasKey(user => user.Id);
 
-        builder.HasIndex(u => u.UserName)
+        builder.HasIndex(user => user.UserName)
             .IsUnique();
 
-        builder.HasIndex(u => u.Email)
+        builder.HasIndex(user => user.Email)
             .IsUnique();
 
-        builder.Property(u => u.Id)
+        builder.Property(user => user.Id)
             .HasConversion(
                 id => id.Value,
                 id => UserId.From(id))
@@ -29,14 +29,14 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(100)
             .IsRequired();
 
-        builder.Property(u => u.Email)
+        builder.Property(user => user.Email)
             .HasConversion(
                 email => email.Value,
                 email => EmailAddress.From(email))
             .HasMaxLength(256)
             .IsRequired();
 
-        builder.Property(u => u.FirstName)
+        builder.Property(user => user.FirstName)
             .HasMaxLength(256);
 
         builder.Property(u => u.LastName)

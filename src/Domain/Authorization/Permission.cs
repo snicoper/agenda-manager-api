@@ -1,14 +1,21 @@
-﻿namespace AgendaManager.Domain.Authorization;
+﻿using AgendaManager.Domain.Authorization.ValueObjects;
+using AgendaManager.Domain.Common.Abstractions;
 
-public class Permission
+namespace AgendaManager.Domain.Authorization;
+
+public class Permission : AuditableEntity
 {
-    public Permission(string name, string description)
+    public Permission()
     {
-        Name = name;
-        Description = description;
     }
 
-    public string Name { get; set; }
+    public Permission(PermissionId id, string name)
+    {
+        Id = id;
+        Name = name;
+    }
 
-    public string Description { get; set; }
+    public PermissionId Id { get; set; } = null!;
+
+    public string Name { get; set; } = default!;
 }

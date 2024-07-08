@@ -10,28 +10,43 @@ public class User : AuditableEntity
     {
     }
 
-    private User(UserId userId, EmailAddress email, string userName, string? firstName, string? lastName)
+    private User(
+        UserId userId,
+        EmailAddress email,
+        string userName,
+        string passwordHash,
+        string? firstName,
+        string? lastName)
     {
         Id = userId;
         Email = email;
         UserName = userName;
+        PasswordHash = passwordHash;
         FirstName = firstName;
         LastName = lastName;
     }
 
-    public UserId Id { get; } = default!;
+    public UserId Id { get; } = null!;
 
     public string UserName { get; } = default!;
 
-    public EmailAddress Email { get; private set; } = default!;
+    public EmailAddress Email { get; private set; } = null!;
 
     public string? FirstName { get; }
 
     public string? LastName { get; }
 
-    public static User Create(UserId userId, EmailAddress email, string userName, string? firstName, string? lastName)
+    public string PasswordHash { get; } = default!;
+
+    public static User Create(
+        UserId userId,
+        EmailAddress email,
+        string userName,
+        string passwordHash,
+        string? firstName,
+        string? lastName)
     {
-        var user = new User(userId, email, userName, firstName, lastName);
+        var user = new User(userId, email, userName, passwordHash, firstName, lastName);
 
         user.AddDomainEvent(new UserCreatedDomainEvent(userId));
 
@@ -40,7 +55,10 @@ public class User : AuditableEntity
 
     public User UpdateEmail(EmailAddress email)
     {
-        User userUpdated = new(Id, email, UserName, FirstName, LastName) { Created = Created, CreatedBy = CreatedBy };
+        User userUpdated = new(Id, email, UserName, PasswordHash, FirstName, LastName)
+        {
+            Created = Created, CreatedBy = CreatedBy
+        };
 
         AddDomainEvent(new UserUpdatedDomainEvent(Id));
 

@@ -24,7 +24,8 @@ internal class CreateUserHandler(IUsersRepository usersRepository, IUnitOfWork u
             EmailAddress.From("test2@example.com"),
             "test2",
             "peric2o",
-            "palote2");
+            "palote2",
+            "password2");
 
         await usersRepository.AddAsync(newUser, cancellationToken);
 
