@@ -26,8 +26,8 @@ public class AuthenticationController : ApiControllerBase
     }
 
     [HttpPost("login")]
-    public ActionResult Login(LoginRequest request)
+    public ActionResult<Result> Login(LoginRequest request)
     {
-        throw new NotImplementedException();
+        return Result.Failure().MapToResponse(this);
     }
 }
