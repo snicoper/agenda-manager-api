@@ -1,5 +1,4 @@
 ﻿using AgendaManager.Domain.Common.Responses;
-using AgendaManager.WebApi.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgendaManager.WebApi.Extensions;
@@ -108,16 +107,6 @@ public static class ResultExtensions
         int statusCode,
         ValidationError? validationError)
     {
-        var log = controller.HttpContext
-            .RequestServices
-            .GetRequiredService<ILogger<ApiControllerBase>>();
-
-        log.LogError(
-            "Error in {Type}: {Code} - {@Error}",
-            controller.GetType(),
-            validationError?.Code,
-            validationError?.Description);
-
         return controller.Problem(statusCode: statusCode, detail: validationError?.Description);
     }
 }

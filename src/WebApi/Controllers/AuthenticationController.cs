@@ -23,7 +23,7 @@ public class AuthenticationController : ApiControllerBase
                 request.Password,
                 request.ConfirmPassword));
 
-        if (!result.Succeeded)
+        if (result.IsFailure)
         {
             return result
                 .MapTo<RegisterResponse>()

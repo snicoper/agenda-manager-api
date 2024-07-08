@@ -23,6 +23,8 @@ public class Result
 
     public bool Succeeded { get; }
 
+    public bool IsFailure => !Succeeded;
+
     public ResultType ResultType { get; private init; }
 
     public Error? Error { get; protected init; }
