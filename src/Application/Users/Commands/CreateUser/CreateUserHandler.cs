@@ -12,7 +12,7 @@ internal class CreateUserHandler(IUsersRepository usersRepository, IUnitOfWork u
 {
     public async Task<Result<CreateUserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        var existingUser = await usersRepository.GetByEmailAsync(Email.From(request.Email), cancellationToken);
+        var existingUser = await usersRepository.GetByEmailAsync(EmailAddress.From(request.Email), cancellationToken);
 
         if (existingUser is not null)
         {
@@ -21,7 +21,7 @@ internal class CreateUserHandler(IUsersRepository usersRepository, IUnitOfWork u
 
         var newUser = User.Create(
             UserId.Create(),
-            Email.From("test2@example.com"),
+            EmailAddress.From("test2@example.com"),
             "test2",
             "peric2o",
             "palote2");

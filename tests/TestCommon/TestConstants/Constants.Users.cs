@@ -8,7 +8,7 @@ public static partial class Constants
     {
         public static readonly UserId Id = UserId.Create();
 
-        public static readonly Email Email = Email.From("test@example.com");
+        public static readonly EmailAddress Email = EmailAddress.From("test@example.com");
 
         public static readonly string UserName = "test";
 

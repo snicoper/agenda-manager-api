@@ -10,7 +10,7 @@ public class User : AuditableEntity
     {
     }
 
-    private User(UserId userId, Email email, string userName, string? firstName, string? lastName)
+    private User(UserId userId, EmailAddress email, string userName, string? firstName, string? lastName)
     {
         Id = userId;
         Email = email;
@@ -23,13 +23,13 @@ public class User : AuditableEntity
 
     public string UserName { get; } = default!;
 
-    public Email Email { get; private set; } = default!;
+    public EmailAddress Email { get; private set; } = default!;
 
     public string? FirstName { get; }
 
     public string? LastName { get; }
 
-    public static User Create(UserId userId, Email email, string userName, string? firstName, string? lastName)
+    public static User Create(UserId userId, EmailAddress email, string userName, string? firstName, string? lastName)
     {
         var user = new User(userId, email, userName, firstName, lastName);
 
@@ -38,7 +38,7 @@ public class User : AuditableEntity
         return user;
     }
 
-    public User Update(Email email)
+    public User Update(EmailAddress email)
     {
         User userUpdated = new(Id, email, UserName, FirstName, LastName) { Created = Created, CreatedBy = CreatedBy };
 

@@ -1,13 +1,12 @@
 ﻿using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Common.Constants;
 using AgendaManager.Domain.Users.Exceptions;
 using DomainRegex = AgendaManager.Domain.Common.Utils.DomainRegex;
 
 namespace AgendaManager.Domain.Users.ValueObjects;
 
-public class Email : ValueObject
+public class EmailAddress : ValueObject
 {
-    private Email(string value)
+    private EmailAddress(string value)
     {
         Value = value;
 
@@ -19,9 +18,9 @@ public class Email : ValueObject
 
     public string Value { get; }
 
-    public static Email From(string value)
+    public static EmailAddress From(string value)
     {
-        return new Email(value);
+        return new EmailAddress(value);
     }
 
     protected override IEnumerable<object> GetEqualityComponents()

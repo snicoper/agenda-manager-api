@@ -13,7 +13,7 @@ public class EmailTests
         const string email = "test@test.com";
 
         // Act
-        var emailValueObject = Email.From(email);
+        var emailValueObject = EmailAddress.From(email);
 
         // Assert
         emailValueObject.Value.Should().Be(email);
@@ -28,7 +28,7 @@ public class EmailTests
     public void Email_ShouldThrowInvalidEmailException_WhenInvalidEmailIsPassed(string email)
     {
         // Act
-        var act = () => Email.From(email);
+        var act = () => EmailAddress.From(email);
 
         // Assert
         act.Should().Throw<InvalidEmailException>();

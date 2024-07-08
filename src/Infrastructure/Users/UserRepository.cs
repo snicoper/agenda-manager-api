@@ -19,7 +19,7 @@ public class UserRepository(AppDbContext context)
         return await context.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
     }
 
-    public async Task<User?> GetByEmailAsync(Email email, CancellationToken cancellationToken = default)
+    public async Task<User?> GetByEmailAsync(EmailAddress email, CancellationToken cancellationToken = default)
     {
         return await context.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }

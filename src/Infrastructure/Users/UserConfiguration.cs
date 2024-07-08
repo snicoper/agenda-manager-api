@@ -32,7 +32,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.Email)
             .HasConversion(
                 email => email.Value,
-                email => Email.From(email))
+                email => EmailAddress.From(email))
             .HasMaxLength(256)
             .IsRequired();
 
