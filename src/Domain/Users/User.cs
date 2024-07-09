@@ -32,21 +32,21 @@ public class User : AuditableEntity
 
     public UserId Id { get; init; } = null!;
 
-    public string UserName { get; init; } = default!;
+    public string UserName { get; private set; } = default!;
 
-    public EmailAddress Email { get; init; } = null!;
+    public EmailAddress Email { get; } = null!;
 
-    public bool IsEmailConfirmed { get; init; }
+    public bool IsEmailConfirmed { get; private set; }
 
-    public string? FirstName { get; init; }
+    public string? FirstName { get; private set; }
 
-    public string? LastName { get; init; }
+    public string? LastName { get; private set; }
 
-    public bool Active { get; init; }
+    public bool Active { get; private set; }
 
-    public string PasswordHash { get; init; } = default!;
+    public string PasswordHash { get; private set; } = default!;
 
-    public RefreshToken? RefreshToken { get; init; }
+    public RefreshToken? RefreshToken { get; private set; }
 
     public static User Create(
         UserId userId,
@@ -56,57 +56,49 @@ public class User : AuditableEntity
         string? firstName,
         string? lastName)
     {
-        var user = new User(userId, email, userName, passwordHash, firstName, lastName);
+        User user = new(userId, email, userName, passwordHash, firstName, lastName);
 
         user.AddDomainEvent(new UserCreatedDomainEvent(userId));
 
         return user;
     }
 
-    public User UpdatePassword(string passwordHash)
+    public User UpdatePasswordHash(string passwordHash)
     {
-        User userUpdated = new(Id, Email, UserName, passwordHash, FirstName, LastName)
+        if (PasswordHash == passwordHash)
         {
-            Active = Active,
-            IsEmailConfirmed = IsEmailConfirmed,
-            RefreshToken = RefreshToken,
-            Created = Created,
-            CreatedBy = CreatedBy
-        };
+            return this;
+        }
+
+        PasswordHash = passwordHash;
 
         AddDomainEvent(new UserPasswordUpdatedDomainEvent(Id));
 
-        return userUpdated;
+        return this;
     }
 
     public User UpdateEmail(EmailAddress email)
     {
-        User userUpdated = new(Id, email, UserName, PasswordHash, FirstName, LastName)
+        if (Email.Equals(email))
         {
-            Active = Active,
-            IsEmailConfirmed = IsEmailConfirmed,
-            RefreshToken = RefreshToken,
-            Created = Created,
-            CreatedBy = CreatedBy
-        };
+            return this;
+        }
 
         AddDomainEvent(new UserEmailUpdatedDomainEvent(Id));
 
-        return userUpdated;
+        return this;
     }
 
     public User UpdateRefreshToken(RefreshToken refreshToken)
     {
-        User userUpdated = new(Id, Email, UserName, PasswordHash, FirstName, LastName)
+        if (RefreshToken!.Equals(refreshToken))
         {
-            Active = Active,
-            IsEmailConfirmed = IsEmailConfirmed,
-            RefreshToken = refreshToken,
-            Created = Created,
-            CreatedBy = CreatedBy
-        };
+            return this;
+        }
 
-        return userUpdated;
+        RefreshToken = refreshToken;
+
+        return this;
     }
 
     public User Deactivate()
@@ -116,18 +108,11 @@ public class User : AuditableEntity
             return this;
         }
 
-        User userUpdated = new(Id, Email, UserName, PasswordHash, FirstName, LastName)
-        {
-            Active = false,
-            IsEmailConfirmed = IsEmailConfirmed,
-            RefreshToken = RefreshToken,
-            Created = Created,
-            CreatedBy = CreatedBy
-        };
+        Active = false;
 
         AddDomainEvent(new UserDeactivatedDomainEvent(Id));
 
-        return userUpdated;
+        return this;
     }
 
     public User Activate()
@@ -137,33 +122,24 @@ public class User : AuditableEntity
             return this;
         }
 
-        User userUpdated = new(Id, Email, UserName, PasswordHash, FirstName, LastName)
-        {
-            Active = true,
-            IsEmailConfirmed = IsEmailConfirmed,
-            RefreshToken = RefreshToken,
-            Created = Created,
-            CreatedBy = CreatedBy
-        };
+        Active = true;
 
         AddDomainEvent(new UserActivatedDomainEvent(Id));
 
-        return userUpdated;
+        return this;
     }
 
     public User ConfirmEmail()
     {
-        User userUpdated = new(Id, Email, UserName, PasswordHash, FirstName, LastName)
+        if (IsEmailConfirmed)
         {
-            Active = Active,
-            IsEmailConfirmed = true,
-            RefreshToken = RefreshToken,
-            Created = Created,
-            CreatedBy = CreatedBy
-        };
+            return this;
+        }
+
+        IsEmailConfirmed = true;
 
         AddDomainEvent(new UserEmailConfirmedDomainEvent(Id));
 
-        return userUpdated;
+        return this;
     }
 }

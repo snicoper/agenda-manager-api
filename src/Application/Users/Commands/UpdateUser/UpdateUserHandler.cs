@@ -12,17 +12,17 @@ internal class UpdateUserHandler(IUsersRepository usersRepository, IUnitOfWork u
 {
     public async Task<Result<UpdateUserResponse>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
-        var existingUser = await usersRepository.GetByIdAsync(UserId.From(request.Id), cancellationToken);
+        var user = await usersRepository.GetByIdAsync(UserId.From(request.Id), cancellationToken);
 
-        if (existingUser is null)
+        if (user is null)
         {
             return Error
                 .NotFound(nameof(User), nameof(UserId))
                 .ToResult<UpdateUserResponse>();
         }
 
-        var updatedUser = existingUser.UpdateEmail(EmailAddress.From(request.Email));
-        usersRepository.Update(existingUser, updatedUser);
+        user.UpdateEmail(EmailAddress.From(request.Email));
+        usersRepository.Update(user);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 

@@ -34,8 +34,8 @@ public class UserRepository(AppDbContext context)
         await context.Users.AddAsync(newUser, cancellationToken);
     }
 
-    public void Update(User existingUser, User updatedUser)
+    public void Update(User user)
     {
-        context.Entry(existingUser).CurrentValues.SetValues(updatedUser);
+        context.Users.Update(user);
     }
 }

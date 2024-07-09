@@ -14,5 +14,5 @@ public interface IUsersRepository
 
     Task AddAsync(User newUser, CancellationToken cancellationToken = default);
 
-    void Update(User existingUser, User updatedUser);
+    void Update(User user);
 }
