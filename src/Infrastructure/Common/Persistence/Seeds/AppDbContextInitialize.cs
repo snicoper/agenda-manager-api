@@ -86,10 +86,8 @@ public class AppDbContextInitialize(
         if (!await context.Users.AnyAsync(u => u.Email.Equals(admin.Email)))
         {
             admin.ConfirmEmail();
-
-            await context.Users.AddAsync(admin);
-
             roles.ForEach(r => admin.AddRole(r));
+            await context.Users.AddAsync(admin);
         }
 
         // Manager user.
@@ -104,15 +102,12 @@ public class AppDbContextInitialize(
         if (!await context.Users.AnyAsync(u => u.Email.Equals(manager.Email)))
         {
             manager.ConfirmEmail();
-
-            await context.Users.AddAsync(manager);
-
             var rolesForManager = new List<Role>
             {
                 roles.First(r => r.Name == Roles.Manager), roles.First(r => r.Name == Roles.Client)
             };
-
             rolesForManager.ForEach(r => manager.AddRole(r));
+            await context.Users.AddAsync(manager);
         }
 
         // Client user.
@@ -127,12 +122,9 @@ public class AppDbContextInitialize(
         if (!await context.Users.AnyAsync(u => u.Email.Equals(client.Email)))
         {
             client.ConfirmEmail();
-
-            await context.Users.AddAsync(client);
-
             var rolesForClient = new List<Role> { roles.First(r => r.Name == Roles.Client) };
-
             rolesForClient.ForEach(r => client.AddRole(r));
+            await context.Users.AddAsync(client);
         }
 
         await context.SaveChangesAsync();
