@@ -1,5 +1,6 @@
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Models.Users;
+using AgendaManager.Domain.Authorization.Persistence;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.ValueObjects;
