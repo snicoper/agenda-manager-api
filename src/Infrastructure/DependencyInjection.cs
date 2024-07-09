@@ -3,6 +3,7 @@ using AgendaManager.Application.Common.Interfaces.Clock;
 using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Domain.Authorization.Persistence;
+using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Persistence;
 using AgendaManager.Infrastructure.Authorization;
 using AgendaManager.Infrastructure.Common.Authentication;
@@ -98,8 +99,8 @@ public static class DependencyInjection
     {
         services.AddScoped<IAuthenticationManager, AuthenticationManager>();
         services.AddScoped<IAuthorizationManager, AuthorizationManager>();
-        services.AddScoped<IPasswordManager, PasswordManager>();
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+        services.AddScoped<PasswordManager>();
 
         JwtSettings jwtSettings = new();
         configuration.Bind(JwtSettings.SectionName, jwtSettings);

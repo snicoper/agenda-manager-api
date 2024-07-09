@@ -1,8 +1,8 @@
 ﻿using AgendaManager.Domain.Authorization;
+using AgendaManager.Domain.Authorization.Persistence;
 using AgendaManager.Domain.Authorization.ValueObjects;
 using AgendaManager.Domain.Common.Constants;
 using AgendaManager.Domain.Users;
-using AgendaManager.Domain.Users.Persistence;
 using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -11,7 +11,8 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Seeds;
 
 public class AppDbContextInitialize(
     AppDbContext context,
-    IPasswordManager passwordManager,
+    PasswordManager passwordManager,
+    IAuthorizationManager authorizationManager,
     ILogger<AppDbContextInitialize> logger)
 {
     public async Task InitialiseAsync()
@@ -86,7 +87,12 @@ public class AppDbContextInitialize(
         if (!await context.Users.AnyAsync(u => u.Email.Equals(admin.Email)))
         {
             admin.ConfirmEmail();
-            roles.ForEach(r => admin.AddRole(r));
+
+            foreach (var role in roles)
+            {
+                await authorizationManager.AddRoleAsync(admin.Id, role.Id);
+            }
+
             await context.Users.AddAsync(admin);
         }
 
@@ -106,7 +112,12 @@ public class AppDbContextInitialize(
             {
                 roles.First(r => r.Name == Roles.Manager), roles.First(r => r.Name == Roles.Client)
             };
-            rolesForManager.ForEach(r => manager.AddRole(r));
+
+            foreach (var role in rolesForManager)
+            {
+                await authorizationManager.AddRoleAsync(manager.Id, role.Id);
+            }
+
             await context.Users.AddAsync(manager);
         }
 
@@ -123,7 +134,12 @@ public class AppDbContextInitialize(
         {
             client.ConfirmEmail();
             var rolesForClient = new List<Role> { roles.First(r => r.Name == Roles.Client) };
-            rolesForClient.ForEach(r => client.AddRole(r));
+
+            foreach (var role in rolesForClient)
+            {
+                await authorizationManager.AddRoleAsync(client.Id, role.Id);
+            }
+
             await context.Users.AddAsync(client);
         }
 

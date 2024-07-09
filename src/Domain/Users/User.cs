@@ -75,38 +75,6 @@ public sealed class User : AuditableEntity
         return user;
     }
 
-    public void AddRole(Role role)
-    {
-        if (!UserRoles.Any(ur => Equals(ur.RoleId, role.Id)))
-        {
-            UserRoles.Add(UserRole.Create(Id, role.Id));
-        }
-    }
-
-    public void RemoveRole(Role role)
-    {
-        if (UserRoles.Any(ur => Equals(ur.RoleId, role.Id)))
-        {
-            UserRoles.Remove(UserRole.Create(Id, role.Id));
-        }
-    }
-
-    public void AddPermission(Permission permission)
-    {
-        if (!UserPermissions.Any(up => Equals(up.PermissionId, permission.Id)))
-        {
-            UserPermissions.Add(UserPermission.Create(Id, permission.Id));
-        }
-    }
-
-    public void RemovePermission(Permission permission)
-    {
-        if (UserPermissions.Any(up => Equals(up.PermissionId, permission.Id)))
-        {
-            UserPermissions.Remove(UserPermission.Create(Id, permission.Id));
-        }
-    }
-
     public User UpdatePasswordHash(string passwordHash)
     {
         if (PasswordHash == passwordHash)
@@ -145,34 +113,6 @@ public sealed class User : AuditableEntity
         return this;
     }
 
-    public User Deactivate()
-    {
-        if (!Active)
-        {
-            return this;
-        }
-
-        Active = false;
-
-        AddDomainEvent(new UserDeactivatedDomainEvent(Id));
-
-        return this;
-    }
-
-    public User Activate()
-    {
-        if (Active)
-        {
-            return this;
-        }
-
-        Active = true;
-
-        AddDomainEvent(new UserActivatedDomainEvent(Id));
-
-        return this;
-    }
-
     public User ConfirmEmail()
     {
         if (IsEmailConfirmed)
@@ -183,6 +123,20 @@ public sealed class User : AuditableEntity
         IsEmailConfirmed = true;
 
         AddDomainEvent(new UserEmailConfirmedDomainEvent(Id));
+
+        return this;
+    }
+
+    public User SetActiveState(bool state)
+    {
+        if (Active == state)
+        {
+            return this;
+        }
+
+        Active = state;
+
+        AddDomainEvent(new UserActiveStateChangedDomainEvent(Id, state));
 
         return this;
     }

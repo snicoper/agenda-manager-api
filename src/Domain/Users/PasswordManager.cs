@@ -1,10 +1,9 @@
 ﻿using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.Utils;
-using AgendaManager.Domain.Users.Persistence;
 
-namespace AgendaManager.Infrastructure.Common.Authentication;
+namespace AgendaManager.Domain.Users;
 
-public class PasswordManager : IPasswordManager
+public class PasswordManager
 {
     public Result<string> HashPassword(string password)
     {
@@ -13,8 +12,8 @@ public class PasswordManager : IPasswordManager
             : Result.Success(BCrypt.Net.BCrypt.EnhancedHashPassword(password));
     }
 
-    public bool IsValidPassword(string password, string hash)
+    public bool VerifyPassword(string password, string hashedPassword)
     {
-        return BCrypt.Net.BCrypt.EnhancedVerify(password, hash);
+        return BCrypt.Net.BCrypt.EnhancedVerify(password, hashedPassword);
     }
 }
