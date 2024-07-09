@@ -2,9 +2,9 @@
 
 namespace AgendaManager.Application.Users.Queries.GetUsers;
 
-public class GetUsersValidator : AbstractValidator<GetUsersQuery>
+public class GetUsersQueryValidator : AbstractValidator<GetUsersQuery>
 {
-    public GetUsersValidator()
+    public GetUsersQueryValidator()
     {
         RuleFor(x => x.Email).EmailAddress();
     }

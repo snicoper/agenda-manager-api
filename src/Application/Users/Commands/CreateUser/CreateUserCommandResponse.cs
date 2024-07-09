@@ -1,3 +1,3 @@
 ﻿namespace AgendaManager.Application.Users.Commands.CreateUser;
 
-public record CreateUserResponse(Guid Id);
+public record CreateUserCommandResponse(Guid Id);

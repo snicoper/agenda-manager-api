@@ -2,4 +2,4 @@
 
 namespace AgendaManager.Application.Users.Commands.CreateUser;
 
-public record CreateUserCommand(string Email, string Password) : IQuery<CreateUserResponse>;
+public record CreateUserCommand(string Email, string Password) : IQuery<CreateUserCommandResponse>;

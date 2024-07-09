@@ -6,10 +6,12 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Application.Users.Commands.UpdateUser;
 
-internal class UpdateUserHandler(IUsersRepository usersRepository, IUnitOfWork unitOfWork)
-    : ICommandHandler<UpdateUserCommand, UpdateUserResponse>
+internal class UpdateUserCommandHandler(IUsersRepository usersRepository, IUnitOfWork unitOfWork)
+    : ICommandHandler<UpdateUserCommand, UpdateUserCommandResponse>
 {
-    public async Task<Result<UpdateUserResponse>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<UpdateUserCommandResponse>> Handle(
+        UpdateUserCommand request,
+        CancellationToken cancellationToken)
     {
         var user = await usersRepository.GetByIdAsync(UserId.From(request.Id), cancellationToken);
 
@@ -17,7 +19,7 @@ internal class UpdateUserHandler(IUsersRepository usersRepository, IUnitOfWork u
         {
             return Error
                 .NotFound("User not found")
-                .ToResult<UpdateUserResponse>();
+                .ToResult<UpdateUserCommandResponse>();
         }
 
         user.UpdateEmail(EmailAddress.From(request.Email));
@@ -25,6 +27,6 @@ internal class UpdateUserHandler(IUsersRepository usersRepository, IUnitOfWork u
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Success(new UpdateUserResponse(request.Email));
+        return Result.Success(new UpdateUserCommandResponse(request.Email));
     }
 }

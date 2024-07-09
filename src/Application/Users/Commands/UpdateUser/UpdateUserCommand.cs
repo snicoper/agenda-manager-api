@@ -2,4 +2,4 @@
 
 namespace AgendaManager.Application.Users.Commands.UpdateUser;
 
-public record UpdateUserCommand(Guid Id, string Email) : ICommand<UpdateUserResponse>;
+public record UpdateUserCommand(Guid Id, string Email) : ICommand<UpdateUserCommandResponse>;

@@ -2,9 +2,9 @@
 
 namespace AgendaManager.Application.Users.Commands.CreateUser;
 
-public class CreateUserValidator : AbstractValidator<CreateUserCommand>
+public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 {
-    public CreateUserValidator()
+    public CreateUserCommandValidator()
     {
         RuleFor(r => r.Email).EmailAddress();
 

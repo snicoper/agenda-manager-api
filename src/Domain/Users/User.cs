@@ -32,7 +32,7 @@ public sealed class User : AuditableEntity
         IsEmailConfirmed = false;
     }
 
-    public UserId Id { get; init; } = null!;
+    public UserId Id { get; } = null!;
 
     public string UserName { get; private set; } = default!;
 

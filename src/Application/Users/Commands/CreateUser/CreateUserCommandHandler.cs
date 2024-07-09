@@ -7,16 +7,18 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Application.Users.Commands.CreateUser;
 
-internal class CreateUserHandler(IUsersRepository usersRepository, IUnitOfWork unitOfWork)
-    : IQueryHandler<CreateUserCommand, CreateUserResponse>
+internal class CreateUserCommandHandler(IUsersRepository usersRepository, IUnitOfWork unitOfWork)
+    : IQueryHandler<CreateUserCommand, CreateUserCommandResponse>
 {
-    public async Task<Result<CreateUserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<CreateUserCommandResponse>> Handle(
+        CreateUserCommand request,
+        CancellationToken cancellationToken)
     {
         var existingUser = await usersRepository.GetByEmailAsync(EmailAddress.From(request.Email), cancellationToken);
 
         if (existingUser is not null)
         {
-            return Error.Conflict("The Email already exists").ToResult<CreateUserResponse>();
+            return Error.Conflict("The Email already exists").ToResult<CreateUserCommandResponse>();
         }
 
         var newUser = User.Create(
@@ -30,6 +32,6 @@ internal class CreateUserHandler(IUsersRepository usersRepository, IUnitOfWork u
         await usersRepository.AddAsync(newUser, cancellationToken);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
-        return Result.Create(new CreateUserResponse(newUser.Id.Value));
+        return Result.Create(new CreateUserCommandResponse(newUser.Id.Value));
     }
 }
