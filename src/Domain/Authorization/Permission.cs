@@ -24,5 +24,5 @@ public class Permission : AuditableEntity
     public virtual ICollection<UserPermission> UserPermissions { get; } = new HashSet<UserPermission>();
 
     [NotMapped]
-    public IEnumerable<User> Users => UserPermissions.Select(up => up.User).ToList();
+    public IReadOnlyCollection<User> Users => UserPermissions.Select(up => up.User).ToList();
 }

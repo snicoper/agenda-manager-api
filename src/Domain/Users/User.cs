@@ -55,10 +55,10 @@ public class User : AuditableEntity
     public virtual ICollection<UserPermission> UserPermissions { get; } = new HashSet<UserPermission>();
 
     [NotMapped]
-    public IEnumerable<Role> Roles => UserRoles.Select(ur => ur.Role).ToList();
+    public IReadOnlyCollection<Role> Roles => UserRoles.Select(ur => ur.Role).ToList();
 
     [NotMapped]
-    public IEnumerable<Permission> Permissions => UserPermissions.Select(up => up.Permission).ToList();
+    public IReadOnlyCollection<Permission> Permissions => UserPermissions.Select(up => up.Permission).ToList();
 
     public static User Create(
         UserId userId,

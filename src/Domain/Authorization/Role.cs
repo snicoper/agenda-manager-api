@@ -24,5 +24,5 @@ public class Role : AuditableEntity
     public virtual ICollection<UserRole> UserRoles { get; } = new HashSet<UserRole>();
 
     [NotMapped]
-    public IEnumerable<User> Users => UserRoles.Select(userRole => userRole.User).ToList();
+    public IReadOnlyCollection<User> Users => UserRoles.Select(userRole => userRole.User).ToList();
 }
