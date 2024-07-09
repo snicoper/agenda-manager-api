@@ -7,14 +7,14 @@ namespace AgendaManager.Domain.Authorization;
 
 public class UserRole : AuditableEntity
 {
-    private UserRole()
-    {
-    }
-
     private UserRole(UserId userId, RoleId roleId)
     {
         UserId = userId;
         RoleId = roleId;
+    }
+
+    private UserRole()
+    {
     }
 
     public UserId UserId { get; private set; } = null!;
@@ -24,4 +24,9 @@ public class UserRole : AuditableEntity
     public RoleId RoleId { get; private set; } = null!;
 
     public Role Role { get; private set; } = null!;
+
+    public static UserRole Create(UserId userId, RoleId roleId)
+    {
+        return new UserRole(userId, roleId);
+    }
 }

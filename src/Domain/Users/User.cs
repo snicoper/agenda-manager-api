@@ -1,4 +1,6 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using AgendaManager.Domain.Authorization;
+using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.ValueObjects;
 
@@ -47,6 +49,16 @@ public class User : AuditableEntity
     public string PasswordHash { get; private set; } = default!;
 
     public RefreshToken? RefreshToken { get; private set; }
+
+    public virtual ICollection<UserRole> UserRoles { get; } = new HashSet<UserRole>();
+
+    public virtual ICollection<UserPermission> UserPermissions { get; } = new HashSet<UserPermission>();
+
+    [NotMapped]
+    public IEnumerable<Role> Roles => UserRoles.Select(ur => ur.Role).ToList();
+
+    [NotMapped]
+    public IEnumerable<Permission> Permissions => UserPermissions.Select(up => up.Permission).ToList();
 
     public static User Create(
         UserId userId,

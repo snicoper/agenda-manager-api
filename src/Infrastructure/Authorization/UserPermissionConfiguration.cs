@@ -12,25 +12,27 @@ public class UserPermissionConfiguration : IEntityTypeConfiguration<UserPermissi
     {
         builder.ToTable("UserPermissions");
 
-        builder.HasKey(userPermission => new { userPermission.UserId, userPermission.PermissionId });
+        builder.HasKey(up => new { up.UserId, up.PermissionId });
 
-        // builder.HasOne(userPermission => userPermission.User)
-        //     .WithMany(user => user.Permissions)
-        //     .HasForeignKey(userPermission => userPermission.UserId)
-        //     .OnDelete(DeleteBehavior.Cascade);
-        //
-        // builder.HasOne(userPermission => userPermission.Permission)
-        //     .WithMany(permission => permission.Users)
-        //     .HasForeignKey(userPermission => userPermission.PermissionId)
-        //     .OnDelete(DeleteBehavior.Cascade);
-        builder.Property(userPermission => userPermission.UserId)
+        builder.HasIndex(up => up.UserId);
+        builder.HasIndex(up => up.PermissionId);
+
+        builder.HasOne(up => up.User)
+            .WithMany(u => u.UserPermissions)
+            .HasForeignKey(up => up.UserId);
+
+        builder.HasOne(up => up.Permission)
+            .WithMany(p => p.UserPermissions)
+            .HasForeignKey(up => up.PermissionId);
+
+        builder.Property(up => up.UserId)
             .HasConversion(
                 userId => userId.Value,
                 value => UserId.From(value))
             .HasColumnName(nameof(UserId))
             .IsRequired();
 
-        builder.Property(userPermission => userPermission.PermissionId)
+        builder.Property(up => up.PermissionId)
             .HasConversion(
                 permissionId => permissionId.Value,
                 value => PermissionId.From(value))

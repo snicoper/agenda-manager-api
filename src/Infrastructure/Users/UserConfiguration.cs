@@ -11,15 +11,15 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.ToTable("Users");
 
-        builder.HasKey(user => user.Id);
+        builder.HasKey(u => u.Id);
 
-        builder.HasIndex(user => user.UserName)
+        builder.HasIndex(u => u.UserName)
             .IsUnique();
 
-        builder.HasIndex(user => user.Email)
+        builder.HasIndex(u => u.Email)
             .IsUnique();
 
-        builder.Property(user => user.Id)
+        builder.Property(u => u.Id)
             .HasConversion(
                 id => id.Value,
                 id => UserId.From(id))
@@ -29,40 +29,40 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(100)
             .IsRequired();
 
-        builder.Property(user => user.Email)
+        builder.Property(u => u.Email)
             .HasConversion(
                 email => email.Value,
                 email => EmailAddress.From(email))
             .HasMaxLength(256)
             .IsRequired();
 
-        builder.Property(user => user.IsEmailConfirmed)
+        builder.Property(u => u.IsEmailConfirmed)
             .IsRequired();
 
-        builder.Property(user => user.FirstName)
+        builder.Property(u => u.FirstName)
             .HasMaxLength(256);
 
-        builder.Property(user => user.LastName)
+        builder.Property(u => u.LastName)
             .HasMaxLength(256);
 
-        builder.Property(user => user.Active)
+        builder.Property(u => u.Active)
             .IsRequired();
 
-        builder.Property(user => user.PasswordHash)
+        builder.Property(u => u.PasswordHash)
             .IsRequired();
 
         builder.OwnsOne(
             user => user.RefreshToken,
             refreshTokenBuilder =>
             {
-                refreshTokenBuilder.HasIndex(refreshToken => new { refreshToken.Token })
+                refreshTokenBuilder.HasIndex(rt => new { rt.Token })
                     .IsUnique();
 
-                refreshTokenBuilder.Property(refreshToken => refreshToken.Token)
+                refreshTokenBuilder.Property(rt => rt.Token)
                     .HasColumnName("RefreshTokenToken")
                     .HasMaxLength(256);
 
-                refreshTokenBuilder.Property(refreshToken => refreshToken.ExpiryTime)
+                refreshTokenBuilder.Property(rt => rt.ExpiryTime)
                     .HasColumnName("RefreshTokenExpiryTime");
             });
     }

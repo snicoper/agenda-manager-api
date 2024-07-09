@@ -11,18 +11,18 @@ public class PermissionConfiguration : IEntityTypeConfiguration<Permission>
     {
         builder.ToTable("Permissions");
 
-        builder.HasKey(permission => permission.Id);
+        builder.HasKey(p => p.Id);
 
-        builder.HasIndex(permission => permission.Name)
+        builder.HasIndex(p => p.Name)
             .IsUnique();
 
-        builder.Property(permission => permission.Id)
+        builder.Property(p => p.Id)
             .HasConversion(
                 id => id.Value,
                 value => PermissionId.From(value))
             .IsRequired();
 
-        builder.Property(permission => permission.Name)
+        builder.Property(p => p.Name)
             .HasMaxLength(100)
             .IsRequired();
     }

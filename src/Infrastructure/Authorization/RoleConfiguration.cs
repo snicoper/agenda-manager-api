@@ -11,18 +11,18 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
     {
         builder.ToTable("Roles");
 
-        builder.HasKey(role => role.Id);
+        builder.HasKey(r => r.Id);
 
-        builder.HasIndex(role => role.Name)
+        builder.HasIndex(r => r.Name)
             .IsUnique();
 
-        builder.Property(role => role.Id)
+        builder.Property(r => r.Id)
             .HasConversion(
                 id => id.Value,
                 value => RoleId.From(value))
             .IsRequired();
 
-        builder.Property(role => role.Name)
+        builder.Property(r => r.Name)
             .HasMaxLength(100)
             .IsRequired();
     }

@@ -108,6 +108,8 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
                     b.HasIndex("PermissionId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("UserPermissions", (string)null);
                 });
 
@@ -136,6 +138,8 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserRoles", (string)null);
                 });
@@ -199,13 +203,13 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
             modelBuilder.Entity("AgendaManager.Domain.Authorization.UserPermission", b =>
                 {
                     b.HasOne("AgendaManager.Domain.Authorization.Permission", "Permission")
-                        .WithMany()
+                        .WithMany("UserPermissions")
                         .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AgendaManager.Domain.Users.User", "User")
-                        .WithMany()
+                        .WithMany("UserPermissions")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -218,13 +222,13 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
             modelBuilder.Entity("AgendaManager.Domain.Authorization.UserRole", b =>
                 {
                     b.HasOne("AgendaManager.Domain.Authorization.Role", "Role")
-                        .WithMany()
+                        .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AgendaManager.Domain.Users.User", "User")
-                        .WithMany()
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -263,6 +267,23 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         });
 
                     b.Navigation("RefreshToken");
+                });
+
+            modelBuilder.Entity("AgendaManager.Domain.Authorization.Permission", b =>
+                {
+                    b.Navigation("UserPermissions");
+                });
+
+            modelBuilder.Entity("AgendaManager.Domain.Authorization.Role", b =>
+                {
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("AgendaManager.Domain.Users.User", b =>
+                {
+                    b.Navigation("UserPermissions");
+
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

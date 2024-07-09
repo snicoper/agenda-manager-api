@@ -12,16 +12,27 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
     {
         builder.ToTable("UserRoles");
 
-        builder.HasKey(userRole => new { userRole.UserId, userRole.RoleId });
+        builder.HasKey(ur => new { ur.UserId, ur.RoleId });
 
-        builder.Property(userRole => userRole.UserId)
+        builder.HasIndex(ur => ur.UserId);
+        builder.HasIndex(ur => ur.RoleId);
+
+        builder.HasOne(ur => ur.User)
+            .WithMany(u => u.UserRoles)
+            .HasForeignKey(ur => ur.UserId);
+
+        builder.HasOne(ur => ur.Role)
+            .WithMany(r => r.UserRoles)
+            .HasForeignKey(ur => ur.RoleId);
+
+        builder.Property(ur => ur.UserId)
             .HasConversion(
                 userId => userId.Value,
                 value => UserId.From(value))
             .HasColumnName(nameof(UserId))
             .IsRequired();
 
-        builder.Property(userRole => userRole.RoleId)
+        builder.Property(ur => ur.RoleId)
             .HasConversion(
                 roleId => roleId.Value,
                 value => RoleId.From(value))
