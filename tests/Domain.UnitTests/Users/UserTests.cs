@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Users.Events;
+using AgendaManager.Domain.Users.ValueObjects;
 using AgendaManager.TestCommon.Factories.Users;
 using FluentAssertions;
 
@@ -24,5 +25,109 @@ public class UserTests
 
         // Assert
         user.DomainEvents.Should().Contain(x => x is UserCreatedDomainEvent);
+    }
+
+    [Fact]
+    public void User_ShouldRaiseEvent_WhenUserPasswordIsUpdated()
+    {
+        // Arrange
+        var user = UserFactory.CreateUser();
+
+        // Act
+        user.UpdatePasswordHash("newPassword");
+
+        // Assert
+        user.DomainEvents.Should().Contain(x => x is UserPasswordUpdatedDomainEvent);
+    }
+
+    [Fact]
+    public void User_ShouldNotRaiseEvent_WhenUserPasswordISSame()
+    {
+        // Arrange
+        var user = UserFactory.CreateUser();
+
+        // Act
+        user.UpdatePasswordHash(user.PasswordHash);
+
+        // Assert
+        user.DomainEvents.Should().NotContain(x => x is UserPasswordUpdatedDomainEvent);
+    }
+
+    [Fact]
+    public void User_ShouldRaiseEvent_WhenUserEmailIsUpdated()
+    {
+        // Arrange
+        var user = UserFactory.CreateUser();
+        var email = EmailAddress.From("new@example.com");
+
+        // Act
+        user.UpdateEmail(email);
+
+        // Assert
+        user.DomainEvents.Should().Contain(x => x is UserEmailUpdatedDomainEvent);
+    }
+
+    [Fact]
+    public void User_ShouldNotRaiseEvent_WhenUserEmailIsSame()
+    {
+        // Arrange
+        var user = UserFactory.CreateUser();
+
+        // Act
+        user.UpdateEmail(user.Email);
+
+        // Assert
+        user.DomainEvents.Should().NotContain(x => x is UserEmailUpdatedDomainEvent);
+    }
+
+    [Fact]
+    public void User_ShouldAddRefreshToken_WhenIsSet()
+    {
+        // Arrange
+        var user = UserFactory.CreateUser();
+        var newRefreshToken = RefreshToken.Create("token", DateTimeOffset.Now);
+
+        // Act
+        user.UpdateRefreshToken(newRefreshToken);
+
+        // Assert
+        user.RefreshToken.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void User_ShouldRaiseEvent_WhenConfirmEmail()
+    {
+        // Arrange
+        var user = UserFactory.CreateUser();
+
+        // Act
+        user.ConfirmEmail();
+
+        // Assert
+        user.DomainEvents.Should().Contain(x => x is UserEmailConfirmedDomainEvent);
+    }
+
+    [Fact]
+    public void User_ShouldActiveTrue_WhenUserIsACreated()
+    {
+        // Arrange
+        var user = UserFactory.CreateUser();
+
+        // Assert
+        user.Active.Should().BeTrue();
+    }
+
+    [Fact]
+    public void User_ShouldRaiseEvent_WhenUserIsActiveStateIsChanged()
+    {
+        // Arrange
+        var user = UserFactory.CreateUser();
+
+        // Act
+        user.SetActiveState(false);
+
+        // Assert
+        user.DomainEvents.Should().Contain(x => x is UserActiveStateChangedDomainEvent);
+        user.Active.Should().BeFalse();
     }
 }
