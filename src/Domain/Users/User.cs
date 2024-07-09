@@ -36,7 +36,7 @@ public sealed class User : AuditableEntity
 
     public string UserName { get; private set; } = default!;
 
-    public EmailAddress Email { get; } = null!;
+    public EmailAddress Email { get; private set; } = null!;
 
     public bool IsEmailConfirmed { get; private set; }
 
@@ -75,6 +75,21 @@ public sealed class User : AuditableEntity
         return user;
     }
 
+    public User UpdateUser(string firstName, string lastName)
+    {
+        if (FirstName == firstName && LastName == lastName)
+        {
+            return this;
+        }
+
+        FirstName = firstName;
+        LastName = lastName;
+
+        AddDomainEvent(new UserUpdatedDomainEvent(Id));
+
+        return this;
+    }
+
     public User UpdatePasswordHash(string passwordHash)
     {
         if (PasswordHash == passwordHash)
@@ -95,6 +110,8 @@ public sealed class User : AuditableEntity
         {
             return this;
         }
+
+        Email = email;
 
         AddDomainEvent(new UserEmailUpdatedDomainEvent(Id));
 

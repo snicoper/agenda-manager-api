@@ -28,6 +28,23 @@ public class UserTests
     }
 
     [Fact]
+    public void User_ShouldRaiseEvent_WhenUserIsUpdated()
+    {
+        // Arrange
+        var user = UserFactory.CreateUser();
+        const string firstName = "newFirstName";
+        const string lastName = "newLastName";
+
+        // Act
+        user.UpdateUser(firstName, lastName);
+
+        // Assert
+        user.DomainEvents.Should().Contain(x => x is UserUpdatedDomainEvent);
+        user.FirstName.Should().Be(firstName);
+        user.LastName.Should().Be(lastName);
+    }
+
+    [Fact]
     public void User_ShouldRaiseEvent_WhenUserPasswordIsUpdated()
     {
         // Arrange
@@ -38,10 +55,11 @@ public class UserTests
 
         // Assert
         user.DomainEvents.Should().Contain(x => x is UserPasswordUpdatedDomainEvent);
+        user.PasswordHash.Should().Be("newPassword");
     }
 
     [Fact]
-    public void User_ShouldNotRaiseEvent_WhenUserPasswordISSame()
+    public void User_ShouldNotRaiseEvent_WhenUserPasswordIsSame()
     {
         // Arrange
         var user = UserFactory.CreateUser();
@@ -51,6 +69,7 @@ public class UserTests
 
         // Assert
         user.DomainEvents.Should().NotContain(x => x is UserPasswordUpdatedDomainEvent);
+        user.PasswordHash.Should().Be(user.PasswordHash);
     }
 
     [Fact]
@@ -65,6 +84,7 @@ public class UserTests
 
         // Assert
         user.DomainEvents.Should().Contain(x => x is UserEmailUpdatedDomainEvent);
+        user.Email.Should().Be(email);
     }
 
     [Fact]
@@ -78,6 +98,7 @@ public class UserTests
 
         // Assert
         user.DomainEvents.Should().NotContain(x => x is UserEmailUpdatedDomainEvent);
+        user.Email.Should().Be(user.Email);
     }
 
     [Fact]
@@ -92,6 +113,7 @@ public class UserTests
 
         // Assert
         user.RefreshToken.Should().NotBeNull();
+        user.RefreshToken.Should().Be(newRefreshToken);
     }
 
     [Fact]
@@ -105,6 +127,7 @@ public class UserTests
 
         // Assert
         user.DomainEvents.Should().Contain(x => x is UserEmailConfirmedDomainEvent);
+        user.IsEmailConfirmed.Should().BeTrue();
     }
 
     [Fact]
