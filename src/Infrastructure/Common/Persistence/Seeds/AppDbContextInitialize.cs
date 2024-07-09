@@ -1,9 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AgendaManager.Domain.Authorization;
+using AgendaManager.Domain.Authorization.ValueObjects;
+using AgendaManager.Domain.Common.Constants;
+using AgendaManager.Domain.Users;
+using AgendaManager.Domain.Users.Persistence;
+using AgendaManager.Domain.Users.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace AgendaManager.Infrastructure.Common.Persistence.Seeds;
 
-public class AppDbContextInitialize(AppDbContext context, ILogger<AppDbContextInitialize> logger)
+public class AppDbContextInitialize(
+    AppDbContext context,
+    IPasswordManager passwordManager,
+    ILogger<AppDbContextInitialize> logger)
 {
     public async Task InitialiseAsync()
     {
@@ -31,8 +40,101 @@ public class AppDbContextInitialize(AppDbContext context, ILogger<AppDbContextIn
         }
     }
 
-    private Task TrySeedAsync()
+    private async Task TrySeedAsync()
     {
-        return Task.CompletedTask;
+        await CreateRolesAsync();
+        await CreateUsersAsync();
+    }
+
+    private async Task CreateRolesAsync()
+    {
+        var createRoles = new List<Role>
+        {
+            Role.Create(RoleId.Create(), Roles.Admin),
+            Role.Create(RoleId.Create(), Roles.Manager),
+            Role.Create(RoleId.Create(), Roles.Client)
+        };
+
+        foreach (var role in createRoles.Where(role => context.Roles.All(r => r.Name != role.Name)))
+        {
+            context.Roles.Add(role);
+        }
+
+        await context.SaveChangesAsync();
+    }
+
+    private async Task CreateUsersAsync()
+    {
+        var passwordHash = passwordManager.HashPassword("Password4!");
+
+        if (passwordHash.IsFailure || string.IsNullOrEmpty(passwordHash.Value))
+        {
+            throw new Exception("Failed to hash password.");
+        }
+
+        var roles = context.Roles.ToList();
+
+        // Admin user.
+        var admin = User.Create(
+            UserId.Create(),
+            EmailAddress.From("alice@example.com"),
+            "alice",
+            passwordHash.Value,
+            "Alice",
+            "Doe");
+
+        if (!await context.Users.AnyAsync(u => u.Email.Equals(admin.Email)))
+        {
+            admin.ConfirmEmail();
+
+            await context.Users.AddAsync(admin);
+
+            admin.AddRoles(roles);
+        }
+
+        // Manager user.
+        var manager = User.Create(
+            UserId.Create(),
+            EmailAddress.From("bob@example.com"),
+            "bob",
+            passwordHash.Value,
+            "Bob",
+            "Doe");
+
+        if (!await context.Users.AnyAsync(u => u.Email.Equals(manager.Email)))
+        {
+            manager.ConfirmEmail();
+
+            await context.Users.AddAsync(manager);
+
+            var rolesForManager = new List<Role>
+            {
+                roles.First(r => r.Name == Roles.Manager), roles.First(r => r.Name == Roles.Client)
+            };
+
+            manager.AddRoles(rolesForManager);
+        }
+
+        // Client user.
+        var client = User.Create(
+            UserId.Create(),
+            EmailAddress.From("carol@example.com"),
+            "carol",
+            passwordHash.Value,
+            "Carol",
+            "Doe");
+
+        if (!await context.Users.AnyAsync(u => u.Email.Equals(client.Email)))
+        {
+            client.ConfirmEmail();
+
+            await context.Users.AddAsync(client);
+
+            var rolesForClient = new List<Role> { roles.First(r => r.Name == Roles.Client) };
+
+            client.AddRoles(rolesForClient);
+        }
+
+        await context.SaveChangesAsync();
     }
 }

@@ -162,12 +162,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_RefreshTokenToken",
-                table: "Users",
-                column: "RefreshTokenToken",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Users_UserName",
                 table: "Users",
                 column: "UserName",

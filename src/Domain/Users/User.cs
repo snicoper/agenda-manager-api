@@ -75,6 +75,26 @@ public sealed class User : AuditableEntity
         return user;
     }
 
+    public User AddRole(Role role)
+    {
+        if (!UserRoles.Any(ur => Equals(ur.RoleId, role.Id)))
+        {
+            UserRoles.Add(UserRole.Create(Id, role.Id));
+        }
+
+        return this;
+    }
+
+    public User AddRoles(List<Role> roles)
+    {
+        foreach (var role in roles)
+        {
+            AddRole(role);
+        }
+
+        return this;
+    }
+
     public User UpdatePasswordHash(string passwordHash)
     {
         if (PasswordHash == passwordHash)

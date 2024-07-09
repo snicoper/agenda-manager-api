@@ -55,9 +55,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             user => user.RefreshToken,
             refreshTokenBuilder =>
             {
-                refreshTokenBuilder.HasIndex(rt => new { rt.Token })
-                    .IsUnique();
-
                 refreshTokenBuilder.Property(rt => rt.Token)
                     .HasColumnName("RefreshTokenToken")
                     .HasMaxLength(256);

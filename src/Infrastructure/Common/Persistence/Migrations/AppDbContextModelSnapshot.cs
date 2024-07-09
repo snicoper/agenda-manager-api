@@ -257,9 +257,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.HasIndex("Token")
-                                .IsUnique();
-
                             b1.ToTable("Users");
 
                             b1.WithOwner()

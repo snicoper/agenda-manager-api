@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240709050751_Initial")]
+    [Migration("20240709065520_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -259,9 +259,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                                 .HasColumnName("RefreshTokenToken");
 
                             b1.HasKey("UserId");
-
-                            b1.HasIndex("Token")
-                                .IsUnique();
 
                             b1.ToTable("Users");
 

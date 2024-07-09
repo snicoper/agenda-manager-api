@@ -12,7 +12,7 @@ public class CurrentUserProvider(IHttpContextAccessor httpContextAccessor)
     {
         var userId = GetClaimValues("id")
             .Select(Guid.Parse)
-            .First();
+            .FirstOrDefault();
 
         var permissions = GetClaimValues("permissions");
         var roles = GetClaimValues(ClaimTypes.Role);
@@ -22,7 +22,12 @@ public class CurrentUserProvider(IHttpContextAccessor httpContextAccessor)
 
     private IReadOnlyList<string> GetClaimValues(string claimType)
     {
-        return httpContextAccessor.HttpContext!.User.Claims
+        if (httpContextAccessor.HttpContext is null)
+        {
+            return Array.Empty<string>();
+        }
+
+        return httpContextAccessor.HttpContext.User.Claims
             .Where(claim => claim.Type == claimType)
             .Select(claim => claim.Value)
             .ToList();
