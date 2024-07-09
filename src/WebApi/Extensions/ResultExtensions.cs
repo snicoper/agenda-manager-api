@@ -20,8 +20,8 @@ public static class ResultExtensions
             StatusCodes.Status400BadRequest => HandleBadRequestResult(result.Error?.ToDictionary()),
             StatusCodes.Status401Unauthorized => controller.Unauthorized(),
             StatusCodes.Status403Forbidden => controller.Forbid(),
-            StatusCodes.Status404NotFound => HandleNotFoundResult(controller, result.Error?.First()?.Description),
-            _ => HandleUnexpectedResult(controller, statusCode, result.Error?.First())
+            StatusCodes.Status404NotFound => HandleNotFoundResult(controller, result.Error?.FirstError()?.Description),
+            _ => HandleUnexpectedResult(controller, statusCode, result.Error?.FirstError())
         };
     }
 
@@ -41,8 +41,8 @@ public static class ResultExtensions
             StatusCodes.Status400BadRequest => HandleBadRequestResult(result.Error?.ToDictionary()),
             StatusCodes.Status401Unauthorized => controller.Unauthorized(),
             StatusCodes.Status403Forbidden => controller.Forbid(),
-            StatusCodes.Status404NotFound => HandleNotFoundResult(controller, result.Error?.First()?.Description),
-            _ => HandleUnexpectedResult(controller, statusCode, result.Error?.First())
+            StatusCodes.Status404NotFound => HandleNotFoundResult(controller, result.Error?.FirstError()?.Description),
+            _ => HandleUnexpectedResult(controller, statusCode, result.Error?.FirstError())
         };
     }
 

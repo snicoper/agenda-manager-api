@@ -52,29 +52,29 @@ public class Error
         return new Error(validationErrors);
     }
 
-    public static Error NotFound(string code = "NotFound", string description = "Not Found")
+    public static Error NotFound(string description = "Not Found")
     {
-        return new Error(code, description, ResultType.NotFound);
+        return new Error(nameof(NotFound), description, ResultType.NotFound);
     }
 
-    public static Error Unauthorized(string code = "Unauthorized", string description = "Unauthorized")
+    public static Error Unauthorized(string description = "Unauthorized")
     {
-        return new Error(code, description, ResultType.Unauthorized);
+        return new Error(nameof(Unauthorized), description, ResultType.Unauthorized);
     }
 
-    public static Error Forbidden(string code = "Forbidden", string description = "Forbidden")
+    public static Error Forbidden(string description = "Forbidden")
     {
-        return new Error(code, description, ResultType.Forbidden);
+        return new Error(nameof(Forbidden), description, ResultType.Forbidden);
     }
 
-    public static Error Conflict(string code = "Conflict", string description = "Conflict")
+    public static Error Conflict(string description = "Conflict")
     {
-        return new Error(code, description, ResultType.Conflict);
+        return new Error(nameof(Conflict), description, ResultType.Conflict);
     }
 
-    public static Error Unexpected(string code = "Unexpected", string description = "Internal Server Error")
+    public static Error Unexpected(string description = "Internal Server Error")
     {
-        return new Error(code, description, ResultType.Unexpected);
+        return new Error(nameof(Unexpected), description, ResultType.Unexpected);
     }
 
     public void AddValidationError(string code, string description)
@@ -89,12 +89,12 @@ public class Error
         _validationErrors.Add(validationError);
     }
 
-    public ValidationError? First()
+    public ValidationError? FirstError()
     {
         return _validationErrors.FirstOrDefault();
     }
 
-    public ValidationError? Last()
+    public ValidationError? LastError()
     {
         return _validationErrors.LastOrDefault();
     }

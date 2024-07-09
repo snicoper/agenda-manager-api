@@ -1,7 +1,6 @@
 ﻿using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Domain.Common.Responses;
-using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Persistence;
 using AgendaManager.Domain.Users.ValueObjects;
 
@@ -17,7 +16,7 @@ internal class UpdateUserHandler(IUsersRepository usersRepository, IUnitOfWork u
         if (user is null)
         {
             return Error
-                .NotFound(nameof(User), nameof(UserId))
+                .NotFound("User not found")
                 .ToResult<UpdateUserResponse>();
         }
 

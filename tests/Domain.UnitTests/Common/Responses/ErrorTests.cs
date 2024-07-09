@@ -30,7 +30,7 @@ public class ErrorTests
         error.ResultType.Should().Be(ResultType.Validation);
         error.HasErrors.Should().BeTrue();
         error.ValidationErrors.Should().HaveCount(1);
-        error.First()?.Code.Should().Be(Code);
+        error.FirstError()?.Code.Should().Be(Code);
         error.ToResult().Should().BeOfType<Result>();
     }
 
@@ -57,13 +57,13 @@ public class ErrorTests
     public void Error_NotFound()
     {
         // Act
-        var error = Error.NotFound(Code, Description);
+        var error = Error.NotFound(Description);
 
         // Assert
         error.ResultType.Should().Be(ResultType.NotFound);
         error.HasErrors.Should().BeTrue();
-        error.First()?.Code.Should().Be(Code);
-        error.First()?.Description.Should().NotBeEmpty();
+        error.FirstError()?.Code.Should().Be("NotFound");
+        error.FirstError()?.Description.Should().NotBeEmpty();
         error.ToResult().Should().BeOfType<Result>();
     }
 
@@ -76,8 +76,8 @@ public class ErrorTests
         // Assert
         error.ResultType.Should().Be(ResultType.Unauthorized);
         error.HasErrors.Should().BeTrue();
-        error.First()?.Code.Should().Be(nameof(ResultType.Unauthorized));
-        error.First()?.Description.Should().NotBeEmpty();
+        error.FirstError()?.Code.Should().Be(nameof(ResultType.Unauthorized));
+        error.FirstError()?.Description.Should().NotBeEmpty();
         error.ToResult().Should().BeOfType<Result>();
     }
 
@@ -90,8 +90,8 @@ public class ErrorTests
         // Assert
         error.ResultType.Should().Be(ResultType.Forbidden);
         error.HasErrors.Should().BeTrue();
-        error.First()?.Code.Should().Be(nameof(ResultType.Forbidden));
-        error.First()?.Description.Should().NotBeEmpty();
+        error.FirstError()?.Code.Should().Be(nameof(ResultType.Forbidden));
+        error.FirstError()?.Description.Should().NotBeEmpty();
         error.ToResult().Should().BeOfType<Result>();
     }
 
@@ -138,8 +138,8 @@ public class ErrorTests
         // Assert
         error.ResultType.Should().Be(ResultType.Unexpected);
         error.HasErrors.Should().BeTrue();
-        error.First()?.Code.Should().Be(nameof(ResultType.Unexpected));
-        error.First()?.Description.Should().NotBeEmpty();
+        error.FirstError()?.Code.Should().Be(nameof(ResultType.Unexpected));
+        error.FirstError()?.Description.Should().NotBeEmpty();
         error.ToResult().Should().BeOfType<Result>();
     }
 
