@@ -10,8 +10,4 @@
     <ProjectReference Include="..\..\src\Application\Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Factories\" />
-  </ItemGroup>
-
 </Project>

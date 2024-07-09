@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.ValueObjects;
-using AgendaManager.TestCommon.Factories.Users;
+using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
 namespace AgendaManager.Domain.UnitTests.Users;
