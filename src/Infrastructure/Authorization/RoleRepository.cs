@@ -1,5 +1,7 @@
-﻿namespace AgendaManager.Infrastructure.Authorization;
+﻿using AgendaManager.Domain.Authorization.Persistence;
 
-public class RoleRepository
+namespace AgendaManager.Infrastructure.Authorization;
+
+public class RoleRepository : IRoleRepository
 {
 }
