@@ -5,13 +5,13 @@ using AgendaManager.Domain.Users;
 
 namespace AgendaManager.Domain.Authorization;
 
-public class Role : AuditableEntity
+public sealed class Role : AuditableEntity
 {
-    public Role()
+    private Role()
     {
     }
 
-    public Role(RoleId id, string name)
+    private Role(RoleId id, string name)
     {
         Id = id;
         Name = name;
@@ -21,8 +21,13 @@ public class Role : AuditableEntity
 
     public string Name { get; private set; } = default!;
 
-    public virtual ICollection<UserRole> UserRoles { get; } = new HashSet<UserRole>();
+    public ICollection<UserRole> UserRoles { get; } = new HashSet<UserRole>();
 
     [NotMapped]
     public IReadOnlyCollection<User> Users => UserRoles.Select(userRole => userRole.User).ToList();
+
+    public static Role Create(RoleId id, string name)
+    {
+        return new Role(id, name);
+    }
 }

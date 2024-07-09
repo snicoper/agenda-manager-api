@@ -5,13 +5,13 @@ using AgendaManager.Domain.Users;
 
 namespace AgendaManager.Domain.Authorization;
 
-public class Permission : AuditableEntity
+public sealed class Permission : AuditableEntity
 {
-    public Permission()
+    private Permission()
     {
     }
 
-    public Permission(PermissionId id, string name)
+    private Permission(PermissionId id, string name)
     {
         Id = id;
         Name = name;
@@ -21,8 +21,13 @@ public class Permission : AuditableEntity
 
     public string Name { get; set; } = default!;
 
-    public virtual ICollection<UserPermission> UserPermissions { get; } = new HashSet<UserPermission>();
+    public ICollection<UserPermission> UserPermissions { get; } = new HashSet<UserPermission>();
 
     [NotMapped]
     public IReadOnlyCollection<User> Users => UserPermissions.Select(up => up.User).ToList();
+
+    public static Permission Create(PermissionId id, string name)
+    {
+        return new Permission(id, name);
+    }
 }

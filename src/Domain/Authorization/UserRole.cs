@@ -5,7 +5,7 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Authorization;
 
-public class UserRole : AuditableEntity
+public sealed class UserRole : AuditableEntity
 {
     private UserRole(UserId userId, RoleId roleId)
     {

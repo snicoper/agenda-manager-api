@@ -5,7 +5,7 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Authorization;
 
-public class UserPermission : AuditableEntity
+public sealed class UserPermission : AuditableEntity
 {
     private UserPermission(UserId userId, PermissionId permissionId)
     {

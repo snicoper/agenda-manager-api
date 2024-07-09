@@ -6,7 +6,7 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users;
 
-public class User : AuditableEntity
+public sealed class User : AuditableEntity
 {
     private User()
     {
@@ -50,9 +50,9 @@ public class User : AuditableEntity
 
     public RefreshToken? RefreshToken { get; private set; }
 
-    public virtual ICollection<UserRole> UserRoles { get; } = new HashSet<UserRole>();
+    public ICollection<UserRole> UserRoles { get; } = new HashSet<UserRole>();
 
-    public virtual ICollection<UserPermission> UserPermissions { get; } = new HashSet<UserPermission>();
+    public ICollection<UserPermission> UserPermissions { get; } = new HashSet<UserPermission>();
 
     [NotMapped]
     public IReadOnlyCollection<Role> Roles => UserRoles.Select(ur => ur.Role).ToList();
