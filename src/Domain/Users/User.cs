@@ -75,24 +75,36 @@ public sealed class User : AuditableEntity
         return user;
     }
 
-    public User AddRole(Role role)
+    public void AddRole(Role role)
     {
         if (!UserRoles.Any(ur => Equals(ur.RoleId, role.Id)))
         {
             UserRoles.Add(UserRole.Create(Id, role.Id));
         }
-
-        return this;
     }
 
-    public User AddRoles(List<Role> roles)
+    public void RemoveRole(Role role)
     {
-        foreach (var role in roles)
+        if (UserRoles.Any(ur => Equals(ur.RoleId, role.Id)))
         {
-            AddRole(role);
+            UserRoles.Remove(UserRole.Create(Id, role.Id));
         }
+    }
 
-        return this;
+    public void AddPermission(Permission permission)
+    {
+        if (!UserPermissions.Any(up => Equals(up.PermissionId, permission.Id)))
+        {
+            UserPermissions.Add(UserPermission.Create(Id, permission.Id));
+        }
+    }
+
+    public void RemovePermission(Permission permission)
+    {
+        if (UserPermissions.Any(up => Equals(up.PermissionId, permission.Id)))
+        {
+            UserPermissions.Remove(UserPermission.Create(Id, permission.Id));
+        }
     }
 
     public User UpdatePasswordHash(string passwordHash)

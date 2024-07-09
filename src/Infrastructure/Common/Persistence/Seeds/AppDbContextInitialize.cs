@@ -89,7 +89,7 @@ public class AppDbContextInitialize(
 
             await context.Users.AddAsync(admin);
 
-            admin.AddRoles(roles);
+            roles.ForEach(r => admin.AddRole(r));
         }
 
         // Manager user.
@@ -112,7 +112,7 @@ public class AppDbContextInitialize(
                 roles.First(r => r.Name == Roles.Manager), roles.First(r => r.Name == Roles.Client)
             };
 
-            manager.AddRoles(rolesForManager);
+            rolesForManager.ForEach(r => manager.AddRole(r));
         }
 
         // Client user.
@@ -132,7 +132,7 @@ public class AppDbContextInitialize(
 
             var rolesForClient = new List<Role> { roles.First(r => r.Name == Roles.Client) };
 
-            client.AddRoles(rolesForClient);
+            rolesForClient.ForEach(r => client.AddRole(r));
         }
 
         await context.SaveChangesAsync();
