@@ -15,9 +15,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
 
     public DbSet<User> Users => Set<User>();
 
-    public DbSet<UserRole> UserRoles => Set<UserRole>();
-
     public DbSet<UserPermission> UserPermissions => Set<UserPermission>();
+
+    public DbSet<UserRole> UserRoles => Set<UserRole>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
