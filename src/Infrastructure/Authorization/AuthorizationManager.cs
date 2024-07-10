@@ -1,10 +1,7 @@
 using AgendaManager.Application.Common.Interfaces.Users;
-using AgendaManager.Application.Common.Models.Users;
 using AgendaManager.Domain.Authorization;
 using AgendaManager.Domain.Authorization.Persistence;
 using AgendaManager.Domain.Authorization.ValueObjects;
-using AgendaManager.Domain.Common.Responses;
-using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.ValueObjects;
 using AgendaManager.Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -16,8 +13,12 @@ public class AuthorizationManager(AppDbContext context, ICurrentUserProvider cur
 {
     public bool HasRole(UserId userId, string role)
     {
-        var currentUser = currentUserProvider.GetCurrentUser();
+        if (currentUserProvider.IsAuthenticated is false)
+        {
+            return false;
+        }
 
+        var currentUser = currentUserProvider.GetCurrentUser();
         var havePermission = currentUser.Roles.Contains(role);
 
         return havePermission;
@@ -25,8 +26,12 @@ public class AuthorizationManager(AppDbContext context, ICurrentUserProvider cur
 
     public bool HasPermission(UserId userId, string permissionName)
     {
-        var currentUser = currentUserProvider.GetCurrentUser();
+        if (currentUserProvider.IsAuthenticated is false)
+        {
+            return false;
+        }
 
+        var currentUser = currentUserProvider.GetCurrentUser();
         var havePermission = currentUser.Permissions.Contains(permissionName);
 
         return havePermission;
@@ -77,13 +82,13 @@ public class AuthorizationManager(AppDbContext context, ICurrentUserProvider cur
         RoleId roleId,
         CancellationToken cancellationToken = default)
     {
-        var isInRole = await context
+        var hasRole = await context
             .UserRoles
             .FirstOrDefaultAsync(r => r.UserId == userId && r.RoleId == roleId, cancellationToken);
 
-        if (isInRole is not null)
+        if (hasRole is not null)
         {
-            context.UserRoles.Remove(isInRole);
+            context.UserRoles.Remove(hasRole);
         }
     }
 
@@ -111,18 +116,13 @@ public class AuthorizationManager(AppDbContext context, ICurrentUserProvider cur
         PermissionId permissionId,
         CancellationToken cancellationToken = default)
     {
-        var isInPermission = await context
+        var hasPermission = await context
             .UserPermissions
             .FirstOrDefaultAsync(r => r.UserId == userId && r.PermissionId == permissionId, cancellationToken);
 
-        if (isInPermission is not null)
+        if (hasPermission is not null)
         {
-            context.UserPermissions.Remove(isInPermission);
+            context.UserPermissions.Remove(hasPermission);
         }
-    }
-
-    private Task<Result<TokenResponse>> GenerateUserTokenAsync(User user)
-    {
-        throw new NotImplementedException();
     }
 }

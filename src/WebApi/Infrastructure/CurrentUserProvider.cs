@@ -12,7 +12,7 @@ public class CurrentUserProvider(IHttpContextAccessor httpContextAccessor)
 
     public CurrentUser GetCurrentUser()
     {
-        if (!IsAuthenticated)
+        if (IsAuthenticated is false)
         {
             return new CurrentUser(UserId.From(Guid.Empty), new List<string>(), new List<string>());
         }

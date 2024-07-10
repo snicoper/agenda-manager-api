@@ -20,14 +20,14 @@ public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserProvider cu
         var authorizeAttributes = request.GetType().GetCustomAttributes<AuthorizeAttribute>();
         var attributes = authorizeAttributes as AuthorizeAttribute[] ?? authorizeAttributes.ToArray();
 
-        if (attributes.Length == 0)
+        if (attributes.Length == 0 || currentUserProvider.IsAuthenticated is false)
         {
             return await next();
         }
 
         var currentUser = currentUserProvider.GetCurrentUser();
 
-        if (currentUser.Id.Value == Guid.NewGuid())
+        if (currentUser is null)
         {
             throw new UnauthorizedAccessException();
         }
@@ -38,7 +38,7 @@ public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserProvider cu
 
         if (requiredPermissions.Except(currentUser.Permissions).Any())
         {
-            var error = Error.Unauthorized(description: "User is forbidden from taking this action");
+            var error = Error.Unauthorized("User is forbidden from taking this action");
 
             var result = ResultBehaviourHelper.CreateResult<TResponse>(error);
 
@@ -51,7 +51,7 @@ public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserProvider cu
 
         if (requiredRoles.Except(currentUser.Roles).Any())
         {
-            var error = Error.Unauthorized(description: "User is forbidden from taking this action");
+            var error = Error.Unauthorized("User is forbidden from taking this action");
 
             var result = ResultBehaviourHelper.CreateResult<TResponse>(error);
 
