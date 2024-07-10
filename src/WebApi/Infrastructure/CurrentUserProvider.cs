@@ -3,7 +3,7 @@ using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Models.Users;
 using AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.WebApi.Services;
+namespace AgendaManager.WebApi.Infrastructure;
 
 public class CurrentUserProvider(IHttpContextAccessor httpContextAccessor)
     : ICurrentUserProvider

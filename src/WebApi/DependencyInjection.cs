@@ -2,7 +2,6 @@
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Localization;
 using AgendaManager.WebApi.Infrastructure;
-using AgendaManager.WebApi.Services;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc.Razor;
 
