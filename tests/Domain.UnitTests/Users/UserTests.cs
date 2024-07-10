@@ -52,7 +52,7 @@ public class UserTests
         var user = UserFactory.CreateUser();
 
         // Act
-        user.UpdatePassword("newPassword!34");
+        user.UpdatePassword("newPassword!34", UserFactory.PasswordHasher);
 
         // Assert
         user.DomainEvents.Should().Contain(x => x is UserPasswordUpdatedDomainEvent);
@@ -65,7 +65,7 @@ public class UserTests
         var user = UserFactory.CreateUser();
 
         // Act
-        var result = user.VerifyPassword(Constants.Users.Password);
+        var result = user.VerifyPassword(Constants.Users.Password, UserFactory.PasswordHasher);
 
         // Assert
         result.Should().BeTrue();
@@ -78,7 +78,7 @@ public class UserTests
         var user = UserFactory.CreateUser();
 
         // Act
-        var result = user.VerifyPassword("wrongPassword123@@");
+        var result = user.VerifyPassword("wrongPassword123@@", UserFactory.PasswordHasher);
 
         // Assert
         result.Should().BeFalse();
@@ -91,7 +91,7 @@ public class UserTests
         var user = UserFactory.CreateUser();
 
         // Act
-        user.UpdatePassword(Constants.Users.Password);
+        user.UpdatePassword(Constants.Users.Password, UserFactory.PasswordHasher);
 
         // Assert
         user.DomainEvents.Should().NotContain(x => x is UserPasswordUpdatedDomainEvent);

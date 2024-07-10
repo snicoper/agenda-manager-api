@@ -9,7 +9,7 @@ using AgendaManager.Domain.Users.ValueObjects;
 using AgendaManager.Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace AgendaManager.Infrastructure.Common.Authentication;
+namespace AgendaManager.Infrastructure.Authorization;
 
 public class AuthorizationManager(AppDbContext context, ICurrentUserProvider currentUserProvider)
     : IAuthorizationManager

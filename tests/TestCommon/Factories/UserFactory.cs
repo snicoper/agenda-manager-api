@@ -1,11 +1,13 @@
-﻿using AgendaManager.Domain.Common.Utils;
-using AgendaManager.Domain.Users;
+﻿using AgendaManager.Domain.Users;
+using AgendaManager.Infrastructure.Common.Authentication;
 using AgendaManager.TestCommon.TestConstants;
 
 namespace AgendaManager.TestCommon.Factories;
 
 public abstract class UserFactory
 {
+    public static PasswordHasher PasswordHasher => new();
+
     public static User CreateUser()
     {
         var passwordHash = PasswordHasher.HashPassword(Constants.Users.Password).Value ??

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using AgendaManager.Domain.Authorization;
 using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.Interfaces;
 using AgendaManager.Domain.Common.Responses;
-using AgendaManager.Domain.Common.Utils;
 using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.ValueObjects;
 
@@ -92,19 +92,19 @@ public sealed class User : AuditableEntity
         return this;
     }
 
-    public bool VerifyPassword(string rawPassword)
+    public bool VerifyPassword(string rawPassword, IPasswordHasher passwordHasher)
     {
-        return PasswordHasher.VerifyPassword(rawPassword, _passwordHash);
+        return passwordHasher.VerifyPassword(rawPassword, _passwordHash);
     }
 
-    public Result UpdatePassword(string rawPassword)
+    public Result UpdatePassword(string rawPassword, IPasswordHasher passwordHasher)
     {
-        if (VerifyPassword(rawPassword))
+        if (VerifyPassword(rawPassword, passwordHasher))
         {
             return Result.Success();
         }
 
-        var passwordHashResult = PasswordHasher.HashPassword(rawPassword);
+        var passwordHashResult = passwordHasher.HashPassword(rawPassword);
 
         if (passwordHashResult.IsFailure || string.IsNullOrEmpty(passwordHashResult.Value))
         {
