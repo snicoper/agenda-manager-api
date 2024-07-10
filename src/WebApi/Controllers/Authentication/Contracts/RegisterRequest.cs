@@ -1,4 +1,4 @@
-﻿namespace AgendaManager.WebApi.Controllers.Authentication;
+﻿namespace AgendaManager.WebApi.Controllers.Authentication.Contracts;
 
 public record RegisterRequest(
     string FirstName,

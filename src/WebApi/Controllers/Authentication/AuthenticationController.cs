@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Application.Authentication.Commands.Register;
 using AgendaManager.Domain.Common.Responses;
+using AgendaManager.WebApi.Controllers.Authentication.Contracts;
 using AgendaManager.WebApi.Extensions;
 using AgendaManager.WebApi.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
@@ -14,13 +15,14 @@ public class AuthenticationController : ApiControllerBase
     [HttpPost("register")]
     public async Task<ActionResult<Result<RegisterCommandResponse>>> Register(RegisterRequest request)
     {
-        var result = await Sender.Send(
-            new RegisterCommand(
-                request.FirstName,
-                request.LastName,
-                request.Email,
-                request.Password,
-                request.ConfirmPassword));
+        var command = new RegisterCommand(
+            request.FirstName,
+            request.LastName,
+            request.Email,
+            request.Password,
+            request.ConfirmPassword);
+
+        var result = await Sender.Send(command);
 
         return result.MapToResponse(this);
     }
