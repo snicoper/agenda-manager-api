@@ -5,6 +5,7 @@ using System.Text;
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Models.Users;
 using AgendaManager.Domain.Authorization.Persistence;
+using AgendaManager.Domain.Common.Constants;
 using AgendaManager.Domain.Users;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -27,7 +28,7 @@ public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions, IAuthorizationMa
             new(JwtRegisteredClaimNames.Sub, id),
             new(JwtRegisteredClaimNames.Email, user.Email.Value),
             new(JwtRegisteredClaimNames.Name, user.UserName),
-            new("id", id)
+            new(CustomClaimType.Id, id)
         };
 
         await AddRolesClaim(user, claims);
@@ -70,6 +71,6 @@ public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions, IAuthorizationMa
     {
         var permissions = await authorizationManager.GetPermissionsByUserIdAsync(user.Id);
 
-        claims.AddRange(permissions.Select(permission => new Claim("permissions", permission.Name)));
+        claims.AddRange(permissions.Select(permission => new Claim(CustomClaimType.Permissions, permission.Name)));
     }
 }
