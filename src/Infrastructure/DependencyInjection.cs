@@ -5,7 +5,6 @@ using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Domain.Authorization.Persistence;
 using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Persistence;
-using AgendaManager.Infrastructure.Authorization;
 using AgendaManager.Infrastructure.Common.Authentication;
 using AgendaManager.Infrastructure.Common.Clock;
 using AgendaManager.Infrastructure.Common.Persistence;
@@ -64,8 +63,6 @@ public static class DependencyInjection
 
         // Repositories.
         services.AddScoped<IUsersRepository, UserRepository>();
-        services.AddScoped<IRoleRepository, RoleRepository>();
-        services.AddScoped<IPermissionRepository, PermissionRepository>();
     }
 
     private static void AddDatabase(
