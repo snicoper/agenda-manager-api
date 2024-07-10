@@ -72,7 +72,7 @@ public class UserTests
     }
 
     [Fact]
-    public void User_ShouldReturnFalse_WhenUserPasswordIsNotValid()
+    public void User_ShouldReturnFalse_WhenUserPasswordIsInvalid()
     {
         // Arrange
         var user = UserFactory.CreateUser();
