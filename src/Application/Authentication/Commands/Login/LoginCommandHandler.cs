@@ -14,25 +14,25 @@ internal class LoginCommandHandler(
     IUserRepository usersRepository,
     IPasswordHasher passwordHasher,
     IUnitOfWork unitOfWork)
-    : ICommandHandler<LoginCommand, TokenResponse>
+    : ICommandHandler<LoginCommand, TokenResult>
 {
-    public async Task<Result<TokenResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
+    public async Task<Result<TokenResult>> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
         var user = await usersRepository.GetByEmailAsync(EmailAddress.From(request.Email), cancellationToken);
 
         if (user is null)
         {
-            return Error.Conflict("Invalid credentials").ToResult<TokenResponse>();
+            return Error.Conflict("Invalid credentials").ToResult<TokenResult>();
         }
 
         if (!user.VerifyPassword(request.Password, passwordHasher))
         {
-            return Error.Conflict("Invalid credentials").ToResult<TokenResponse>();
+            return Error.Conflict("Invalid credentials").ToResult<TokenResult>();
         }
 
         if (!user.Active)
         {
-            return Error.Conflict("User is not active").ToResult<TokenResponse>();
+            return Error.Conflict("User is not active").ToResult<TokenResult>();
         }
 
         var tokenResponse = await jwtTokenGenerator.GenerateAccessTokenAsync(user);

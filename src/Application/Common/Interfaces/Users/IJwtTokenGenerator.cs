@@ -5,5 +5,5 @@ namespace AgendaManager.Application.Common.Interfaces.Users;
 
 public interface IJwtTokenGenerator
 {
-    Task<TokenResponse> GenerateAccessTokenAsync(User user);
+    Task<TokenResult> GenerateAccessTokenAsync(User user);
 }

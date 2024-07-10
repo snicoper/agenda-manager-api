@@ -14,7 +14,7 @@ namespace AgendaManager.WebApi.Controllers.Authentication;
 public class AuthenticationController : ApiControllerBase
 {
     [HttpPost("login")]
-    public async Task<ActionResult<Result<TokenResponse>>> Login(LoginRequest request)
+    public async Task<ActionResult<Result<TokenResult>>> Login(LoginRequest request)
     {
         var command = new LoginCommand(request.Email, request.Password);
 

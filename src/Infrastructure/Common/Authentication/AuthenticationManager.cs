@@ -6,12 +6,12 @@ namespace AgendaManager.Infrastructure.Common.Authentication;
 
 public class AuthenticationManager : IAuthenticationManager
 {
-    public Task<Result<TokenResponse>> LoginAsync(string email, string password)
+    public Task<Result<TokenResult>> LoginAsync(string email, string password)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Result<TokenResponse>> RefreshTokenAsync(string refreshToken)
+    public Task<Result<TokenResult>> RefreshTokenAsync(string refreshToken)
     {
         throw new NotImplementedException();
     }

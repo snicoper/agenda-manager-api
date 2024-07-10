@@ -5,7 +5,7 @@ namespace AgendaManager.Application.Common.Interfaces.Users;
 
 public interface IAuthenticationManager
 {
-    Task<Result<TokenResponse>> LoginAsync(string email, string password);
+    Task<Result<TokenResult>> LoginAsync(string email, string password);
 
-    Task<Result<TokenResponse>> RefreshTokenAsync(string refreshToken);
+    Task<Result<TokenResult>> RefreshTokenAsync(string refreshToken);
 }

@@ -17,7 +17,7 @@ public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions, IAuthorizationMa
 {
     private readonly JwtOptions _jwtOptions = jwtOptions.Value;
 
-    public async Task<TokenResponse> GenerateAccessTokenAsync(User user)
+    public async Task<TokenResult> GenerateAccessTokenAsync(User user)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -28,6 +28,7 @@ public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions, IAuthorizationMa
             new(JwtRegisteredClaimNames.Sub, id),
             new(JwtRegisteredClaimNames.Email, user.Email.Value),
             new(JwtRegisteredClaimNames.Name, user.UserName),
+            new(JwtRegisteredClaimNames.FamilyName, $"{user.FirstName} {user.LastName}"),
             new(CustomClaimType.Id, id)
         };
 
@@ -45,7 +46,7 @@ public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions, IAuthorizationMa
         var refreshToken = GenerateRefreshToken();
         var expires = DateTimeOffset.UtcNow.AddMinutes(_jwtOptions.RefreshTokenLifeTimeDays);
 
-        var tokenResponse = new TokenResponse(jwtSecurityToken, refreshToken, expires);
+        var tokenResponse = new TokenResult(jwtSecurityToken, refreshToken, expires);
 
         return tokenResponse;
     }

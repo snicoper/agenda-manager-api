@@ -11,7 +11,7 @@ post {
 }
 
 auth:bearer {
-  token: {{token}}
+  token: 
 }
 
 body:json {
@@ -22,7 +22,11 @@ body:json {
 }
 
 script:post-response {
-  bru.setEnvVar('token', res.body.value.accessToken);
+  if (res.status === 200 && res.body?.value?.accessToken) {
+    bru.setEnvVar('token', res.body.value.accessToken);
+  } else {
+    bru.setEnvVar('token', '');
+  }
 }
 
 tests {

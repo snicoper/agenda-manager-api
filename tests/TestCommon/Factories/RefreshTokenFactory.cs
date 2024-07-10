@@ -4,7 +4,7 @@ namespace AgendaManager.TestCommon.Factories;
 
 public abstract class RefreshTokenFactory
 {
-    public const int TokenLength = 256;
+    public const int TokenLength = 200;
 
     public static RefreshToken CreateValidRefreshToken()
     {
