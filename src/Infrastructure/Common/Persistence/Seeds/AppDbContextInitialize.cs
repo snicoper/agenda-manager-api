@@ -2,6 +2,7 @@
 using AgendaManager.Domain.Authorization.Persistence;
 using AgendaManager.Domain.Authorization.ValueObjects;
 using AgendaManager.Domain.Common.Constants;
+using AgendaManager.Domain.Common.Utils;
 using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Seeds;
 
 public class AppDbContextInitialize(
     AppDbContext context,
-    PasswordManager passwordManager,
     IAuthorizationManager authorizationManager,
     ILogger<AppDbContextInitialize> logger)
 {
@@ -90,7 +90,7 @@ public class AppDbContextInitialize(
 
     private async Task CreateUsersAsync()
     {
-        var passwordHash = passwordManager.HashPassword("Password4!");
+        var passwordHash = PasswordHasher.HashPassword("Password4!");
 
         if (passwordHash.IsFailure || string.IsNullOrEmpty(passwordHash.Value))
         {
