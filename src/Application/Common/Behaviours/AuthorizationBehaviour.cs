@@ -21,14 +21,14 @@ public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserProvider cu
         var authorizeAttributes = request.GetType().GetCustomAttributes<AuthorizeAttribute>();
         var attributes = authorizeAttributes as AuthorizeAttribute[] ?? authorizeAttributes.ToArray();
 
-        if (attributes.Length == 0 || currentUserProvider.IsAuthenticated is false)
+        if (attributes.Length == 0)
         {
             return await next();
         }
 
         var currentUser = currentUserProvider.GetCurrentUser();
 
-        if (currentUser is null)
+        if (currentUserProvider.IsAuthenticated is false || currentUser is null)
         {
             throw new UnauthorizedAccessException();
         }
