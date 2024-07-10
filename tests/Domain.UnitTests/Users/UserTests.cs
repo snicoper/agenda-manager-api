@@ -131,7 +131,7 @@ public class UserTests
     {
         // Arrange
         var user = UserFactory.CreateUser();
-        var newRefreshToken = RefreshToken.Create("token", DateTimeOffset.Now);
+        var newRefreshToken = RefreshTokenFactory.CreateValidRefreshToken();
 
         // Act
         user.UpdateRefreshToken(newRefreshToken);

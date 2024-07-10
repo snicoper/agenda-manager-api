@@ -58,7 +58,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             {
                 refreshTokenBuilder.Property(rt => rt.Token)
                     .HasColumnName("RefreshTokenToken")
-                    .HasMaxLength(256);
+                    .HasMaxLength(200);
 
                 refreshTokenBuilder.Property(rt => rt.ExpiryTime)
                     .HasColumnName("RefreshTokenExpiryTime");

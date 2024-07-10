@@ -32,7 +32,6 @@ public sealed class User : AuditableEntity
         LastName = lastName;
 
         Active = true;
-        RefreshToken = RefreshToken.Create(string.Empty, DateTimeOffset.UtcNow.AddDays(-1));
         IsEmailConfirmed = false;
     }
 
@@ -134,7 +133,7 @@ public sealed class User : AuditableEntity
 
     public User UpdateRefreshToken(RefreshToken refreshToken)
     {
-        if (RefreshToken!.Equals(refreshToken))
+        if (RefreshToken is not null && RefreshToken.Equals(refreshToken))
         {
             return this;
         }
