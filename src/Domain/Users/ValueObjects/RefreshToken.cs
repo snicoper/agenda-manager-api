@@ -4,7 +4,7 @@ namespace AgendaManager.Domain.Users.ValueObjects;
 
 public class RefreshToken : ValueObject
 {
-    private const int TokenLength = 256;
+    private const int TokenLength = 200;
 
     private RefreshToken(string token, DateTimeOffset expiryTime)
     {
