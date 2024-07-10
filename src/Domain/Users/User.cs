@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using AgendaManager.Domain.Authorization;
 using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.Responses;
+using AgendaManager.Domain.Common.Utils;
 using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.ValueObjects;
 
@@ -8,6 +10,8 @@ namespace AgendaManager.Domain.Users;
 
 public sealed class User : AuditableEntity
 {
+    private string _passwordHash = default!;
+
     private User()
     {
     }
@@ -23,7 +27,7 @@ public sealed class User : AuditableEntity
         Id = userId;
         Email = email;
         UserName = userName;
-        PasswordHash = passwordHash;
+        _passwordHash = passwordHash;
         FirstName = firstName;
         LastName = lastName;
 
@@ -45,8 +49,6 @@ public sealed class User : AuditableEntity
     public string? LastName { get; private set; }
 
     public bool Active { get; private set; }
-
-    public string PasswordHash { get; private set; } = default!;
 
     public RefreshToken? RefreshToken { get; private set; }
 
@@ -90,18 +92,30 @@ public sealed class User : AuditableEntity
         return this;
     }
 
-    public User UpdatePasswordHash(string passwordHash)
+    public bool VerifyPassword(string password)
     {
-        if (PasswordHash == passwordHash)
+        return PasswordHasher.VerifyPassword(password, _passwordHash);
+    }
+
+    public Result UpdatePassword(string password)
+    {
+        if (VerifyPassword(password))
         {
-            return this;
+            return Result.Success();
         }
 
-        PasswordHash = passwordHash;
+        var passwordHash = PasswordHasher.HashPassword(password);
+
+        if (passwordHash.IsFailure || string.IsNullOrEmpty(passwordHash.Value))
+        {
+            return passwordHash;
+        }
+
+        _passwordHash = passwordHash.Value;
 
         AddDomainEvent(new UserPasswordUpdatedDomainEvent(Id));
 
-        return this;
+        return Result.Success();
     }
 
     public User UpdateEmail(EmailAddress email)

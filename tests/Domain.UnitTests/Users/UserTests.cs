@@ -1,6 +1,7 @@
 ﻿using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.ValueObjects;
 using AgendaManager.TestCommon.Factories;
+using AgendaManager.TestCommon.TestConstants;
 using FluentAssertions;
 
 namespace AgendaManager.Domain.UnitTests.Users;
@@ -51,11 +52,36 @@ public class UserTests
         var user = UserFactory.CreateUser();
 
         // Act
-        user.UpdatePasswordHash("newPassword");
+        user.UpdatePassword("newPassword!34");
 
         // Assert
         user.DomainEvents.Should().Contain(x => x is UserPasswordUpdatedDomainEvent);
-        user.PasswordHash.Should().Be("newPassword");
+    }
+
+    [Fact]
+    public void User_ShouldReturnTrue_WhenUserPasswordIsValid()
+    {
+        // Arrange
+        var user = UserFactory.CreateUser();
+
+        // Act
+        var result = user.VerifyPassword(Constants.Users.Password);
+
+        // Assert
+        result.Should().BeTrue();
+    }
+
+    [Fact]
+    public void User_ShouldReturnFalse_WhenUserPasswordIsNotValid()
+    {
+        // Arrange
+        var user = UserFactory.CreateUser();
+
+        // Act
+        var result = user.VerifyPassword("wrongPassword123@@");
+
+        // Assert
+        result.Should().BeFalse();
     }
 
     [Fact]
@@ -65,11 +91,10 @@ public class UserTests
         var user = UserFactory.CreateUser();
 
         // Act
-        user.UpdatePasswordHash(user.PasswordHash);
+        user.UpdatePassword(Constants.Users.Password);
 
         // Assert
         user.DomainEvents.Should().NotContain(x => x is UserPasswordUpdatedDomainEvent);
-        user.PasswordHash.Should().Be(user.PasswordHash);
     }
 
     [Fact]

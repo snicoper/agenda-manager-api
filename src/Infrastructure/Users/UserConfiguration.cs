@@ -48,7 +48,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.Active)
             .IsRequired();
 
-        builder.Property(u => u.PasswordHash)
+        builder.Property("_passwordHash")
+            .HasColumnName("PasswordHash")
             .IsRequired();
 
         builder.OwnsOne(

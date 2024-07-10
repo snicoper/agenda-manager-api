@@ -16,6 +16,6 @@ public static partial class Constants
 
         public static readonly string LastName = "test";
 
-        public static readonly string PasswordHash = "Password4!";
+        public static readonly string Password = "Password4!";
     }
 }
