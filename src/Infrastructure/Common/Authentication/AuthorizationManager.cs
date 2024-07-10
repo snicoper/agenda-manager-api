@@ -78,6 +78,7 @@ public class AuthorizationManager(AppDbContext context, ICurrentUserProvider cur
         }
 
         var userPermission = UserPermission.Create(userId, permissionId);
+
         context.UserPermissions.Add(userPermission);
     }
 

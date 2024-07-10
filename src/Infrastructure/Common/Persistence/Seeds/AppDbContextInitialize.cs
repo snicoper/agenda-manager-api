@@ -44,6 +44,7 @@ public class AppDbContextInitialize(
     private async Task TrySeedAsync()
     {
         await CreateRolesAsync();
+        await CreatePermissionsAsync();
         await CreateUsersAsync();
     }
 
@@ -64,6 +65,29 @@ public class AppDbContextInitialize(
         await context.SaveChangesAsync();
     }
 
+    private async Task CreatePermissionsAsync()
+    {
+        var permissions = new List<Permission>
+        {
+            Permission.Create(PermissionId.Create(), Permissions.User.Read),
+            Permission.Create(PermissionId.Create(), Permissions.User.Create),
+            Permission.Create(PermissionId.Create(), Permissions.User.Update),
+            Permission.Create(PermissionId.Create(), Permissions.User.Delete),
+            Permission.Create(PermissionId.Create(), Permissions.Authorization.Read),
+            Permission.Create(PermissionId.Create(), Permissions.Authorization.Create),
+            Permission.Create(PermissionId.Create(), Permissions.Authorization.Update),
+            Permission.Create(PermissionId.Create(), Permissions.Authorization.Delete)
+        };
+
+        foreach (var permission in permissions.Where(
+                     permission => context.Permissions.All(p => p.Name != permission.Name)))
+        {
+            context.Permissions.Add(permission);
+        }
+
+        await context.SaveChangesAsync();
+    }
+
     private async Task CreateUsersAsync()
     {
         var passwordHash = passwordManager.HashPassword("Password4!");
@@ -74,6 +98,7 @@ public class AppDbContextInitialize(
         }
 
         var roles = context.Roles.ToList();
+        var permissions = context.Permissions.ToList();
 
         // Admin user.
         var admin = User.Create(
@@ -88,10 +113,8 @@ public class AppDbContextInitialize(
         {
             admin.ConfirmEmail();
 
-            foreach (var role in roles)
-            {
-                await authorizationManager.AddRoleAsync(admin.Id, role.Id);
-            }
+            await AddRoleToUser(admin, roles);
+            await AddPermissionToUser(admin, permissions);
 
             await context.Users.AddAsync(admin);
         }
@@ -113,10 +136,8 @@ public class AppDbContextInitialize(
                 roles.First(r => r.Name == Roles.Manager), roles.First(r => r.Name == Roles.Client)
             };
 
-            foreach (var role in rolesForManager)
-            {
-                await authorizationManager.AddRoleAsync(manager.Id, role.Id);
-            }
+            await AddRoleToUser(manager, rolesForManager);
+            await AddPermissionToUser(manager, permissions);
 
             await context.Users.AddAsync(manager);
         }
@@ -133,16 +154,37 @@ public class AppDbContextInitialize(
         if (!await context.Users.AnyAsync(u => u.Email.Equals(client.Email)))
         {
             client.ConfirmEmail();
-            var rolesForClient = new List<Role> { roles.First(r => r.Name == Roles.Client) };
 
-            foreach (var role in rolesForClient)
+            var rolesForClient = new List<Role> { roles.First(r => r.Name == Roles.Client) };
+            await AddRoleToUser(client, rolesForClient);
+
+            var permissionsForClient = new List<Permission>
             {
-                await authorizationManager.AddRoleAsync(client.Id, role.Id);
-            }
+                permissions.First(p => p.Name == Permissions.User.Read),
+                permissions.First(p => p.Name == Permissions.Authorization.Read)
+            };
+
+            await AddPermissionToUser(client, permissionsForClient);
 
             await context.Users.AddAsync(client);
         }
 
         await context.SaveChangesAsync();
+    }
+
+    private async Task AddRoleToUser(User user, List<Role> roles)
+    {
+        foreach (var role in roles)
+        {
+            await authorizationManager.AddRoleAsync(user.Id, role.Id);
+        }
+    }
+
+    private async Task AddPermissionToUser(User user, List<Permission> permissions)
+    {
+        foreach (var permission in permissions)
+        {
+            await authorizationManager.AddPermissionAsync(user.Id, permission.Id);
+        }
     }
 }

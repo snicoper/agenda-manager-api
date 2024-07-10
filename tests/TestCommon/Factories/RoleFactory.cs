@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Domain.Authorization;
-using AgendaManager.TestCommon.TestConstants;
+using AgendaManager.Domain.Authorization.ValueObjects;
+using AgendaManager.Domain.Common.Constants;
 
 namespace AgendaManager.TestCommon.Factories;
 
@@ -7,16 +8,16 @@ public abstract class RoleFactory
 {
     public static Role CreateRoleAdmin()
     {
-        return Role.Create(Constants.Role.Id, Constants.Role.RoleAdmin);
+        return Role.Create(RoleId.Create(), Roles.Admin);
     }
 
     public static Role CreateRoleManager()
     {
-        return Role.Create(Constants.Role.Id, Constants.Role.RoleManager);
+        return Role.Create(RoleId.Create(), Roles.Manager);
     }
 
     public static Role CreateRoleClient()
     {
-        return Role.Create(Constants.Role.Id, Constants.Role.RoleClient);
+        return Role.Create(RoleId.Create(), Roles.Client);
     }
 }

@@ -1,27 +1,28 @@
 ﻿using AgendaManager.Domain.Authorization;
-using AgendaManager.TestCommon.TestConstants;
+using AgendaManager.Domain.Authorization.ValueObjects;
+using AgendaManager.Domain.Common.Constants;
 
 namespace AgendaManager.TestCommon.Factories;
 
 public abstract class PermissionFactory
 {
-    public static Permission CreatePermissionUsersCanCreate()
+    public static Permission CreatePermissionUsersCreate()
     {
-        return Permission.Create(Constants.Permissions.Id, Constants.Permissions.UsersCanCreate);
+        return Permission.Create(PermissionId.Create(), Permissions.User.Create);
     }
 
-    public static Permission CreatePermissionUsersCanUpdate()
+    public static Permission CreatePermissionUsersUpdate()
     {
-        return Permission.Create(Constants.Permissions.Id, Constants.Permissions.UsersCanUpdate);
+        return Permission.Create(PermissionId.Create(), Permissions.User.Update);
     }
 
-    public static Permission CreatePermissionUsersCanDelete()
+    public static Permission CreatePermissionUsersDelete()
     {
-        return Permission.Create(Constants.Permissions.Id, Constants.Permissions.UsersCanDelete);
+        return Permission.Create(PermissionId.Create(), Permissions.User.Delete);
     }
 
-    public static Permission CreatePermissionUsersCanRead()
+    public static Permission CreatePermissionUsersRead()
     {
-        return Permission.Create(Constants.Permissions.Id, Constants.Permissions.UsersCanRead);
+        return Permission.Create(PermissionId.Create(), Permissions.User.Read);
     }
 }

@@ -9,7 +9,7 @@ public class PermissionTests
     public void Role_ShouldReturnPermission_WhenCreated()
     {
         // Act
-        var permission = PermissionFactory.CreatePermissionUsersCanCreate();
+        var permission = PermissionFactory.CreatePermissionUsersCreate();
 
         // Assert
         permission.Id.Should().Be(permission.Id);
