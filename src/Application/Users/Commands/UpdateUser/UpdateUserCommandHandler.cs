@@ -6,7 +6,7 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Application.Users.Commands.UpdateUser;
 
-internal class UpdateUserCommandHandler(IUsersRepository usersRepository, IUnitOfWork unitOfWork)
+internal class UpdateUserCommandHandler(IUserRepository usersRepository, IUnitOfWork unitOfWork)
     : ICommandHandler<UpdateUserCommand, UpdateUserCommandResponse>
 {
     public async Task<Result<UpdateUserCommandResponse>> Handle(

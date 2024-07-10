@@ -7,7 +7,7 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Application.Users.Commands.CreateUser;
 
-internal class CreateUserCommandHandler(IUsersRepository usersRepository, IUnitOfWork unitOfWork)
+internal class CreateUserCommandHandler(IUserRepository usersRepository, IUnitOfWork unitOfWork)
     : IQueryHandler<CreateUserCommand, CreateUserCommandResponse>
 {
     public async Task<Result<CreateUserCommandResponse>> Handle(

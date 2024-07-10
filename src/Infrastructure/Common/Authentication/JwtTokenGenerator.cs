@@ -1,17 +1,55 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
 using AgendaManager.Application.Common.Interfaces.Users;
+using AgendaManager.Application.Common.Models.Users;
+using AgendaManager.Domain.Authorization.Persistence;
 using AgendaManager.Domain.Users;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AgendaManager.Infrastructure.Common.Authentication;
 
-public class JwtTokenGenerator : IJwtTokenGenerator
+public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions, IAuthorizationManager authorizationManager)
+    : IJwtTokenGenerator
 {
-    public Task<string> GenerateAccessTokenAsync(User user)
+    private readonly JwtOptions _jwtOptions = jwtOptions.Value;
+
+    public async Task<TokenResponse> GenerateAccessTokenAsync(User user)
     {
-        throw new NotImplementedException();
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key));
+        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var id = user.Id.Value.ToString();
+
+        var claims = new List<Claim>
+        {
+            new(JwtRegisteredClaimNames.Sub, id),
+            new(JwtRegisteredClaimNames.Email, user.Email.Value),
+            new(JwtRegisteredClaimNames.Name, user.UserName),
+            new("id", id)
+        };
+
+        await AddRolesClaim(user, claims);
+        await AddPermissionsClaim(user, claims);
+
+        var token = new JwtSecurityToken(
+            _jwtOptions.Issuer,
+            _jwtOptions.Audience,
+            claims,
+            expires: DateTime.Now.AddMinutes(_jwtOptions.AccessTokenLifeTimeMinutes),
+            signingCredentials: credentials);
+
+        var jwtSecurityToken = new JwtSecurityTokenHandler().WriteToken(token);
+        var refreshToken = GenerateRefreshToken();
+        var expires = DateTimeOffset.UtcNow.AddMinutes(_jwtOptions.RefreshTokenLifeTimeDays);
+
+        var tokenResponse = new TokenResponse(jwtSecurityToken, refreshToken, expires);
+
+        return tokenResponse;
     }
 
-    public string GenerateRefreshToken()
+    private static string GenerateRefreshToken()
     {
         var randomNumber = new byte[32];
         using var randomNumberGenerator = RandomNumberGenerator.Create();
@@ -19,5 +57,19 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         var tokenRefresh = Convert.ToBase64String(randomNumber);
 
         return tokenRefresh;
+    }
+
+    private async Task AddRolesClaim(User user, List<Claim> claims)
+    {
+        var roles = await authorizationManager.GetRolesByUserIdAsync(user.Id);
+
+        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role.Name)));
+    }
+
+    private async Task AddPermissionsClaim(User user, List<Claim> claims)
+    {
+        var permissions = await authorizationManager.GetPermissionsByUserIdAsync(user.Id);
+
+        claims.AddRange(permissions.Select(permission => new Claim("permissions", permission.Name)));
     }
 }

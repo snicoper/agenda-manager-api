@@ -2,7 +2,7 @@
 
 namespace AgendaManager.Domain.Users.Persistence;
 
-public interface IUsersRepository
+public interface IUserRepository
 {
     IQueryable<User> GetQueryable();
 

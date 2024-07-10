@@ -45,8 +45,8 @@ public static class DependencyInjection
 
     private static void ValidateOptionsOnStartUp(IServiceCollection services, IConfiguration configuration)
     {
-        services.AddOptions<JwtSettings>()
-            .Bind(configuration.GetSection(JwtSettings.SectionName))
+        services.AddOptions<JwtOptions>()
+            .Bind(configuration.GetSection(JwtOptions.SectionName))
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
@@ -63,7 +63,7 @@ public static class DependencyInjection
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 
         // Repositories.
-        services.AddScoped<IUsersRepository, UserRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
     }
 
     private static void AddDatabase(
@@ -100,10 +100,10 @@ public static class DependencyInjection
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
-        JwtSettings jwtSettings = new();
-        configuration.Bind(JwtSettings.SectionName, jwtSettings);
+        JwtOptions jwtOptions = new();
+        configuration.Bind(JwtOptions.SectionName, jwtOptions);
 
-        services.AddSingleton(Options.Create(jwtSettings));
+        services.AddSingleton(Options.Create(jwtOptions));
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(
@@ -115,9 +115,9 @@ public static class DependencyInjection
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = jwtSettings.Issuer,
-                        ValidAudience = jwtSettings.Audience,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key)),
+                        ValidIssuer = jwtOptions.Issuer,
+                        ValidAudience = jwtOptions.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key)),
                         ClockSkew = TimeSpan.Zero
                     };
                 });

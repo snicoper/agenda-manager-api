@@ -4,7 +4,7 @@ using AgendaManager.Domain.Users.Persistence;
 
 namespace AgendaManager.Application.Users.Queries.GetUsers;
 
-internal class GetUsersQueryHandler(IUsersRepository usersRepository)
+internal class GetUsersQueryHandler(IUserRepository usersRepository)
     : IQueryHandler<GetUsersQuery, List<GetUsersQueryResponse>>
 {
     public Task<Result<List<GetUsersQueryResponse>>> Handle(GetUsersQuery request, CancellationToken cancellationToken)

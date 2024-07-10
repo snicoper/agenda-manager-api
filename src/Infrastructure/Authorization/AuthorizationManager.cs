@@ -32,6 +32,30 @@ public class AuthorizationManager(AppDbContext context, ICurrentUserProvider cur
         return havePermission;
     }
 
+    public async Task<List<Role>> GetRolesByUserIdAsync(UserId userId, CancellationToken cancellationToken = default)
+    {
+        var roles = await context
+            .UserRoles
+            .Where(r => r.UserId == userId)
+            .Select(r => r.Role)
+            .ToListAsync(cancellationToken);
+
+        return roles;
+    }
+
+    public Task<List<Permission>> GetPermissionsByUserIdAsync(
+        UserId userId,
+        CancellationToken cancellationToken = default)
+    {
+        var permissions = context
+            .UserPermissions
+            .Where(r => r.UserId == userId)
+            .Select(r => r.Permission)
+            .ToListAsync(cancellationToken);
+
+        return permissions;
+    }
+
     public async Task AddRoleAsync(UserId userId, RoleId roleId, CancellationToken cancellationToken = default)
     {
         var isInRole = await context

@@ -1,4 +1,5 @@
-﻿using AgendaManager.Application.Authentication.Commands.Register;
+﻿using AgendaManager.Application.Authentication.Commands.Login;
+using AgendaManager.Application.Common.Models.Users;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Controllers.Authentication.Contracts;
 using AgendaManager.WebApi.Extensions;
@@ -12,24 +13,13 @@ namespace AgendaManager.WebApi.Controllers.Authentication;
 [Route("api/v{version:apiVersion}/authentication")]
 public class AuthenticationController : ApiControllerBase
 {
-    [HttpPost("register")]
-    public async Task<ActionResult<Result<RegisterCommandResponse>>> Register(RegisterRequest request)
+    [HttpPost("login")]
+    public async Task<ActionResult<Result<TokenResponse>>> Login(LoginRequest request)
     {
-        var command = new RegisterCommand(
-            request.FirstName,
-            request.LastName,
-            request.Email,
-            request.Password,
-            request.ConfirmPassword);
+        var command = new LoginCommand(request.Email, request.Password);
 
         var result = await Sender.Send(command);
 
         return result.MapToResponse(this);
-    }
-
-    [HttpPost("login")]
-    public ActionResult<Result> Login(LoginRequest request)
-    {
-        return Result.Failure().MapToResponse(this);
     }
 }

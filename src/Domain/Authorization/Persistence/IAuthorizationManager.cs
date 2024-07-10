@@ -9,6 +9,10 @@ public interface IAuthorizationManager
 
     bool HasPermission(UserId userId, string permissionName);
 
+    Task<List<Role>> GetRolesByUserIdAsync(UserId userId, CancellationToken cancellationToken = default);
+
+    Task<List<Permission>> GetPermissionsByUserIdAsync(UserId userId, CancellationToken cancellationToken = default);
+
     Task AddRoleAsync(UserId userId, RoleId roleId, CancellationToken cancellationToken = default);
 
     Task RemoveRoleAsync(UserId userId, RoleId roleId, CancellationToken cancellationToken = default);

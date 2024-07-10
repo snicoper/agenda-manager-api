@@ -8,28 +8,33 @@ namespace AgendaManager.WebApi.Infrastructure;
 public class CurrentUserProvider(IHttpContextAccessor httpContextAccessor)
     : ICurrentUserProvider
 {
+    public bool IsAuthenticated => httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false;
+
     public CurrentUser GetCurrentUser()
     {
+        if (!IsAuthenticated)
+        {
+            return new CurrentUser(UserId.From(Guid.Empty), new List<string>(), new List<string>());
+        }
+
         var userId = GetClaimValues("id")
             .Select(Guid.Parse)
-            .FirstOrDefault();
+            .First();
 
         var permissions = GetClaimValues("permissions");
         var roles = GetClaimValues(ClaimTypes.Role);
 
-        return new CurrentUser(UserId.From(userId), Permissions: permissions, Roles: roles);
+        return new CurrentUser(UserId.From(userId), roles, permissions);
     }
 
     private IReadOnlyList<string> GetClaimValues(string claimType)
     {
-        if (httpContextAccessor.HttpContext is null)
-        {
-            return Array.Empty<string>();
-        }
-
-        return httpContextAccessor.HttpContext.User.Claims
+        var claim = httpContextAccessor.HttpContext!.User.Claims
             .Where(claim => claim.Type == claimType)
             .Select(claim => claim.Value)
-            .ToList();
+            .ToList()
+            .AsReadOnly();
+
+        return claim;
     }
 }

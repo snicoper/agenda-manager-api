@@ -7,18 +7,22 @@ meta {
 post {
   url: {{base_url}}/authentication/login
   body: json
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
 }
 
 body:json {
   {
-    "email": "alice@example.com",
+    "email": "",
     "password": "Password4!"
   }
 }
 
 script:post-response {
-  // bru.setEnvVar('token', res.body.value.accessToken);
+  bru.setEnvVar('token', res.body.value.accessToken);
 }
 
 tests {

@@ -1,10 +1,9 @@
-﻿using AgendaManager.Domain.Users;
+﻿using AgendaManager.Application.Common.Models.Users;
+using AgendaManager.Domain.Users;
 
 namespace AgendaManager.Application.Common.Interfaces.Users;
 
 public interface IJwtTokenGenerator
 {
-    Task<string> GenerateAccessTokenAsync(User user);
-
-    string GenerateRefreshToken();
+    Task<TokenResponse> GenerateAccessTokenAsync(User user);
 }

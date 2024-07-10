@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace AgendaManager.Infrastructure.Users;
 
 public class UserRepository(AppDbContext context)
-    : IUsersRepository
+    : IUserRepository
 {
     public IQueryable<User> GetQueryable()
     {

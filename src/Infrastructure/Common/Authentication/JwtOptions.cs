@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AgendaManager.Infrastructure.Common.Authentication;
 
-public class JwtSettings
+public class JwtOptions
 {
     public const string SectionName = "Jwt";
 
