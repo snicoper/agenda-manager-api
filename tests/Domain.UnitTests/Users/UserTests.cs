@@ -131,7 +131,9 @@ public class UserTests
     {
         // Arrange
         var user = UserFactory.CreateUser();
-        var newRefreshToken = RefreshTokenFactory.CreateValidRefreshToken();
+        var token = Guid.NewGuid().ToString();
+        var expiryTime = DateTimeOffset.UtcNow.AddDays(1);
+        var newRefreshToken = RefreshToken.Create(token, expiryTime);
 
         // Act
         user.UpdateRefreshToken(newRefreshToken);
