@@ -92,26 +92,26 @@ public sealed class User : AuditableEntity
         return this;
     }
 
-    public bool VerifyPassword(string password)
+    public bool VerifyPassword(string rawPassword)
     {
-        return PasswordHasher.VerifyPassword(password, _passwordHash);
+        return PasswordHasher.VerifyPassword(rawPassword, _passwordHash);
     }
 
-    public Result UpdatePassword(string password)
+    public Result UpdatePassword(string rawPassword)
     {
-        if (VerifyPassword(password))
+        if (VerifyPassword(rawPassword))
         {
             return Result.Success();
         }
 
-        var passwordHash = PasswordHasher.HashPassword(password);
+        var passwordHashResult = PasswordHasher.HashPassword(rawPassword);
 
-        if (passwordHash.IsFailure || string.IsNullOrEmpty(passwordHash.Value))
+        if (passwordHashResult.IsFailure || string.IsNullOrEmpty(passwordHashResult.Value))
         {
-            return passwordHash;
+            return passwordHashResult;
         }
 
-        _passwordHash = passwordHash.Value;
+        _passwordHash = passwordHashResult.Value;
 
         AddDomainEvent(new UserPasswordUpdatedDomainEvent(Id));
 
