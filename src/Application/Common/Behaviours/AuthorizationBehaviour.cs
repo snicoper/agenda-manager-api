@@ -61,7 +61,7 @@ public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserProvider cu
             return null;
         }
 
-        var error = Error.Unauthorized("User is forbidden from taking this action");
+        var error = Error.Unauthorized("User is Unauthorized from taking this action");
 
         var result = ResultBehaviourHelper.CreateResult<TResponse>(error);
 
@@ -79,7 +79,7 @@ public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserProvider cu
             return null;
         }
 
-        var error = Error.Unauthorized("User is forbidden from taking this action");
+        var error = Error.Unauthorized("User is Unauthorized from taking this action");
 
         var result = ResultBehaviourHelper.CreateResult<TResponse>(error);
 
