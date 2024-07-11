@@ -10,8 +10,6 @@ namespace AgendaManager.WebApi.UnitTests.Authentication;
 public class LoginTests(IntegrationTestWebAppFactory factory)
     : BaseIntegrationTest(factory)
 {
-    private readonly string _uri = $"{TestCommon.TestConstants.Constants.Shared.BaseUri}/authentication/login";
-
     [Fact]
     public async Task Login_ShouldReturnSuccess_WithValidCredentials()
     {
@@ -21,7 +19,7 @@ public class LoginTests(IntegrationTestWebAppFactory factory)
             TestCommon.TestConstants.Constants.Users.Password);
 
         // Act
-        var response = await HttpClient.PostAsJsonAsync(_uri, request);
+        var response = await HttpClient.PostAsJsonAsync(Enpoints.Authentication.Login, request);
 
         // Assert
         var result = await response.Content.ReadFromJsonAsync<Result<TokenResult>>();
@@ -41,7 +39,7 @@ public class LoginTests(IntegrationTestWebAppFactory factory)
             TestCommon.TestConstants.Constants.Users.Password);
 
         // Act
-        var response = await HttpClient.PostAsJsonAsync(_uri, request);
+        var response = await HttpClient.PostAsJsonAsync(Enpoints.Authentication.Login, request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -54,7 +52,7 @@ public class LoginTests(IntegrationTestWebAppFactory factory)
         var request = new LoginRequest(string.Empty, TestCommon.TestConstants.Constants.Users.Password);
 
         // Act
-        var response = await HttpClient.PostAsJsonAsync(_uri, request);
+        var response = await HttpClient.PostAsJsonAsync(Enpoints.Authentication.Login, request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -67,7 +65,7 @@ public class LoginTests(IntegrationTestWebAppFactory factory)
         var request = new LoginRequest(TestCommon.TestConstants.Constants.Users.Email.Value, string.Empty);
 
         // Act
-        var response = await HttpClient.PostAsJsonAsync(_uri, request);
+        var response = await HttpClient.PostAsJsonAsync(Enpoints.Authentication.Login, request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -80,7 +78,7 @@ public class LoginTests(IntegrationTestWebAppFactory factory)
         var request = new LoginRequest("test@example.com", TestCommon.TestConstants.Constants.Users.Password);
 
         // Act
-        var response = await HttpClient.PostAsJsonAsync(_uri, request);
+        var response = await HttpClient.PostAsJsonAsync(Enpoints.Authentication.Login, request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Conflict);
@@ -93,7 +91,7 @@ public class LoginTests(IntegrationTestWebAppFactory factory)
         var request = new LoginRequest(TestCommon.TestConstants.Constants.Users.Email.Value, "invalid_password");
 
         // Act
-        var response = await HttpClient.PostAsJsonAsync(_uri, request);
+        var response = await HttpClient.PostAsJsonAsync(Enpoints.Authentication.Login, request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Conflict);

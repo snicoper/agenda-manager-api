@@ -16,7 +16,7 @@ public abstract class BaseIntegrationTest(IntegrationTestWebAppFactory factory)
         email ??= TestCommon.TestConstants.Constants.Users.Email.Value;
         password ??= TestCommon.TestConstants.Constants.Users.Password;
 
-        var result = await HttpClient.PostAsJsonAsync("api/v1/authentication/login", new LoginCommand(email, password));
+        var result = await HttpClient.PostAsJsonAsync(Enpoints.Authentication.Login, new LoginCommand(email, password));
         var response = await result.Content.ReadFromJsonAsync<Result<TokenResult>>();
 
         var client = factory.CreateClient();
