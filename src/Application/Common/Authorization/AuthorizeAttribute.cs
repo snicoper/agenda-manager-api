@@ -1,4 +1,4 @@
-﻿namespace AgendaManager.Application.Common.Security;
+﻿namespace AgendaManager.Application.Common.Authorization;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class AuthorizeAttribute : Attribute

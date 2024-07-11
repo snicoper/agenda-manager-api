@@ -1,5 +1,5 @@
-﻿using AgendaManager.Application.Common.Interfaces.Messaging;
-using AgendaManager.Application.Common.Security;
+﻿using AgendaManager.Application.Common.Authorization;
+using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Domain.Common.Constants;
 
 namespace AgendaManager.Application.Users.Queries.GetUsers;

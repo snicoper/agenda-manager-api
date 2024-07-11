@@ -1,8 +1,8 @@
-﻿using AgendaManager.Application.Common.Behaviours;
+﻿using AgendaManager.Application.Common.Authorization;
+using AgendaManager.Application.Common.Behaviours;
 using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Models.Users;
-using AgendaManager.Application.Common.Security;
 using AgendaManager.Domain.Common.Constants;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users.ValueObjects;
