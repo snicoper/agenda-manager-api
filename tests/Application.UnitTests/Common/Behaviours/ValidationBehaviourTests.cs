@@ -13,21 +13,21 @@ namespace AgendaManager.Application.UnitTests.Common.Behaviours;
 public class ValidationBehaviourTests
 {
     private readonly ILogger<Result> _logger;
-    private readonly ValidationBehaviour<TestRequest, Result> _sut;
-    private readonly IValidator<TestRequest> _validator;
+    private readonly ValidationBehaviour<IAppBaseRequest, Result> _sut;
+    private readonly IValidator<IAppBaseRequest> _validator;
 
     public ValidationBehaviourTests()
     {
         _logger = Substitute.For<ILogger<Result>>();
-        _validator = Substitute.For<IValidator<TestRequest>>();
-        _sut = new ValidationBehaviour<TestRequest, Result>(_logger, _validator);
+        _validator = Substitute.For<IValidator<IAppBaseRequest>>();
+        _sut = new ValidationBehaviour<IAppBaseRequest, Result>(_logger, _validator);
     }
 
     [Fact]
     public async Task Handle_ShouldCallNext_WhenValidatorIsNull()
     {
         // Arrange
-        var request = new TestRequest();
+        TestRequest request = new();
         var next = Substitute.For<RequestHandlerDelegate<Result>>();
         var sut = new ValidationBehaviour<TestRequest, Result>(_logger);
 
@@ -42,7 +42,7 @@ public class ValidationBehaviourTests
     public async Task Handle_ShouldReturnResult_WhenValidationSucceeds()
     {
         // Arrange
-        var request = new TestRequest();
+        TestRequest request = new();
         _validator.ValidateAsync(request, CancellationToken.None)
             .Returns(new ValidationResult());
 
@@ -58,7 +58,7 @@ public class ValidationBehaviourTests
     public async Task Handle_ShouldReturnErrorResult_WhenValidationFails()
     {
         // Arrange
-        var request = new TestRequest();
+        TestRequest request = new();
         var errors = new ValidationFailure("Property", "Error message");
 
         _validator.ValidateAsync(request, CancellationToken.None)
@@ -73,5 +73,5 @@ public class ValidationBehaviourTests
         result.Error?.ToDictionary()["property"].Should().Contain("Error message");
     }
 
-    public record TestRequest : IAppBaseRequest;
+    private record TestRequest : IAppBaseRequest;
 }

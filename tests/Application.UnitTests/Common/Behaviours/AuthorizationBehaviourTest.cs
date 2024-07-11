@@ -26,7 +26,7 @@ public class AuthorizationBehaviourTest
     public async Task Handle_ShouldReturnResultSuccess_WhenNotRequiredRolesOrPermissions()
     {
         // Arrange
-        var request = new TestRequest();
+        TestRequest request = new();
 
         // Act
         var result = await _sut.Handle(request, () => Task.FromResult(Result.Success()), CancellationToken.None);
@@ -43,7 +43,7 @@ public class AuthorizationBehaviourTest
         List<string> roles = [Roles.Admin, Roles.Manager, Roles.Client];
         List<string> permissions = [Permissions.User.Delete];
 
-        var request = new TestAdminRequest();
+        TestAdminRequest request = new();
         _currentUserProvider.IsAuthenticated.Returns(true);
         _currentUserProvider
             .GetCurrentUser()
@@ -61,7 +61,7 @@ public class AuthorizationBehaviourTest
     public async Task Handle_ShouldThrowUnauthorizedAccessException_WhenUserIsNotAuthenticated()
     {
         // Arrange;
-        var request = new TestAdminRequest();
+        TestAdminRequest request = new();
         _currentUserProvider.IsAuthenticated.Returns(false);
 
         // Act
@@ -76,7 +76,7 @@ public class AuthorizationBehaviourTest
     public async Task Handle_ShouldThrowUnauthorizedAccessException_WhenCurrentUserIsNull()
     {
         // Arrange;
-        var request = new TestAdminRequest();
+        TestAdminRequest request = new();
         var currentUser = null as CurrentUser;
         _currentUserProvider.IsAuthenticated.Returns(true);
         _currentUserProvider.GetCurrentUser().Returns(currentUser);
@@ -96,7 +96,7 @@ public class AuthorizationBehaviourTest
         List<string> roles = [Roles.Manager, Roles.Client];
         List<string> permissions = [Permissions.User.Delete];
 
-        var request = new TestAdminRequest();
+        TestAdminRequest request = new();
         _currentUserProvider.IsAuthenticated.Returns(true);
         _currentUserProvider
             .GetCurrentUser()
@@ -109,7 +109,7 @@ public class AuthorizationBehaviourTest
         result.IsSuccess.Should().BeFalse();
         result.ResultType.Should().Be(ResultType.Unauthorized);
         result.Error?.HasErrors.Should().BeTrue();
-        result.Error?.FirstError()?.Code.Should().Contain("Unauthorized");
+        result.Error?.FirstError()?.Code.Should().Be("Unauthorized");
         result.Error?.FirstError()?.Description.Should().Contain("User is Unauthorized from taking this action");
     }
 
@@ -120,7 +120,7 @@ public class AuthorizationBehaviourTest
         List<string> roles = [Roles.Admin, Roles.Manager, Roles.Client];
         List<string> permissions = [Permissions.User.Update];
 
-        var request = new TestAdminRequest();
+        TestAdminRequest request = new();
         _currentUserProvider.IsAuthenticated.Returns(true);
         _currentUserProvider
             .GetCurrentUser()
@@ -133,12 +133,12 @@ public class AuthorizationBehaviourTest
         result.IsSuccess.Should().BeFalse();
         result.ResultType.Should().Be(ResultType.Unauthorized);
         result.Error?.HasErrors.Should().BeTrue();
-        result.Error?.FirstError()?.Code.Should().Contain("Unauthorized");
+        result.Error?.FirstError()?.Code.Should().Be("Unauthorized");
         result.Error?.FirstError()?.Description.Should().Contain("User is Unauthorized from taking this action");
     }
 
-    public record TestRequest : IAppBaseRequest;
+    private record TestRequest : IAppBaseRequest;
 
     [Authorize(Roles = Roles.Admin, Permissions = Permissions.User.Delete)]
-    public record TestAdminRequest : IAppBaseRequest;
+    private record TestAdminRequest : IAppBaseRequest;
 }
