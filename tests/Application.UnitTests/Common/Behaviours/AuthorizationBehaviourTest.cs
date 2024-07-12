@@ -58,35 +58,43 @@ public class AuthorizationBehaviourTest
     }
 
     [Fact]
-    public async Task Handle_ShouldThrowUnauthorizedAccessException_WhenUserIsNotAuthenticated()
+    public async Task Handle_ShouldReturnResultUnauthorized_WhenUserIsNotAuthenticated()
     {
         // Arrange;
         TestAdminRequest request = new();
         _currentUserProvider.IsAuthenticated.Returns(false);
 
         // Act
-        var result = async () => await _sut
+        var result = await _sut
             .Handle(request, () => Task.FromResult(Result.Success()), CancellationToken.None);
 
         // Assert
-        await result.Should().ThrowAsync<UnauthorizedAccessException>();
+        result.IsSuccess.Should().BeFalse();
+        result.ResultType.Should().Be(ResultType.Unauthorized);
+        result.Error?.HasErrors.Should().BeTrue();
+        result.Error?.FirstError()?.Code.Should().Be("Unauthorized");
+        result.Error?.FirstError()?.Description.Should().Contain("User is Unauthorized from taking this action");
     }
 
     [Fact]
-    public async Task Handle_ShouldThrowUnauthorizedAccessException_WhenCurrentUserIsNull()
+    public async Task Handle_ShouldReturnResultUnauthorized_WhenCurrentUserIsDefault()
     {
         // Arrange;
         TestAdminRequest request = new();
-        var currentUser = null as CurrentUser;
+        var defaultCurrentUser = new CurrentUser(UserId.From(Guid.Empty), new List<string>(), new List<string>());
         _currentUserProvider.IsAuthenticated.Returns(true);
-        _currentUserProvider.GetCurrentUser().Returns(currentUser);
+        _currentUserProvider.GetCurrentUser().Returns(defaultCurrentUser);
 
         // Act
-        var result = async () => await _sut
+        var result = await _sut
             .Handle(request, () => Task.FromResult(Result.Success()), CancellationToken.None);
 
         // Assert
-        await result.Should().ThrowAsync<UnauthorizedAccessException>();
+        result.IsSuccess.Should().BeFalse();
+        result.ResultType.Should().Be(ResultType.Unauthorized);
+        result.Error?.HasErrors.Should().BeTrue();
+        result.Error?.FirstError()?.Code.Should().Be("Unauthorized");
+        result.Error?.FirstError()?.Description.Should().Contain("User is Unauthorized from taking this action");
     }
 
     [Fact]

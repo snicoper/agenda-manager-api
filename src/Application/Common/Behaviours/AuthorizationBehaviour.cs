@@ -28,9 +28,9 @@ public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserProvider cu
 
         var currentUser = currentUserProvider.GetCurrentUser();
 
-        if (currentUserProvider.IsAuthenticated is false || currentUser is null)
+        if (currentUserProvider.IsAuthenticated is false || currentUser.Id.Value == Guid.Empty)
         {
-            throw new UnauthorizedAccessException();
+            return ErrorUnauthorizedResult();
         }
 
         var permissionBasedAuthorization = PermissionBasedAuthorization(attributes, currentUser);
@@ -56,16 +56,7 @@ public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserProvider cu
             .SelectMany(authorizationAttribute => authorizationAttribute.Permissions?.Split(',') ?? [])
             .ToList();
 
-        if (!requiredPermissions.Except(currentUser.Permissions).Any())
-        {
-            return null;
-        }
-
-        var error = Error.Unauthorized("User is Unauthorized from taking this action");
-
-        var result = ResultBehaviourHelper.CreateResult<TResponse>(error);
-
-        return result;
+        return !requiredPermissions.Except(currentUser.Permissions).Any() ? null : ErrorUnauthorizedResult();
     }
 
     private static TResponse? RoleBasedAuthorization(AuthorizeAttribute[] attributes, CurrentUser currentUser)
@@ -74,11 +65,11 @@ public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserProvider cu
             .SelectMany(authorizationAttribute => authorizationAttribute.Roles?.Split(',') ?? [])
             .ToList();
 
-        if (!requiredRoles.Except(currentUser.Roles).Any())
-        {
-            return null;
-        }
+        return !requiredRoles.Except(currentUser.Roles).Any() ? null : ErrorUnauthorizedResult();
+    }
 
+    private static TResponse ErrorUnauthorizedResult()
+    {
         var error = Error.Unauthorized("User is Unauthorized from taking this action");
 
         var result = ResultBehaviourHelper.CreateResult<TResponse>(error);

@@ -30,13 +30,13 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<DateTimeOffset>("Created")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("CreatedBy")
+                    b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("LastModifiedBy")
+                    b.Property<Guid>("LastModifiedBy")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")
@@ -60,13 +60,13 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<DateTimeOffset>("Created")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("CreatedBy")
+                    b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("LastModifiedBy")
+                    b.Property<Guid>("LastModifiedBy")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")
@@ -95,13 +95,13 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<DateTimeOffset>("Created")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("CreatedBy")
+                    b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("LastModifiedBy")
+                    b.Property<Guid>("LastModifiedBy")
                         .HasColumnType("uuid");
 
                     b.HasKey("UserId", "PermissionId");
@@ -126,13 +126,13 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<DateTimeOffset>("Created")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("CreatedBy")
+                    b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("LastModifiedBy")
+                    b.Property<Guid>("LastModifiedBy")
                         .HasColumnType("uuid");
 
                     b.HasKey("UserId", "RoleId");
@@ -155,7 +155,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<DateTimeOffset>("Created")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("CreatedBy")
+                    b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Email")
@@ -173,7 +173,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<DateTimeOffset>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("LastModifiedBy")
+                    b.Property<Guid>("LastModifiedBy")
                         .HasColumnType("uuid");
 
                     b.Property<string>("LastName")

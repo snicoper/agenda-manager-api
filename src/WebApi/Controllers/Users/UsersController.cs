@@ -4,6 +4,7 @@ using AgendaManager.Application.Users.Queries.GetUsers;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Extensions;
 using AgendaManager.WebApi.Infrastructure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgendaManager.WebApi.Controllers.Users;
@@ -12,6 +13,7 @@ namespace AgendaManager.WebApi.Controllers.Users;
 public class UsersController : ApiControllerBase
 {
     [HttpGet]
+    [AllowAnonymous]
     public async Task<ActionResult<Result<List<GetUsersQueryResponse>>>> GetUsers(CancellationToken cancellationToken)
     {
         var result = await Sender.Send(new GetUsersQuery(string.Empty), cancellationToken);
