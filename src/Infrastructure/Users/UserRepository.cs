@@ -24,11 +24,6 @@ public class UserRepository(AppDbContext context)
         return await context.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
-    public async Task<User?> GetByUserNameAsync(string userName, CancellationToken cancellationToken = default)
-    {
-        return await context.Users.FirstOrDefaultAsync(u => u.UserName == userName, cancellationToken);
-    }
-
     public async Task AddAsync(User newUser, CancellationToken cancellationToken = default)
     {
         await context.Users.AddAsync(newUser, cancellationToken);
