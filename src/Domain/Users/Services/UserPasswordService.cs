@@ -1,5 +1,4 @@
-﻿using AgendaManager.Domain.Common.Interfaces;
-using AgendaManager.Domain.Common.Responses;
+﻿using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users.Interfaces;
 
 namespace AgendaManager.Domain.Users.Services;
