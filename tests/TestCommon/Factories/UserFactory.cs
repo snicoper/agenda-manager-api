@@ -1,5 +1,5 @@
 ﻿using AgendaManager.Domain.Users;
-using AgendaManager.Infrastructure.Common.Authentication;
+using AgendaManager.Infrastructure.Users;
 using AgendaManager.TestCommon.TestConstants;
 
 namespace AgendaManager.TestCommon.Factories;

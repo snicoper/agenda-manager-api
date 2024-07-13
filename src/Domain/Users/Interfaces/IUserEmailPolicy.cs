@@ -3,7 +3,7 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users.Interfaces;
 
-public interface IUserValidator
+public interface IUserEmailPolicy
 {
-    Task<Result> IsUniqueEmail(EmailAddress email);
+    Task<Result> ValidateEmailAsync(User user, EmailAddress newEmail);
 }

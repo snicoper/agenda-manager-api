@@ -10,7 +10,7 @@ using AgendaManager.Domain.Users;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AgendaManager.Infrastructure.Common.Authentication;
+namespace AgendaManager.Infrastructure.Users;
 
 public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions, IAuthorizationManager authorizationManager)
     : IJwtTokenGenerator

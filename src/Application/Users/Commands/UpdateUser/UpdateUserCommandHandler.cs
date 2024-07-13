@@ -1,12 +1,17 @@
 ﻿using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Domain.Common.Responses;
+using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Interfaces;
+using AgendaManager.Domain.Users.Services;
 using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Application.Users.Commands.UpdateUser;
 
-internal class UpdateUserCommandHandler(IUserRepository usersRepository, IUnitOfWork unitOfWork)
+internal class UpdateUserCommandHandler(
+    IUserRepository usersRepository,
+    UserEmailService userEmailService,
+    IUnitOfWork unitOfWork)
     : ICommandHandler<UpdateUserCommand, UpdateUserCommandResponse>
 {
     public async Task<Result<UpdateUserCommandResponse>> Handle(
@@ -17,14 +22,10 @@ internal class UpdateUserCommandHandler(IUserRepository usersRepository, IUnitOf
 
         if (user is null)
         {
-            return Error
-                .NotFound("User not found")
-                .ToResult<UpdateUserCommandResponse>();
+            return UserErrors.UserNotFound.ToResult<UpdateUserCommandResponse>();
         }
 
-        user.UpdateEmail(EmailAddress.From(request.Email));
-        usersRepository.Update(user);
-
+        await userEmailService.UpdateUserEmailAsync(user, EmailAddress.From(request.Email));
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success(new UpdateUserCommandResponse(request.Email));

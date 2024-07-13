@@ -74,79 +74,69 @@ public sealed class User : AuditableEntity
         return user;
     }
 
-    public User UpdateUser(string firstName, string lastName)
+    public void UpdateUser(string firstName, string lastName)
     {
         if (FirstName == firstName && LastName == lastName)
         {
-            return this;
+            return;
         }
 
         FirstName = firstName;
         LastName = lastName;
 
         AddDomainEvent(new UserUpdatedDomainEvent(Id));
-
-        return this;
     }
 
-    public void UpdatePassword(string passwordHash)
+    public void UpdateRefreshToken(RefreshToken refreshToken)
+    {
+        if (RefreshToken is not null && RefreshToken.Equals(refreshToken))
+        {
+            return;
+        }
+
+        RefreshToken = refreshToken;
+    }
+
+    public void ConfirmEmail()
+    {
+        if (IsEmailConfirmed)
+        {
+            return;
+        }
+
+        IsEmailConfirmed = true;
+
+        AddDomainEvent(new UserEmailConfirmedDomainEvent(Id));
+    }
+
+    public void SetActiveState(bool state)
+    {
+        if (Active == state)
+        {
+            return;
+        }
+
+        Active = state;
+
+        AddDomainEvent(new UserActiveStateChangedDomainEvent(Id, state));
+    }
+
+    internal void UpdatePassword(string passwordHash)
     {
         PasswordHash = passwordHash;
 
         AddDomainEvent(new UserPasswordUpdatedDomainEvent(Id));
     }
 
-    public User UpdateEmail(EmailAddress email)
+    internal void UpdateEmail(EmailAddress email)
     {
         if (Email.Equals(email))
         {
-            return this;
+            return;
         }
 
         Email = email;
 
         AddDomainEvent(new UserEmailUpdatedDomainEvent(Id));
-
-        return this;
-    }
-
-    public User UpdateRefreshToken(RefreshToken refreshToken)
-    {
-        if (RefreshToken is not null && RefreshToken.Equals(refreshToken))
-        {
-            return this;
-        }
-
-        RefreshToken = refreshToken;
-
-        return this;
-    }
-
-    public User ConfirmEmail()
-    {
-        if (IsEmailConfirmed)
-        {
-            return this;
-        }
-
-        IsEmailConfirmed = true;
-
-        AddDomainEvent(new UserEmailConfirmedDomainEvent(Id));
-
-        return this;
-    }
-
-    public User SetActiveState(bool state)
-    {
-        if (Active == state)
-        {
-            return this;
-        }
-
-        Active = state;
-
-        AddDomainEvent(new UserActiveStateChangedDomainEvent(Id, state));
-
-        return this;
     }
 }

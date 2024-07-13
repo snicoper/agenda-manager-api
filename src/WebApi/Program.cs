@@ -1,4 +1,5 @@
 using AgendaManager.Application;
+using AgendaManager.Domain;
 using AgendaManager.Infrastructure;
 using AgendaManager.Infrastructure.Common.Middlewares;
 using AgendaManager.Infrastructure.Common.Persistence.Seeds;
@@ -11,6 +12,7 @@ builder.Host.UseSerilog(
     (context, configuration) =>
         configuration.ReadFrom.Configuration(context.Configuration));
 
+builder.Services.AddDomain();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
 builder.Services.AddWebApi();

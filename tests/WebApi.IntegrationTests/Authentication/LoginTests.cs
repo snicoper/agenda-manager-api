@@ -2,6 +2,7 @@
 using System.Net.Http.Json;
 using AgendaManager.Application.Common.Models.Users;
 using AgendaManager.Domain.Common.Responses;
+using AgendaManager.Domain.Users;
 using AgendaManager.WebApi.Controllers.Authentication.Contracts;
 using FluentAssertions;
 
@@ -28,6 +29,40 @@ public class LoginTests(IntegrationTestWebAppFactory factory)
         result?.Value?.AccessToken.Should().NotBeEmpty();
         result?.Value?.RefreshToken.Should().NotBeEmpty();
         result?.Value?.Expires.Should().BeAfter(DateTimeOffset.UtcNow);
+    }
+
+    [Fact]
+    public async Task Login_ShouldReturnConflictError_WhenUserNotEmailConfirmed()
+    {
+        // Arrange
+        var request = new LoginRequest(
+            "lexi@example.com",
+            TestCommon.TestConstants.Constants.Users.Password);
+
+        // Act
+        var response = await HttpClient.PostAsJsonAsync(Enpoints.Authentication.Login, request);
+
+        // Assert
+        var result = await response.Content.ReadFromJsonAsync<Result<TokenResult>>();
+        response.StatusCode.Should().Be(HttpStatusCode.Conflict);
+        result?.Error?.FirstError()?.Should().Be(UserErrors.EmailIsNotConfirmed);
+    }
+
+    [Fact]
+    public async Task Login_ShouldReturnConflictError_WhenUserNotActive()
+    {
+        // Arrange
+        var request = new LoginRequest(
+            "lexi@example.com",
+            TestCommon.TestConstants.Constants.Users.Password);
+
+        // Act
+        var response = await HttpClient.PostAsJsonAsync(Enpoints.Authentication.Login, request);
+
+        // Assert
+        var result = await response.Content.ReadFromJsonAsync<Result<TokenResult>>();
+        response.StatusCode.Should().Be(HttpStatusCode.Conflict);
+        result?.Error?.FirstError()?.Should().Be(UserErrors.UserIsNotActive);
     }
 
     [Fact]

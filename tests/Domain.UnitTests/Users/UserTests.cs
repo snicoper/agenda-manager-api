@@ -46,7 +46,7 @@ public class UserTests
     }
 
     [Fact]
-    public void User_ShouldRaiseEvent_WhenUserPasswordIsSame()
+    public void User_ShouldRaiseEvent_WhenUserPasswordIsChanged()
     {
         // Arrange
         var user = UserFactory.CreateUser();

@@ -13,7 +13,7 @@ namespace AgendaManager.Application.Authentication.Commands.Login;
 internal class LoginCommandHandler(
     IJwtTokenGenerator jwtTokenGenerator,
     IUserRepository userRepository,
-    UserPasswordService userPasswordService,
+    UserAuthenticationService userAuthenticationService,
     IUnitOfWork unitOfWork)
     : ICommandHandler<LoginCommand, TokenResult>
 {
@@ -26,14 +26,11 @@ internal class LoginCommandHandler(
             return UserErrors.InvalidCredentials.ToResult<TokenResult>();
         }
 
-        if (!userPasswordService.VerifyPassword(request.Password, user.PasswordHash))
-        {
-            return UserErrors.InvalidCredentials.ToResult<TokenResult>();
-        }
+        var authResult = userAuthenticationService.AuthenticateUser(user, request.Password);
 
-        if (!user.Active)
+        if (authResult.IsFailure)
         {
-            return UserErrors.UserIsNotActive.ToResult<TokenResult>();
+            return authResult.MapToValue<TokenResult>();
         }
 
         var tokenResponse = await jwtTokenGenerator.GenerateAccessTokenAsync(user);
