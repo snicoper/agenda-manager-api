@@ -49,7 +49,7 @@ public class ResultTests
     }
 
     [Fact]
-    public void Result_ShouldReturnSuccess_WhenMapToGeneric()
+    public void Result_ShouldReturnSuccess_WhenMapToValue()
     {
         // Arrange
         var error = Result.Success();
@@ -58,13 +58,14 @@ public class ResultTests
         var result = error.MapToValue<string>("test");
 
         // Assert
+        result.Should().BeOfType<Result<string>>();
         result.IsSuccess.Should().BeTrue();
         result.ResultType.Should().Be(ResultType.Succeeded);
         result.Value.Should().Be("test");
     }
 
     [Fact]
-    public void Result_ShouldReturnFailure_WhenMapToGeneric()
+    public void Result_ShouldReturnFailure_WhenMapToValue()
     {
         // Arrange
         var error = Result.Failure();
