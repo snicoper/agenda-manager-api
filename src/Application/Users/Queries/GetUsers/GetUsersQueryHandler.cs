@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Domain.Common.Responses;
-using AgendaManager.Domain.Users.Persistence;
+using AgendaManager.Domain.Users.Interfaces;
 
 namespace AgendaManager.Application.Users.Queries.GetUsers;
 

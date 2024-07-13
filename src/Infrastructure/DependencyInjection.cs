@@ -2,9 +2,9 @@
 using AgendaManager.Application.Common.Interfaces.Clock;
 using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Application.Common.Interfaces.Users;
-using AgendaManager.Domain.Authorization.Persistence;
+using AgendaManager.Domain.Authorization.Interfaces;
 using AgendaManager.Domain.Common.Interfaces;
-using AgendaManager.Domain.Users.Persistence;
+using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Infrastructure.Authorization;
 using AgendaManager.Infrastructure.Common.Authentication;
 using AgendaManager.Infrastructure.Common.Clock;
@@ -61,6 +61,9 @@ public static class DependencyInjection
         // Common.
         services.AddSingleton(TimeProvider.System);
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
+
+        // Validators.
+        services.AddScoped<IUserValidator, UserValidator>();
 
         // Repositories.
         services.AddScoped<IUserRepository, UserRepository>();

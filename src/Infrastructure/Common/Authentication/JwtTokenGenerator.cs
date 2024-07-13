@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Models.Users;
-using AgendaManager.Domain.Authorization.Persistence;
+using AgendaManager.Domain.Authorization.Interfaces;
 using AgendaManager.Domain.Common.Constants;
 using AgendaManager.Domain.Users;
 using Microsoft.Extensions.Options;

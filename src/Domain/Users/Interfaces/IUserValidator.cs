@@ -1,7 +1,7 @@
 ﻿using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.Domain.Users;
+namespace AgendaManager.Domain.Users.Interfaces;
 
 public interface IUserValidator
 {

@@ -1,7 +1,7 @@
 ﻿using AgendaManager.Domain.Authorization.ValueObjects;
 using AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.Domain.Authorization.Persistence;
+namespace AgendaManager.Domain.Authorization.Interfaces;
 
 public interface IAuthorizationManager
 {

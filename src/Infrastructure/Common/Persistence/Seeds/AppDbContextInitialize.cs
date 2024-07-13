@@ -1,5 +1,5 @@
 ﻿using AgendaManager.Domain.Authorization;
-using AgendaManager.Domain.Authorization.Persistence;
+using AgendaManager.Domain.Authorization.Interfaces;
 using AgendaManager.Domain.Authorization.ValueObjects;
 using AgendaManager.Domain.Common.Constants;
 using AgendaManager.Domain.Users;

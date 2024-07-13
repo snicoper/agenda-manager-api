@@ -4,7 +4,7 @@ using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Models.Users;
 using AgendaManager.Domain.Common.Interfaces;
 using AgendaManager.Domain.Common.Responses;
-using AgendaManager.Domain.Users.Persistence;
+using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Application.Authentication.Commands.Login;

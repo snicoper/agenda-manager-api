@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.Domain.Users.Persistence;
+namespace AgendaManager.Domain.Users.Interfaces;
 
 public interface IUserRepository
 {
