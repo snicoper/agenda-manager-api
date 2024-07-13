@@ -47,4 +47,34 @@ public class ResultTests
         result.IsSuccess.Should().BeFalse();
         result.ResultType.Should().Be(errorType);
     }
+
+    [Fact]
+    public void Result_ShouldReturnSuccess_WhenMapToGeneric()
+    {
+        // Arrange
+        var error = Result.Success();
+
+        // Act
+        var result = error.MapToValue<string>("test");
+
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+        result.ResultType.Should().Be(ResultType.Succeeded);
+        result.Value.Should().Be("test");
+    }
+
+    [Fact]
+    public void Result_ShouldReturnFailure_WhenMapToGeneric()
+    {
+        // Arrange
+        var error = Result.Failure();
+
+        // Act
+        var result = error.MapToValue<string>("test");
+
+        // Assert
+        result.IsSuccess.Should().BeFalse();
+        result.ResultType.Should().Be(ResultType.Conflict);
+        result.Value.Should().Be("test");
+    }
 }

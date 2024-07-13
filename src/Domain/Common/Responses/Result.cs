@@ -70,6 +70,11 @@ public class Result
     {
         return new Result<TValue>(default, error);
     }
+
+    public Result<TValue> MapToValue<TValue>(TValue? value = default)
+    {
+        return new Result<TValue>(IsSuccess, ResultType) { Value = value, Error = Error };
+    }
 }
 
 #pragma warning disable SA1402 // File may only contain a single type
@@ -86,7 +91,7 @@ public class Result<TValue> : Result
     {
     }
 
-    public TValue? Value { get; }
+    public TValue? Value { get; protected internal set; }
 
     public new bool HasValue => !EqualityComparer<TValue>.Default.Equals(Value, default);
 
