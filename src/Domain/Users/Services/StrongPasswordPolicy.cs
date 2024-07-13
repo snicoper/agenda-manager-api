@@ -8,6 +8,8 @@ public class StrongPasswordPolicy : IPasswordPolicy
 {
     public Result IsPasswordValid(string password)
     {
-        return DomainRegex.StrongPassword().IsMatch(password) ? Result.Success() : UserErrors.InvalidFormatPassword;
+        return DomainRegex.StrongPassword().IsMatch(password)
+            ? Result.Success()
+            : UserErrors.InvalidFormatPassword;
     }
 }

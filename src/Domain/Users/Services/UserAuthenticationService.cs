@@ -8,12 +8,12 @@ public class UserAuthenticationService(UserPasswordService userPasswordService)
     {
         if (!user.Active)
         {
-            return UserErrors.UserIsNotActive.ToResult();
+            return UserErrors.UserIsNotActive;
         }
 
         if (!user.IsEmailConfirmed)
         {
-            return UserErrors.EmailIsNotConfirmed.ToResult();
+            return UserErrors.EmailIsNotConfirmed;
         }
 
         return !userPasswordService.VerifyPassword(password, user.PasswordHash)
