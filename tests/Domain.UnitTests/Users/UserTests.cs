@@ -46,55 +46,17 @@ public class UserTests
     }
 
     [Fact]
-    public void User_ShouldRaiseEvent_WhenUserPasswordIsUpdated()
+    public void User_ShouldRaiseEvent_WhenUserPasswordIsSame()
     {
         // Arrange
         var user = UserFactory.CreateUser();
+        var passwordHash = UserFactory.BcryptPasswordHasher.HashPassword(Constants.Users.Password);
 
         // Act
-        user.UpdatePassword("newPassword!34", UserFactory.PasswordHasher);
+        user.UpdatePassword(passwordHash);
 
         // Assert
         user.DomainEvents.Should().Contain(x => x is UserPasswordUpdatedDomainEvent);
-    }
-
-    [Fact]
-    public void User_ShouldReturnTrue_WhenUserPasswordIsValid()
-    {
-        // Arrange
-        var user = UserFactory.CreateUser();
-
-        // Act
-        var result = user.VerifyPassword(Constants.Users.Password, UserFactory.PasswordHasher);
-
-        // Assert
-        result.Should().BeTrue();
-    }
-
-    [Fact]
-    public void User_ShouldReturnFalse_WhenUserPasswordIsInvalid()
-    {
-        // Arrange
-        var user = UserFactory.CreateUser();
-
-        // Act
-        var result = user.VerifyPassword("wrongPassword123@@", UserFactory.PasswordHasher);
-
-        // Assert
-        result.Should().BeFalse();
-    }
-
-    [Fact]
-    public void User_ShouldNotRaiseEvent_WhenUserPasswordIsSame()
-    {
-        // Arrange
-        var user = UserFactory.CreateUser();
-
-        // Act
-        user.UpdatePassword(Constants.Users.Password, UserFactory.PasswordHasher);
-
-        // Assert
-        user.DomainEvents.Should().NotContain(x => x is UserPasswordUpdatedDomainEvent);
     }
 
     [Fact]

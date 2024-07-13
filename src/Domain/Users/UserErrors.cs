@@ -1,0 +1,16 @@
+﻿using AgendaManager.Domain.Common.Responses;
+
+namespace AgendaManager.Domain.Users;
+
+public static class UserErrors
+{
+    public static Error InvalidCredentials => Error.Conflict("Invalid credentials");
+
+    public static Error UserIsNotActive => Error.Conflict("User is not active");
+
+    public static Error InvalidFormatPassword => Error.Validation(
+        "Password",
+        "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit and one special character");
+
+    public static Error EmailAlreadyExists => Error.Validation(nameof(User.Email), "Email already exists");
+}

@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using AgendaManager.Domain.Authorization;
 using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Common.Interfaces;
-using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.ValueObjects;
 
@@ -10,8 +8,6 @@ namespace AgendaManager.Domain.Users;
 
 public sealed class User : AuditableEntity
 {
-    private string _passwordHash = default!;
-
     private User()
     {
     }
@@ -27,7 +23,7 @@ public sealed class User : AuditableEntity
         Id = userId;
         Email = email;
         UserName = userName;
-        _passwordHash = passwordHash;
+        PasswordHash = passwordHash;
         FirstName = firstName;
         LastName = lastName;
 
@@ -38,6 +34,8 @@ public sealed class User : AuditableEntity
     public UserId Id { get; } = null!;
 
     public string UserName { get; private set; } = default!;
+
+    public string PasswordHash { get; private set; } = default!;
 
     public EmailAddress Email { get; private set; } = null!;
 
@@ -91,30 +89,11 @@ public sealed class User : AuditableEntity
         return this;
     }
 
-    public bool VerifyPassword(string rawPassword, IPasswordHasher passwordHasher)
+    public void UpdatePassword(string passwordHash)
     {
-        return passwordHasher.VerifyPassword(rawPassword, _passwordHash);
-    }
-
-    public Result UpdatePassword(string rawPassword, IPasswordHasher passwordHasher)
-    {
-        if (VerifyPassword(rawPassword, passwordHasher))
-        {
-            return Result.Success();
-        }
-
-        var passwordHashResult = passwordHasher.HashPassword(rawPassword);
-
-        if (passwordHashResult.IsFailure || string.IsNullOrEmpty(passwordHashResult.Value))
-        {
-            return passwordHashResult;
-        }
-
-        _passwordHash = passwordHashResult.Value;
+        PasswordHash = passwordHash;
 
         AddDomainEvent(new UserPasswordUpdatedDomainEvent(Id));
-
-        return Result.Success();
     }
 
     public User UpdateEmail(EmailAddress email)

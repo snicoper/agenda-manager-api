@@ -5,6 +5,7 @@ using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Domain.Authorization.Interfaces;
 using AgendaManager.Domain.Common.Interfaces;
 using AgendaManager.Domain.Users.Interfaces;
+using AgendaManager.Domain.Users.Services;
 using AgendaManager.Infrastructure.Authorization;
 using AgendaManager.Infrastructure.Common.Authentication;
 using AgendaManager.Infrastructure.Common.Clock;
@@ -64,9 +65,10 @@ public static class DependencyInjection
 
         // Validators.
         services.AddScoped<IUserValidator, UserValidator>();
-
-        // Repositories.
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IPasswordPolicy, StrongPasswordPolicy>();
+        services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
+        services.AddScoped<UserPasswordService>();
     }
 
     private static void AddDatabase(
@@ -101,7 +103,7 @@ public static class DependencyInjection
         services.AddScoped<IAuthenticationManager, AuthenticationManager>();
         services.AddScoped<IAuthorizationManager, AuthorizationManager>();
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
-        services.AddSingleton<IPasswordHasher, PasswordHasher>();
+        services.AddSingleton<IPasswordHasher, BcryptPasswordHasher>();
 
         JwtOptions jwtOptions = new();
         configuration.Bind(JwtOptions.SectionName, jwtOptions);

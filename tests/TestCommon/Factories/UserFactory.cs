@@ -6,11 +6,11 @@ namespace AgendaManager.TestCommon.Factories;
 
 public abstract class UserFactory
 {
-    public static PasswordHasher PasswordHasher => new();
+    public static BcryptPasswordHasher BcryptPasswordHasher => new();
 
     public static User CreateUser()
     {
-        var passwordHash = PasswordHasher.HashPassword(Constants.Users.Password).Value ??
+        var passwordHash = BcryptPasswordHasher.HashPassword(Constants.Users.Password) ??
             throw new InvalidOperationException("Failed to hash password");
 
         return User.Create(

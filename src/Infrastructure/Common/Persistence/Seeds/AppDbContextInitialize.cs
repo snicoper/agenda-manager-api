@@ -2,9 +2,9 @@
 using AgendaManager.Domain.Authorization.Interfaces;
 using AgendaManager.Domain.Authorization.ValueObjects;
 using AgendaManager.Domain.Common.Constants;
+using AgendaManager.Domain.Common.Interfaces;
 using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.ValueObjects;
-using AgendaManager.Infrastructure.Common.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -13,6 +13,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Seeds;
 public class AppDbContextInitialize(
     AppDbContext context,
     IAuthorizationManager authorizationManager,
+    IPasswordHasher passwordHasher,
     ILogger<AppDbContextInitialize> logger)
 {
     public async Task InitialiseAsync()
@@ -90,13 +91,7 @@ public class AppDbContextInitialize(
 
     private async Task CreateUsersAsync()
     {
-        var passwordHasher = new PasswordHasher();
         var passwordHash = passwordHasher.HashPassword("Password4!");
-
-        if (passwordHash.IsFailure || string.IsNullOrEmpty(passwordHash.Value))
-        {
-            throw new Exception("Failed to hash password.");
-        }
 
         var roles = context.Roles.ToList();
         var permissions = context.Permissions.ToList();
@@ -106,7 +101,7 @@ public class AppDbContextInitialize(
             UserId.Create(),
             EmailAddress.From("alice@example.com"),
             "alice",
-            passwordHash.Value,
+            passwordHash,
             "Alice",
             "Doe");
 
@@ -125,7 +120,7 @@ public class AppDbContextInitialize(
             UserId.Create(),
             EmailAddress.From("bob@example.com"),
             "bob",
-            passwordHash.Value,
+            passwordHash,
             "Bob",
             "Doe");
 
@@ -148,7 +143,7 @@ public class AppDbContextInitialize(
             UserId.Create(),
             EmailAddress.From("carol@example.com"),
             "carol",
-            passwordHash.Value,
+            passwordHash,
             "Carol",
             "Doe");
 

@@ -11,9 +11,8 @@ public class UserValidator(AppDbContext context) : IUserValidator
 {
     public async Task<Result> IsUniqueEmail(EmailAddress email)
     {
-        return await context.Users
-            .AnyAsync(user => user.Email.Equals(email))
-            ? Error.Validation(nameof(User.Email), "Email already exists")
+        return await context.Users.AnyAsync(user => user.Email.Equals(email))
+            ? UserErrors.EmailAlreadyExists
             : Result.Success();
     }
 }
