@@ -33,4 +33,18 @@ public class EmailTests
         // Assert
         act.Should().Throw<InvalidEmailAddressException>();
     }
+
+    [Fact]
+    public void Email_ShouldThrowInvalidEmailException_WhenEmailLengthIsGreaterThan256()
+    {
+        // Arrange
+        var emailName = new string('a', 248);
+        var email = $"{emailName}@test.com";
+
+        // Act
+        var act = () => EmailAddress.From(email);
+
+        // Assert
+        act.Should().Throw<InvalidEmailAddressException>();
+    }
 }

@@ -30,6 +30,8 @@ public class EmailAddress : ValueObject
 
     private bool Validate()
     {
-        return DomainRegex.ValidEmail().IsMatch(Value);
+        return !(string.IsNullOrWhiteSpace(Value) ||
+            Value.Length > 256 ||
+            DomainRegex.ValidEmail().IsMatch(Value) is false);
     }
 }
