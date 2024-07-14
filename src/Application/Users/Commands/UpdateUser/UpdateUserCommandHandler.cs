@@ -25,7 +25,13 @@ internal class UpdateUserCommandHandler(
             return UserErrors.UserNotFound.ToResult<UpdateUserCommandResponse>();
         }
 
-        await userEmailService.UpdateUserEmailAsync(user, EmailAddress.From(request.Email));
+        var validationResult = await userEmailService.UpdateUserEmailAsync(user, EmailAddress.From(request.Email));
+
+        if (validationResult.IsFailure)
+        {
+            return validationResult.MapToValue<UpdateUserCommandResponse>();
+        }
+
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success(new UpdateUserCommandResponse(request.Email));
