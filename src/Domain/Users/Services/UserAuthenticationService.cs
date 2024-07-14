@@ -12,7 +12,7 @@ public class UserAuthenticationService(UserPasswordService userPasswordService)
             return validationResult;
         }
 
-        return !userPasswordService.VerifyPassword(password, user.PasswordHash)
+        return userPasswordService.VerifyPassword(password, user.PasswordHash) is false
             ? UserErrors.InvalidCredentials
             : Result.Success();
     }
