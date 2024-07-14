@@ -6,7 +6,7 @@ namespace AgendaManager.Domain.UnitTests.Common.Responses;
 public class ResultGenericTests
 {
     [Fact]
-    public void Result_Generic_Success_Should_Return_Succeeded_True()
+    public void ResultGeneric_ShouldReturnSuccess_WhenSucceededIsTrue()
     {
         // Act
         var result = Result.Success<string>("Hello");
@@ -16,7 +16,7 @@ public class ResultGenericTests
     }
 
     [Fact]
-    public void Result_Generic_Failure_Empty_Should_Return_Succeeded_False()
+    public void ResultGeneric_ShouldSuccessReturnFalse_WhenFailureIsSet()
     {
         // Arrange
         const ResultType errorType = ResultType.Conflict;
@@ -30,7 +30,7 @@ public class ResultGenericTests
     }
 
     [Fact]
-    public void Result_Generic_Failure_Should_Return_Succeeded_False()
+    public void ResultGeneric_ShouldReturnFailure_WhenSucceededIsFalse()
     {
         // Arrange
         const ResultType errorType = ResultType.Forbidden;
@@ -45,7 +45,7 @@ public class ResultGenericTests
     }
 
     [Fact]
-    public void Result_Failure_MapTo_Should_Change_Generic_Type_With_Empty_Value()
+    public void ResultGeneric_ShouldReturnFailure_WhenChangeGenericTypeWithEmptyValue()
     {
         // Arrange
         const ResultType errorType = ResultType.Forbidden;
@@ -63,13 +63,13 @@ public class ResultGenericTests
     }
 
     [Fact]
-    public void Result_Success_MapTo_Should_Change_Generic_Type_With_Empty_Value()
+    public void ResultGeneric_ShouldReturnSuccess_WhenMapToChangeGenericType()
     {
         // Arrange
         const ResultType errorType = ResultType.Succeeded;
 
         // Act
-        var result = Result.Success(string.Empty);
+        var result = Result.Success<string>();
         var resultChanged = result.MapTo<int>();
 
         // Assert
@@ -77,5 +77,17 @@ public class ResultGenericTests
         resultChanged.Value.GetType().Should().Be(typeof(int));
         resultChanged.ResultType.Should().Be(errorType);
         resultChanged.HasValue.Should().BeFalse();
+    }
+
+    [Fact]
+    public void ResultGeneric_ShouldReturnSuccess_WhenWhenRequiredGeneric()
+    {
+        // Act
+        var result = Result.Success<string>();
+
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+        result.ResultType.Should().Be(ResultType.Succeeded);
+        result.Should().BeOfType<Result<string>>();
     }
 }

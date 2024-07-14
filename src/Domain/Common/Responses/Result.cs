@@ -46,6 +46,11 @@ public class Result
         return new Result { ResultType = status };
     }
 
+    public static Result<TValue> Success<TValue>(ResultType status = ResultType.Succeeded)
+    {
+        return new Result<TValue>(true, status);
+    }
+
     public static Result<TValue> Success<TValue>(TValue? value, ResultType status = ResultType.Succeeded)
     {
         return new Result<TValue>(value, default) { ResultType = status };

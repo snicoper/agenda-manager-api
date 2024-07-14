@@ -114,6 +114,6 @@ public class Error
 
     public Result<TValue> ToResult<TValue>()
     {
-        return HasErrors ? Result.Failure<TValue>(this) : Result.Success<TValue>(default);
+        return HasErrors ? Result.Failure<TValue>(this) : Result.Success<TValue>();
     }
 }

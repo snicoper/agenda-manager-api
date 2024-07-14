@@ -5,7 +5,7 @@ namespace AgendaManager.Domain.Users.Services;
 
 public class UserPasswordService(IPasswordPolicy passwordPolicy, IPasswordHasher passwordHasher)
 {
-    public Result<string> CreatePassword(string newPassword)
+    public Result<string> SetPassword(User user, string newPassword)
     {
         var validationResult = passwordPolicy.IsPasswordValid(newPassword);
         if (validationResult.IsFailure)
@@ -13,9 +13,9 @@ public class UserPasswordService(IPasswordPolicy passwordPolicy, IPasswordHasher
             return validationResult.MapToValue<string>();
         }
 
-        var hashedPassword = passwordHasher.HashPassword(newPassword);
+        user.UpdatePassword(newPassword);
 
-        return Result.Success(hashedPassword);
+        return Result.Success<string>();
     }
 
     public bool VerifyPassword(string password, string hashedPassword)
