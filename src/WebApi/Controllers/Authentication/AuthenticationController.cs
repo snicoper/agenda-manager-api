@@ -17,7 +17,6 @@ public class AuthenticationController : ApiControllerBase
     public async Task<ActionResult<Result<TokenResult>>> Login(LoginRequest request)
     {
         var command = new LoginCommand(request.Email, request.Password);
-
         var result = await Sender.Send(command);
 
         return result.MapToResponse(this);

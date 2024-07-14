@@ -33,14 +33,14 @@ internal class LoginCommandHandler(
             return authResult.MapToValue<TokenResult>();
         }
 
-        var tokenResponse = await jwtTokenGenerator.GenerateAccessTokenAsync(user);
-        var refreshToken = RefreshToken.Create(tokenResponse.RefreshToken, tokenResponse.Expires);
+        var tokenResult = await jwtTokenGenerator.GenerateAccessTokenAsync(user);
+        var refreshToken = RefreshToken.Create(tokenResult.RefreshToken, tokenResult.Expires);
 
         user.UpdateRefreshToken(refreshToken);
         userRepository.Update(user);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Success(tokenResponse);
+        return Result.Success(tokenResult);
     }
 }
