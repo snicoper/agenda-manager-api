@@ -12,7 +12,7 @@ public class UserTests
     public void User_ShouldReturnUser_WhenUserIsCreated()
     {
         // Act
-        var user = UserFactory.CreateUser();
+        var user = UserFactory.CreateUserAlice();
 
         // Assert
         user.Should().NotBeNull();
@@ -22,7 +22,7 @@ public class UserTests
     public void User_ShouldRaiseEvent_WhenUserIsCreated()
     {
         // Act
-        var user = UserFactory.CreateUser();
+        var user = UserFactory.CreateUserAlice();
 
         // Assert
         user.DomainEvents.Should().Contain(x => x is UserCreatedDomainEvent);
@@ -32,7 +32,7 @@ public class UserTests
     public void User_ShouldRaiseEvent_WhenUserIsUpdated()
     {
         // Arrange
-        var user = UserFactory.CreateUser();
+        var user = UserFactory.CreateUserAlice();
         const string firstName = "newFirstName";
         const string lastName = "newLastName";
 
@@ -49,8 +49,8 @@ public class UserTests
     public void User_ShouldRaiseEvent_WhenUserPasswordIsChanged()
     {
         // Arrange
-        var user = UserFactory.CreateUser();
-        var passwordHash = UserFactory.BcryptPasswordHasher.HashPassword(Constants.Users.Password);
+        var user = UserFactory.CreateUserBob();
+        var passwordHash = UserFactory.BcryptPasswordHasher.HashPassword(Constants.UserAlice.RawPassword);
 
         // Act
         user.UpdatePassword(passwordHash);
@@ -63,7 +63,7 @@ public class UserTests
     public void User_ShouldRaiseEvent_WhenUserEmailIsUpdated()
     {
         // Arrange
-        var user = UserFactory.CreateUser();
+        var user = UserFactory.CreateUserCarol();
         var email = EmailAddress.From("new@example.com");
 
         // Act
@@ -78,7 +78,7 @@ public class UserTests
     public void User_ShouldNotRaiseEvent_WhenUserEmailIsSame()
     {
         // Arrange
-        var user = UserFactory.CreateUser();
+        var user = UserFactory.CreateUserLexi();
 
         // Act
         user.UpdateEmail(user.Email);
@@ -92,7 +92,7 @@ public class UserTests
     public void User_ShouldAddRefreshToken_WhenIsSet()
     {
         // Arrange
-        var user = UserFactory.CreateUser();
+        var user = UserFactory.CreateUserAlice();
         var token = Guid.NewGuid().ToString();
         var expiryTime = DateTimeOffset.UtcNow.AddDays(1);
         var newRefreshToken = RefreshToken.Create(token, expiryTime);
@@ -109,7 +109,7 @@ public class UserTests
     public void User_ShouldRaiseEvent_WhenConfirmEmail()
     {
         // Arrange
-        var user = UserFactory.CreateUser();
+        var user = UserFactory.CreateUserAlice();
 
         // Act
         user.ConfirmEmail();
@@ -123,7 +123,7 @@ public class UserTests
     public void User_ShouldActiveTrue_WhenUserIsACreated()
     {
         // Arrange
-        var user = UserFactory.CreateUser();
+        var user = UserFactory.CreateUserAlice();
 
         // Assert
         user.Active.Should().BeTrue();
@@ -133,7 +133,7 @@ public class UserTests
     public void User_ShouldRaiseEvent_WhenUserIsActiveStateIsChanged()
     {
         // Arrange
-        var user = UserFactory.CreateUser();
+        var user = UserFactory.CreateUserAlice();
 
         // Act
         user.SetActiveState(false);
