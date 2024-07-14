@@ -4,13 +4,13 @@ namespace AgendaManager.Infrastructure.Users;
 
 public class BcryptPasswordHasher : IPasswordHasher
 {
-    public string HashPassword(string password)
+    public string HashPassword(string rawPassword)
     {
-        return BCrypt.Net.BCrypt.EnhancedHashPassword(password);
+        return BCrypt.Net.BCrypt.EnhancedHashPassword(rawPassword);
     }
 
-    public bool VerifyPassword(string password, string hashedPassword)
+    public bool VerifyPassword(string rawPassword, string hashedPassword)
     {
-        return BCrypt.Net.BCrypt.EnhancedVerify(password, hashedPassword);
+        return BCrypt.Net.BCrypt.EnhancedVerify(rawPassword, hashedPassword);
     }
 }
