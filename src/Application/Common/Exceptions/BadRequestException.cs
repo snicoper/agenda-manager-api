@@ -9,8 +9,10 @@ public class BadRequestException() : Exception("One or more validation failures 
         : this()
     {
         Errors = failures
-            .GroupBy(e => e.PropertyName, e => e.ErrorMessage)
-            .ToDictionary(failureGroup => failureGroup.Key.ToLowerFirstLetter(), failureGroup => failureGroup.ToArray());
+            .ToLookup(e => e.PropertyName, e => e.ErrorMessage)
+            .ToDictionary(
+                failureGroup => failureGroup.Key.ToLowerFirstLetter(),
+                failureGroup => failureGroup.ToArray());
     }
 
     public IDictionary<string, string[]> Errors { get; } = new Dictionary<string, string[]>();

@@ -15,7 +15,10 @@ public class CustomExceptionHandler : IExceptionHandler
         { typeof(ForbiddenAccessException), HandleForbiddenAccessException }
     };
 
-    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
+    public async ValueTask<bool> TryHandleAsync(
+        HttpContext httpContext,
+        Exception exception,
+        CancellationToken cancellationToken)
     {
         var exceptionType = exception.GetType();
 
@@ -73,7 +76,7 @@ public class CustomExceptionHandler : IExceptionHandler
                 Status = StatusCodes.Status401Unauthorized,
                 Title = "Unauthorized",
                 Type = "https://tools.ietf.org/html/rfc7235#section-3.1",
-                Detail = GetDetailsExceptionByEnvironment(httpContext, exception)
+                Detail = exception.Message
             });
     }
 
@@ -87,7 +90,7 @@ public class CustomExceptionHandler : IExceptionHandler
                 Status = StatusCodes.Status403Forbidden,
                 Title = "Forbidden",
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3",
-                Detail = GetDetailsExceptionByEnvironment(httpContext, exception)
+                Detail = exception.Message
             });
     }
 
