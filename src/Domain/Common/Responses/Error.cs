@@ -3,7 +3,7 @@ using AgendaManager.Domain.Common.Extensions;
 
 namespace AgendaManager.Domain.Common.Responses;
 
-public class Error
+public sealed record Error
 {
     private readonly List<ValidationError> _validationErrors = [];
 
