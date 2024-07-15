@@ -42,11 +42,11 @@ public class ErrorTests
 
         // Act
         var error = Error.Validation(Code, Description);
-        error.AddValidationError(Code, Description);
-        error.AddValidationError(Code, Description);
-        error.AddValidationError(Code, Description);
-        error.AddValidationError(code2, Description);
-        error.AddValidationError(code2, Description);
+        error = error.AddValidationError(Code, Description);
+        error = error.AddValidationError(Code, Description);
+        error = error.AddValidationError(Code, Description);
+        error = error.AddValidationError(code2, Description);
+        error = error.AddValidationError(code2, Description);
 
         // Assert
         error.ToDictionary().First().Value.Should().HaveCount(4);

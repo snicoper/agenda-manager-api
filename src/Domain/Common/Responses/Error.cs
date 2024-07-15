@@ -14,7 +14,6 @@ public class Error
     private Error(List<ValidationError> validationErrors, ResultType resultType = ResultType.Validation)
     {
         ResultType = resultType;
-
         _validationErrors = validationErrors;
     }
 
@@ -23,6 +22,12 @@ public class Error
         ResultType = resultType;
 
         var validationError = new ValidationError(code, description);
+        _validationErrors.Add(validationError);
+    }
+
+    private Error(ValidationError validationError, ResultType resultType = ResultType.Validation)
+    {
+        ResultType = resultType;
         _validationErrors.Add(validationError);
     }
 
@@ -72,16 +77,21 @@ public class Error
         return new Error(nameof(Unexpected), description, ResultType.Unexpected);
     }
 
-    public void AddValidationError(string code, string description)
+    public Error AddValidationError(string code, string description)
     {
-        AddValidationError(new ValidationError(code, description));
+        var newError = new Error(_validationErrors.ToList());
+        var newValidationError = new ValidationError(code, description);
+        newError._validationErrors.Add(newValidationError);
+
+        return newError;
     }
 
-    public void AddValidationError(ValidationError validationError)
+    public Error AddValidationError(ValidationError validationError)
     {
-        ResultType = ResultType.Validation;
+        var newError = new Error(_validationErrors.ToList(), ResultType);
+        newError._validationErrors.Add(validationError);
 
-        _validationErrors.Add(validationError);
+        return newError;
     }
 
     public ValidationError? FirstError()

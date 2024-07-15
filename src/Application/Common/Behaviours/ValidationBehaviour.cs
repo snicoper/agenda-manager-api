@@ -34,7 +34,7 @@ public class ValidationBehaviour<TRequest, TResponse>(
 
         foreach (var error in validationResult.Errors)
         {
-            errors.AddValidationError(error.PropertyName, error.ErrorMessage);
+            errors = errors.AddValidationError(error.PropertyName, error.ErrorMessage);
         }
 
         logger.LogWarning(
