@@ -2,8 +2,8 @@
 using AgendaManager.Application.Users.Commands.UpdateUser;
 using AgendaManager.Application.Users.Queries.GetUsers;
 using AgendaManager.Domain.Common.Responses;
-using AgendaManager.WebApi.Extensions;
 using AgendaManager.WebApi.Infrastructure;
+using AgendaManager.WebApi.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgendaManager.WebApi.Controllers.Users;
@@ -16,7 +16,7 @@ public class UsersController : ApiControllerBase
     {
         var result = await Sender.Send(new GetUsersQuery(string.Empty), cancellationToken);
 
-        return result.MapToResponse(this);
+        return result.ToActionResult();
     }
 
     [HttpPost]
@@ -26,7 +26,7 @@ public class UsersController : ApiControllerBase
             new CreateUserCommand("test2@example.com", "sdafsdfsdfsfsdfsdfsdfsdf"),
             cancellationToken);
 
-        return result.MapToResponse(this);
+        return result.ToActionResult();
     }
 
     [HttpPut("{userId:guid}")]
@@ -36,6 +36,6 @@ public class UsersController : ApiControllerBase
     {
         var result = await Sender.Send(new UpdateUserCommand(userId, "newtest@example.com"), cancellationToken);
 
-        return result.MapToResponse(this);
+        return result.ToActionResult();
     }
 }

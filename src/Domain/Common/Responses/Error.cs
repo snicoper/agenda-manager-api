@@ -72,7 +72,7 @@ public class Error
         return new Error(nameof(Conflict), description, ResultType.Conflict);
     }
 
-    public static Error Unexpected(string description = "Internal Server Error")
+    public static Error Unexpected(string description = "An unexpected error occurred")
     {
         return new Error(nameof(Unexpected), description, ResultType.Unexpected);
     }
@@ -102,7 +102,7 @@ public class Error
     public ReadOnlyDictionary<string, string[]> ToDictionary()
     {
         return _validationErrors
-            .GroupBy(e => e.Code, e => e.Description)
+            .ToLookup(e => e.Code, e => e.Description)
             .ToDictionary(error => error.Key.ToLowerFirstLetter(), error => error.ToArray())
             .AsReadOnly();
     }

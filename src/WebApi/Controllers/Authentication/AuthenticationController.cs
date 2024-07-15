@@ -2,8 +2,8 @@
 using AgendaManager.Application.Common.Models.Users;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Controllers.Authentication.Contracts;
-using AgendaManager.WebApi.Extensions;
 using AgendaManager.WebApi.Infrastructure;
+using AgendaManager.WebApi.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +19,6 @@ public class AuthenticationController : ApiControllerBase
         var command = new LoginCommand(request.Email, request.Password);
         var result = await Sender.Send(command);
 
-        return result.MapToResponse(this);
+        return result.ToActionResult();
     }
 }

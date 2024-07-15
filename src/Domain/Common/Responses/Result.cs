@@ -105,6 +105,11 @@ public class Result<TValue> : Result
         return new Result<TValue>(value, default);
     }
 
+    public static implicit operator Result<TValue>(Error error)
+    {
+        return error.HasErrors ? Failure<TValue>(error) : Success<TValue>();
+    }
+
     public Result<TDestination> MapTo<TDestination>()
     {
         var result = new Result<TDestination>(IsSuccess, ResultType) { Error = Error };
