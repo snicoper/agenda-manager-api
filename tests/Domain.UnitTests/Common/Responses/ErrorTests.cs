@@ -9,7 +9,7 @@ public class ErrorTests
     private const string Description = "Description error";
 
     [Fact]
-    public void Error_None_Should_Return_Succeeded()
+    public void Error_ShouldReturnSucceeded_WhenNone()
     {
         // Act
         var error = Error.None();
@@ -21,7 +21,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error_Validation()
+    public void Error_ShouldReturnValidationError_WhenValidation()
     {
         // Act
         var error = Error.Validation(Code, Description);
@@ -35,7 +35,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error_Validation_Should_Group_By_Code()
+    public void Error_ShouldGroupedByCode_WhenValidation()
     {
         // Arrange
         const string code2 = "Code2";
@@ -54,7 +54,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error_NotFound()
+    public void Error_ShouldReturnNotFound_WhenNotFound()
     {
         // Act
         var error = Error.NotFound(Description);
@@ -68,7 +68,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error_Unauthorized()
+    public void Error_ShouldReturnUnauthorized_WhenUnauthorized()
     {
         // Act
         var error = Error.Unauthorized();
@@ -82,7 +82,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error_Forbidden()
+    public void Error_ShouldReturnForbidden_WhenForbidden()
     {
         // Act
         var error = Error.Forbidden();
@@ -96,7 +96,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error_Validation_WhenDictionaryIdPassed()
+    public void Error_ShouldReturnValidation_WhenDictionaryIdPassed()
     {
         // Arrange
         List<ValidationError> errors =
@@ -119,7 +119,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error_Conflict_ShouldSetResultTypeToConflict()
+    public void Error_ShouldSetResultTypeToConflict_WhenConflict()
     {
         // Act
         var error = Error.Conflict();
@@ -130,7 +130,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error_Unexpected_ShouldSetResultTypeToUnexpected()
+    public void Error_ShouldSetResultTypeToUnexpected_WhenUnexpected()
     {
         // Act
         var error = Error.Unexpected();
@@ -144,7 +144,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error_ToResult_ShouldReturnResult_WhenImplicitCall()
+    public void Error_ShouldReturnResult_WhenImplicitCall()
     {
         // Arrange
         var error = Error.None();
@@ -157,7 +157,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error_ToResult_ShouldReturnResult()
+    public void Error_ShouldReturnResult_WhenToResult()
     {
         // Arrange
         var error = Error.None();
@@ -170,7 +170,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error_ToResultGeneric_ShouldReturnResultWithResultType()
+    public void Error_ShouldReturnResultWithResultType_WhenToResultGeneric()
     {
         // Arrange
         var error = Error.Unauthorized();
@@ -183,7 +183,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error_HasErrors_ShouldReturnFalse_WhenNoContainsErrors()
+    public void Error_ShouldHasErrorsReturnFalse_WhenNoContainsErrors()
     {
         // Act
         var error = Error.None();
@@ -193,7 +193,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error_HasErrors_ShouldReturnTrue_WhenValidationErrorsContainsErrors()
+    public void Error_ShouldHasErrorsReturnTrue_WhenValidationErrorsContainsErrors()
     {
         // Act
         var error = Error.Validation(Code, Description);
@@ -203,7 +203,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error_HasErrors_ShouldReturnTrue_WhenCodeContainsErrors()
+    public void Error__ShouldHasErrorsReturnTrue_WhenCodeContainsErrors()
     {
         // Act
         var error = Error.Forbidden();

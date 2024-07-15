@@ -6,7 +6,7 @@ namespace AgendaManager.Domain.UnitTests.Common.Abstractions;
 public class EntityTests
 {
     [Fact]
-    public void Should_Be_Abstract()
+    public void Entity_ShouldBeAbstract()
     {
         // Act
         var result = typeof(Entity).IsAbstract;

@@ -6,7 +6,7 @@ namespace AgendaManager.Domain.UnitTests.Authorization;
 public class PermissionTests
 {
     [Fact]
-    public void Role_ShouldReturnPermission_WhenCreated()
+    public void Permission_ShouldReturnPermission_WhenCreated()
     {
         // Act
         var permission = PermissionFactory.CreatePermissionUsersCreate();

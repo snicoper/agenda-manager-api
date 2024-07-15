@@ -7,7 +7,7 @@ namespace AgendaManager.Domain.UnitTests.Common.Abstractions;
 public class AuditableEntityTests
 {
     [Fact]
-    public void Should_Be_Abstract()
+    public void AuditableEntity_Should_BeAbstract()
     {
         // Act
         var result = typeof(AuditableEntity).IsAbstract;
@@ -17,7 +17,7 @@ public class AuditableEntityTests
     }
 
     [Fact]
-    public void Should_Be_Subclass_Of_Entity()
+    public void AuditableEntity_Should_BeSubclassOfEntity()
     {
         // Act
         var result = typeof(AuditableEntity).IsSubclassOf(typeof(Entity));
@@ -27,7 +27,7 @@ public class AuditableEntityTests
     }
 
     [Fact]
-    public void Should_Be_Implementing_IAuditableEntity()
+    public void AuditableEntity_ShouldBeImplementingIAuditableEntity()
     {
         // Assert
         typeof(AuditableEntity).Should().Implement<IAuditableEntity>();
