@@ -1,6 +1,6 @@
 ﻿namespace AgendaManager.Domain.Common.Responses;
 
-public class Result
+public record Result
 {
     protected Result(Error? error)
     {
@@ -86,7 +86,7 @@ public class Result
 }
 
 #pragma warning disable SA1402 // File may only contain a single type
-public class Result<TValue> : Result
+public record Result<TValue> : Result
 {
     public Result(TValue? value, Error? error)
         : base(error)

@@ -33,7 +33,7 @@ public sealed record Error
 
     public ReadOnlyCollection<ValidationError> ValidationErrors => _validationErrors.AsReadOnly();
 
-    public ResultType ResultType { get; private set; } = ResultType.Succeeded;
+    public ResultType ResultType { get; private init; } = ResultType.Succeeded;
 
     public bool HasErrors => ValidationErrors.Count > 0;
 
