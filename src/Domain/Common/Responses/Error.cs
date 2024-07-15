@@ -32,11 +32,6 @@ public class Error
 
     public bool HasErrors => ValidationErrors.Count > 0;
 
-    public static implicit operator Result(Error error)
-    {
-        return error.HasErrors ? Result.Failure(error) : Result.Success();
-    }
-
     public static Error None()
     {
         return new Error { ResultType = ResultType.Succeeded };
@@ -67,7 +62,7 @@ public class Error
         return new Error(nameof(Forbidden), description, ResultType.Forbidden);
     }
 
-    public static Error Conflict(string description = "Conflict")
+    public static Error Conflict(string description = "A conflict error occurred")
     {
         return new Error(nameof(Conflict), description, ResultType.Conflict);
     }
@@ -102,7 +97,7 @@ public class Error
     public ReadOnlyDictionary<string, string[]> ToDictionary()
     {
         return _validationErrors
-            .ToLookup(e => e.Code, e => e.Description)
+            .ToLookup(error => error.Code, error => error.Description)
             .ToDictionary(error => error.Key.ToLowerFirstLetter(), error => error.ToArray())
             .AsReadOnly();
     }

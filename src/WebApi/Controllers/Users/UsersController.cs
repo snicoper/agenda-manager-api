@@ -14,7 +14,8 @@ public class UsersController : ApiControllerBase
     [HttpGet]
     public async Task<ActionResult<Result<List<GetUsersQueryResponse>>>> GetUsers(CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(new GetUsersQuery(string.Empty), cancellationToken);
+        var query = new GetUsersQuery(string.Empty);
+        var result = await Sender.Send(query, cancellationToken);
 
         return result.ToActionResult();
     }
@@ -22,9 +23,8 @@ public class UsersController : ApiControllerBase
     [HttpPost]
     public async Task<ActionResult<Result<CreateUserCommandResponse>>> CreateUser(CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(
-            new CreateUserCommand("test2@example.com", "sdafsdfsdfsfsdfsdfsdfsdf"),
-            cancellationToken);
+        var command = new CreateUserCommand("test2@example.com", "sdafsdfsdfsfsdfsdfsdfsdf");
+        var result = await Sender.Send(command, cancellationToken);
 
         return result.ToActionResult();
     }
@@ -34,7 +34,8 @@ public class UsersController : ApiControllerBase
         Guid userId,
         CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(new UpdateUserCommand(userId, "newtest@example.com"), cancellationToken);
+        var command = new UpdateUserCommand(userId, "test2@example.com");
+        var result = await Sender.Send(command, cancellationToken);
 
         return result.ToActionResult();
     }

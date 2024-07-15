@@ -31,6 +31,11 @@ public class Result
 
     public bool HasValue => false;
 
+    public static implicit operator Result(Error error)
+    {
+        return error.HasErrors ? Failure(error) : Success();
+    }
+
     public static Result Create()
     {
         return new Result { ResultType = ResultType.Created };
