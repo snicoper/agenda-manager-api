@@ -6,34 +6,36 @@ namespace AgendaManager.Domain.UnitTests.Common.Responses;
 public class ResultGenericTests
 {
     [Fact]
-    public void ResultGeneric_ShouldReturnSuccess_WhenSucceededIsTrue()
+    public void ResultGeneric_ShouldReturnSuccess_WhenSucceeded()
     {
         // Act
-        var result = Result.Success<string>("Hello");
+        var result = Result.Success<string>();
 
         // Assert
         result.IsSuccess.Should().BeTrue();
+        result.ResultType.Should().Be(ResultType.Succeeded);
+        result.Should().BeOfType<Result<string>>();
     }
 
     [Fact]
-    public void ResultGeneric_ShouldSuccessReturnFalse_WhenFailureIsSet()
+    public void ResultGeneric_ShouldIsSuccessReturnFalse_WhenFailureIsSet()
     {
         // Arrange
-        const ResultType errorType = ResultType.Conflict;
+        const ResultType resultType = ResultType.Conflict;
 
         // Act
         var result = Result.Failure<string>();
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.ResultType.Should().Be(errorType);
+        result.ResultType.Should().Be(resultType);
     }
 
     [Fact]
-    public void ResultGeneric_ShouldReturnFailure_WhenSucceededIsFalse()
+    public void ResultGeneric_ShouldReturnIsSuccessFalse_WhenForbiddenIsSet()
     {
         // Arrange
-        const ResultType errorType = ResultType.Forbidden;
+        const ResultType resultType = ResultType.Forbidden;
 
         // Act
         var error = Error.Forbidden();
@@ -41,14 +43,14 @@ public class ResultGenericTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.ResultType.Should().Be(errorType);
+        result.ResultType.Should().Be(resultType);
     }
 
     [Fact]
-    public void ResultGeneric_ShouldReturnFailure_WhenChangeGenericTypeWithEmptyValue()
+    public void ResultGeneric_ShouldReturnForbidden_WhenMapToChangeGenericType()
     {
         // Arrange
-        const ResultType errorType = ResultType.Forbidden;
+        const ResultType resultType = ResultType.Forbidden;
 
         // Act
         var error = Error.Forbidden();
@@ -58,7 +60,7 @@ public class ResultGenericTests
         // Assert
         resultChanged.IsSuccess.Should().BeFalse();
         resultChanged.Value.GetType().Should().Be(typeof(int));
-        resultChanged.ResultType.Should().Be(errorType);
+        resultChanged.ResultType.Should().Be(resultType);
         resultChanged.HasValue.Should().BeFalse();
     }
 
@@ -66,7 +68,7 @@ public class ResultGenericTests
     public void ResultGeneric_ShouldReturnSuccess_WhenMapToChangeGenericType()
     {
         // Arrange
-        const ResultType errorType = ResultType.Succeeded;
+        const ResultType resultType = ResultType.Succeeded;
 
         // Act
         var result = Result.Success<string>();
@@ -75,19 +77,7 @@ public class ResultGenericTests
         // Assert
         resultChanged.IsSuccess.Should().BeTrue();
         resultChanged.Value.GetType().Should().Be(typeof(int));
-        resultChanged.ResultType.Should().Be(errorType);
+        resultChanged.ResultType.Should().Be(resultType);
         resultChanged.HasValue.Should().BeFalse();
-    }
-
-    [Fact]
-    public void ResultGeneric_ShouldReturnSuccess_WhenWhenRequiredGeneric()
-    {
-        // Act
-        var result = Result.Success<string>();
-
-        // Assert
-        result.IsSuccess.Should().BeTrue();
-        result.ResultType.Should().Be(ResultType.Succeeded);
-        result.Should().BeOfType<Result<string>>();
     }
 }

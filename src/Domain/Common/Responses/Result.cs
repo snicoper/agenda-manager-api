@@ -29,8 +29,6 @@ public class Result
 
     public Error? Error { get; protected init; }
 
-    public bool HasValue => false;
-
     public static implicit operator Result(Error error)
     {
         return error.HasErrors ? Failure(error) : Success();
@@ -46,14 +44,14 @@ public class Result
         return new Result<TValue>(value, default) { ResultType = ResultType.Created };
     }
 
-    public static Result Success(ResultType status = ResultType.Succeeded)
+    public static Result Success()
     {
-        return new Result { ResultType = status };
+        return new Result();
     }
 
-    public static Result<TValue> Success<TValue>(ResultType status = ResultType.Succeeded)
+    public static Result<TValue> Success<TValue>()
     {
-        return new Result<TValue>(true, status);
+        return new Result<TValue>(true);
     }
 
     public static Result<TValue> Success<TValue>(TValue? value, ResultType status = ResultType.Succeeded)
@@ -103,7 +101,7 @@ public class Result<TValue> : Result
 
     public TValue? Value { get; protected internal set; }
 
-    public new bool HasValue => !EqualityComparer<TValue>.Default.Equals(Value, default);
+    public bool HasValue => !EqualityComparer<TValue>.Default.Equals(Value, default);
 
     public static implicit operator Result<TValue>(TValue? value)
     {
@@ -117,7 +115,7 @@ public class Result<TValue> : Result
 
     public Result<TDestination> MapTo<TDestination>()
     {
-        var result = new Result<TDestination>(IsSuccess, ResultType) { Error = Error };
+        var result = new Result<TDestination>(IsSuccess, ResultType) { Error = Error, Value = default };
 
         return result;
     }
