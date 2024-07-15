@@ -30,19 +30,18 @@ public class ValidationBehaviour<TRequest, TResponse>(
             return await next();
         }
 
-        var errors = Error.None();
+        var errorResult = Error.None();
 
-        foreach (var error in validationResult.Errors)
-        {
-            errors = errors.AddValidationError(error.PropertyName, error.ErrorMessage);
-        }
+        errorResult = validationResult.Errors.Aggregate(
+            errorResult,
+            (current, error) => current.AddValidationError(error.PropertyName, error.ErrorMessage));
 
         logger.LogWarning(
             "An error occurred during validation {Request} with errors: {@ValidationErrors}",
             request,
-            errors.ToDictionary());
+            errorResult.ToDictionary());
 
-        var result = ResultBehaviourHelper.CreateResult<TResponse>(errors);
+        var result = ResultBehaviourHelper.CreateResult<TResponse>(errorResult);
 
         return result;
     }
