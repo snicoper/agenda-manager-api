@@ -99,7 +99,7 @@ public class Result<TValue> : Result
     {
     }
 
-    public TValue? Value { get; protected internal set; }
+    public TValue? Value { get; protected internal init; }
 
     public bool HasValue => !EqualityComparer<TValue>.Default.Equals(Value, default);
 
