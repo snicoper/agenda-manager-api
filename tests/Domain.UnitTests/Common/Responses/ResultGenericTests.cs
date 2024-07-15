@@ -32,6 +32,18 @@ public class ResultGenericTests
     }
 
     [Fact]
+    public void ResultGeneric_ShouldReturnCreated_WhenCreate()
+    {
+        // Act
+        var result = Result.Create<string>("test");
+
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+        result.ResultType.Should().Be(ResultType.Created);
+        result.Value.Should().Be("test");
+    }
+
+    [Fact]
     public void ResultGeneric_ShouldReturnIsSuccessFalse_WhenForbiddenIsSet()
     {
         // Arrange

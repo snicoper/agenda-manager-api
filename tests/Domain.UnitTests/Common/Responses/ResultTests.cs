@@ -6,38 +6,38 @@ namespace AgendaManager.Domain.UnitTests.Common.Responses;
 public class ResultTests
 {
     [Fact]
-    public void Result_Create_Empty_Should_Return_Succeeded_True()
+    public void Result_ShouldReturnSuccess_WhenSucceeded()
     {
         // Arrange
-        const ResultType errorType = ResultType.Succeeded;
+        const ResultType resultType = ResultType.Succeeded;
 
         // Act
         var result = Result.Success();
 
         // Assert
         result.IsSuccess.Should().BeTrue();
-        result.ResultType.Should().Be(errorType);
+        result.ResultType.Should().Be(resultType);
     }
 
     [Fact]
-    public void Result_Failure_Empty_Should_Return_Succeeded_False()
+    public void Result_ShouldReturnFailure_WhenFailure()
     {
         // Arrange
-        const ResultType errorType = ResultType.Conflict;
+        const ResultType resultType = ResultType.Conflict;
 
         // Act
         var result = Result.Failure();
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.ResultType.Should().Be(errorType);
+        result.ResultType.Should().Be(resultType);
     }
 
     [Fact]
-    public void Result_Failure_Should_Return_Succeeded_False()
+    public void Result_ShouldReturnForbidden_WhenForbidden()
     {
         // Arrange
-        const ResultType errorType = ResultType.Forbidden;
+        const ResultType resultType = ResultType.Forbidden;
 
         // Act
         var error = Error.Forbidden();
@@ -45,7 +45,7 @@ public class ResultTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.ResultType.Should().Be(errorType);
+        result.ResultType.Should().Be(resultType);
     }
 
     [Fact]
@@ -76,6 +76,21 @@ public class ResultTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.ResultType.Should().Be(ResultType.Conflict);
+        result.Value.Should().Be("test");
+    }
+
+    [Fact]
+    public void Result_ShouldReturnCreated_WhenCreate()
+    {
+        // Arrange
+        var error = Result.Create();
+
+        // Act
+        var result = error.MapToValue<string>("test");
+
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+        result.ResultType.Should().Be(ResultType.Created);
         result.Value.Should().Be("test");
     }
 }
