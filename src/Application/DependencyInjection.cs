@@ -34,10 +34,10 @@ public static class DependencyInjection
             {
                 configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
 
+                configuration.AddOpenBehavior(typeof(UnhandledExceptionBehaviour<,>));
                 configuration.AddOpenBehavior(typeof(AuthorizationBehaviour<,>));
                 configuration.AddOpenBehavior(typeof(LoggingBehavior<,>));
                 configuration.AddOpenBehavior(typeof(ValidationBehaviour<,>));
-                configuration.AddOpenBehavior(typeof(UnhandledExceptionBehaviour<,>));
             });
     }
 }
