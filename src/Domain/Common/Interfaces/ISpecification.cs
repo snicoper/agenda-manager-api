@@ -1,9 +1,7 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
-
-namespace AgendaManager.Domain.Common.Interfaces;
+﻿namespace AgendaManager.Domain.Common.Interfaces;
 
 public interface ISpecification<TEntity>
-    where TEntity : Entity
+    where TEntity : IEntity
 {
     bool IsSatisfiedBy(TEntity entity);
 }
