@@ -3,7 +3,7 @@ using AgendaManager.Domain.Common.Interfaces;
 
 namespace AgendaManager.Domain.Common.Abstractions;
 
-public abstract class Entity
+public abstract class Entity : IEntity
 {
     private readonly List<IDomainEvent> _domainEvents = [];
 

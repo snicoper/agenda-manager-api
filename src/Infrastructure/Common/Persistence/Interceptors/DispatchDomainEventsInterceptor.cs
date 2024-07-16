@@ -1,5 +1,4 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Common.Interfaces;
+﻿using AgendaManager.Domain.Common.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -35,7 +34,7 @@ public class DispatchDomainEventsInterceptor(IHttpContextAccessor httpContextAcc
         }
 
         var entities = context.ChangeTracker
-            .Entries<Entity>()
+            .Entries<IEntity>()
             .Where(e => e.Entity.DomainEvents.Count != 0)
             .Select(e => e.Entity)
             .ToArray();
