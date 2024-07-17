@@ -6,7 +6,7 @@ public class UserAuthenticationService(UserPasswordService userPasswordService)
 {
     public Result AuthenticateUser(User user, string password)
     {
-        var validationResult = ValidateUser(user);
+        var validationResult = Validate(user);
         if (validationResult.IsFailure)
         {
             return validationResult;
@@ -17,7 +17,7 @@ public class UserAuthenticationService(UserPasswordService userPasswordService)
             : Result.Success();
     }
 
-    private static Result ValidateUser(User user)
+    private static Result Validate(User user)
     {
         if (!user.Active)
         {
