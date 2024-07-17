@@ -8,13 +8,17 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddDomain(this IServiceCollection services)
     {
-        // Users.
+        services.AddUsers();
+
+        return services;
+    }
+
+    private static void AddUsers(this IServiceCollection services)
+    {
         services.AddScoped<IPasswordPolicy, StrongPasswordPolicy>();
         services.AddScoped<UserPasswordService>();
         services.AddScoped<IUserEmailPolicy, StandardUserEmailPolicy>();
         services.AddScoped<UserEmailService>();
         services.AddScoped<UserAuthenticationService>();
-
-        return services;
     }
 }
