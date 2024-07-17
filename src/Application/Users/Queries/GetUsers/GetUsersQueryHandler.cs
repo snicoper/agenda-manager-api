@@ -11,7 +11,7 @@ internal class GetUsersQueryHandler(IUserRepository usersRepository)
     {
         var users = usersRepository
             .GetQueryable()
-            .Select(u => new GetUsersQueryResponse(u.Id.Value, u.Email.Value, u.UserName, u.FirstName, u.LastName))
+            .Select(u => new GetUsersQueryResponse(u.Id.Value, u.Email.Value, u.FirstName, u.LastName))
             .ToList();
 
         var result = Result.Success(users);

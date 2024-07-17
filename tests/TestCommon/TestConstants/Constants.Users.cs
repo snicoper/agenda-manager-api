@@ -10,8 +10,6 @@ public static partial class Constants
 
         public static readonly EmailAddress Email = EmailAddress.From("alice@example.com");
 
-        public static readonly string UserName = "alice";
-
         public static readonly string FirstName = "Alice";
 
         public static readonly string LastName = "Doe";
@@ -24,8 +22,6 @@ public static partial class Constants
         public static readonly UserId Id = UserId.Create();
 
         public static readonly EmailAddress Email = EmailAddress.From("bob@example.com");
-
-        public static readonly string UserName = "bob";
 
         public static readonly string FirstName = "Bob";
 
@@ -40,8 +36,6 @@ public static partial class Constants
 
         public static readonly EmailAddress Email = EmailAddress.From("carol@example.com");
 
-        public static readonly string UserName = "carol";
-
         public static readonly string FirstName = "Carol";
 
         public static readonly string LastName = "Doe";
@@ -54,8 +48,6 @@ public static partial class Constants
         public static readonly UserId Id = UserId.Create();
 
         public static readonly EmailAddress Email = EmailAddress.From("lexi@example.com");
-
-        public static readonly string UserName = "lexi";
 
         public static readonly string FirstName = "Lexi";
 

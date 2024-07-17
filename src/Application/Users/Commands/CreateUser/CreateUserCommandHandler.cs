@@ -24,7 +24,6 @@ internal class CreateUserCommandHandler(IUserRepository usersRepository, IUnitOf
         var newUser = User.Create(
             UserId.Create(),
             EmailAddress.From("test2@example.com"),
-            "test2",
             "peric2o",
             "palote2",
             "password2");

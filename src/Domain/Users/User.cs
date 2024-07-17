@@ -15,14 +15,12 @@ public sealed class User : AuditableEntity
     private User(
         UserId userId,
         EmailAddress email,
-        string userName,
         string passwordHash,
         string? firstName,
         string? lastName)
     {
         Id = userId;
         Email = email;
-        UserName = userName;
         PasswordHash = passwordHash;
         FirstName = firstName;
         LastName = lastName;
@@ -32,8 +30,6 @@ public sealed class User : AuditableEntity
     }
 
     public UserId Id { get; } = null!;
-
-    public string UserName { get; private set; } = default!;
 
     public string PasswordHash { get; private set; } = default!;
 
@@ -62,12 +58,11 @@ public sealed class User : AuditableEntity
     public static User Create(
         UserId userId,
         EmailAddress email,
-        string userName,
         string passwordHash,
         string? firstName,
         string? lastName)
     {
-        User user = new(userId, email, userName, passwordHash, firstName, lastName);
+        User user = new(userId, email, passwordHash, firstName, lastName);
 
         user.AddDomainEvent(new UserCreatedDomainEvent(userId));
 

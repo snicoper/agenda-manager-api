@@ -2,7 +2,6 @@
 using AgendaManager.Domain.Authorization.Interfaces;
 using AgendaManager.Domain.Authorization.ValueObjects;
 using AgendaManager.Domain.Common.Constants;
-using AgendaManager.Domain.Common.Interfaces;
 using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
@@ -101,7 +100,6 @@ public class AppDbContextInitialize(
         var admin = User.Create(
             UserId.Create(),
             EmailAddress.From("alice@example.com"),
-            "alice",
             passwordHash,
             "Alice",
             "Doe");
@@ -120,7 +118,6 @@ public class AppDbContextInitialize(
         var manager = User.Create(
             UserId.Create(),
             EmailAddress.From("bob@example.com"),
-            "bob",
             passwordHash,
             "Bob",
             "Doe");
@@ -143,7 +140,6 @@ public class AppDbContextInitialize(
         var client = User.Create(
             UserId.Create(),
             EmailAddress.From("carol@example.com"),
-            "carol",
             passwordHash,
             "Carol",
             "Doe");
@@ -170,7 +166,6 @@ public class AppDbContextInitialize(
         var client2 = User.Create(
             UserId.Create(),
             EmailAddress.From("lexi@example.com"),
-            "lexi",
             passwordHash,
             "Lexi",
             "Doe");

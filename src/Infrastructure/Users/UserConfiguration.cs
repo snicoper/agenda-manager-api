@@ -13,9 +13,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasKey(u => u.Id);
 
-        builder.HasIndex(u => u.UserName)
-            .IsUnique();
-
         builder.HasIndex(u => u.Email)
             .IsUnique();
 
@@ -23,10 +20,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasConversion(
                 id => id.Value,
                 id => UserId.From(id))
-            .IsRequired();
-
-        builder.Property(u => u.UserName)
-            .HasMaxLength(100)
             .IsRequired();
 
         builder.Property(u => u.Email)

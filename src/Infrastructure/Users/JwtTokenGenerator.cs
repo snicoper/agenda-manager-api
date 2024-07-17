@@ -27,7 +27,6 @@ public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions, IAuthorizationMa
         {
             new(JwtRegisteredClaimNames.Sub, id),
             new(JwtRegisteredClaimNames.Email, user.Email.Value),
-            new(JwtRegisteredClaimNames.Name, user.UserName),
             new(JwtRegisteredClaimNames.FamilyName, $"{user.FirstName} {user.LastName}"),
             new(CustomClaimType.Id, id)
         };
