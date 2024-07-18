@@ -41,8 +41,8 @@ public class AuthorizationManager(AppDbContext context, ICurrentUserProvider cur
     {
         var roles = await context
             .UserRoles
-            .Where(r => r.UserId == userId)
-            .Select(r => r.Role)
+            .Where(userRole => userRole.UserId == userId)
+            .Select(userRole => userRole.Role)
             .ToListAsync(cancellationToken);
 
         return roles;
@@ -54,8 +54,8 @@ public class AuthorizationManager(AppDbContext context, ICurrentUserProvider cur
     {
         var permissions = context
             .UserPermissions
-            .Where(r => r.UserId == userId)
-            .Select(r => r.Permission)
+            .Where(userPermission => userPermission.UserId == userId)
+            .Select(userPermission => userPermission.Permission)
             .ToListAsync(cancellationToken);
 
         return permissions;
@@ -84,7 +84,7 @@ public class AuthorizationManager(AppDbContext context, ICurrentUserProvider cur
     {
         var hasRole = await context
             .UserRoles
-            .FirstOrDefaultAsync(r => r.UserId == userId && r.RoleId == roleId, cancellationToken);
+            .FirstOrDefaultAsync(userRole => userRole.UserId == userId && userRole.RoleId == roleId, cancellationToken);
 
         if (hasRole is not null)
         {
@@ -99,7 +99,9 @@ public class AuthorizationManager(AppDbContext context, ICurrentUserProvider cur
     {
         var isInPermission = await context
             .UserPermissions
-            .FirstOrDefaultAsync(r => r.UserId == userId && r.PermissionId == permissionId, cancellationToken);
+            .FirstOrDefaultAsync(
+                userPermission => userPermission.UserId == userId && userPermission.PermissionId == permissionId,
+                cancellationToken);
 
         if (isInPermission is not null)
         {
@@ -118,7 +120,9 @@ public class AuthorizationManager(AppDbContext context, ICurrentUserProvider cur
     {
         var hasPermission = await context
             .UserPermissions
-            .FirstOrDefaultAsync(r => r.UserId == userId && r.PermissionId == permissionId, cancellationToken);
+            .FirstOrDefaultAsync(
+                userPermission => userPermission.UserId == userId && userPermission.PermissionId == permissionId,
+                cancellationToken);
 
         if (hasPermission is not null)
         {
