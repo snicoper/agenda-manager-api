@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Authorization.ValueObjects;
+using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Authorization.Interfaces;
@@ -11,7 +12,13 @@ public interface IAuthorizationManager
 
     Task<List<Role>> GetRolesByUserIdAsync(UserId userId, CancellationToken cancellationToken = default);
 
+    Task<List<User>> GetUsersByRoleIdAsync(RoleId roleId, CancellationToken cancellationToken = default);
+
     Task<List<Permission>> GetPermissionsByUserIdAsync(UserId userId, CancellationToken cancellationToken = default);
+
+    Task<List<User>> GetUsersByPermissionIdAsync(
+        PermissionId permissionId,
+        CancellationToken cancellationToken = default);
 
     Task AddRoleAsync(UserId userId, RoleId roleId, CancellationToken cancellationToken = default);
 

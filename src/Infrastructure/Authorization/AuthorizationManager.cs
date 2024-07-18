@@ -2,6 +2,7 @@ using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Domain.Authorization;
 using AgendaManager.Domain.Authorization.Interfaces;
 using AgendaManager.Domain.Authorization.ValueObjects;
+using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.ValueObjects;
 using AgendaManager.Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -48,6 +49,17 @@ public class AuthorizationManager(AppDbContext context, ICurrentUserProvider cur
         return roles;
     }
 
+    public async Task<List<User>> GetUsersByRoleIdAsync(RoleId roleId, CancellationToken cancellationToken = default)
+    {
+        var users = await context
+            .UserRoles
+            .Where(userRole => userRole.RoleId == roleId)
+            .Select(userRole => userRole.User)
+            .ToListAsync(cancellationToken);
+
+        return users;
+    }
+
     public Task<List<Permission>> GetPermissionsByUserIdAsync(
         UserId userId,
         CancellationToken cancellationToken = default)
@@ -59,6 +71,19 @@ public class AuthorizationManager(AppDbContext context, ICurrentUserProvider cur
             .ToListAsync(cancellationToken);
 
         return permissions;
+    }
+
+    public async Task<List<User>> GetUsersByPermissionIdAsync(
+        PermissionId permissionId,
+        CancellationToken cancellationToken = default)
+    {
+        var users = await context
+            .UserPermissions
+            .Where(userRole => userRole.PermissionId == permissionId)
+            .Select(userPermission => userPermission.User)
+            .ToListAsync(cancellationToken);
+
+        return users;
     }
 
     public async Task AddRoleAsync(UserId userId, RoleId roleId, CancellationToken cancellationToken = default)
