@@ -20,9 +20,9 @@ public class AuthorizationManager(AppDbContext context, ICurrentUserProvider cur
         }
 
         var currentUser = currentUserProvider.GetCurrentUser();
-        var havePermission = currentUser.Roles.Contains(role);
+        var hasRole = currentUser.Roles.Contains(role);
 
-        return havePermission;
+        return hasRole;
     }
 
     public bool HasPermission(UserId userId, string permissionName)
@@ -33,9 +33,9 @@ public class AuthorizationManager(AppDbContext context, ICurrentUserProvider cur
         }
 
         var currentUser = currentUserProvider.GetCurrentUser();
-        var havePermission = currentUser.Permissions.Contains(permissionName);
+        var hasPermission = currentUser.Permissions.Contains(permissionName);
 
-        return havePermission;
+        return hasPermission;
     }
 
     public async Task<List<Role>> GetRolesByUserIdAsync(UserId userId, CancellationToken cancellationToken = default)
@@ -90,9 +90,9 @@ public class AuthorizationManager(AppDbContext context, ICurrentUserProvider cur
     {
         var isInRole = await context
             .UserRoles
-            .FirstOrDefaultAsync(r => r.UserId == userId && r.RoleId == roleId, cancellationToken);
+            .AnyAsync(r => r.UserId == userId && r.RoleId == roleId, cancellationToken);
 
-        if (isInRole is not null)
+        if (isInRole)
         {
             return;
         }
@@ -124,11 +124,11 @@ public class AuthorizationManager(AppDbContext context, ICurrentUserProvider cur
     {
         var isInPermission = await context
             .UserPermissions
-            .FirstOrDefaultAsync(
+            .AnyAsync(
                 userPermission => userPermission.UserId == userId && userPermission.PermissionId == permissionId,
                 cancellationToken);
 
-        if (isInPermission is not null)
+        if (isInPermission)
         {
             return;
         }
