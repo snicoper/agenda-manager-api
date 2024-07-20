@@ -4,7 +4,7 @@ using AgendaManager.Domain.Users.ValueObjects;
 using AgendaManager.Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace AgendaManager.Infrastructure.Users;
+namespace AgendaManager.Infrastructure.Users.Repository;
 
 public class PermissionRepository(AppDbContext context) : IPermissionRepository
 {
