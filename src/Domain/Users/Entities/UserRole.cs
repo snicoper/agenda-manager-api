@@ -1,9 +1,7 @@
-﻿using AgendaManager.Domain.Authorization.ValueObjects;
-using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Users;
+﻿using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.Domain.Authorization;
+namespace AgendaManager.Domain.Users.Entities;
 
 public sealed class UserRole : AuditableEntity
 {

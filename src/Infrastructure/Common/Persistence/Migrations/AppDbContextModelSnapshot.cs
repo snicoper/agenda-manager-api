@@ -22,7 +22,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("AgendaManager.Domain.Authorization.Permission", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Users.Entities.Permission", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -52,41 +52,11 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.ToTable("Permissions", (string)null);
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Authorization.Role", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Users.Entities.RolePermission", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset>("LastModified")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("LastModifiedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("Roles", (string)null);
-                });
-
-            modelBuilder.Entity("AgendaManager.Domain.Authorization.UserPermission", b =>
-                {
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid>("RoleId")
                         .HasColumnType("uuid")
-                        .HasColumnName("UserId");
+                        .HasColumnName("RoleId");
 
                     b.Property<Guid>("PermissionId")
                         .HasColumnType("uuid")
@@ -104,16 +74,16 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<Guid>("LastModifiedBy")
                         .HasColumnType("uuid");
 
-                    b.HasKey("UserId", "PermissionId");
+                    b.HasKey("RoleId", "PermissionId");
 
                     b.HasIndex("PermissionId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("RoleId");
 
-                    b.ToTable("UserPermissions", (string)null);
+                    b.ToTable("RolePermissions", (string)null);
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Authorization.UserRole", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Users.Entities.UserRole", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid")
@@ -142,6 +112,36 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("AgendaManager.Domain.Users.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("AgendaManager.Domain.Users.User", b =>
@@ -192,35 +192,35 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Authorization.UserPermission", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Users.Entities.RolePermission", b =>
                 {
-                    b.HasOne("AgendaManager.Domain.Authorization.Permission", "Permission")
-                        .WithMany("UserPermissions")
+                    b.HasOne("AgendaManager.Domain.Users.Entities.Permission", "Permission")
+                        .WithMany("_rolePermissions")
                         .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AgendaManager.Domain.Users.User", "User")
-                        .WithMany("UserPermissions")
-                        .HasForeignKey("UserId")
+                    b.HasOne("AgendaManager.Domain.Users.Role", "Role")
+                        .WithMany("_rolePermissions")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Permission");
 
-                    b.Navigation("User");
+                    b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Authorization.UserRole", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Users.Entities.UserRole", b =>
                 {
-                    b.HasOne("AgendaManager.Domain.Authorization.Role", "Role")
-                        .WithMany("UserRoles")
+                    b.HasOne("AgendaManager.Domain.Users.Role", "Role")
+                        .WithMany("_userRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AgendaManager.Domain.Users.User", "User")
-                        .WithMany("UserRoles")
+                        .WithMany("_userRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -258,21 +258,21 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Navigation("RefreshToken");
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Authorization.Permission", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Users.Entities.Permission", b =>
                 {
-                    b.Navigation("UserPermissions");
+                    b.Navigation("_rolePermissions");
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Authorization.Role", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Users.Role", b =>
                 {
-                    b.Navigation("UserRoles");
+                    b.Navigation("_rolePermissions");
+
+                    b.Navigation("_userRoles");
                 });
 
             modelBuilder.Entity("AgendaManager.Domain.Users.User", b =>
                 {
-                    b.Navigation("UserPermissions");
-
-                    b.Navigation("UserRoles");
+                    b.Navigation("_userRoles");
                 });
 #pragma warning restore 612, 618
         }

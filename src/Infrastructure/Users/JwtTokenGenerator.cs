@@ -4,9 +4,9 @@ using System.Security.Cryptography;
 using System.Text;
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Models.Users;
-using AgendaManager.Domain.Authorization.Interfaces;
 using AgendaManager.Domain.Common.Constants;
 using AgendaManager.Domain.Users;
+using AgendaManager.Domain.Users.Interfaces;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -31,8 +31,8 @@ public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions, IAuthorizationMa
             new(CustomClaimType.Id, id)
         };
 
-        await AddRolesClaim(user, claims);
-        await AddPermissionsClaim(user, claims);
+        var roles = await AddClaimRoles(user, claims);
+        await AddClaimPermissions(roles, claims);
 
         var token = new JwtSecurityToken(
             _jwtOptions.Issuer,
@@ -60,17 +60,25 @@ public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions, IAuthorizationMa
         return tokenRefresh;
     }
 
-    private async Task AddRolesClaim(User user, List<Claim> claims)
+    private async Task<List<Role>> AddClaimRoles(User user, List<Claim> claims)
     {
         var roles = await authorizationManager.GetRolesByUserIdAsync(user.Id);
 
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role.Name)));
+
+        return roles;
     }
 
-    private async Task AddPermissionsClaim(User user, List<Claim> claims)
+    private async Task AddClaimPermissions(List<Role> roles, List<Claim> claims)
     {
-        var permissions = await authorizationManager.GetPermissionsByUserIdAsync(user.Id);
+        var permissionsNames = new List<string>();
+        foreach (var role in roles)
+        {
+            var permissions = await authorizationManager.GetPermissionsByRoleId(role.Id);
+            permissionsNames.AddRange(permissions.Select(permission => permission.Name));
+        }
 
-        claims.AddRange(permissions.Select(permission => new Claim(CustomClaimType.Permissions, permission.Name)));
+        permissionsNames = permissionsNames.Distinct().ToList();
+        claims.AddRange(permissionsNames.Select(permission => new Claim(CustomClaimType.Permissions, permission)));
     }
 }

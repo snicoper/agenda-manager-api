@@ -1,10 +1,9 @@
-﻿using AgendaManager.Domain.Authorization;
-using AgendaManager.Domain.Authorization.ValueObjects;
+﻿using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AgendaManager.Infrastructure.Authorization;
+namespace AgendaManager.Infrastructure.Users;
 
 public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
 {
@@ -18,11 +17,11 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
         builder.HasIndex(ur => ur.RoleId);
 
         builder.HasOne(ur => ur.User)
-            .WithMany(u => u.UserRoles)
+            .WithMany("_userRoles")
             .HasForeignKey(ur => ur.UserId);
 
         builder.HasOne(ur => ur.Role)
-            .WithMany(r => r.UserRoles)
+            .WithMany("_userRoles")
             .HasForeignKey(ur => ur.RoleId);
 
         builder.Property(ur => ur.UserId)

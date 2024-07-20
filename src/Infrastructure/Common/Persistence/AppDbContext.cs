@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using AgendaManager.Application.Common.Interfaces.Persistence;
-using AgendaManager.Domain.Authorization;
 using AgendaManager.Domain.Users;
+using AgendaManager.Domain.Users.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace AgendaManager.Infrastructure.Common.Persistence;
@@ -15,7 +15,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
 
     public DbSet<User> Users => Set<User>();
 
-    public DbSet<UserPermission> UserPermissions => Set<UserPermission>();
+    public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
 
     public DbSet<UserRole> UserRoles => Set<UserRole>();
 

@@ -1,8 +1,6 @@
-﻿using AgendaManager.Domain.Authorization;
-using AgendaManager.Domain.Authorization.Interfaces;
-using AgendaManager.Domain.Authorization.ValueObjects;
-using AgendaManager.Domain.Common.Constants;
+﻿using AgendaManager.Domain.Common.Constants;
 using AgendaManager.Domain.Users;
+using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -68,22 +66,28 @@ public class AppDbContextInitialize(
 
     private async Task CreatePermissionsAsync()
     {
+        var roles = context.Roles.ToList();
+
         var permissions = new List<Permission>
         {
             Permission.Create(PermissionId.Create(), Permissions.User.Read),
             Permission.Create(PermissionId.Create(), Permissions.User.Create),
             Permission.Create(PermissionId.Create(), Permissions.User.Update),
-            Permission.Create(PermissionId.Create(), Permissions.User.Delete),
-            Permission.Create(PermissionId.Create(), Permissions.Authorization.Read),
-            Permission.Create(PermissionId.Create(), Permissions.Authorization.Create),
-            Permission.Create(PermissionId.Create(), Permissions.Authorization.Update),
-            Permission.Create(PermissionId.Create(), Permissions.Authorization.Delete)
+            Permission.Create(PermissionId.Create(), Permissions.User.Delete)
         };
 
         foreach (var permission in permissions.Where(
                      permission => context.Permissions.All(p => p.Name != permission.Name)))
         {
             context.Permissions.Add(permission);
+
+            authorizationManager.AddPermissionToRoleAsync(roles.First(r => r.Name == Roles.Admin), permission);
+            authorizationManager.AddPermissionToRoleAsync(roles.First(r => r.Name == Roles.Manager), permission);
+
+            if (permission.Name.Contains("read"))
+            {
+                authorizationManager.AddPermissionToRoleAsync(roles.First(r => r.Name == Roles.Client), permission);
+            }
         }
 
         await context.SaveChangesAsync();
@@ -107,9 +111,7 @@ public class AppDbContextInitialize(
         if (!await context.Users.AnyAsync(u => u.Email.Equals(admin.Email)))
         {
             admin.ConfirmEmail();
-
             await AddRolesToUser(admin, roles);
-            await AddPermissionsToUser(admin, permissions);
 
             await context.Users.AddAsync(admin);
         }
@@ -131,7 +133,6 @@ public class AppDbContextInitialize(
             };
 
             await AddRolesToUser(manager, rolesForManager);
-            await AddPermissionsToUser(manager, permissions);
 
             await context.Users.AddAsync(manager);
         }
@@ -151,14 +152,6 @@ public class AppDbContextInitialize(
             var rolesForClient = new List<Role> { roles.First(r => r.Name == Roles.Client) };
             await AddRolesToUser(client, rolesForClient);
 
-            var permissionsForClient = new List<Permission>
-            {
-                permissions.First(p => p.Name == Permissions.User.Read),
-                permissions.First(p => p.Name == Permissions.Authorization.Read)
-            };
-
-            await AddPermissionsToUser(client, permissionsForClient);
-
             await context.Users.AddAsync(client);
         }
 
@@ -175,13 +168,6 @@ public class AppDbContextInitialize(
             var rolesForClient = new List<Role> { roles.First(r => r.Name == Roles.Client) };
             await AddRolesToUser(client2, rolesForClient);
 
-            var permissionsForClient = new List<Permission>
-            {
-                permissions.First(p => p.Name == Permissions.User.Read),
-                permissions.First(p => p.Name == Permissions.Authorization.Read)
-            };
-
-            await AddPermissionsToUser(client2, permissionsForClient);
             client2.SetActiveState(false);
 
             await context.Users.AddAsync(client2);
@@ -195,14 +181,6 @@ public class AppDbContextInitialize(
         foreach (var role in roles)
         {
             await authorizationManager.AddRoleAsync(user.Id, role.Id);
-        }
-    }
-
-    private async Task AddPermissionsToUser(User user, List<Permission> permissions)
-    {
-        foreach (var permission in permissions)
-        {
-            await authorizationManager.AddPermissionAsync(user.Id, permission.Id);
         }
     }
 }

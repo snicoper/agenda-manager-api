@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Common.Abstractions;
 
-namespace AgendaManager.Domain.Authorization.ValueObjects;
+namespace AgendaManager.Domain.Users.ValueObjects;
 
 public class PermissionId : ValueObject
 {

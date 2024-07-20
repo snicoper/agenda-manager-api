@@ -1,17 +1,29 @@
 using AgendaManager.Application.Common.Interfaces.Users;
-using AgendaManager.Domain.Authorization;
-using AgendaManager.Domain.Authorization.Interfaces;
-using AgendaManager.Domain.Authorization.ValueObjects;
 using AgendaManager.Domain.Users;
+using AgendaManager.Domain.Users.Entities;
+using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
 using AgendaManager.Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace AgendaManager.Infrastructure.Authorization;
+namespace AgendaManager.Infrastructure.Users;
 
 public class AuthorizationManager(AppDbContext context, ICurrentUserProvider currentUserProvider)
     : IAuthorizationManager
 {
+    public async Task<List<Permission>> GetPermissionsByRoleId(
+        RoleId roleId,
+        CancellationToken cancellationToken = default)
+    {
+        var permissions = await context
+            .RolePermissions
+            .Where(x => x.RoleId == roleId)
+            .Select(x => x.Permission)
+            .ToListAsync(cancellationToken);
+
+        return permissions;
+    }
+
     public bool HasRole(UserId userId, string role)
     {
         if (currentUserProvider.IsAuthenticated is false)
@@ -60,32 +72,6 @@ public class AuthorizationManager(AppDbContext context, ICurrentUserProvider cur
         return users;
     }
 
-    public Task<List<Permission>> GetPermissionsByUserIdAsync(
-        UserId userId,
-        CancellationToken cancellationToken = default)
-    {
-        var permissions = context
-            .UserPermissions
-            .Where(userPermission => userPermission.UserId == userId)
-            .Select(userPermission => userPermission.Permission)
-            .ToListAsync(cancellationToken);
-
-        return permissions;
-    }
-
-    public async Task<List<User>> GetUsersByPermissionIdAsync(
-        PermissionId permissionId,
-        CancellationToken cancellationToken = default)
-    {
-        var users = await context
-            .UserPermissions
-            .Where(userRole => userRole.PermissionId == permissionId)
-            .Select(userPermission => userPermission.User)
-            .ToListAsync(cancellationToken);
-
-        return users;
-    }
-
     public async Task AddRoleAsync(UserId userId, RoleId roleId, CancellationToken cancellationToken = default)
     {
         var isInRole = await context
@@ -117,41 +103,18 @@ public class AuthorizationManager(AppDbContext context, ICurrentUserProvider cur
         }
     }
 
-    public async Task AddPermissionAsync(
-        UserId userId,
-        PermissionId permissionId,
-        CancellationToken cancellationToken = default)
+    public void AddPermissionToRoleAsync(Role role, Permission permission)
     {
-        var isInPermission = await context
-            .UserPermissions
-            .AnyAsync(
-                userPermission => userPermission.UserId == userId && userPermission.PermissionId == permissionId,
-                cancellationToken);
+        var rolePermissionExists = context
+            .RolePermissions
+            .Any(rp => rp.RoleId.Equals(role.Id) && rp.PermissionId.Equals(permission.Id));
 
-        if (isInPermission)
+        if (rolePermissionExists)
         {
             return;
         }
 
-        var userPermission = UserPermission.Create(userId, permissionId);
-
-        context.UserPermissions.Add(userPermission);
-    }
-
-    public async Task RemovePermissionAsync(
-        UserId userId,
-        PermissionId permissionId,
-        CancellationToken cancellationToken = default)
-    {
-        var hasPermission = await context
-            .UserPermissions
-            .FirstOrDefaultAsync(
-                userPermission => userPermission.UserId == userId && userPermission.PermissionId == permissionId,
-                cancellationToken);
-
-        if (hasPermission is not null)
-        {
-            context.UserPermissions.Remove(hasPermission);
-        }
+        var rolePermission = RolePermission.Create(role.Id, permission.Id);
+        context.RolePermissions.Add(rolePermission);
     }
 }

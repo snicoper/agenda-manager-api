@@ -1,9 +1,9 @@
-﻿using AgendaManager.Domain.Authorization;
-using AgendaManager.Domain.Authorization.ValueObjects;
+﻿using AgendaManager.Domain.Users.Entities;
+using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AgendaManager.Infrastructure.Authorization;
+namespace AgendaManager.Infrastructure.Users;
 
 public class PermissionConfiguration : IEntityTypeConfiguration<Permission>
 {

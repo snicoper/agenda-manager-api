@@ -2,10 +2,7 @@
 using AgendaManager.Application.Common.Interfaces.Clock;
 using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Application.Common.Interfaces.Users;
-using AgendaManager.Domain.Authorization.Interfaces;
-using AgendaManager.Domain.Common.Interfaces;
 using AgendaManager.Domain.Users.Interfaces;
-using AgendaManager.Infrastructure.Authorization;
 using AgendaManager.Infrastructure.Common.Clock;
 using AgendaManager.Infrastructure.Common.Persistence;
 using AgendaManager.Infrastructure.Common.Persistence.Interceptors;

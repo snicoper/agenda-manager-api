@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using AgendaManager.Domain.Authorization;
 using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.ValueObjects;
 
@@ -8,6 +8,8 @@ namespace AgendaManager.Domain.Users;
 
 public sealed class User : AuditableEntity
 {
+    private readonly HashSet<UserRole> _userRoles = [];
+
     private User()
     {
     }
@@ -45,15 +47,11 @@ public sealed class User : AuditableEntity
 
     public RefreshToken? RefreshToken { get; private set; }
 
-    public ICollection<UserRole> UserRoles { get; } = new HashSet<UserRole>();
-
-    public ICollection<UserPermission> UserPermissions { get; } = new HashSet<UserPermission>();
-
     [NotMapped]
-    public IReadOnlyCollection<Role> Roles => UserRoles.Select(ur => ur.Role).ToList();
-
-    [NotMapped]
-    public IReadOnlyCollection<Permission> Permissions => UserPermissions.Select(up => up.Permission).ToList();
+    public IReadOnlyCollection<Role> Roles => _userRoles
+        .Select(ur => ur.Role)
+        .ToList()
+        .AsReadOnly();
 
     public static User Create(
         UserId userId,
