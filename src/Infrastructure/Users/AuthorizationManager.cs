@@ -11,19 +11,6 @@ namespace AgendaManager.Infrastructure.Users;
 public class AuthorizationManager(AppDbContext context, ICurrentUserProvider currentUserProvider)
     : IAuthorizationManager
 {
-    public async Task<List<Permission>> GetPermissionsByRoleId(
-        RoleId roleId,
-        CancellationToken cancellationToken = default)
-    {
-        var permissions = await context
-            .RolePermissions
-            .Where(x => x.RoleId == roleId)
-            .Select(x => x.Permission)
-            .ToListAsync(cancellationToken);
-
-        return permissions;
-    }
-
     public bool HasRole(UserId userId, string role)
     {
         if (currentUserProvider.IsAuthenticated is false)
@@ -101,6 +88,19 @@ public class AuthorizationManager(AppDbContext context, ICurrentUserProvider cur
         {
             context.UserRoles.Remove(hasRole);
         }
+    }
+
+    public async Task<List<Permission>> GetPermissionsByRoleId(
+        RoleId roleId,
+        CancellationToken cancellationToken = default)
+    {
+        var permissions = await context
+            .RolePermissions
+            .Where(x => x.RoleId == roleId)
+            .Select(x => x.Permission)
+            .ToListAsync(cancellationToken);
+
+        return permissions;
     }
 
     public void AddPermissionToRoleAsync(Role role, Permission permission)
