@@ -1,6 +1,7 @@
 ﻿using AgendaManager.Domain.Common.Constants;
 using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Interfaces;
+using AgendaManager.Domain.Users.Services;
 using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -10,6 +11,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Seeds;
 public class AppDbContextInitialize(
     AppDbContext context,
     IPasswordHasher passwordHasher,
+    UserAuthorizationManager userAuthorizationManager,
     ILogger<AppDbContextInitialize> logger)
 {
     private static List<Role> _roles = [];
@@ -121,15 +123,16 @@ public class AppDbContextInitialize(
         {
             admin.ConfirmEmail();
 
+            await context.Users.AddAsync(admin);
+            await context.SaveChangesAsync();
+
             var adminRole = _roles.First(r => r.Name == Roles.Admin);
             var managerRole = _roles.First(r => r.Name == Roles.Manager);
             var clientRole = _roles.First(r => r.Name == Roles.Client);
 
-            admin.AddRole(adminRole);
-            admin.AddRole(managerRole);
-            admin.AddRole(clientRole);
-
-            await context.Users.AddAsync(admin);
+            await userAuthorizationManager.AddRoleToUserAsync(admin.Id, adminRole.Id);
+            await userAuthorizationManager.AddRoleToUserAsync(admin.Id, managerRole.Id);
+            await userAuthorizationManager.AddRoleToUserAsync(admin.Id, clientRole.Id);
         }
 
         // Manager user.
@@ -143,13 +146,15 @@ public class AppDbContextInitialize(
         if (!await context.Users.AnyAsync(u => u.Email.Equals(manager.Email)))
         {
             manager.ConfirmEmail();
+
+            await context.Users.AddAsync(manager);
+            await context.SaveChangesAsync();
+
             var managerRole = _roles.First(r => r.Name == Roles.Manager);
             var clientRole = _roles.First(r => r.Name == Roles.Client);
 
-            manager.AddRole(managerRole);
-            manager.AddRole(clientRole);
-
-            await context.Users.AddAsync(manager);
+            await userAuthorizationManager.AddRoleToUserAsync(manager.Id, managerRole.Id);
+            await userAuthorizationManager.AddRoleToUserAsync(manager.Id, clientRole.Id);
         }
 
         // Client user.
@@ -164,10 +169,11 @@ public class AppDbContextInitialize(
         {
             client.ConfirmEmail();
 
-            var clientRole = _roles.First(r => r.Name == Roles.Client);
-            client.AddRole(clientRole);
-
             await context.Users.AddAsync(client);
+            await context.SaveChangesAsync();
+
+            var clientRole = _roles.First(r => r.Name == Roles.Client);
+            await userAuthorizationManager.AddRoleToUserAsync(client.Id, clientRole.Id);
         }
 
         // Client user.
@@ -180,12 +186,13 @@ public class AppDbContextInitialize(
 
         if (!await context.Users.AnyAsync(u => u.Email.Equals(client2.Email)))
         {
-            var clientRole = _roles.First(r => r.Name == Roles.Client);
-
-            client2.AddRole(clientRole);
             client2.SetActiveState(false);
 
             await context.Users.AddAsync(client2);
+            await context.SaveChangesAsync();
+
+            var clientRole = _roles.First(r => r.Name == Roles.Client);
+            await userAuthorizationManager.AddRoleToUserAsync(client2.Id, clientRole.Id);
         }
 
         await context.SaveChangesAsync();

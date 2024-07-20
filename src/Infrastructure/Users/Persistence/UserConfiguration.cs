@@ -66,12 +66,22 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             user => user.RefreshToken,
             refreshTokenBuilder =>
             {
+                refreshTokenBuilder.HasIndex(rt => rt.Token)
+                    .IsUnique();
+
                 refreshTokenBuilder.Property(rt => rt.Token)
                     .HasColumnName("RefreshTokenToken")
-                    .HasMaxLength(200);
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
 
                 refreshTokenBuilder.Property(rt => rt.ExpiryTime)
                     .HasColumnName("RefreshTokenExpiryTime");
+
+                refreshTokenBuilder.Property(rt => rt.Id)
+                    .HasColumnName("RefreshTokenId")
+                    .HasConversion(
+                        id => id.ToString(),
+                        id => Guid.Parse(id));
             });
     }
 }

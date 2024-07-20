@@ -54,10 +54,10 @@ public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions, IUserRepository 
             signingCredentials: credentials);
 
         var jwtSecurityToken = new JwtSecurityTokenHandler().WriteToken(token);
-        var refreshToken = GenerateRefreshToken();
-        var expires = DateTimeOffset.UtcNow.AddMinutes(_jwtOptions.RefreshTokenLifeTimeDays);
+        var refreshTokenLifetime = TimeSpan.FromDays(_jwtOptions.RefreshTokenLifeTimeDays);
+        var refreshToken = RefreshToken.Generate(refreshTokenLifetime);
 
-        var tokenResponse = new TokenResult(jwtSecurityToken, refreshToken, expires);
+        var tokenResponse = new TokenResult(jwtSecurityToken, refreshToken.Token, refreshToken.ExpiryTime);
 
         return tokenResponse;
     }

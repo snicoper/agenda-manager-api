@@ -109,7 +109,7 @@ public sealed class User : AuditableEntity
         AddDomainEvent(new UserActiveStateChangedDomainEvent(Id, state));
     }
 
-    public Result AddRole(Role role)
+    internal Result AddRole(Role role)
     {
         if (_roles.Any(r => r.Equals(role)))
         {

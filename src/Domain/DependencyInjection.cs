@@ -20,5 +20,6 @@ public static class DependencyInjection
         services.AddScoped<IUserEmailPolicy, StandardUserEmailPolicy>();
         services.AddScoped<UserEmailService>();
         services.AddScoped<UserAuthenticationService>();
+        services.AddScoped<UserAuthorizationManager>();
     }
 }

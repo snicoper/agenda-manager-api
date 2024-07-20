@@ -54,8 +54,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     FirstName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     LastName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Active = table.Column<bool>(type: "boolean", nullable: false),
-                    RefreshTokenToken = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    RefreshTokenToken = table.Column<string>(type: "character varying(200)", unicode: false, maxLength: 200, nullable: true),
                     RefreshTokenExpiryTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    RefreshTokenId = table.Column<string>(type: "text", nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: false),
@@ -148,6 +149,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 name: "IX_Users_Email",
                 table: "Users",
                 column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_RefreshTokenToken",
+                table: "Users",
+                column: "RefreshTokenToken",
                 unique: true);
         }
 
