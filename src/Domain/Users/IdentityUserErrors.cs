@@ -2,7 +2,7 @@
 
 namespace AgendaManager.Domain.Users;
 
-public static class UserErrors
+public static class IdentityUserErrors
 {
     public static Error InvalidCredentials => Error.Conflict("Invalid credentials");
 
@@ -13,6 +13,14 @@ public static class UserErrors
     public static Error EmailAlreadyExists => Error.Validation(nameof(User.Email), "Email already exists");
 
     public static Error EmailIsNotConfirmed => Error.Conflict("Email is not confirmed");
+
+    public static Error RoleNotFound => Error.NotFound("Role not found");
+
+    public static Error RoleAlreadyExists => Error.Conflict("Role already exists");
+
+    public static Error PermissionNotFound => Error.NotFound("Permission not found");
+
+    public static Error PermissionAlreadyExists => Error.Conflict("Permission already exists");
 
     public static Error InvalidFormatPassword => Error.Validation(
         "Password",

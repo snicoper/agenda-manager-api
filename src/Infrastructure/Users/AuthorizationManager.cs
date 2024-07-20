@@ -1,14 +1,16 @@
 using AgendaManager.Application.Common.Interfaces.Users;
+using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users;
-using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
-using AgendaManager.Infrastructure.Common.Persistence;
-using Microsoft.EntityFrameworkCore;
 
 namespace AgendaManager.Infrastructure.Users;
 
-public class AuthorizationManager(AppDbContext context, ICurrentUserProvider currentUserProvider)
+public class AuthorizationManager(
+    IUserRepository userRepository,
+    IRoleRepository roleRepository,
+    IPermissionRepository permissionRepository,
+    ICurrentUserProvider currentUserProvider)
     : IAuthorizationManager
 {
     public bool HasRole(UserId userId, string role)
@@ -19,9 +21,9 @@ public class AuthorizationManager(AppDbContext context, ICurrentUserProvider cur
         }
 
         var currentUser = currentUserProvider.GetCurrentUser();
-        var hasRole = currentUser.Roles.Contains(role);
+        var hasRole = currentUser?.Roles.Contains(role);
 
-        return hasRole;
+        return hasRole ?? false;
     }
 
     public bool HasPermission(UserId userId, string permissionName)
@@ -32,89 +34,42 @@ public class AuthorizationManager(AppDbContext context, ICurrentUserProvider cur
         }
 
         var currentUser = currentUserProvider.GetCurrentUser();
-        var hasPermission = currentUser.Permissions.Contains(permissionName);
+        var hasPermission = currentUser?.Permissions.Contains(permissionName);
 
-        return hasPermission;
+        return hasPermission ?? false;
     }
 
-    public async Task<List<Role>> GetRolesByUserIdAsync(UserId userId, CancellationToken cancellationToken = default)
-    {
-        var roles = await context
-            .UserRoles
-            .Where(userRole => userRole.UserId == userId)
-            .Select(userRole => userRole.Role)
-            .ToListAsync(cancellationToken);
-
-        return roles;
-    }
-
-    public async Task<List<User>> GetUsersByRoleIdAsync(RoleId roleId, CancellationToken cancellationToken = default)
-    {
-        var users = await context
-            .UserRoles
-            .Where(userRole => userRole.RoleId == roleId)
-            .Select(userRole => userRole.User)
-            .ToListAsync(cancellationToken);
-
-        return users;
-    }
-
-    public async Task AddRoleAsync(UserId userId, RoleId roleId, CancellationToken cancellationToken = default)
-    {
-        var isInRole = await context
-            .UserRoles
-            .AnyAsync(r => r.UserId == userId && r.RoleId == roleId, cancellationToken);
-
-        if (isInRole)
-        {
-            return;
-        }
-
-        var userRole = UserRole.Create(userId, roleId);
-
-        context.UserRoles.Add(userRole);
-    }
-
-    public async Task RemoveRoleAsync(
+    public async Task<Result> AddRoleToUserAsync(
         UserId userId,
         RoleId roleId,
         CancellationToken cancellationToken = default)
     {
-        var hasRole = await context
-            .UserRoles
-            .FirstOrDefaultAsync(userRole => userRole.UserId == userId && userRole.RoleId == roleId, cancellationToken);
+        var user = await userRepository.GetByIdWithRolesAsync(userId, cancellationToken);
 
-        if (hasRole is not null)
+        if (user is null)
         {
-            context.UserRoles.Remove(hasRole);
+            return IdentityUserErrors.UserNotFound;
         }
+
+        var role = await roleRepository.GetByIdAsync(roleId, cancellationToken);
+
+        return role is null ? IdentityUserErrors.RoleNotFound : user.AddRole(role);
     }
 
-    public async Task<List<Permission>> GetPermissionsByRoleId(
+    public async Task<Result> AddPermissionToRole(
         RoleId roleId,
+        PermissionId permissionId,
         CancellationToken cancellationToken = default)
     {
-        var permissions = await context
-            .RolePermissions
-            .Where(x => x.RoleId == roleId)
-            .Select(x => x.Permission)
-            .ToListAsync(cancellationToken);
+        var role = await roleRepository.GetByIdAsync(roleId, cancellationToken);
 
-        return permissions;
-    }
-
-    public void AddPermissionToRoleAsync(Role role, Permission permission)
-    {
-        var rolePermissionExists = context
-            .RolePermissions
-            .Any(rp => rp.RoleId.Equals(role.Id) && rp.PermissionId.Equals(permission.Id));
-
-        if (rolePermissionExists)
+        if (role is null)
         {
-            return;
+            return IdentityUserErrors.RoleNotFound;
         }
 
-        var rolePermission = RolePermission.Create(role.Id, permission.Id);
-        context.RolePermissions.Add(rolePermission);
+        var permission = await permissionRepository.GetByIdAsync(permissionId, cancellationToken);
+
+        return permission is null ? IdentityUserErrors.PermissionNotFound : role.AddPermission(permission);
     }
 }

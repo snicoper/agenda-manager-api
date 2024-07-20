@@ -16,6 +16,24 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
         builder.HasIndex(r => r.Name)
             .IsUnique();
 
+        builder
+            .HasMany(r => r.Permissions)
+            .WithMany(p => p.Roles)
+            .UsingEntity(
+                j =>
+                {
+                    j.ToTable("RolePermissions");
+                    j.Property<RoleId>("RoleId").HasColumnName("RoleId");
+                    j.Property<PermissionId>("PermissionId").HasColumnName("PermissionId");
+                    j.HasKey("RoleId", "PermissionId");
+
+                    // Campos de auditoría.
+                    j.Property<DateTimeOffset>("CreatedAt");
+                    j.Property<string>("CreatedBy");
+                    j.Property<DateTimeOffset>("LastModifiedAt");
+                    j.Property<string>("LastModifiedBy");
+                });
+
         builder.Property(r => r.Id)
             .HasConversion(
                 id => id.Value,

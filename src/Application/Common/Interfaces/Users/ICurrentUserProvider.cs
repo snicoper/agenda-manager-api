@@ -6,5 +6,5 @@ public interface ICurrentUserProvider
 {
     public bool IsAuthenticated { get; }
 
-    CurrentUser GetCurrentUser();
+    CurrentUser? GetCurrentUser();
 }

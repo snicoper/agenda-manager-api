@@ -11,11 +11,11 @@ public class CurrentUserProvider(IHttpContextAccessor httpContextAccessor)
 {
     public bool IsAuthenticated => httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false;
 
-    public CurrentUser GetCurrentUser()
+    public CurrentUser? GetCurrentUser()
     {
         if (IsAuthenticated is false)
         {
-            return new CurrentUser(UserId.From(Guid.Empty), new List<string>(), new List<string>());
+            return null;
         }
 
         var userId = GetClaimValues(CustomClaimType.Id)

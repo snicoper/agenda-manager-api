@@ -4,11 +4,11 @@ namespace AgendaManager.Domain.Common.Abstractions;
 
 public abstract class AuditableEntity : Entity, IAuditableEntity
 {
-    public Guid CreatedBy { get; set; }
+    public string CreatedBy { get; set; } = default!;
 
-    public DateTimeOffset Created { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
 
-    public Guid LastModifiedBy { get; set; }
+    public string LastModifiedBy { get; set; } = default!;
 
-    public DateTimeOffset LastModified { get; set; }
+    public DateTimeOffset LastModifiedAt { get; set; }
 }

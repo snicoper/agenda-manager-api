@@ -1,6 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Users.Entities;
+﻿using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.ValueObjects;
 
@@ -8,7 +7,7 @@ namespace AgendaManager.Domain.Users;
 
 public sealed class User : AuditableEntity
 {
-    private readonly HashSet<UserRole> _userRoles = [];
+    private readonly List<Role> _roles = [];
 
     private User()
     {
@@ -47,11 +46,7 @@ public sealed class User : AuditableEntity
 
     public RefreshToken? RefreshToken { get; private set; }
 
-    [NotMapped]
-    public IReadOnlyCollection<Role> Roles => _userRoles
-        .Select(ur => ur.Role)
-        .ToList()
-        .AsReadOnly();
+    public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
 
     public static User Create(
         UserId userId,
@@ -112,6 +107,20 @@ public sealed class User : AuditableEntity
         Active = state;
 
         AddDomainEvent(new UserActiveStateChangedDomainEvent(Id, state));
+    }
+
+    public Result AddRole(Role role)
+    {
+        if (_roles.Any(r => r.Equals(role)))
+        {
+            return IdentityUserErrors.RoleAlreadyExists;
+        }
+
+        _roles.Add(role);
+
+        AddDomainEvent(new UserRoleAddedDomainEvent(Id, role.Id));
+
+        return Result.Success();
     }
 
     internal void UpdatePassword(string passwordHash)

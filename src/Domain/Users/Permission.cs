@@ -1,12 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using AgendaManager.Domain.Common.Abstractions;
+﻿using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.Domain.Users.Entities;
+namespace AgendaManager.Domain.Users;
 
 public sealed class Permission : AuditableEntity
 {
-    private readonly HashSet<RolePermission> _rolePermissions = [];
+    private readonly List<Role> _roles = [];
 
     private Permission()
     {
@@ -22,11 +21,7 @@ public sealed class Permission : AuditableEntity
 
     public string Name { get; set; } = default!;
 
-    [NotMapped]
-    public IReadOnlyCollection<Role> Roles => _rolePermissions
-        .Select(up => up.Role)
-        .ToList()
-        .AsReadOnly();
+    public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
 
     public static Permission Create(PermissionId id, string name)
     {

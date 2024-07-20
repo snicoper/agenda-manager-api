@@ -2,37 +2,49 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using AgendaManager.Application.Common.Exceptions;
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Models.Users;
 using AgendaManager.Domain.Common.Constants;
-using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Interfaces;
+using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AgendaManager.Infrastructure.Users;
 
-public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions, IAuthorizationManager authorizationManager)
+public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions, IUserRepository userRepository)
     : IJwtTokenGenerator
 {
     private readonly JwtOptions _jwtOptions = jwtOptions.Value;
 
-    public async Task<TokenResult> GenerateAccessTokenAsync(User user)
+    public async Task<TokenResult> GenerateAccessTokenAsync(
+        UserId userId,
+        CancellationToken cancellationToken = default)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        var id = user.Id.Value.ToString();
+
+        var user = await userRepository.GetByIdWithRolesAndPermissionsAsync(userId, cancellationToken);
+
+        if (user is null)
+        {
+            throw new NotFoundException();
+        }
 
         var claims = new List<Claim>
         {
-            new(JwtRegisteredClaimNames.Sub, id),
+            new(JwtRegisteredClaimNames.Sub, user.Id.Value.ToString()),
             new(JwtRegisteredClaimNames.Email, user.Email.Value),
             new(JwtRegisteredClaimNames.FamilyName, $"{user.FirstName} {user.LastName}"),
-            new(CustomClaimType.Id, id)
+            new(CustomClaimType.Id, user.Id.Value.ToString())
         };
 
-        var roles = await AddClaimRoles(user, claims);
-        await AddClaimPermissions(roles, claims);
+        var permissions = user.Roles.SelectMany(u => u.Permissions).ToList();
+        var permissionsNames = permissions.Select(permission => permission.Name).Distinct().ToList();
+
+        claims.AddRange(user.Roles.Select(role => new Claim(ClaimTypes.Role, role.Name)));
+        claims.AddRange(permissionsNames.Select(permission => new Claim(CustomClaimType.Permissions, permission)));
 
         var token = new JwtSecurityToken(
             _jwtOptions.Issuer,
@@ -58,27 +70,5 @@ public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions, IAuthorizationMa
         var tokenRefresh = Convert.ToBase64String(randomNumber);
 
         return tokenRefresh;
-    }
-
-    private async Task<List<Role>> AddClaimRoles(User user, List<Claim> claims)
-    {
-        var roles = await authorizationManager.GetRolesByUserIdAsync(user.Id);
-
-        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role.Name)));
-
-        return roles;
-    }
-
-    private async Task AddClaimPermissions(List<Role> roles, List<Claim> claims)
-    {
-        var permissionsNames = new List<string>();
-        foreach (var role in roles)
-        {
-            var permissions = await authorizationManager.GetPermissionsByRoleId(role.Id);
-            permissionsNames.AddRange(permissions.Select(permission => permission.Name));
-        }
-
-        permissionsNames = permissionsNames.Distinct().ToList();
-        claims.AddRange(permissionsNames.Select(permission => new Claim(CustomClaimType.Permissions, permission)));
     }
 }

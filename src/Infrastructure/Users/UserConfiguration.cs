@@ -16,6 +16,24 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasIndex(u => u.Email)
             .IsUnique();
 
+        builder
+            .HasMany(u => u.Roles)
+            .WithMany(r => r.Users)
+            .UsingEntity(
+                j =>
+                {
+                    j.ToTable("UserRoles");
+                    j.Property<UserId>("UserId").HasColumnName("UserId");
+                    j.Property<RoleId>("RoleId").HasColumnName("RoleId");
+                    j.HasKey("UserId", "RoleId");
+
+                    // Campos de auditoría.
+                    j.Property<DateTimeOffset>("CreatedAt");
+                    j.Property<string>("CreatedBy");
+                    j.Property<DateTimeOffset>("LastModifiedAt");
+                    j.Property<string>("LastModifiedBy");
+                });
+
         builder.Property(u => u.Id)
             .HasConversion(
                 id => id.Value,

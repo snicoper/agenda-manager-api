@@ -2,11 +2,11 @@ namespace AgendaManager.Domain.Common.Interfaces;
 
 public interface IAuditableEntity
 {
-    DateTimeOffset Created { get; set; }
+    DateTimeOffset CreatedAt { get; set; }
 
-    Guid CreatedBy { get; set; }
+    string CreatedBy { get; set; }
 
-    DateTimeOffset LastModified { get; set; }
+    DateTimeOffset LastModifiedAt { get; set; }
 
-    Guid LastModifiedBy { get; set; }
+    string LastModifiedBy { get; set; }
 }

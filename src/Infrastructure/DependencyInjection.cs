@@ -60,6 +60,8 @@ public static class DependencyInjection
 
         // Repositories.
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IRoleRepository, RoleRepository>();
+        services.AddScoped<IPermissionRepository, PermissionRepository>();
     }
 
     private static void AddDatabase(

@@ -28,7 +28,7 @@ public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserProvider cu
 
         var currentUser = currentUserProvider.GetCurrentUser();
 
-        if (currentUserProvider.IsAuthenticated is false || currentUser.Id.Value == Guid.Empty)
+        if (currentUser is null)
         {
             return ErrorUnauthorizedResult();
         }

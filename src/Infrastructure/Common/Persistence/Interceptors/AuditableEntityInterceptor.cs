@@ -34,14 +34,28 @@ public class AuditableEntityInterceptor(ICurrentUserProvider currentUserProvider
             return;
         }
 
+        var currentDateTime = dateTimeProvider.UtcNow;
         var currentUser = currentUserProvider.GetCurrentUser();
+        var currentUserId = currentUser?.Id.Value.ToString() ?? "System";
 
-        foreach (var entry in context.ChangeTracker.Entries<IAuditableEntity>())
+        const string createdBy = nameof(IAuditableEntity.CreatedBy);
+        const string createdAt = nameof(IAuditableEntity.CreatedAt);
+        const string lastModifiedBy = nameof(IAuditableEntity.LastModifiedBy);
+        const string lastModifiedAt = nameof(IAuditableEntity.LastModifiedAt);
+
+        foreach (var entry in context.ChangeTracker.Entries())
         {
             if (entry.State is EntityState.Added)
             {
-                entry.Entity.CreatedBy = currentUser.Id.Value;
-                entry.Entity.Created = dateTimeProvider.UtcNow;
+                if (entry.Metadata.FindProperty(createdBy) is not null)
+                {
+                    entry.Property(createdBy).CurrentValue = currentUserId;
+                }
+
+                if (entry.Metadata.FindProperty(createdAt) is not null)
+                {
+                    entry.Property(createdAt).CurrentValue = currentDateTime;
+                }
             }
 
             if (entry.State != EntityState.Added && entry.State != EntityState.Modified &&
@@ -50,8 +64,15 @@ public class AuditableEntityInterceptor(ICurrentUserProvider currentUserProvider
                 continue;
             }
 
-            entry.Entity.LastModifiedBy = currentUser.Id.Value;
-            entry.Entity.LastModified = dateTimeProvider.UtcNow;
+            if (entry.Metadata.FindProperty(lastModifiedBy) is not null)
+            {
+                entry.Property(lastModifiedBy).CurrentValue = currentUserId;
+            }
+
+            if (entry.Metadata.FindProperty(lastModifiedAt) is not null)
+            {
+                entry.Property(lastModifiedAt).CurrentValue = currentDateTime;
+            }
         }
     }
 }

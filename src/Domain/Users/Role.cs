@@ -1,14 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Users.Entities;
+﻿using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.Responses;
+using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users;
 
 public sealed class Role : AuditableEntity
 {
-    private readonly HashSet<RolePermission> _rolePermissions = [];
-    private readonly HashSet<UserRole> _userRoles = [];
+    private readonly List<Permission> _permissions = [];
+    private readonly List<User> _users = [];
 
     private Role()
     {
@@ -24,20 +24,26 @@ public sealed class Role : AuditableEntity
 
     public string Name { get; private set; } = default!;
 
-    [NotMapped]
-    public IReadOnlyCollection<Permission> Permissions => _rolePermissions
-        .Select(userRole => userRole.Permission)
-        .ToList()
-        .AsReadOnly();
+    public IReadOnlyCollection<Permission> Permissions => _permissions.AsReadOnly();
 
-    [NotMapped]
-    public IReadOnlyCollection<User> Users => _userRoles
-        .Select(userRole => userRole.User)
-        .ToList()
-        .AsReadOnly();
+    public IReadOnlyCollection<User> Users => _users.AsReadOnly();
 
     public static Role Create(RoleId id, string name)
     {
         return new Role(id, name);
+    }
+
+    public Result AddPermission(Permission permission)
+    {
+        if (_permissions.Any(p => p.Id.Equals(permission.Id)))
+        {
+            return IdentityUserErrors.RoleAlreadyExists;
+        }
+
+        _permissions.Add(permission);
+
+        AddDomainEvent(new RolePermissionAddedDomainEvent(Id, permission.Id));
+
+        return Result.Success();
     }
 }

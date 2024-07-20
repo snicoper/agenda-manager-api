@@ -23,7 +23,7 @@ internal class LoginCommandHandler(
 
         if (user is null)
         {
-            return UserErrors.InvalidCredentials;
+            return IdentityUserErrors.InvalidCredentials;
         }
 
         var authResult = userAuthenticationService.AuthenticateUser(user, request.Password);
@@ -33,7 +33,7 @@ internal class LoginCommandHandler(
             return authResult.MapToValue<TokenResult>();
         }
 
-        var tokenResult = await jwtTokenGenerator.GenerateAccessTokenAsync(user);
+        var tokenResult = await jwtTokenGenerator.GenerateAccessTokenAsync(user.Id, cancellationToken);
         var refreshToken = RefreshToken.Create(tokenResult.RefreshToken, tokenResult.Expires);
 
         user.UpdateRefreshToken(refreshToken);
