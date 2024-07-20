@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240720173107_Initial")]
+    [Migration("20240720214355_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -93,9 +93,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("integer");
 
                     b.Property<bool>("Active")
                         .HasColumnType("boolean");

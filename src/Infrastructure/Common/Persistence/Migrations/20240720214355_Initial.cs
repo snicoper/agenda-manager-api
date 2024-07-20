@@ -56,7 +56,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     Active = table.Column<bool>(type: "boolean", nullable: false),
                     RefreshTokenToken = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
                     RefreshTokenExpiryTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: false),

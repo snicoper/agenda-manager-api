@@ -91,9 +91,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("integer");
-
                     b.Property<bool>("Active")
                         .HasColumnType("boolean");
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Testcontainers.PostgreSql;
 
@@ -31,14 +32,20 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
         builder.ConfigureTestServices(
             services =>
             {
-                var dbContextDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
+                var dbContextDescriptor =
+                    services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
 
                 if (dbContextDescriptor is not null)
                 {
                     services.Remove(dbContextDescriptor);
                 }
 
-                services.AddDbContext<AppDbContext>(options => { options.UseNpgsql(_dbContainer.GetConnectionString()); });
+                services.AddDbContext<AppDbContext>(
+                    (provider, options) =>
+                    {
+                        options.UseNpgsql(_dbContainer.GetConnectionString());
+                        options.AddInterceptors(provider.GetServices<ISaveChangesInterceptor>());
+                    });
             });
     }
 }
