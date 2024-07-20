@@ -33,7 +33,7 @@ public sealed class Role : AuditableEntity
         return new Role(id, name);
     }
 
-    public Result AddPermission(Permission permission)
+    internal Result AddPermission(Permission permission)
     {
         if (_permissions.Any(p => p.Id.Equals(permission.Id)))
         {
@@ -43,6 +43,20 @@ public sealed class Role : AuditableEntity
         _permissions.Add(permission);
 
         AddDomainEvent(new RolePermissionAddedDomainEvent(Id, permission.Id));
+
+        return Result.Success();
+    }
+
+    internal Result RemovePermission(Permission permission)
+    {
+        if (!_permissions.Any(p => p.Equals(permission)))
+        {
+            return Result.Success();
+        }
+
+        _permissions.Remove(permission);
+
+        AddDomainEvent(new RolePermissionRemovedDomainEvent(Id, permission.Id));
 
         return Result.Success();
     }

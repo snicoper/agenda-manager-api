@@ -83,25 +83,27 @@ public class AppDbContextInitialize(
             context.Permissions.Add(permission);
         }
 
+        await context.SaveChangesAsync();
+
         // Asignar todos los permisos a role Admin.
         var adminRole = _roles.First(r => r.Name == Roles.Admin);
         foreach (var permission in _permissions)
         {
-            adminRole.AddPermission(permission);
+            await userAuthorizationManager.AddPermissionToRole(adminRole.Id, permission.Id);
         }
 
         // Asignar todos permisos a role Manager.
         var managerRole = _roles.First(r => r.Name == Roles.Manager);
         foreach (var permission in _permissions)
         {
-            managerRole.AddPermission(permission);
+            await userAuthorizationManager.AddPermissionToRole(managerRole.Id, permission.Id);
         }
 
         // Asignar solo permisos de lectura a role Client.
         var clientRole = _roles.First(r => r.Name == Roles.Client);
         foreach (var permission in _permissions.Where(p => p.Name.Contains("read")))
         {
-            clientRole.AddPermission(permission);
+            await userAuthorizationManager.AddPermissionToRole(clientRole.Id, permission.Id);
         }
 
         await context.SaveChangesAsync();

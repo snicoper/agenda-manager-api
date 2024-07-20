@@ -26,6 +26,23 @@ public class UserAuthorizationManager(
         return role is null ? IdentityUserErrors.RoleNotFound : user.AddRole(role);
     }
 
+    public async Task<Result> RemoveRoleFromUserAsync(
+        UserId userId,
+        RoleId roleId,
+        CancellationToken cancellationToken = default)
+    {
+        var user = await userRepository.GetByIdWithRolesAsync(userId, cancellationToken);
+
+        if (user is null)
+        {
+            return IdentityUserErrors.UserNotFound;
+        }
+
+        var role = await roleRepository.GetByIdAsync(roleId, cancellationToken);
+
+        return role is null ? Result.Success() : user.RemoveRole(role);
+    }
+
     public async Task<Result> AddPermissionToRole(
         RoleId roleId,
         PermissionId permissionId,
@@ -41,5 +58,22 @@ public class UserAuthorizationManager(
         var permission = await permissionRepository.GetByIdAsync(permissionId, cancellationToken);
 
         return permission is null ? IdentityUserErrors.PermissionNotFound : role.AddPermission(permission);
+    }
+
+    public async Task<Result> RemovePermissionFromRole(
+        RoleId roleId,
+        PermissionId permissionId,
+        CancellationToken cancellationToken = default)
+    {
+        var role = await roleRepository.GetByIdAsync(roleId, cancellationToken);
+
+        if (role is null)
+        {
+            return Result.Success();
+        }
+
+        var permission = await permissionRepository.GetByIdAsync(permissionId, cancellationToken);
+
+        return permission is null ? Result.Success() : role.RemovePermission(permission);
     }
 }

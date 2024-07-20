@@ -123,6 +123,20 @@ public sealed class User : AuditableEntity
         return Result.Success();
     }
 
+    internal Result RemoveRole(Role role)
+    {
+        if (!_roles.Any(r => r.Equals(role)))
+        {
+            return Result.Success();
+        }
+
+        _roles.Remove(role);
+
+        AddDomainEvent(new UserRoleRemovedDomainEvent(Id, role.Id));
+
+        return Result.Success();
+    }
+
     internal void UpdatePassword(string passwordHash)
     {
         PasswordHash = passwordHash;
