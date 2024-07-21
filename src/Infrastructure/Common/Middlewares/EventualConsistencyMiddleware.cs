@@ -23,9 +23,9 @@ public class EventualConsistencyMiddleware(RequestDelegate next)
                         return;
                     }
 
-                    while (domainEventsQueue.TryDequeue(out var domainEvent))
+                    while (domainEventsQueue.TryDequeue(out var nextEvent))
                     {
-                        await publisher.Publish(domainEvent);
+                        await publisher.Publish(nextEvent);
                     }
 
                     await transaction.CommitAsync();
