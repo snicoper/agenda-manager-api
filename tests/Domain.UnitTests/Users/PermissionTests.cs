@@ -1,7 +1,7 @@
 ﻿using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
-namespace AgendaManager.Domain.UnitTests.Authorization;
+namespace AgendaManager.Domain.UnitTests.Users;
 
 public class PermissionTests
 {

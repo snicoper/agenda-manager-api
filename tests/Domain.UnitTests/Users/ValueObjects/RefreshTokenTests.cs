@@ -63,4 +63,36 @@ public class RefreshTokenTests
         // Assert
         refreshToken.Should().Throw<ArgumentException>();
     }
+
+    [Fact]
+    public void RefreshToken_ShouldCreateRefreshToken_WhenGenerateMethodIsCalled()
+    {
+        // Arrange
+        var lifetime = TimeSpan.FromDays(1);
+
+        // Act
+        var refreshToken = RefreshToken.Generate(lifetime);
+
+        // Assert
+        refreshToken.Should().NotBeNull();
+        refreshToken.Token.Should().NotBeNull();
+        refreshToken.ExpiryTime.Should().BeAfter(DateTimeOffset.UtcNow);
+        refreshToken.ExpiryTime.Should().BeBefore(DateTimeOffset.UtcNow.Add(lifetime));
+        refreshToken.Token.Length.Should().BeLessThan(TokenLength);
+    }
+
+    [Fact]
+    public void RefreshToken_ShouldNotExpireRefreshToken_WhenRefreshTokenIsCreated()
+    {
+        // Arrange
+        var lifetime = TimeSpan.FromDays(1);
+
+        // Act
+        var refreshToken = RefreshToken.Generate(lifetime);
+
+        // Assert
+        refreshToken.Should().NotBeNull();
+        refreshToken.IsExpired().Should().BeFalse();
+        refreshToken.ExpiryTime.Should().BeAfter(DateTimeOffset.UtcNow);
+    }
 }
