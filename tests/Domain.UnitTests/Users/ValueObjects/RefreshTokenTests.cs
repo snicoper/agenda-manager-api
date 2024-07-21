@@ -95,4 +95,17 @@ public class RefreshTokenTests
         refreshToken.IsExpired().Should().BeFalse();
         refreshToken.ExpiryTime.Should().BeAfter(DateTimeOffset.UtcNow);
     }
+
+    [Fact]
+    public void RefreshToken_ShouldNotCreateRefreshToken_WhenLifetimeIsZeroInGenerateMethod()
+    {
+        // Arrange
+        var lifetime = TimeSpan.Zero;
+
+        // Act
+        var refreshToken = () => RefreshToken.Generate(lifetime);
+
+        // Assert
+        refreshToken.Should().Throw<ArgumentException>();
+    }
 }

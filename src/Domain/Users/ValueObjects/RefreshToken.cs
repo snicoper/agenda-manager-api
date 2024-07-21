@@ -31,7 +31,7 @@ public class RefreshToken : ValueObject
 
         var expiryTime = DateTimeOffset.UtcNow.Add(lifetime);
 
-        return new RefreshToken(token, expiryTime);
+        return Create(token, expiryTime);
     }
 
     public static RefreshToken Create(string token, DateTimeOffset expiryTime)
