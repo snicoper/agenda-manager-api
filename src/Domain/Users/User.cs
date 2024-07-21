@@ -83,6 +83,8 @@ public sealed class User : AggregateRoot
         }
 
         RefreshToken = refreshToken;
+
+        AddDomainEvent(new UserRefreshTokenUpdatedDomainEvent(Id));
     }
 
     public void ConfirmEmail()

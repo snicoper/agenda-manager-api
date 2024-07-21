@@ -60,32 +60,17 @@ public class UserTests
     }
 
     [Fact]
-    public void User_ShouldRaiseEvent_WhenUserEmailIsUpdated()
+    public void User_ShouldRaiseEvent_WhenUpdateRefreshTokenIsCalled()
     {
         // Arrange
         var user = UserFactory.CreateUserCarol();
-        var email = EmailAddress.From("new@example.com");
+        var refreshToken = RefreshToken.Generate(TimeSpan.FromDays(1));
 
         // Act
-        user.UpdateEmail(email);
+        user.UpdateRefreshToken(refreshToken);
 
         // Assert
-        user.DomainEvents.Should().Contain(x => x is UserEmailUpdatedDomainEvent);
-        user.Email.Should().Be(email);
-    }
-
-    [Fact]
-    public void User_ShouldNotRaiseEvent_WhenUserEmailIsSame()
-    {
-        // Arrange
-        var user = UserFactory.CreateUserLexi();
-
-        // Act
-        user.UpdateEmail(user.Email);
-
-        // Assert
-        user.DomainEvents.Should().NotContain(x => x is UserEmailUpdatedDomainEvent);
-        user.Email.Should().Be(user.Email);
+        user.DomainEvents.Should().Contain(x => x is UserRefreshTokenUpdatedDomainEvent);
     }
 
     [Fact]
@@ -141,5 +126,68 @@ public class UserTests
         // Assert
         user.DomainEvents.Should().Contain(x => x is UserActiveStateChangedDomainEvent);
         user.Active.Should().BeFalse();
+    }
+
+    [Fact]
+    public void User_ShouldRaiseEvent_WhenAddingRole()
+    {
+        // Arrange
+        var user = UserFactory.CreateUserAlice();
+        var role = RoleFactory.CreateRoleAdmin();
+
+        // Act
+        user.AddRole(role);
+
+        // Assert
+        user.DomainEvents.Should().Contain(x => x is UserRoleAddedDomainEvent);
+        user.Roles.Should().Contain(role);
+        user.Roles.Should().HaveCount(1);
+        user.Roles.Should().ContainSingle(x => x.Id == role.Id);
+    }
+
+    [Fact]
+    public void User_ShouldRaiseEvent_WhenRemovingRole()
+    {
+        // Arrange
+        var user = UserFactory.CreateUserAlice();
+        var role = RoleFactory.CreateRoleAdmin();
+        user.AddRole(role);
+
+        // Act
+        user.RemoveRole(role);
+
+        // Assert
+        user.DomainEvents.Should().Contain(x => x is UserRoleRemovedDomainEvent);
+        user.Roles.Should().NotContain(role);
+        user.Roles.Should().HaveCount(0);
+    }
+
+    [Fact]
+    public void User_ShouldRaiseEvent_WhenUserEmailIsUpdated()
+    {
+        // Arrange
+        var user = UserFactory.CreateUserCarol();
+        var email = EmailAddress.From("new@example.com");
+
+        // Act
+        user.UpdateEmail(email);
+
+        // Assert
+        user.DomainEvents.Should().Contain(x => x is UserEmailUpdatedDomainEvent);
+        user.Email.Should().Be(email);
+    }
+
+    [Fact]
+    public void User_ShouldNotRaiseEvent_WhenUserEmailIsSame()
+    {
+        // Arrange
+        var user = UserFactory.CreateUserLexi();
+
+        // Act
+        user.UpdateEmail(user.Email);
+
+        // Assert
+        user.DomainEvents.Should().NotContain(x => x is UserEmailUpdatedDomainEvent);
+        user.Email.Should().Be(user.Email);
     }
 }
