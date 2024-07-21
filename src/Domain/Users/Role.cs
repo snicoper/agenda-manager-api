@@ -5,7 +5,7 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users;
 
-public sealed class Role : AuditableEntity
+public sealed class Role : AggregateRoot
 {
     private readonly List<Permission> _permissions = [];
     private readonly List<User> _users = [];
