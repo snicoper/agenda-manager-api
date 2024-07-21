@@ -5,6 +5,7 @@ using AgendaManager.Application.Common.Exceptions;
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Models.Users;
 using AgendaManager.Domain.Common.Constants;
+using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.Extensions.Options;
@@ -28,7 +29,7 @@ public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions, IUserRepository 
 
         if (user is null)
         {
-            throw new NotFoundException();
+            throw new NotFoundException(nameof(User), nameof(UserId));
         }
 
         var claims = new List<Claim>
