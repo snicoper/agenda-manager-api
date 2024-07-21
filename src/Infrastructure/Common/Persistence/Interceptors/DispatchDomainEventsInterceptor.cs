@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Common.Interfaces;
+using AgendaManager.Infrastructure.Common.Middlewares;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -71,12 +72,13 @@ public class DispatchDomainEventsInterceptor(IHttpContextAccessor httpContextAcc
     private void AddDomainEventsToOfflineProcessingQueue(List<IDomainEvent> domainEvents)
     {
         var domainEventsQueue = httpContextAccessor.HttpContext!.Items
-            .TryGetValue("DomainEventsQueue", out var value) && value is Queue<IDomainEvent> existingDomainEvents
-            ? existingDomainEvents
-            : new Queue<IDomainEvent>();
+                .TryGetValue(EventualConsistencyMiddleware.DomainEventsQueueKey, out var value) &&
+            value is Queue<IDomainEvent> existingDomainEvents
+                ? existingDomainEvents
+                : new Queue<IDomainEvent>();
 
         domainEvents.ForEach(domainEventsQueue.Enqueue);
 
-        httpContextAccessor.HttpContext!.Items["DomainEventsQueue"] = domainEventsQueue;
+        httpContextAccessor.HttpContext!.Items[EventualConsistencyMiddleware.DomainEventsQueueKey] = domainEventsQueue;
     }
 }

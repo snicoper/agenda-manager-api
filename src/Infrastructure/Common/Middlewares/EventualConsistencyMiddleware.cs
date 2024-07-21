@@ -7,6 +7,8 @@ namespace AgendaManager.Infrastructure.Common.Middlewares;
 
 public class EventualConsistencyMiddleware(RequestDelegate next)
 {
+    public const string DomainEventsQueueKey = "DomainEventsQueue";
+
     public async Task InvokeAsync(HttpContext httpContext, IPublisher publisher, AppDbContext dbContext)
     {
         var transaction = await dbContext.Database.BeginTransactionAsync();
@@ -16,7 +18,7 @@ public class EventualConsistencyMiddleware(RequestDelegate next)
             {
                 try
                 {
-                    if (httpContext.Items["DomainEventsQueue"] is not Queue<IDomainEvent> domainEventsQueue)
+                    if (httpContext.Items[DomainEventsQueueKey] is not Queue<IDomainEvent> domainEventsQueue)
                     {
                         return;
                     }
