@@ -7,18 +7,15 @@ public class RefreshToken : ValueObject
 {
     private const int TokenLength = 200;
 
-    private RefreshToken(string token, DateTimeOffset expiryTime, Guid id)
+    private RefreshToken(string token, DateTimeOffset expiryTime)
     {
         Token = token;
         ExpiryTime = expiryTime;
-        Id = id;
     }
 
     public string Token { get; }
 
     public DateTimeOffset ExpiryTime { get; }
-
-    public Guid Id { get; }
 
     public static RefreshToken Generate(TimeSpan lifetime)
     {
@@ -34,7 +31,7 @@ public class RefreshToken : ValueObject
 
         var expiryTime = DateTimeOffset.UtcNow.Add(lifetime);
 
-        return new RefreshToken(token, expiryTime, Guid.NewGuid());
+        return new RefreshToken(token, expiryTime);
     }
 
     public static RefreshToken Create(string token, DateTimeOffset expiryTime)
@@ -51,7 +48,7 @@ public class RefreshToken : ValueObject
             throw new ArgumentException("Value cannot be in the past.", nameof(expiryTime));
         }
 
-        return new RefreshToken(token, expiryTime, Guid.NewGuid());
+        return new RefreshToken(token, expiryTime);
     }
 
     public bool IsExpired()
@@ -63,6 +60,5 @@ public class RefreshToken : ValueObject
     {
         yield return Token;
         yield return ExpiryTime;
-        yield return Id;
     }
 }

@@ -76,9 +76,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
                 refreshTokenBuilder.Property(rt => rt.ExpiryTime)
                     .HasColumnName("RefreshTokenExpiryTime");
-
-                refreshTokenBuilder.Property(rt => rt.Id)
-                    .HasColumnName("RefreshTokenId");
             });
     }
 }

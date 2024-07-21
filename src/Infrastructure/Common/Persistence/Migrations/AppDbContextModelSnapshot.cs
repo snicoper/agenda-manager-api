@@ -208,10 +208,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("RefreshTokenExpiryTime");
 
-                            b1.Property<Guid>("Id")
-                                .HasColumnType("uuid")
-                                .HasColumnName("RefreshTokenId");
-
                             b1.Property<string>("Token")
                                 .IsRequired()
                                 .HasMaxLength(200)
