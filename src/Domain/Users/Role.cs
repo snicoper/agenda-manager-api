@@ -40,7 +40,7 @@ public sealed class Role : AuditableEntity
     {
         if (_permissions.Any(p => p.Id.Equals(permission.Id)))
         {
-            return IdentityUserErrors.RoleAlreadyExists;
+            return IdentityUserErrors.PermissionAlreadyExists;
         }
 
         _permissions.Add(permission);
