@@ -3,7 +3,7 @@ using AgendaManager.Domain.Resources.ValueObjects;
 
 namespace AgendaManager.Domain.Resources;
 
-public class Resource : AggregateRoot
+public sealed class Resource : AggregateRoot
 {
     private Resource()
     {

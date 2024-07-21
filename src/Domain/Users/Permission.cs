@@ -17,9 +17,9 @@ public sealed class Permission : AuditableEntity
         Name = name;
     }
 
-    public PermissionId Id { get; set; } = null!;
+    public PermissionId Id { get; private set; } = null!;
 
-    public string Name { get; set; } = default!;
+    public string Name { get; private set; } = default!;
 
     public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
 
