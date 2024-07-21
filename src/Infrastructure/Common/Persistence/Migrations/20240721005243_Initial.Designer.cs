@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240720231409_Initial")]
+    [Migration("20240721005243_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -68,6 +68,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("Editable")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -208,9 +211,8 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("RefreshTokenExpiryTime");
 
-                            b1.Property<string>("Id")
-                                .IsRequired()
-                                .HasColumnType("text")
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("uuid")
                                 .HasColumnName("RefreshTokenId");
 
                             b1.Property<string>("Token")

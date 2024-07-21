@@ -66,6 +66,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("Editable")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -205,9 +208,8 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("RefreshTokenExpiryTime");
 
-                            b1.Property<string>("Id")
-                                .IsRequired()
-                                .HasColumnType("text")
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("uuid")
                                 .HasColumnName("RefreshTokenId");
 
                             b1.Property<string>("Token")

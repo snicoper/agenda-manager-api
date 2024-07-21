@@ -33,6 +33,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Editable = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: false),
@@ -56,7 +57,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     Active = table.Column<bool>(type: "boolean", nullable: false),
                     RefreshTokenToken = table.Column<string>(type: "character varying(200)", unicode: false, maxLength: 200, nullable: true),
                     RefreshTokenExpiryTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    RefreshTokenId = table.Column<string>(type: "text", nullable: true),
+                    RefreshTokenId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: false),

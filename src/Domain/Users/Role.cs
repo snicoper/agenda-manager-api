@@ -14,23 +14,26 @@ public sealed class Role : AuditableEntity
     {
     }
 
-    private Role(RoleId id, string name)
+    private Role(RoleId id, string name, bool editable)
     {
         Id = id;
         Name = name;
+        Editable = editable;
     }
 
     public RoleId Id { get; } = null!;
 
     public string Name { get; private set; } = default!;
 
+    public bool Editable { get; private set; }
+
     public IReadOnlyCollection<Permission> Permissions => _permissions.AsReadOnly();
 
     public IReadOnlyCollection<User> Users => _users.AsReadOnly();
 
-    public static Role Create(RoleId id, string name)
+    public static Role Create(RoleId id, string name, bool editable = false)
     {
-        return new Role(id, name);
+        return new Role(id, name, editable);
     }
 
     internal Result AddPermission(Permission permission)
