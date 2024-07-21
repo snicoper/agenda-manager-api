@@ -22,9 +22,6 @@ public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions, IUserRepository 
         UserId userId,
         CancellationToken cancellationToken = default)
     {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key));
-        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
         var user = await userRepository.GetByIdWithRolesAndPermissionsAsync(userId, cancellationToken);
 
         if (user is null)
@@ -32,19 +29,10 @@ public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions, IUserRepository 
             throw new NotFoundException(nameof(User), nameof(UserId));
         }
 
-        var claims = new List<Claim>
-        {
-            new(JwtRegisteredClaimNames.Sub, user.Id.Value.ToString()),
-            new(JwtRegisteredClaimNames.Email, user.Email.Value),
-            new(JwtRegisteredClaimNames.FamilyName, $"{user.FirstName} {user.LastName}"),
-            new(CustomClaimType.Id, user.Id.Value.ToString())
-        };
+        var claims = CreateClaimsForUser(user);
 
-        var permissions = user.Roles.SelectMany(u => u.Permissions).ToList();
-        var permissionsNames = permissions.Select(permission => permission.Name).Distinct().ToList();
-
-        claims.AddRange(user.Roles.Select(role => new Claim(ClaimTypes.Role, role.Name)));
-        claims.AddRange(permissionsNames.Select(permission => new Claim(CustomClaimType.Permissions, permission)));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key));
+        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
             _jwtOptions.Issuer,
@@ -60,5 +48,35 @@ public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions, IUserRepository 
         var tokenResponse = new TokenResult(jwtSecurityToken, refreshToken.Token, refreshToken.ExpiryTime);
 
         return tokenResponse;
+    }
+
+    private static List<Claim> CreateClaimsForUser(User user)
+    {
+        var claims = new List<Claim>
+        {
+            new(JwtRegisteredClaimNames.Sub, user.Id.Value.ToString()),
+            new(JwtRegisteredClaimNames.Email, user.Email.Value),
+            new(JwtRegisteredClaimNames.FamilyName, $"{user.FirstName} {user.LastName}"),
+            new(CustomClaimType.Id, user.Id.Value.ToString())
+        };
+
+        claims = SetClaimRolesAndPermissions(user, claims);
+
+        return claims;
+    }
+
+    private static List<Claim> SetClaimRolesAndPermissions(User user, List<Claim> claims)
+    {
+        var permissions = user.Roles.SelectMany(u => u.Permissions).ToList();
+        var permissionsNames = permissions
+            .Select(permission => permission.Name)
+            .Distinct()
+            .ToList();
+
+        claims.AddRange(user.Roles.Select(role => new Claim(ClaimTypes.Role, role.Name)));
+        claims.AddRange(
+            permissionsNames.Select(permissionName => new Claim(CustomClaimType.Permissions, permissionName)));
+
+        return claims;
     }
 }
