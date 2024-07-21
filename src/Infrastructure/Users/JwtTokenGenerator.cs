@@ -1,6 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 using AgendaManager.Application.Common.Exceptions;
 using AgendaManager.Application.Common.Interfaces.Users;
@@ -60,15 +59,5 @@ public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions, IUserRepository 
         var tokenResponse = new TokenResult(jwtSecurityToken, refreshToken.Token, refreshToken.ExpiryTime);
 
         return tokenResponse;
-    }
-
-    private static string GenerateRefreshToken()
-    {
-        var randomNumber = new byte[32];
-        using var randomNumberGenerator = RandomNumberGenerator.Create();
-        randomNumberGenerator.GetBytes(randomNumber);
-        var tokenRefresh = Convert.ToBase64String(randomNumber);
-
-        return tokenRefresh;
     }
 }
