@@ -18,9 +18,13 @@ public static class IdentityUserErrors
 
     public static Error RoleAlreadyExists => Error.Conflict("Role already exists");
 
+    public static Error UserDoesNotHaveRoleAssigned => Error.Conflict("User does not have role assigned");
+
     public static Error PermissionNotFound => Error.NotFound("Permission not found");
 
     public static Error PermissionAlreadyExists => Error.Conflict("Permission already exists");
+
+    public static Error RoleDoesNotHavePermissionAssigned => Error.Conflict("Role does not have permission assigned");
 
     public static Error InvalidFormatPassword => Error.Validation(
         "Password",
