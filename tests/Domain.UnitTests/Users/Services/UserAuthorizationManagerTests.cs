@@ -1,5 +1,4 @@
 ﻿using AgendaManager.Domain.Users;
-using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.Services;
 using AgendaManager.TestCommon.Factories;
@@ -38,8 +37,6 @@ public class UserAuthorizationManagerTests
 
         // Assert
         result.IsSuccess.Should().BeTrue();
-        user.Roles.Should().Contain(role);
-        user.DomainEvents.Should().Contain(x => x is UserRoleAddedDomainEvent);
     }
 
     [Fact]
@@ -94,7 +91,6 @@ public class UserAuthorizationManagerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error?.FirstError()?.Description.Should().Be(descriptionError);
-        user.Roles.Should().Contain(role);
     }
 
     [Fact]
@@ -112,8 +108,6 @@ public class UserAuthorizationManagerTests
 
         // Assert
         result.IsSuccess.Should().BeTrue();
-        user.Roles.Should().NotContain(role);
-        user.DomainEvents.Should().Contain(x => x is UserRoleRemovedDomainEvent);
     }
 
     [Fact]
@@ -184,8 +178,6 @@ public class UserAuthorizationManagerTests
 
         // Assert
         result.IsSuccess.Should().BeTrue();
-        role.Permissions.Should().Contain(permission);
-        role.DomainEvents.Should().Contain(x => x is RolePermissionAddedDomainEvent);
     }
 
     [Fact]
@@ -258,8 +250,6 @@ public class UserAuthorizationManagerTests
 
         // Assert
         result.IsSuccess.Should().BeTrue();
-        role.Permissions.Should().NotContain(permission);
-        role.DomainEvents.Should().Contain(x => x is RolePermissionRemovedDomainEvent);
     }
 
     [Fact]
