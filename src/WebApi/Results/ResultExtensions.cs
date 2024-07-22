@@ -11,8 +11,8 @@ public static class ResultExtensions
 
         return statusCode switch
         {
-            StatusCodes.Status200OK => new OkObjectResult(ToResultResponse(result)),
-            StatusCodes.Status201Created => new ObjectResult(ToResultResponse(result))
+            StatusCodes.Status200OK => new OkObjectResult(ToActionResultResponse(result)),
+            StatusCodes.Status201Created => new ObjectResult(ToActionResultResponse(result))
             {
                 StatusCode = StatusCodes.Status201Created
             },
@@ -31,8 +31,8 @@ public static class ResultExtensions
 
         return statusCode switch
         {
-            StatusCodes.Status200OK => new OkObjectResult(ToResultResponse(result)),
-            StatusCodes.Status201Created => new ObjectResult(ToResultResponse(result))
+            StatusCodes.Status200OK => new OkObjectResult(ToActionResultResponse(result)),
+            StatusCodes.Status201Created => new ObjectResult(ToActionResultResponse(result))
             {
                 StatusCode = StatusCodes.Status201Created
             },
@@ -98,12 +98,12 @@ public static class ResultExtensions
             });
     }
 
-    private static ResultResponse ToResultResponse(Result result)
+    private static ResultResponse ToActionResultResponse(Result result)
     {
         return new ResultResponse(result.IsSuccess, result.ResultType);
     }
 
-    private static ResultValueResponse<TValue> ToResultResponse<TValue>(Result<TValue> result)
+    private static ResultValueResponse<TValue> ToActionResultResponse<TValue>(Result<TValue> result)
     {
         return new ResultValueResponse<TValue>(result.Value, result.IsSuccess, result.ResultType);
     }
