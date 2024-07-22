@@ -38,11 +38,6 @@ public sealed class Role : AggregateRoot
 
     internal Result AddPermission(Permission permission)
     {
-        if (_permissions.Any(p => p.Id.Equals(permission.Id)))
-        {
-            return IdentityUserErrors.PermissionAlreadyExists;
-        }
-
         _permissions.Add(permission);
 
         AddDomainEvent(new RolePermissionAddedDomainEvent(Id, permission.Id));
@@ -52,11 +47,6 @@ public sealed class Role : AggregateRoot
 
     internal Result RemovePermission(Permission permission)
     {
-        if (!_permissions.Any(p => p.Equals(permission)))
-        {
-            return Result.Success();
-        }
-
         _permissions.Remove(permission);
 
         AddDomainEvent(new RolePermissionRemovedDomainEvent(Id, permission.Id));

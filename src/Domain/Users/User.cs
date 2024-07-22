@@ -113,11 +113,6 @@ public sealed class User : AggregateRoot
 
     internal Result AddRole(Role role)
     {
-        if (_roles.Any(r => r.Equals(role)))
-        {
-            return IdentityUserErrors.RoleAlreadyExists;
-        }
-
         _roles.Add(role);
 
         AddDomainEvent(new UserRoleAddedDomainEvent(Id, role.Id));
@@ -127,11 +122,6 @@ public sealed class User : AggregateRoot
 
     internal Result RemoveRole(Role role)
     {
-        if (!_roles.Any(r => r.Equals(role)))
-        {
-            return Result.Success();
-        }
-
         _roles.Remove(role);
 
         AddDomainEvent(new UserRoleRemovedDomainEvent(Id, role.Id));
