@@ -11,7 +11,7 @@ using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AgendaManager.Infrastructure.Users;
+namespace AgendaManager.Infrastructure.Users.Authentication;
 
 public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions, IUserRepository userRepository)
     : IJwtTokenGenerator

@@ -1,8 +1,7 @@
 using AgendaManager.Application.Common.Interfaces.Users;
-using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.Infrastructure.Users;
+namespace AgendaManager.Infrastructure.Users.Authentication;
 
 public class AuthorizationChecker(ICurrentUserProvider currentUserProvider) : IAuthorizationChecker
 {

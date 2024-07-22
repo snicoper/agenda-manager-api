@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Users.Interfaces;
 
-namespace AgendaManager.Infrastructure.Users;
+namespace AgendaManager.Infrastructure.Users.Authentication;
 
 public class BcryptPasswordHasher : IPasswordHasher
 {

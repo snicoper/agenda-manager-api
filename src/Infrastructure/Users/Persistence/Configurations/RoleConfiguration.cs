@@ -3,7 +3,7 @@ using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AgendaManager.Infrastructure.Users.Persistence;
+namespace AgendaManager.Infrastructure.Users.Persistence.Configurations;
 
 public class RoleConfiguration : IEntityTypeConfiguration<Role>
 {
