@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.Domain.Users.Interfaces;
+namespace AgendaManager.Application.Common.Interfaces.Users;
 
 public interface IAuthorizationChecker
 {
