@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Users;
+﻿using AgendaManager.Domain.Common.Responses;
+using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.Services;
 using AgendaManager.TestCommon.Factories;
@@ -37,6 +38,7 @@ public class UserAuthorizationManagerTests
 
         // Assert
         result.IsSuccess.Should().BeTrue();
+        result.ResultType.Should().Be(ResultType.Succeeded);
     }
 
     [Fact]
@@ -54,6 +56,7 @@ public class UserAuthorizationManagerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error?.FirstError()?.Description.Should().Be(descriptionError);
+        result.ResultType.Should().Be(ResultType.NotFound);
     }
 
     [Fact]
@@ -72,6 +75,7 @@ public class UserAuthorizationManagerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error?.FirstError()?.Description.Should().Be(descriptionError);
+        result.ResultType.Should().Be(ResultType.NotFound);
     }
 
     [Fact]
@@ -91,6 +95,7 @@ public class UserAuthorizationManagerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error?.FirstError()?.Description.Should().Be(descriptionError);
+        result.ResultType.Should().Be(ResultType.Conflict);
     }
 
     [Fact]
@@ -108,6 +113,7 @@ public class UserAuthorizationManagerTests
 
         // Assert
         result.IsSuccess.Should().BeTrue();
+        result.ResultType.Should().Be(ResultType.Succeeded);
     }
 
     [Fact]
@@ -125,6 +131,7 @@ public class UserAuthorizationManagerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error?.FirstError()?.Description.Should().Be(descriptionError);
+        result.ResultType.Should().Be(ResultType.NotFound);
     }
 
     [Fact]
@@ -143,6 +150,7 @@ public class UserAuthorizationManagerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error?.FirstError()?.Description.Should().Be(descriptionError);
+        result.ResultType.Should().Be(ResultType.NotFound);
     }
 
     [Fact]
@@ -162,6 +170,7 @@ public class UserAuthorizationManagerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error?.FirstError()?.Description.Should().Be(descriptionError);
+        result.ResultType.Should().Be(ResultType.Conflict);
     }
 
     [Fact]
@@ -178,6 +187,7 @@ public class UserAuthorizationManagerTests
 
         // Assert
         result.IsSuccess.Should().BeTrue();
+        result.ResultType.Should().Be(ResultType.Succeeded);
     }
 
     [Fact]
@@ -196,6 +206,7 @@ public class UserAuthorizationManagerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error?.FirstError()?.Description.Should().Be(descriptionError);
+        result.ResultType.Should().Be(ResultType.NotFound);
     }
 
     [Fact]
@@ -214,6 +225,7 @@ public class UserAuthorizationManagerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error?.FirstError()?.Description.Should().Be(descriptionError);
+        result.ResultType.Should().Be(ResultType.NotFound);
     }
 
     [Fact]
@@ -233,6 +245,7 @@ public class UserAuthorizationManagerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error?.FirstError()?.Description.Should().Be(descriptionError);
+        result.ResultType.Should().Be(ResultType.Conflict);
     }
 
     [Fact]
@@ -250,6 +263,7 @@ public class UserAuthorizationManagerTests
 
         // Assert
         result.IsSuccess.Should().BeTrue();
+        result.ResultType.Should().Be(ResultType.Succeeded);
     }
 
     [Fact]
@@ -268,6 +282,7 @@ public class UserAuthorizationManagerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error?.FirstError()?.Description.Should().Be(descriptionError);
+        result.ResultType.Should().Be(ResultType.NotFound);
     }
 
     [Fact]
@@ -286,6 +301,7 @@ public class UserAuthorizationManagerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error?.FirstError()?.Description.Should().Be(descriptionError);
+        result.ResultType.Should().Be(ResultType.NotFound);
     }
 
     [Fact]
@@ -305,5 +321,6 @@ public class UserAuthorizationManagerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error?.FirstError()?.Description.Should().Be(descriptionError);
+        result.ResultType.Should().Be(ResultType.Conflict);
     }
 }
