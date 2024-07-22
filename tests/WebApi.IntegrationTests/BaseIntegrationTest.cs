@@ -1,7 +1,7 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using AgendaManager.Application.Authentication.Commands.Login;
 using AgendaManager.Application.Common.Models.Users;
+using AgendaManager.Application.Users.Commands.Login;
 using AgendaManager.Domain.Common.Responses;
 
 namespace AgendaManager.WebApi.UnitTests;

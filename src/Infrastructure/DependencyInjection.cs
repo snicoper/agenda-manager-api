@@ -8,7 +8,6 @@ using AgendaManager.Infrastructure.Common.Persistence;
 using AgendaManager.Infrastructure.Common.Persistence.Interceptors;
 using AgendaManager.Infrastructure.Common.Persistence.Seeds;
 using AgendaManager.Infrastructure.Common.Services.Emails;
-using AgendaManager.Infrastructure.Users;
 using AgendaManager.Infrastructure.Users.Authentication;
 using AgendaManager.Infrastructure.Users.Persistence.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

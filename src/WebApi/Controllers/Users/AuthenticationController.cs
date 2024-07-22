@@ -1,13 +1,13 @@
-﻿using AgendaManager.Application.Authentication.Commands.Login;
-using AgendaManager.Application.Common.Models.Users;
+﻿using AgendaManager.Application.Common.Models.Users;
+using AgendaManager.Application.Users.Commands.Login;
 using AgendaManager.Domain.Common.Responses;
-using AgendaManager.WebApi.Controllers.Authentication.Contracts;
+using AgendaManager.WebApi.Controllers.Users.Contracts;
 using AgendaManager.WebApi.Infrastructure;
 using AgendaManager.WebApi.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AgendaManager.WebApi.Controllers.Authentication;
+namespace AgendaManager.WebApi.Controllers.Users;
 
 [AllowAnonymous]
 [Route("api/v{version:apiVersion}/authentication")]

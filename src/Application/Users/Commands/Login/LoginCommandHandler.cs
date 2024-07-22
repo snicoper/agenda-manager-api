@@ -8,7 +8,7 @@ using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.Services;
 using AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.Application.Authentication.Commands.Login;
+namespace AgendaManager.Application.Users.Commands.Login;
 
 internal class LoginCommandHandler(
     IJwtTokenGenerator jwtTokenGenerator,
