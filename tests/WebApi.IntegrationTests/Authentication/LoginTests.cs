@@ -45,7 +45,7 @@ public class LoginTests(IntegrationTestWebAppFactory factory)
         // Assert
         var result = await response.Content.ReadFromJsonAsync<Result<TokenResult>>();
         response.StatusCode.Should().Be(HttpStatusCode.Conflict);
-        result?.Error?.FirstError()?.Should().Be(IdentityUserErrors.EmailIsNotConfirmed);
+        result?.Error?.FirstError()?.Should().Be(UserErrors.EmailIsNotConfirmed);
     }
 
     [Fact]
@@ -62,7 +62,7 @@ public class LoginTests(IntegrationTestWebAppFactory factory)
         // Assert
         var result = await response.Content.ReadFromJsonAsync<Result<TokenResult>>();
         response.StatusCode.Should().Be(HttpStatusCode.Conflict);
-        result?.Error?.FirstError()?.Should().Be(IdentityUserErrors.UserIsNotActive);
+        result?.Error?.FirstError()?.Should().Be(UserErrors.UserIsNotActive);
     }
 
     [Fact]

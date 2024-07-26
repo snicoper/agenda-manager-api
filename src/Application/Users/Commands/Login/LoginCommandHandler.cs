@@ -23,7 +23,7 @@ internal class LoginCommandHandler(
 
         if (user is null)
         {
-            return IdentityUserErrors.InvalidCredentials;
+            return UserErrors.InvalidCredentials;
         }
 
         var authResult = userAuthenticationService.AuthenticateUser(user, request.Password);

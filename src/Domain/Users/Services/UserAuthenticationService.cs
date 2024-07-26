@@ -13,7 +13,7 @@ public class UserAuthenticationService(UserPasswordService userPasswordService)
         }
 
         return userPasswordService.VerifyPassword(password, user.PasswordHash) is false
-            ? IdentityUserErrors.InvalidCredentials
+            ? UserErrors.InvalidCredentials
             : Result.Success();
     }
 
@@ -21,12 +21,12 @@ public class UserAuthenticationService(UserPasswordService userPasswordService)
     {
         if (!user.Active)
         {
-            return IdentityUserErrors.UserIsNotActive;
+            return UserErrors.UserIsNotActive;
         }
 
         if (!user.IsEmailConfirmed)
         {
-            return IdentityUserErrors.EmailIsNotConfirmed;
+            return UserErrors.EmailIsNotConfirmed;
         }
 
         return Result.Success();

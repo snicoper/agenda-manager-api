@@ -3,7 +3,6 @@ using System.Net.Mail;
 using System.Text;
 using AgendaManager.Application.Common.Interfaces.Emails;
 using AgendaManager.Application.Common.Interfaces.Views;
-using AgendaManager.Infrastructure.Common.Exceptions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

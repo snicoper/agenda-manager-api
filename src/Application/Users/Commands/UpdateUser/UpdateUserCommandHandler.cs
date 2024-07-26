@@ -22,7 +22,7 @@ internal class UpdateUserCommandHandler(
 
         if (user is null)
         {
-            return IdentityUserErrors.UserNotFound;
+            return UserErrors.UserNotFound;
         }
 
         var validationResult = await userEmailService.UpdateUserEmailAsync(user, EmailAddress.From(request.Email));

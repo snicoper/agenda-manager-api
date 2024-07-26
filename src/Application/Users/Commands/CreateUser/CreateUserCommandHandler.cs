@@ -18,7 +18,7 @@ internal class CreateUserCommandHandler(IUserRepository usersRepository, IUnitOf
 
         if (existingUser is not null)
         {
-            return IdentityUserErrors.EmailAlreadyExists;
+            return UserErrors.EmailAlreadyExists;
         }
 
         var newUser = User.Create(

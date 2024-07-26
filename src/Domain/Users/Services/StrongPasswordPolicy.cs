@@ -10,6 +10,6 @@ public class StrongPasswordPolicy : IPasswordPolicy
     {
         return DomainRegex.StrongPassword().IsMatch(password)
             ? Result.Success()
-            : IdentityUserErrors.InvalidFormatPassword;
+            : UserErrors.InvalidFormatPassword;
     }
 }

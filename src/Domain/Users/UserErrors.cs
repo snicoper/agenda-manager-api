@@ -2,7 +2,7 @@
 
 namespace AgendaManager.Domain.Users;
 
-public static class IdentityUserErrors
+public static class UserErrors
 {
     public static Error InvalidCredentials => Error.Conflict("Invalid credentials");
 

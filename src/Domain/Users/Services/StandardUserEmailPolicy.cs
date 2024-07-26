@@ -10,7 +10,7 @@ public class StandardUserEmailPolicy(IUserRepository userRepository)
     public async Task<Result> ValidateEmailAsync(User user, EmailAddress newEmail)
     {
         return await userRepository.GetByEmailAsync(newEmail) is not null
-            ? IdentityUserErrors.EmailAlreadyExists
+            ? UserErrors.EmailAlreadyExists
             : Result.Success();
     }
 }

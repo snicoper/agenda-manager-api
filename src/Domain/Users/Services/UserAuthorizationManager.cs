@@ -18,19 +18,19 @@ public class UserAuthorizationManager(
 
         if (user is null)
         {
-            return IdentityUserErrors.UserNotFound;
+            return UserErrors.UserNotFound;
         }
 
         var role = await roleRepository.GetByIdAsync(roleId, cancellationToken);
 
         if (role is null)
         {
-            return IdentityUserErrors.RoleNotFound;
+            return UserErrors.RoleNotFound;
         }
 
         if (user.Roles.Any(r => r.Id.Equals(roleId)))
         {
-            return IdentityUserErrors.RoleAlreadyExists;
+            return UserErrors.RoleAlreadyExists;
         }
 
         var result = user.AddRole(role);
@@ -47,19 +47,19 @@ public class UserAuthorizationManager(
 
         if (user is null)
         {
-            return IdentityUserErrors.UserNotFound;
+            return UserErrors.UserNotFound;
         }
 
         var role = await roleRepository.GetByIdAsync(roleId, cancellationToken);
 
         if (role is null)
         {
-            return IdentityUserErrors.RoleNotFound;
+            return UserErrors.RoleNotFound;
         }
 
         if (!user.Roles.Any(r => r.Id.Equals(roleId)))
         {
-            return IdentityUserErrors.UserDoesNotHaveRoleAssigned;
+            return UserErrors.UserDoesNotHaveRoleAssigned;
         }
 
         var result = user.RemoveRole(role);
@@ -76,19 +76,19 @@ public class UserAuthorizationManager(
 
         if (role is null)
         {
-            return IdentityUserErrors.RoleNotFound;
+            return UserErrors.RoleNotFound;
         }
 
         var permission = await permissionRepository.GetByIdAsync(permissionId, cancellationToken);
 
         if (permission is null)
         {
-            return IdentityUserErrors.PermissionNotFound;
+            return UserErrors.PermissionNotFound;
         }
 
         if (role.Permissions.Any(r => r.Id.Equals(permissionId)))
         {
-            return IdentityUserErrors.PermissionAlreadyExists;
+            return UserErrors.PermissionAlreadyExists;
         }
 
         var result = role.AddPermission(permission);
@@ -105,19 +105,19 @@ public class UserAuthorizationManager(
 
         if (role is null)
         {
-            return IdentityUserErrors.RoleNotFound;
+            return UserErrors.RoleNotFound;
         }
 
         var permission = await permissionRepository.GetByIdAsync(permissionId, cancellationToken);
 
         if (permission is null)
         {
-            return IdentityUserErrors.PermissionNotFound;
+            return UserErrors.PermissionNotFound;
         }
 
         if (!role.Permissions.Any(r => r.Id.Equals(permissionId)))
         {
-            return IdentityUserErrors.RoleDoesNotHavePermissionAssigned;
+            return UserErrors.RoleDoesNotHavePermissionAssigned;
         }
 
         var result = role.RemovePermission(permission);

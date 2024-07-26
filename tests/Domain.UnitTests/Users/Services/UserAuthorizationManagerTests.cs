@@ -47,7 +47,7 @@ public class UserAuthorizationManagerTests
         // Arrange
         var user = UserFactory.CreateUserCarol();
         var role = RoleFactory.CreateRoleAdmin();
-        var descriptionError = IdentityUserErrors.UserNotFound.FirstError()?.Description;
+        var descriptionError = UserErrors.UserNotFound.FirstError()?.Description;
         _userRepository.GetByIdWithRolesAsync(user.Id).ReturnsNull();
 
         // Act
@@ -65,7 +65,7 @@ public class UserAuthorizationManagerTests
         // Arrange
         var user = UserFactory.CreateUserCarol();
         var role = RoleFactory.CreateRoleAdmin();
-        var descriptionError = IdentityUserErrors.RoleNotFound.FirstError()?.Description;
+        var descriptionError = UserErrors.RoleNotFound.FirstError()?.Description;
         _userRepository.GetByIdWithRolesAsync(user.Id).Returns(user);
         _roleRepository.GetByIdAsync(role.Id).ReturnsNull();
 
@@ -84,7 +84,7 @@ public class UserAuthorizationManagerTests
         // Arrange
         var user = UserFactory.CreateUserCarol();
         var role = RoleFactory.CreateRoleAdmin();
-        var descriptionError = IdentityUserErrors.RoleAlreadyExists.FirstError()?.Description;
+        var descriptionError = UserErrors.RoleAlreadyExists.FirstError()?.Description;
         _userRepository.GetByIdWithRolesAsync(user.Id).Returns(user);
         _roleRepository.GetByIdAsync(role.Id).Returns(role);
 
@@ -122,7 +122,7 @@ public class UserAuthorizationManagerTests
         // Arrange
         var user = UserFactory.CreateUserCarol();
         var role = RoleFactory.CreateRoleAdmin();
-        var descriptionError = IdentityUserErrors.UserNotFound.FirstError()?.Description;
+        var descriptionError = UserErrors.UserNotFound.FirstError()?.Description;
         _userRepository.GetByIdWithRolesAsync(user.Id).ReturnsNull();
 
         // Act
@@ -140,7 +140,7 @@ public class UserAuthorizationManagerTests
         // Arrange
         var user = UserFactory.CreateUserCarol();
         var role = RoleFactory.CreateRoleAdmin();
-        var descriptionError = IdentityUserErrors.RoleNotFound.FirstError()?.Description;
+        var descriptionError = UserErrors.RoleNotFound.FirstError()?.Description;
         _userRepository.GetByIdWithRolesAsync(user.Id).Returns(user);
         _roleRepository.GetByIdAsync(role.Id).ReturnsNull();
 
@@ -160,7 +160,7 @@ public class UserAuthorizationManagerTests
         // Arrange
         var user = UserFactory.CreateUserCarol();
         var role = RoleFactory.CreateRoleAdmin();
-        var descriptionError = IdentityUserErrors.UserDoesNotHaveRoleAssigned.FirstError()?.Description;
+        var descriptionError = UserErrors.UserDoesNotHaveRoleAssigned.FirstError()?.Description;
         _userRepository.GetByIdWithRolesAsync(user.Id).Returns(user);
         _roleRepository.GetByIdAsync(role.Id).Returns(role);
 
@@ -196,7 +196,7 @@ public class UserAuthorizationManagerTests
         // Arrange
         var role = RoleFactory.CreateRoleAdmin();
         var permission = PermissionFactory.CreatePermissionUsersCreate();
-        var descriptionError = IdentityUserErrors.RoleNotFound.FirstError()?.Description;
+        var descriptionError = UserErrors.RoleNotFound.FirstError()?.Description;
         _roleRepository.GetByIdAsync(role.Id).ReturnsNull();
         _permissionRepository.GetByIdAsync(permission.Id).Returns(permission);
 
@@ -215,7 +215,7 @@ public class UserAuthorizationManagerTests
         // Arrange
         var role = RoleFactory.CreateRoleAdmin();
         var permission = PermissionFactory.CreatePermissionUsersCreate();
-        var descriptionError = IdentityUserErrors.PermissionNotFound.FirstError()?.Description;
+        var descriptionError = UserErrors.PermissionNotFound.FirstError()?.Description;
         _roleRepository.GetByIdAsync(role.Id).Returns(role);
         _permissionRepository.GetByIdAsync(permission.Id).ReturnsNull();
 
@@ -234,7 +234,7 @@ public class UserAuthorizationManagerTests
         // Arrange
         var role = RoleFactory.CreateRoleAdmin();
         var permission = PermissionFactory.CreatePermissionUsersCreate();
-        var descriptionError = IdentityUserErrors.PermissionAlreadyExists.FirstError()?.Description;
+        var descriptionError = UserErrors.PermissionAlreadyExists.FirstError()?.Description;
         _roleRepository.GetByIdAsync(role.Id).Returns(role);
         _permissionRepository.GetByIdAsync(permission.Id).Returns(permission);
 
@@ -272,7 +272,7 @@ public class UserAuthorizationManagerTests
         // Arrange
         var role = RoleFactory.CreateRoleAdmin();
         var permission = PermissionFactory.CreatePermissionUsersCreate();
-        var descriptionError = IdentityUserErrors.RoleNotFound.FirstError()?.Description;
+        var descriptionError = UserErrors.RoleNotFound.FirstError()?.Description;
         _roleRepository.GetByIdAsync(role.Id).ReturnsNull();
         _permissionRepository.GetByIdAsync(permission.Id).Returns(permission);
 
@@ -291,7 +291,7 @@ public class UserAuthorizationManagerTests
         // Arrange
         var role = RoleFactory.CreateRoleAdmin();
         var permission = PermissionFactory.CreatePermissionUsersCreate();
-        var descriptionError = IdentityUserErrors.PermissionNotFound.FirstError()?.Description;
+        var descriptionError = UserErrors.PermissionNotFound.FirstError()?.Description;
         _roleRepository.GetByIdAsync(role.Id).Returns(role);
         _permissionRepository.GetByIdAsync(permission.Id).ReturnsNull();
 
@@ -311,7 +311,7 @@ public class UserAuthorizationManagerTests
         // Arrange
         var role = RoleFactory.CreateRoleAdmin();
         var permission = PermissionFactory.CreatePermissionUsersCreate();
-        var descriptionError = IdentityUserErrors.RoleDoesNotHavePermissionAssigned.FirstError()?.Description;
+        var descriptionError = UserErrors.RoleDoesNotHavePermissionAssigned.FirstError()?.Description;
         _roleRepository.GetByIdAsync(role.Id).Returns(role);
         _permissionRepository.GetByIdAsync(permission.Id).Returns(permission);
 
