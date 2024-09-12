@@ -1,7 +1,7 @@
 ﻿using AgendaManager.Domain.Common.Responses;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AgendaManager.WebApi.Results;
+namespace AgendaManager.WebApi.Infrastructure.Results;
 
 public static class ResultExtensions
 {

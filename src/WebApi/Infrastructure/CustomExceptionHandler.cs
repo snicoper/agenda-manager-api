@@ -6,7 +6,6 @@ namespace AgendaManager.WebApi.Infrastructure;
 
 public class CustomExceptionHandler : IExceptionHandler
 {
-    // Register known exception types and handlers.
     private readonly Dictionary<Type, Func<HttpContext, Exception, Task>> _exceptionHandlers = new()
     {
         { typeof(BadRequestException), HandleValidationException },

@@ -3,7 +3,7 @@ using AgendaManager.Application.Users.Commands.UpdateUser;
 using AgendaManager.Application.Users.Queries.GetUsers;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Infrastructure;
-using AgendaManager.WebApi.Results;
+using AgendaManager.WebApi.Infrastructure.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgendaManager.WebApi.Controllers.Users;

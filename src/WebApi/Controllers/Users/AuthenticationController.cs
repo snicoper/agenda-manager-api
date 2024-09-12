@@ -3,7 +3,7 @@ using AgendaManager.Application.Users.Commands.Login;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Controllers.Users.Contracts;
 using AgendaManager.WebApi.Infrastructure;
-using AgendaManager.WebApi.Results;
+using AgendaManager.WebApi.Infrastructure.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
