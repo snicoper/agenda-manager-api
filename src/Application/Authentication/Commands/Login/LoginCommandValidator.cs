@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace AgendaManager.Application.Users.Commands.Login;
+namespace AgendaManager.Application.Authentication.Commands.Login;
 
 public class LoginCommandValidator : AbstractValidator<LoginCommand>
 {

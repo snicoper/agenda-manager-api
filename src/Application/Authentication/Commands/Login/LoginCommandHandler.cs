@@ -8,7 +8,7 @@ using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.Services;
 using AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.Application.Users.Commands.Login;
+namespace AgendaManager.Application.Authentication.Commands.Login;
 
 internal class LoginCommandHandler(
     IJwtTokenGenerator jwtTokenGenerator,
@@ -34,7 +34,7 @@ internal class LoginCommandHandler(
         }
 
         var tokenResult = await jwtTokenGenerator.GenerateAccessTokenAsync(user.Id, cancellationToken);
-        var refreshToken = RefreshToken.Create(tokenResult.RefreshToken, tokenResult.Expires);
+        var refreshToken = Domain.Users.ValueObjects.RefreshToken.Create(tokenResult.RefreshToken, tokenResult.Expires);
 
         user.UpdateRefreshToken(refreshToken);
         userRepository.Update(user);
