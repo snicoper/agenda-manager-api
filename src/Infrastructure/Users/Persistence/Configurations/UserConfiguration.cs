@@ -20,18 +20,18 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMany(u => u.Roles)
             .WithMany(r => r.Users)
             .UsingEntity(
-                j =>
+                typeBuilder =>
                 {
-                    j.ToTable("UserRoles");
-                    j.Property<UserId>("UserId").HasColumnName("UserId");
-                    j.Property<RoleId>("RoleId").HasColumnName("RoleId");
-                    j.HasKey("UserId", "RoleId");
+                    typeBuilder.ToTable("UserRoles");
+                    typeBuilder.Property<UserId>("UserId").HasColumnName("UserId");
+                    typeBuilder.Property<RoleId>("RoleId").HasColumnName("RoleId");
+                    typeBuilder.HasKey("UserId", "RoleId");
 
                     // Campos de auditoría.
-                    j.Property<DateTimeOffset>("CreatedAt");
-                    j.Property<string>("CreatedBy");
-                    j.Property<DateTimeOffset>("LastModifiedAt");
-                    j.Property<string>("LastModifiedBy");
+                    typeBuilder.Property<DateTimeOffset>("CreatedAt");
+                    typeBuilder.Property<string>("CreatedBy");
+                    typeBuilder.Property<DateTimeOffset>("LastModifiedAt");
+                    typeBuilder.Property<string>("LastModifiedBy");
                 });
 
         builder.Property(u => u.Id)
