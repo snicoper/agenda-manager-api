@@ -41,6 +41,6 @@ internal class LoginCommandHandler(
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Success(tokenResult);
+        return Result.Create(tokenResult);
     }
 }

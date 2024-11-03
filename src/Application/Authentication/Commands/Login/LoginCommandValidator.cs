@@ -10,6 +10,7 @@ public class LoginCommandValidator : AbstractValidator<LoginCommand>
             .NotEmpty()
             .EmailAddress();
 
-        RuleFor(r => r.Password).NotEmpty();
+        RuleFor(r => r.Password)
+            .NotEmpty();
     }
 }
