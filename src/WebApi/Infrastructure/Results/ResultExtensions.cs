@@ -21,6 +21,7 @@ public static class ResultExtensions
             StatusCodes.Status401Unauthorized => new UnauthorizedResult(),
             StatusCodes.Status403Forbidden => new ForbidResult(),
             StatusCodes.Status404NotFound => HandleNotFoundResult(result.Error?.FirstError()?.Description),
+            StatusCodes.Status409Conflict => HandleConflictResult(result.Error?.FirstError()?.Description),
             _ => HandleUnexpectedResult(statusCode, result.Error?.FirstError())
         };
     }
@@ -41,6 +42,7 @@ public static class ResultExtensions
             StatusCodes.Status401Unauthorized => new UnauthorizedResult(),
             StatusCodes.Status403Forbidden => new ForbidResult(),
             StatusCodes.Status404NotFound => HandleNotFoundResult(result.Error?.FirstError()?.Description),
+            StatusCodes.Status409Conflict => HandleConflictResult(result.Error?.FirstError()?.Description),
             _ => HandleUnexpectedResult(statusCode, result.Error?.FirstError())
         };
     }
@@ -84,6 +86,19 @@ public static class ResultExtensions
         };
 
         return new NotFoundObjectResult(problemDetails);
+    }
+
+    private static ConflictObjectResult HandleConflictResult(string? description)
+    {
+        ProblemDetails problemDetails = new()
+        {
+            Status = StatusCodes.Status409Conflict,
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.8",
+            Title = "The request could not be completed due to a conflict.",
+            Detail = description
+        };
+
+        return new ConflictObjectResult(problemDetails);
     }
 
     private static ObjectResult HandleUnexpectedResult(int statusCode, ValidationError? validationError)
