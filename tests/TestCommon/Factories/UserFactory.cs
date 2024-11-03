@@ -1,7 +1,7 @@
 ﻿using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.ValueObjects;
 using AgendaManager.Infrastructure.Users.Authentication;
-using AgendaManager.TestCommon.TestConstants;
+using AgendaManager.TestCommon.Seeds;
 
 namespace AgendaManager.TestCommon.Factories;
 
@@ -17,50 +17,50 @@ public abstract class UserFactory
         string? lastName = null)
     {
         return User.Create(
-            id ?? Constants.UserAlice.Id,
-            email ?? Constants.UserAlice.Email,
+            id ?? Users.UserAlice.Id,
+            email ?? Users.UserAlice.Email,
             passwordHash ?? BcryptPasswordHasher.HashPassword("Password4!"),
-            firstName ?? Constants.UserAlice.FirstName,
-            lastName ?? Constants.UserAlice.LastName);
+            firstName ?? Users.UserAlice.FirstName,
+            lastName ?? Users.UserAlice.LastName);
     }
 
     public static User CreateUserAlice()
     {
         return CreateUser(
-            id: Constants.UserAlice.Id,
-            email: Constants.UserAlice.Email,
-            passwordHash: Constants.UserAlice.RawPassword,
-            firstName: Constants.UserAlice.FirstName,
-            lastName: Constants.UserAlice.LastName);
+            id: Users.UserAlice.Id,
+            email: Users.UserAlice.Email,
+            passwordHash: Users.UserAlice.RawPassword,
+            firstName: Users.UserAlice.FirstName,
+            lastName: Users.UserAlice.LastName);
     }
 
     public static User CreateUserBob()
     {
         return CreateUser(
-            id: Constants.UserBob.Id,
-            email: Constants.UserBob.Email,
-            passwordHash: Constants.UserBob.RawPassword,
-            firstName: Constants.UserBob.FirstName,
-            lastName: Constants.UserBob.LastName);
+            id: Users.UserBob.Id,
+            email: Users.UserBob.Email,
+            passwordHash: Users.UserBob.RawPassword,
+            firstName: Users.UserBob.FirstName,
+            lastName: Users.UserBob.LastName);
     }
 
     public static User CreateUserCarol()
     {
         return CreateUser(
-            id: Constants.UserCarol.Id,
-            email: Constants.UserCarol.Email,
-            passwordHash: Constants.UserCarol.RawPassword,
-            firstName: Constants.UserCarol.FirstName,
-            lastName: Constants.UserCarol.LastName);
+            id: Users.UserCarol.Id,
+            email: Users.UserCarol.Email,
+            passwordHash: Users.UserCarol.RawPassword,
+            firstName: Users.UserCarol.FirstName,
+            lastName: Users.UserCarol.LastName);
     }
 
     public static User CreateUserLexi()
     {
         return CreateUser(
-            id: Constants.UserLexi.Id,
-            email: Constants.UserLexi.Email,
-            passwordHash: Constants.UserLexi.RawPassword,
-            firstName: Constants.UserLexi.FirstName,
-            lastName: Constants.UserLexi.LastName);
+            id: Users.UserLexi.Id,
+            email: Users.UserLexi.Email,
+            passwordHash: Users.UserLexi.RawPassword,
+            firstName: Users.UserLexi.FirstName,
+            lastName: Users.UserLexi.LastName);
     }
 }

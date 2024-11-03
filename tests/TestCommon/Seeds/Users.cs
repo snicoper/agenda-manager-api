@@ -1,8 +1,8 @@
 ﻿using AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.TestCommon.TestConstants;
+namespace AgendaManager.TestCommon.Seeds;
 
-public static partial class Constants
+public static class Users
 {
     public static class UserAlice
     {
