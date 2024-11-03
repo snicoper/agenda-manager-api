@@ -6,8 +6,11 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 {
     public CreateUserCommandValidator()
     {
-        RuleFor(r => r.Email).EmailAddress();
+        RuleFor(r => r.Email)
+            .EmailAddress();
 
-        RuleFor(r => r.Password).NotEmpty().MinimumLength(10);
+        RuleFor(r => r.Password)
+            .NotEmpty()
+            .MinimumLength(10);
     }
 }

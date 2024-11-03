@@ -6,6 +6,7 @@ public class GetUsersQueryValidator : AbstractValidator<GetUsersQuery>
 {
     public GetUsersQueryValidator()
     {
-        RuleFor(x => x.Email).EmailAddress();
+        RuleFor(x => x.Email)
+            .EmailAddress();
     }
 }

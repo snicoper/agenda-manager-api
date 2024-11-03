@@ -18,7 +18,7 @@ internal class UpdateUserCommandHandler(
         UpdateUserCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await usersRepository.GetByIdAsync(UserId.From(request.Id), cancellationToken);
+        var user = await usersRepository.GetByIdAsync(UserId.From(request.UserId), cancellationToken);
 
         if (user is null)
         {

@@ -27,40 +27,40 @@ public abstract class UserFactory
     public static User CreateUserAlice()
     {
         return CreateUser(
-            Constants.UserAlice.Id,
-            Constants.UserAlice.Email,
-            Constants.UserAlice.RawPassword,
-            Constants.UserAlice.FirstName,
-            Constants.UserAlice.LastName);
+            id: Constants.UserAlice.Id,
+            email: Constants.UserAlice.Email,
+            passwordHash: Constants.UserAlice.RawPassword,
+            firstName: Constants.UserAlice.FirstName,
+            lastName: Constants.UserAlice.LastName);
     }
 
     public static User CreateUserBob()
     {
         return CreateUser(
-            Constants.UserBob.Id,
-            Constants.UserBob.Email,
-            Constants.UserBob.RawPassword,
-            Constants.UserBob.FirstName,
-            Constants.UserBob.LastName);
+            id: Constants.UserBob.Id,
+            email: Constants.UserBob.Email,
+            passwordHash: Constants.UserBob.RawPassword,
+            firstName: Constants.UserBob.FirstName,
+            lastName: Constants.UserBob.LastName);
     }
 
     public static User CreateUserCarol()
     {
         return CreateUser(
-            Constants.UserCarol.Id,
-            Constants.UserCarol.Email,
-            Constants.UserCarol.RawPassword,
-            Constants.UserCarol.FirstName,
-            Constants.UserCarol.LastName);
+            id: Constants.UserCarol.Id,
+            email: Constants.UserCarol.Email,
+            passwordHash: Constants.UserCarol.RawPassword,
+            firstName: Constants.UserCarol.FirstName,
+            lastName: Constants.UserCarol.LastName);
     }
 
     public static User CreateUserLexi()
     {
         return CreateUser(
-            Constants.UserLexi.Id,
-            Constants.UserLexi.Email,
-            Constants.UserLexi.RawPassword,
-            Constants.UserLexi.FirstName,
-            Constants.UserLexi.LastName);
+            id: Constants.UserLexi.Id,
+            email: Constants.UserLexi.Email,
+            passwordHash: Constants.UserLexi.RawPassword,
+            firstName: Constants.UserLexi.FirstName,
+            lastName: Constants.UserLexi.LastName);
     }
 }

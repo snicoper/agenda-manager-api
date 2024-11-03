@@ -14,7 +14,9 @@ internal class CreateUserCommandHandler(IUserRepository usersRepository, IUnitOf
         CreateUserCommand request,
         CancellationToken cancellationToken)
     {
-        var existingUser = await usersRepository.GetByEmailAsync(EmailAddress.From(request.Email), cancellationToken);
+        var existingUser = await usersRepository.GetByEmailAsync(
+            EmailAddress.From(request.Email),
+            cancellationToken);
 
         if (existingUser is not null)
         {
@@ -22,11 +24,11 @@ internal class CreateUserCommandHandler(IUserRepository usersRepository, IUnitOf
         }
 
         var newUser = User.Create(
-            UserId.Create(),
-            EmailAddress.From("test2@example.com"),
-            "peric2o",
-            "palote2",
-            "password2");
+            userId: UserId.Create(),
+            email: EmailAddress.From("test2@example.com"),
+            passwordHash: "peric2o",
+            firstName: "palote2",
+            lastName: "password2");
 
         await usersRepository.AddAsync(newUser, cancellationToken);
 

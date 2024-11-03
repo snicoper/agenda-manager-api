@@ -101,10 +101,10 @@ public class ErrorTests
         // Arrange
         List<ValidationError> errors =
         [
-            new ValidationError("Code", "Description 1"),
-            new ValidationError("Code", "Description 2"),
-            new ValidationError("Code2", "Description 3"),
-            new ValidationError("Code2", "Description 4")
+            new("Code", "Description 1"),
+            new("Code", "Description 2"),
+            new("Code2", "Description 3"),
+            new("Code2", "Description 4")
         ];
 
         // Act
