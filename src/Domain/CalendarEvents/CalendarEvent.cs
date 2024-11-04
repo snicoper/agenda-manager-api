@@ -1,8 +1,8 @@
-﻿using AgendaManager.Domain.CalendarEvent.Events;
-using AgendaManager.Domain.CalendarEvent.ValueObjects;
+﻿using AgendaManager.Domain.CalendarEvents.Events;
+using AgendaManager.Domain.CalendarEvents.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 
-namespace AgendaManager.Domain.CalendarEvent;
+namespace AgendaManager.Domain.CalendarEvents;
 
 public class CalendarEvent : AggregateRoot
 {

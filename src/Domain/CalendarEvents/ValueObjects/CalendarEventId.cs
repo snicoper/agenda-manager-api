@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Common.Abstractions;
 
-namespace AgendaManager.Domain.CalendarEvent.ValueObjects;
+namespace AgendaManager.Domain.CalendarEvents.ValueObjects;
 
 public class CalendarEventId : ValueObject
 {
