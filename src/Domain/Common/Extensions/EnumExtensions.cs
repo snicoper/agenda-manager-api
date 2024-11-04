@@ -4,25 +4,34 @@ namespace AgendaManager.Domain.Common.Extensions;
 
 public static class EnumExtensions
 {
-    public static string? EnumDisplayNameFor(this Enum value)
+    public static string GetDisplayName(this Enum value)
     {
+        ArgumentNullException.ThrowIfNull(value);
+
         var enumType = value.GetType();
         var enumValue = Enum.GetName(enumType, value);
 
         if (enumValue is null)
         {
-            return string.Empty;
+            return value.ToString();
         }
 
-        var member = enumType.GetMember(enumValue)[0];
-        var attrs = member.GetCustomAttributes(typeof(DisplayAttribute), false);
-        var outString = ((DisplayAttribute)attrs[0]).Name;
+        var memberInfo = enumType.GetMember(enumValue).FirstOrDefault();
 
-        if (((DisplayAttribute)attrs[0]).ResourceType is not null)
+        if (memberInfo is null)
         {
-            outString = ((DisplayAttribute)attrs[0]).GetName();
+            return enumValue;
         }
 
-        return outString;
+        if (memberInfo
+                .GetCustomAttributes(typeof(DisplayAttribute), false)
+                .FirstOrDefault() is not DisplayAttribute displayAttribute)
+        {
+            return enumValue;
+        }
+
+        return displayAttribute.ResourceType is not null
+            ? displayAttribute.GetName() ?? enumValue
+            : displayAttribute.Name ?? enumValue;
     }
 }
