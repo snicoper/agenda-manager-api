@@ -1,5 +1,7 @@
-﻿namespace AgendaManager.Domain.Users.Exceptions;
+﻿using AgendaManager.Domain.Common.Exceptions;
 
-public class InvalidEmailAddressException() : Exception("Invalid email provided.")
+namespace AgendaManager.Domain.Users.Exceptions;
+
+public class InvalidEmailAddressException() : DomainException("Invalid email provided.")
 {
 }

@@ -1,6 +1,4 @@
-﻿using AgendaManager.Domain.Common.Exceptions;
-
-namespace AgendaManager.Domain.Common.Shared.Exceptions;
+﻿namespace AgendaManager.Domain.Common.Exceptions;
 
 public class InvalidPeriodException : DomainException
 {

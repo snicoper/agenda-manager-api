@@ -1,7 +1,7 @@
 ﻿using AgendaManager.Domain.Appointments.Events;
 using AgendaManager.Domain.Appointments.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Common.Shared.ValueObjects;
+using AgendaManager.Domain.Common.ValueObjects;
 
 namespace AgendaManager.Domain.Appointments;
 
