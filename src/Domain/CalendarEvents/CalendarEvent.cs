@@ -10,16 +10,16 @@ public class CalendarEvent : AggregateRoot
     {
     }
 
-    private CalendarEvent(CalendarEventId id)
+    private CalendarEvent(CalendarEventId calendarEventId)
     {
-        Id = id;
+        Id = calendarEventId;
     }
 
     public CalendarEventId Id { get; } = null!;
 
-    public static CalendarEvent Create(CalendarEventId id)
+    public static CalendarEvent Create(CalendarEventId calendarEventId)
     {
-        CalendarEvent calendarEvent = new(id);
+        CalendarEvent calendarEvent = new(calendarEventId);
 
         calendarEvent.AddDomainEvent(new CalendarEventCreatedDomainEvent(calendarEvent.Id));
 

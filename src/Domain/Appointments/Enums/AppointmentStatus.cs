@@ -10,12 +10,18 @@ public enum AppointmentStatus
     [Display(Name = "Accepted")]
     Accepted = 2,
 
-    [Display(Name = "Rejected")]
-    Rejected = 3,
+    [Display(Name = "Waiting")]
+    Waiting = 3,
 
     [Display(Name = "Cancelled")]
-    Cancelled = 4,
+    Cancelled = 5,
+
+    [Display(Name = "PendingReschedule")]
+    PendingReschedule = 6,
+
+    [Display(Name = "InProgress")]
+    InProgress = 7,
 
     [Display(Name = "Completed")]
-    Completed = 5
+    Completed = 8
 }

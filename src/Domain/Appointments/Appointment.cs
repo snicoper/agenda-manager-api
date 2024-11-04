@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Appointments.Events;
+﻿using AgendaManager.Domain.Appointments.Enums;
+using AgendaManager.Domain.Appointments.Events;
 using AgendaManager.Domain.Appointments.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.ValueObjects;
@@ -16,6 +17,8 @@ public class Appointment : AggregateRoot
     public AppointmentId Id { get; }
 
     public Period Period { get; private set; }
+
+    public AppointmentStatus Status { get; private set; } = AppointmentStatus.Pending;
 
     public static Appointment Create(AppointmentId id, Period period)
     {
