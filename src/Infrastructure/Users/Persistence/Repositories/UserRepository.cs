@@ -10,7 +10,7 @@ public class UserRepository(AppDbContext context) : IUserRepository
 {
     public IQueryable<User> GetQueryable()
     {
-        return context.Users;
+        return context.Users.AsQueryable();
     }
 
     public async Task<User?> GetByIdAsync(UserId userId, CancellationToken cancellationToken = default)

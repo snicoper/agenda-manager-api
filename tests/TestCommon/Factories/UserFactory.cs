@@ -16,51 +16,61 @@ public abstract class UserFactory
         string? firstName = null,
         string? lastName = null)
     {
-        return User.Create(
+        var user = User.Create(
             id ?? Users.UserAlice.Id,
             email ?? Users.UserAlice.Email,
             passwordHash ?? BcryptPasswordHasher.HashPassword("Password4!"),
             firstName ?? Users.UserAlice.FirstName,
             lastName ?? Users.UserAlice.LastName);
+
+        return user;
     }
 
     public static User CreateUserAlice()
     {
-        return CreateUser(
+        var user = CreateUser(
             id: Users.UserAlice.Id,
             email: Users.UserAlice.Email,
             passwordHash: Users.UserAlice.RawPassword,
             firstName: Users.UserAlice.FirstName,
             lastName: Users.UserAlice.LastName);
+
+        return user;
     }
 
     public static User CreateUserBob()
     {
-        return CreateUser(
+        var user = CreateUser(
             id: Users.UserBob.Id,
             email: Users.UserBob.Email,
             passwordHash: Users.UserBob.RawPassword,
             firstName: Users.UserBob.FirstName,
             lastName: Users.UserBob.LastName);
+
+        return user;
     }
 
     public static User CreateUserCarol()
     {
-        return CreateUser(
+        var user = CreateUser(
             id: Users.UserCarol.Id,
             email: Users.UserCarol.Email,
             passwordHash: Users.UserCarol.RawPassword,
             firstName: Users.UserCarol.FirstName,
             lastName: Users.UserCarol.LastName);
+
+        return user;
     }
 
     public static User CreateUserLexi()
     {
-        return CreateUser(
+        var user = CreateUser(
             id: Users.UserLexi.Id,
             email: Users.UserLexi.Email,
             passwordHash: Users.UserLexi.RawPassword,
             firstName: Users.UserLexi.FirstName,
             lastName: Users.UserLexi.LastName);
+
+        return user;
     }
 }

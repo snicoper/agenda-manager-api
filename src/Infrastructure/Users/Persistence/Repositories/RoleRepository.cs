@@ -6,8 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AgendaManager.Infrastructure.Users.Persistence.Repositories;
 
-public class RoleRepository(AppDbContext context)
-    : IRoleRepository
+public class RoleRepository(AppDbContext context) : IRoleRepository
 {
     public async Task<Role?> GetByIdAsync(RoleId roleId, CancellationToken cancellationToken = default)
     {
@@ -18,8 +17,7 @@ public class RoleRepository(AppDbContext context)
 
     public async Task<Role?> GetByIdWithPermissionsAsync(RoleId roleId, CancellationToken cancellationToken = default)
     {
-        var role = await context
-            .Roles
+        var role = await context.Roles
             .Include(r => r.Permissions)
             .FirstOrDefaultAsync(r => r.Id.Equals(roleId), cancellationToken);
 

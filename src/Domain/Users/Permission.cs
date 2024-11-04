@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users;
@@ -11,9 +12,9 @@ public sealed class Permission : AuditableEntity
     {
     }
 
-    private Permission(PermissionId id, string name)
+    private Permission(PermissionId permissionId, string name)
     {
-        Id = id;
+        Id = permissionId;
         Name = name;
     }
 
@@ -23,8 +24,12 @@ public sealed class Permission : AuditableEntity
 
     public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
 
-    public static Permission Create(PermissionId id, string name)
+    public static Permission Create(PermissionId permissionId, string name)
     {
-        return new Permission(id, name);
+        Permission permission = new(permissionId, name);
+
+        permission.AddDomainEvent(new PermissionCreatedDomainEvent(permissionId));
+
+        return permission;
     }
 }

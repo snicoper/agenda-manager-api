@@ -37,13 +37,13 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.Id)
             .HasConversion(
                 id => id.Value,
-                id => UserId.From(id))
+                value => UserId.From(value))
             .IsRequired();
 
         builder.Property(u => u.Email)
             .HasConversion(
                 email => email.Value,
-                email => EmailAddress.From(email))
+                value => EmailAddress.From(value))
             .HasMaxLength(256)
             .IsRequired();
 

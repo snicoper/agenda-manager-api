@@ -14,9 +14,9 @@ public sealed class Role : AggregateRoot
     {
     }
 
-    private Role(RoleId id, string name, bool editable)
+    private Role(RoleId roleId, string name, bool editable)
     {
-        Id = id;
+        Id = roleId;
         Name = name;
         Editable = editable;
     }
@@ -31,9 +31,13 @@ public sealed class Role : AggregateRoot
 
     public IReadOnlyCollection<User> Users => _users.AsReadOnly();
 
-    public static Role Create(RoleId id, string name, bool editable = false)
+    public static Role Create(RoleId roleId, string name, bool editable = false)
     {
-        return new Role(id, name, editable);
+        Role role = new(roleId, name, editable);
+
+        role.AddDomainEvent(new RoleCreatedDomainEvent(role.Id));
+
+        return role;
     }
 
     internal Result AddPermission(Permission permission)
