@@ -24,11 +24,6 @@ public class UserAuthenticationService(UserPasswordService userPasswordService)
             return UserErrors.UserIsNotActive;
         }
 
-        if (!user.IsEmailConfirmed)
-        {
-            return UserErrors.EmailIsNotConfirmed;
-        }
-
-        return Result.Success();
+        return !user.IsEmailConfirmed ? UserErrors.EmailIsNotConfirmed : Result.Success();
     }
 }
