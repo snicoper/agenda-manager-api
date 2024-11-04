@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Resources.Events;
 using AgendaManager.Domain.Resources.ValueObjects;
 
 namespace AgendaManager.Domain.Resources;
@@ -21,6 +22,10 @@ public sealed class Resource : AggregateRoot
 
     public static Resource Create(ResourceId id, string name)
     {
-        return new Resource(id, name);
+        Resource resource = new(id, name);
+
+        resource.AddDomainEvent(new ResourceCreatedDomainEvent(resource.Id));
+
+        return resource;
     }
 }
