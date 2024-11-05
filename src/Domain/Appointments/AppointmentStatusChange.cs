@@ -1,6 +1,8 @@
-﻿using AgendaManager.Domain.Appointments.Events;
+﻿using AgendaManager.Domain.Appointments.Enums;
+using AgendaManager.Domain.Appointments.Events;
 using AgendaManager.Domain.Appointments.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.ValueObjects;
 
 namespace AgendaManager.Domain.Appointments;
 
@@ -16,6 +18,16 @@ public class AppointmentStatusChange : AuditableEntity
     }
 
     public AppointmentStatusChangeId Id { get; } = null!;
+
+    public ApplicationId ApplicationId { get; private set; } = null!;
+
+    public Appointment Appointment { get; private set; } = null!;
+
+    public Period Period { get; private set; } = null!;
+
+    public AppointmentStatus Status { get; private set; } = AppointmentStatus.Pending;
+
+    public string? Description { get; private set; }
 
     public static AppointmentStatusChange Create(AppointmentStatusChangeId appointmentStatusChangeId)
     {

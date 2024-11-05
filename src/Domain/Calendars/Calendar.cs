@@ -17,6 +17,10 @@ public class Calendar : AggregateRoot
 
     public CalendarId Id { get; } = null!;
 
+    public string Name { get; set; } = null!;
+
+    public string Description { get; set; } = null!;
+
     public static Calendar Create(CalendarId id)
     {
         Calendar calendar = new(id);
