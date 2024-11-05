@@ -31,13 +31,13 @@ public class CalendarHolidayConfiguration : IEntityTypeConfiguration<CalendarHol
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.OwnsOne(
-            appointment => appointment.Period,
-            appointmentBuilder =>
+            calendarHoliday => calendarHoliday.Period,
+            calendarHolidayBuilder =>
             {
-                appointmentBuilder.Property(p => p.StartDate)
+                calendarHolidayBuilder.Property(p => p.StartDate)
                     .HasColumnName("StartDate");
 
-                appointmentBuilder.Property(p => p.EndDate)
+                calendarHolidayBuilder.Property(p => p.EndDate)
                     .HasColumnName("EndDate");
             });
 

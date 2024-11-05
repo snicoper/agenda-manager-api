@@ -31,7 +31,7 @@ public class ResourceSchedule : AggregateRoot
 
     public Period Period { get; private set; } = null!;
 
-    public ResourceScheduleType Type { get; private set; }
+    public ResourceScheduleType Type { get; private set; } = ResourceScheduleType.Available;
 
     public List<DayOfWeek> AvailableDays { get; private set; } = null!;
 
