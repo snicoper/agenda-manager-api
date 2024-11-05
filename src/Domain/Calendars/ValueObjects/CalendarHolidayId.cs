@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Common.Abstractions;
 
-namespace AgendaManager.Domain.CalendarHolidays.ValueObjects;
+namespace AgendaManager.Domain.Calendars.ValueObjects;
 
 public class CalendarHolidayId : ValueObject
 {

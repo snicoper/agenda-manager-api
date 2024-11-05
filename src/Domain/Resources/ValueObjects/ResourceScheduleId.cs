@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Common.Abstractions;
 
-namespace AgendaManager.Domain.ResourceSchedules.ValueObjects;
+namespace AgendaManager.Domain.Resources.ValueObjects;
 
 public class ResourceScheduleId : ValueObject
 {

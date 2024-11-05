@@ -2,13 +2,11 @@
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.ValueObjects;
-using AgendaManager.Domain.Resources;
+using AgendaManager.Domain.Resources.Enums;
+using AgendaManager.Domain.Resources.Events;
 using AgendaManager.Domain.Resources.ValueObjects;
-using AgendaManager.Domain.ResourceSchedules.Enums;
-using AgendaManager.Domain.ResourceSchedules.Events;
-using AgendaManager.Domain.ResourceSchedules.ValueObjects;
 
-namespace AgendaManager.Domain.ResourceSchedules;
+namespace AgendaManager.Domain.Resources;
 
 public class ResourceSchedule : AggregateRoot
 {

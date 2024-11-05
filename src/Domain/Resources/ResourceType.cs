@@ -6,6 +6,8 @@ namespace AgendaManager.Domain.Resources;
 
 public class ResourceType : AuditableEntity
 {
+    private readonly List<Resource> _resources = [];
+
     private ResourceType()
     {
     }
@@ -22,6 +24,8 @@ public class ResourceType : AuditableEntity
     public string Name { get; private set; } = default!;
 
     public string Description { get; private set; } = default!;
+
+    public IReadOnlyList<Resource> Resources => _resources.AsReadOnly();
 
     public static ResourceType Create(ResourceTypeId id, string name, string description)
     {

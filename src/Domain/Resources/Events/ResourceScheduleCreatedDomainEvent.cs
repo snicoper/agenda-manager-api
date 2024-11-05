@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Common.Interfaces;
-using AgendaManager.Domain.ResourceSchedules.ValueObjects;
+using AgendaManager.Domain.Resources.ValueObjects;
 
-namespace AgendaManager.Domain.ResourceSchedules.Events;
+namespace AgendaManager.Domain.Resources.Events;
 
 public record ResourceScheduleCreatedDomainEvent(ResourceScheduleId ResourceScheduleId) : IDomainEvent;

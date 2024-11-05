@@ -10,7 +10,7 @@ namespace AgendaManager.Domain.Services;
 
 public class Service : AggregateRoot
 {
-    private readonly List<ResourceType> _resourceRequirements = [];
+    private readonly List<ResourceType> _resourceTypes = [];
 
     private Service()
     {
@@ -35,7 +35,7 @@ public class Service : AggregateRoot
 
     public ColorScheme ColorScheme { get; private set; } = null!;
 
-    public IReadOnlyCollection<ResourceType> ResourceRequirements => _resourceRequirements.AsReadOnly();
+    public IReadOnlyCollection<ResourceType> ResourceTypes => _resourceTypes.AsReadOnly();
 
     public static Service Create(ServiceId serviceId)
     {
