@@ -27,7 +27,7 @@ public class Service : AggregateRoot
 
     public Calendar Calendar { get; private set; } = null!;
 
-    public TimeSpan Duration { get; private set; }
+    public TimeSpan Duration { get; private set; } = TimeSpan.Zero;
 
     public string Name { get; private set; } = null!;
 

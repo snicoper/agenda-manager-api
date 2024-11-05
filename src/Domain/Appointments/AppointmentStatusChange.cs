@@ -19,13 +19,17 @@ public class AppointmentStatusChange : AuditableEntity
 
     public AppointmentStatusChangeId Id { get; } = null!;
 
-    public ApplicationId ApplicationId { get; private set; } = null!;
+    public AppointmentId AppointmentId { get; private set; } = null!;
 
     public Appointment Appointment { get; private set; } = null!;
 
     public Period Period { get; private set; } = null!;
 
     public AppointmentStatus Status { get; private set; } = AppointmentStatus.Pending;
+
+    public bool IsCurrentStatus { get; private set; } = true;
+
+    public TimeSpan Duration { get; private set; } = TimeSpan.Zero;
 
     public string? Description { get; private set; }
 

@@ -24,6 +24,12 @@ public class CalendarHoliday : AggregateRoot
 
     public Period Period { get; private set; } = null!;
 
+    public List<DayOfWeek> AvailableDays { get; private set; } = null!;
+
+    public string Name { get; private set; } = default!;
+
+    public string Description { get; private set; } = default!;
+
     public static CalendarHoliday Create(CalendarHolidayId calendarHolidayId)
     {
         CalendarHoliday calendarHoliday = new(calendarHolidayId);
