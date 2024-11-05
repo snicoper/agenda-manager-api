@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Calendars;
+using AgendaManager.Domain.Calendars.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,5 +12,19 @@ public class CalendarConfiguration : IEntityTypeConfiguration<Calendar>
         builder.ToTable("Calendars");
 
         builder.HasKey(c => c.Id);
+
+        builder.Property(c => c.Id)
+            .HasConversion(
+                id => id.Value,
+                value => CalendarId.From(value))
+            .IsRequired();
+
+        builder.Property(c => c.Name)
+            .HasMaxLength(50)
+            .IsRequired();
+
+        builder.Property(c => c.Description)
+            .HasMaxLength(500)
+            .IsRequired();
     }
 }
