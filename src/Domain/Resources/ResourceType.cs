@@ -1,12 +1,14 @@
 ﻿using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Resources.Events;
 using AgendaManager.Domain.Resources.ValueObjects;
+using AgendaManager.Domain.Services;
 
 namespace AgendaManager.Domain.Resources;
 
 public class ResourceType : AuditableEntity
 {
     private readonly List<Resource> _resources = [];
+    private readonly List<Service> _services = [];
 
     private ResourceType()
     {
@@ -26,6 +28,8 @@ public class ResourceType : AuditableEntity
     public string Description { get; private set; } = default!;
 
     public IReadOnlyList<Resource> Resources => _resources.AsReadOnly();
+
+    public IReadOnlyList<Service> Services => _services.AsReadOnly();
 
     public static ResourceType Create(ResourceTypeId id, string name, string description)
     {
