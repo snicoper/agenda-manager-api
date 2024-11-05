@@ -2,9 +2,14 @@
 
 namespace AgendaManager.Domain.Resources.ValueObjects;
 
-public class ResourceTypeId(Guid value) : ValueObject
+public class ResourceTypeId : ValueObject
 {
-    public Guid Value { get; } = value;
+    private ResourceTypeId(Guid value)
+    {
+        Value = value;
+    }
+
+    public Guid Value { get; }
 
     public static ResourceTypeId From(Guid value)
     {
