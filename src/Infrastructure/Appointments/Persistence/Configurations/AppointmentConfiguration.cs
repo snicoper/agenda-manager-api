@@ -65,7 +65,7 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.OwnsOne(
-            appointment => appointment.Period,
+            a => a.Period,
             appointmentBuilder =>
             {
                 appointmentBuilder.Property(p => p.StartDate)
