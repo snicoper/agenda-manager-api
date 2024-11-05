@@ -8,6 +8,8 @@ public class ResourceScheduleConfiguration : IEntityTypeConfiguration<ResourceSc
 {
     public void Configure(EntityTypeBuilder<ResourceSchedule> builder)
     {
-        throw new NotImplementedException();
+        builder.ToTable("ResourceSchedules");
+
+        builder.HasKey(rs => rs.Id);
     }
 }

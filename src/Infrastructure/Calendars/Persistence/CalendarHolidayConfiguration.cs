@@ -8,6 +8,8 @@ public class CalendarHolidayConfiguration : IEntityTypeConfiguration<CalendarHol
 {
     public void Configure(EntityTypeBuilder<CalendarHoliday> builder)
     {
-        throw new NotImplementedException();
+        builder.ToTable("CalendarHolidays");
+
+        builder.HasKey(x => x.Id);
     }
 }

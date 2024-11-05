@@ -8,6 +8,8 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
 {
     public void Configure(EntityTypeBuilder<Appointment> builder)
     {
-        throw new NotImplementedException();
+        builder.ToTable("Appointments");
+
+        builder.HasKey(a => a.Id);
     }
 }

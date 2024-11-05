@@ -8,6 +8,8 @@ public class ResourceTypeConfiguration : IEntityTypeConfiguration<ResourceType>
 {
     public void Configure(EntityTypeBuilder<ResourceType> builder)
     {
-        throw new NotImplementedException();
+        builder.ToTable("ResourceTypes");
+
+        builder.HasKey(rt => rt.Id);
     }
 }

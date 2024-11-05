@@ -8,6 +8,8 @@ public class AppointmentStatusChangeConfiguration : IEntityTypeConfiguration<App
 {
     public void Configure(EntityTypeBuilder<AppointmentStatusChange> builder)
     {
-        throw new NotImplementedException();
+        builder.ToTable("AppointmentStatusChanges");
+
+        builder.HasKey(asc => asc.Id);
     }
 }

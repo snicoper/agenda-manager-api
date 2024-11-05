@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+﻿using AgendaManager.Domain.Calendars;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,6 +8,8 @@ public class CalendarConfiguration : IEntityTypeConfiguration<Calendar>
 {
     public void Configure(EntityTypeBuilder<Calendar> builder)
     {
-        throw new NotImplementedException();
+        builder.ToTable("Calendars");
+
+        builder.HasKey(c => c.Id);
     }
 }

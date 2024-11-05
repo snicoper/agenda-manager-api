@@ -8,6 +8,8 @@ public class ServiceConfiguration : IEntityTypeConfiguration<Service>
 {
     public void Configure(EntityTypeBuilder<Service> builder)
     {
-        throw new NotImplementedException();
+        builder.ToTable("Services");
+
+        builder.HasKey(s => s.Id);
     }
 }
