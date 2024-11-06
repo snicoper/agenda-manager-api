@@ -15,8 +15,4 @@
     <InternalsVisibleTo Include="AgendaManager.Domain.UnitTests"/>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Calendars\Services\" />
-  </ItemGroup>
-
 </Project>
