@@ -48,33 +48,6 @@ public sealed class User : AggregateRoot
 
     public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
 
-    public static User Create(
-        UserId userId,
-        EmailAddress email,
-        string passwordHash,
-        string? firstName,
-        string? lastName)
-    {
-        User user = new(userId, email, passwordHash, firstName, lastName);
-
-        user.AddDomainEvent(new UserCreatedDomainEvent(userId));
-
-        return user;
-    }
-
-    public void UpdateUser(string firstName, string lastName)
-    {
-        if (FirstName == firstName && LastName == lastName)
-        {
-            return;
-        }
-
-        FirstName = firstName;
-        LastName = lastName;
-
-        AddDomainEvent(new UserUpdatedDomainEvent(Id));
-    }
-
     public void UpdateRefreshToken(RefreshToken refreshToken)
     {
         if (RefreshToken is not null && RefreshToken.Equals(refreshToken))
@@ -109,6 +82,33 @@ public sealed class User : AggregateRoot
         Active = state;
 
         AddDomainEvent(new UserActiveStateChangedDomainEvent(Id, state));
+    }
+
+    internal static User Create(
+        UserId userId,
+        EmailAddress email,
+        string passwordHash,
+        string? firstName,
+        string? lastName)
+    {
+        User user = new(userId, email, passwordHash, firstName, lastName);
+
+        user.AddDomainEvent(new UserCreatedDomainEvent(userId));
+
+        return user;
+    }
+
+    internal void UpdateUser(string? firstName, string? lastName)
+    {
+        if (FirstName == firstName && LastName == lastName)
+        {
+            return;
+        }
+
+        FirstName = firstName;
+        LastName = lastName;
+
+        AddDomainEvent(new UserUpdatedDomainEvent(Id));
     }
 
     internal Result AddRole(Role role)

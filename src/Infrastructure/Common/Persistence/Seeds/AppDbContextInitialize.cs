@@ -10,6 +10,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Seeds;
 
 public class AppDbContextInitialize(
     AppDbContext context,
+    UserService userService,
     IPasswordHasher passwordHasher,
     UserAuthorizationManager userAuthorizationManager,
     ILogger<AppDbContextInitialize> logger)
@@ -114,87 +115,105 @@ public class AppDbContextInitialize(
         var passwordHash = passwordHasher.HashPassword("Password4!");
 
         // Admin user.
-        var admin = User.Create(
-            UserId.Create(),
-            EmailAddress.From("alice@example.com"),
-            passwordHash,
-            "Alice",
-            "Doe");
+        var adminResult = await userService.CreateAsync(
+            userId: UserId.Create(),
+            email: EmailAddress.From("alice@example.com"),
+            passwordHash: passwordHash,
+            firstName: "Alice",
+            lastName: "Doe",
+            active: true,
+            confirmEmail: true,
+            cancellationToken: CancellationToken.None);
 
-        if (!await context.Users.AnyAsync(u => u.Email.Equals(admin.Email)))
+        if (adminResult.IsFailure || adminResult.Value is null)
         {
-            admin.ConfirmEmail();
+            return;
+        }
 
-            await context.Users.AddAsync(admin);
+        if (!await context.Users.AnyAsync(u => u.Email.Equals(adminResult.Value.Email)))
+        {
             await context.SaveChangesAsync();
 
             var adminRole = _roles.First(r => r.Name == Roles.Admin);
             var managerRole = _roles.First(r => r.Name == Roles.Manager);
             var clientRole = _roles.First(r => r.Name == Roles.Client);
 
-            await userAuthorizationManager.AddRoleToUserAsync(admin.Id, adminRole.Id);
-            await userAuthorizationManager.AddRoleToUserAsync(admin.Id, managerRole.Id);
-            await userAuthorizationManager.AddRoleToUserAsync(admin.Id, clientRole.Id);
+            await userAuthorizationManager.AddRoleToUserAsync(adminResult.Value.Id, adminRole.Id);
+            await userAuthorizationManager.AddRoleToUserAsync(adminResult.Value.Id, managerRole.Id);
+            await userAuthorizationManager.AddRoleToUserAsync(adminResult.Value.Id, clientRole.Id);
         }
 
         // Manager user.
-        var manager = User.Create(
+        var managerResult = await userService.CreateAsync(
             UserId.Create(),
             EmailAddress.From("bob@example.com"),
             passwordHash,
             "Bob",
-            "Doe");
+            "Doe",
+            active: true,
+            confirmEmail: true,
+            CancellationToken.None);
 
-        if (!await context.Users.AnyAsync(u => u.Email.Equals(manager.Email)))
+        if (managerResult.IsFailure || managerResult.Value is null)
         {
-            manager.ConfirmEmail();
+            return;
+        }
 
-            await context.Users.AddAsync(manager);
+        if (!await context.Users.AnyAsync(u => u.Email.Equals(managerResult.Value.Email)))
+        {
             await context.SaveChangesAsync();
 
             var managerRole = _roles.First(r => r.Name == Roles.Manager);
             var clientRole = _roles.First(r => r.Name == Roles.Client);
 
-            await userAuthorizationManager.AddRoleToUserAsync(manager.Id, managerRole.Id);
-            await userAuthorizationManager.AddRoleToUserAsync(manager.Id, clientRole.Id);
+            await userAuthorizationManager.AddRoleToUserAsync(managerResult.Value.Id, managerRole.Id);
+            await userAuthorizationManager.AddRoleToUserAsync(managerResult.Value.Id, clientRole.Id);
         }
 
         // Client user.
-        var client = User.Create(
+        var clientResult = await userService.CreateAsync(
             UserId.Create(),
             EmailAddress.From("carol@example.com"),
             passwordHash,
             "Carol",
-            "Doe");
+            "Doe",
+            active: true,
+            confirmEmail: true,
+            CancellationToken.None);
 
-        if (!await context.Users.AnyAsync(u => u.Email.Equals(client.Email)))
+        if (clientResult.IsFailure || clientResult.Value is null)
         {
-            client.ConfirmEmail();
+            return;
+        }
 
-            await context.Users.AddAsync(client);
+        if (!await context.Users.AnyAsync(u => u.Email.Equals(clientResult.Value.Email)))
+        {
             await context.SaveChangesAsync();
 
             var clientRole = _roles.First(r => r.Name == Roles.Client);
-            await userAuthorizationManager.AddRoleToUserAsync(client.Id, clientRole.Id);
+            await userAuthorizationManager.AddRoleToUserAsync(clientResult.Value.Id, clientRole.Id);
         }
 
         // Client user.
-        var client2 = User.Create(
+        var client2Result = await userService.CreateAsync(
             UserId.Create(),
             EmailAddress.From("lexi@example.com"),
             passwordHash,
             "Lexi",
-            "Doe");
+            "Doe",
+            active: true,
+            confirmEmail: false,
+            CancellationToken.None);
 
-        if (!await context.Users.AnyAsync(u => u.Email.Equals(client2.Email)))
+        if (client2Result.IsFailure || client2Result.Value is null)
         {
-            client2.SetActiveState(false);
+            return;
+        }
 
-            await context.Users.AddAsync(client2);
-            await context.SaveChangesAsync();
-
+        if (!await context.Users.AnyAsync(u => u.Email.Equals(client2Result.Value.Email)))
+        {
             var clientRole = _roles.First(r => r.Name == Roles.Client);
-            await userAuthorizationManager.AddRoleToUserAsync(client2.Id, clientRole.Id);
+            await userAuthorizationManager.AddRoleToUserAsync(client2Result.Value.Id, clientRole.Id);
         }
 
         await context.SaveChangesAsync();

@@ -2,7 +2,9 @@
 using AgendaManager.Application.Common.Interfaces.Clock;
 using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Application.Common.Interfaces.Users;
+using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Users.Interfaces;
+using AgendaManager.Infrastructure.Calendars.Repositories;
 using AgendaManager.Infrastructure.Common.Clock;
 using AgendaManager.Infrastructure.Common.Persistence;
 using AgendaManager.Infrastructure.Common.Persistence.Interceptors;
@@ -60,9 +62,13 @@ public static class DependencyInjection
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 
         // Repositories.
+        // Users.
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IPermissionRepository, PermissionRepository>();
+
+        // Calendars.
+        services.AddScoped<ICalendarRepository, CalendarRepository>();
     }
 
     private static void AddDatabase(
@@ -77,7 +83,7 @@ public static class DependencyInjection
             (provider, options) =>
             {
                 var connectionString = configuration.GetConnectionString("DefaultConnection") ??
-                    throw new NullReferenceException("No connection string found in configuration");
+                                       throw new NullReferenceException("No connection string found in configuration");
 
                 options.AddInterceptors(provider.GetServices<ISaveChangesInterceptor>());
                 options.UseNpgsql(connectionString);

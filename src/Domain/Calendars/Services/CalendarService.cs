@@ -22,7 +22,6 @@ public class CalendarService(ICalendarRepository calendarRepository)
     public async Task<Result<Calendar>> UpdateAsync(Calendar calendar, CancellationToken cancellationToken)
     {
         var updatedValidationResult = await ValidateAsync(calendar, cancellationToken);
-
         if (updatedValidationResult.IsFailure)
         {
             updatedValidationResult.MapToValue<Calendar>();
@@ -46,29 +45,29 @@ public class CalendarService(ICalendarRepository calendarRepository)
             return CalendarErrors.InvalidFormatDescription;
         }
 
-        if (await NameIsUniqueAsync(calendar, cancellationToken))
+        if (await NameExistsAsync(calendar, cancellationToken))
         {
-            return CalendarErrors.NameAlreadyExists(calendar.Name);
+            return CalendarErrors.NameAlreadyExists;
         }
 
-        if (await DescriptionIsUniqueAsync(calendar, cancellationToken))
+        if (await DescriptionExistsAsync(calendar, cancellationToken))
         {
-            return CalendarErrors.DescriptionAlreadyExists(calendar.Description);
+            return CalendarErrors.DescriptionAlreadyExists;
         }
 
         return Result.Success();
     }
 
-    public async Task<bool> NameIsUniqueAsync(Calendar calendar, CancellationToken cancellationToken)
+    public async Task<bool> NameExistsAsync(Calendar calendar, CancellationToken cancellationToken)
     {
-        var nameIsUnique = await calendarRepository.NameIsUniqueAsync(calendar, cancellationToken);
+        var nameIsUnique = await calendarRepository.NameExistsAsync(calendar, cancellationToken);
 
         return nameIsUnique;
     }
 
-    public async Task<bool> DescriptionIsUniqueAsync(Calendar calendar, CancellationToken cancellationToken)
+    public async Task<bool> DescriptionExistsAsync(Calendar calendar, CancellationToken cancellationToken)
     {
-        var descriptionIsUnique = await calendarRepository.DescriptionIsUniqueAsync(calendar, cancellationToken);
+        var descriptionIsUnique = await calendarRepository.DescriptionExistsAsync(calendar, cancellationToken);
 
         return descriptionIsUnique;
     }

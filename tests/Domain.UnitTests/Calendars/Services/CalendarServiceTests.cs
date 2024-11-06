@@ -75,7 +75,7 @@ public class CalendarServiceTests
         var calendar = CalendarFactory.CreateCalendar();
 
         // Act
-        _sut.NameIsUniqueAsync(calendar, Arg.Any<CancellationToken>()).Returns(false);
+        _sut.NameExistsAsync(calendar, Arg.Any<CancellationToken>()).Returns(false);
         var result = await _sut.CreateAsync(calendar, CancellationToken.None);
 
         // Assert
@@ -89,7 +89,7 @@ public class CalendarServiceTests
         var calendar = CalendarFactory.CreateCalendar();
 
         // Act
-        _sut.NameIsUniqueAsync(calendar, Arg.Any<CancellationToken>()).Returns(true);
+        _sut.NameExistsAsync(calendar, Arg.Any<CancellationToken>()).Returns(true);
         var result = await _sut.CreateAsync(calendar, CancellationToken.None);
 
         // Assert
@@ -104,7 +104,7 @@ public class CalendarServiceTests
         var calendar = CalendarFactory.CreateCalendar();
 
         // Act
-        _sut.DescriptionIsUniqueAsync(calendar, Arg.Any<CancellationToken>()).Returns(false);
+        _sut.DescriptionExistsAsync(calendar, Arg.Any<CancellationToken>()).Returns(false);
         var result = await _sut.CreateAsync(calendar, CancellationToken.None);
 
         // Assert
@@ -118,11 +118,11 @@ public class CalendarServiceTests
         var calendar = CalendarFactory.CreateCalendar();
 
         // Act
-        _sut.DescriptionIsUniqueAsync(calendar, Arg.Any<CancellationToken>()).Returns(true);
+        _sut.DescriptionExistsAsync(calendar, Arg.Any<CancellationToken>()).Returns(true);
         var result = await _sut.CreateAsync(calendar, CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
-        result.Error?.FirstError()?.Code.Should().Be(nameof(Calendar.Name));
+        result.Error?.FirstError()?.Code.Should().Be(nameof(Calendar.Description));
     }
 }

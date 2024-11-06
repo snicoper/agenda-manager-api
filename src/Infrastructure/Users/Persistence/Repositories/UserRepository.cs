@@ -44,6 +44,15 @@ public class UserRepository(AppDbContext context) : IUserRepository
         return await context.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
+    public async Task<bool> EmailExistsAsync(User user, CancellationToken cancellationToken = default)
+    {
+        var emailExists = await context
+            .Users
+            .AnyAsync(u => u.Email == user.Email && u.Id != user.Id, cancellationToken);
+
+        return emailExists;
+    }
+
     public async Task<User?> GetByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
     {
         return await context.Users.FirstOrDefaultAsync(

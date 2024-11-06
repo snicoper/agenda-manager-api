@@ -12,13 +12,9 @@ public static class CalendarErrors
             nameof(Calendar.Description),
             "Description cannot be empty and must be less than 500 characters.");
 
-    public static Error NameAlreadyExists(string name)
-    {
-        return Error.Validation(nameof(Calendar.Name), $"Calendar name '{name}' already exists");
-    }
+    public static Error NameAlreadyExists => Error.Validation(nameof(Calendar.Name), "Calendar name already exists");
 
-    public static Error DescriptionAlreadyExists(string description)
-    {
-        return Error.Validation(nameof(Calendar.Name), $"Calendar description '{description}' already exists");
-    }
+    public static Error DescriptionAlreadyExists => Error.Validation(
+        nameof(Calendar.Description),
+        "Calendar description already exists");
 }

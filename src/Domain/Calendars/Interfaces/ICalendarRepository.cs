@@ -6,7 +6,7 @@ public interface ICalendarRepository
 
     void Update(Calendar calendar);
 
-    Task<bool> NameIsUniqueAsync(Calendar calendar, CancellationToken cancellationToken = default);
+    Task<bool> NameExistsAsync(Calendar calendar, CancellationToken cancellationToken = default);
 
-    Task<bool> DescriptionIsUniqueAsync(Calendar calendar, CancellationToken cancellationToken = default);
+    Task<bool> DescriptionExistsAsync(Calendar calendar, CancellationToken cancellationToken = default);
 }
