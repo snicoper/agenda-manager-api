@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Common.WekDays;
+using AgendaManager.Domain.Common.WekDays.Exceptions;
 using AgendaManager.Domain.Common.WekDays.Extensions;
 using FluentAssertions;
 
@@ -50,5 +51,30 @@ public class WeekDaysTests
 
         // Assert
         result.Should().Be(WeekDays.None);
+    }
+
+    [Fact]
+    public void WekDays_ShouldThrowWeekDaysException_WhenConvertFromArrayWithMultipleSameDays()
+    {
+        // Arrange
+        var weekDays = new[] { 1, 1, 3, 4, 5, 6, 7, 7 };
+
+        // Act
+        Action action = () => weekDays.FromNumberArray();
+
+        // Assert
+        action.Should().Throw<WeekDaysException>();
+    }
+
+    [InlineData(1, 2, 3, 4, 5, 6, 7, 8)]
+    [InlineData(-2, 3, 4, 5, 6, 7, 8, 1)]
+    [Theory]
+    public void WekDays_ShouldThrowWeekDaysException_WhenConvertFromArrayWithOutOfRange(params int[] weekDays)
+    {
+        // Act
+        Action action = () => weekDays.FromNumberArray();
+
+        // Assert
+        action.Should().Throw<WeekDaysException>();
     }
 }
