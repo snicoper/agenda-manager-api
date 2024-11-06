@@ -53,13 +53,12 @@ public class UserService(IUserRepository userRepository)
 
     public async Task<Result> ValidateAsync(User user, CancellationToken cancellationToken)
     {
-        // FirstName and LastName cannot be longer than 256 characters.
-        if (!string.IsNullOrWhiteSpace(user.FirstName) && user.FirstName.Length > 256)
+        if (!string.IsNullOrEmpty(user.FirstName) && user.FirstName.Length > 256)
         {
             return UserErrors.FirstNameExceedsLength;
         }
 
-        if (!string.IsNullOrWhiteSpace(user.LastName) && user.LastName.Length > 256)
+        if (!string.IsNullOrEmpty(user.LastName) && user.LastName.Length > 256)
         {
             return UserErrors.LastNameExceedsLength;
         }

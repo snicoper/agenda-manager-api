@@ -10,11 +10,12 @@ namespace AgendaManager.Domain.UnitTests.Calendars.Services;
 public class CalendarServiceTests
 {
     private readonly CalendarService _sut;
+    private readonly ICalendarRepository _calendarRepository;
 
     public CalendarServiceTests()
     {
-        var calendarRepository = Substitute.For<ICalendarRepository>();
-        _sut = new CalendarService(calendarRepository);
+        _calendarRepository = Substitute.For<ICalendarRepository>();
+        _sut = new CalendarService(_calendarRepository);
     }
 
     [Fact]
@@ -75,7 +76,7 @@ public class CalendarServiceTests
         var calendar = CalendarFactory.CreateCalendar();
 
         // Act
-        _sut.NameExistsAsync(calendar, Arg.Any<CancellationToken>()).Returns(false);
+        _calendarRepository.NameExistsAsync(Arg.Any<Calendar>(), Arg.Any<CancellationToken>()).Returns(false);
         var result = await _sut.CreateAsync(calendar, CancellationToken.None);
 
         // Assert
@@ -89,7 +90,7 @@ public class CalendarServiceTests
         var calendar = CalendarFactory.CreateCalendar();
 
         // Act
-        _sut.NameExistsAsync(calendar, Arg.Any<CancellationToken>()).Returns(true);
+        _calendarRepository.NameExistsAsync(Arg.Any<Calendar>(), Arg.Any<CancellationToken>()).Returns(true);
         var result = await _sut.CreateAsync(calendar, CancellationToken.None);
 
         // Assert
@@ -104,7 +105,7 @@ public class CalendarServiceTests
         var calendar = CalendarFactory.CreateCalendar();
 
         // Act
-        _sut.DescriptionExistsAsync(calendar, Arg.Any<CancellationToken>()).Returns(false);
+        _calendarRepository.DescriptionExistsAsync(Arg.Any<Calendar>(), Arg.Any<CancellationToken>()).Returns(false);
         var result = await _sut.CreateAsync(calendar, CancellationToken.None);
 
         // Assert
@@ -118,7 +119,7 @@ public class CalendarServiceTests
         var calendar = CalendarFactory.CreateCalendar();
 
         // Act
-        _sut.DescriptionExistsAsync(calendar, Arg.Any<CancellationToken>()).Returns(true);
+        _calendarRepository.DescriptionExistsAsync(Arg.Any<Calendar>(), Arg.Any<CancellationToken>()).Returns(true);
         var result = await _sut.CreateAsync(calendar, CancellationToken.None);
 
         // Assert
