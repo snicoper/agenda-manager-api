@@ -16,8 +16,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasIndex(u => u.Email)
             .IsUnique();
 
-        builder
-            .HasMany(u => u.Roles)
+        builder.HasMany(u => u.Roles)
             .WithMany(r => r.Users)
             .UsingEntity(
                 typeBuilder =>

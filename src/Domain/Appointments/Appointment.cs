@@ -16,13 +16,17 @@ public class Appointment : AggregateRoot
 {
     private readonly List<AppointmentStatusChange> _statusChanges = [];
 
+    private Appointment()
+    {
+    }
+
     private Appointment(AppointmentId appointmentId, Period period)
     {
         Id = appointmentId;
         Period = period;
     }
 
-    public AppointmentId Id { get; }
+    public AppointmentId Id { get; } = null!;
 
     public ServiceId ServiceId { get; private set; } = null!;
 
@@ -36,7 +40,7 @@ public class Appointment : AggregateRoot
 
     public User User { get; private set; } = null!;
 
-    public Period Period { get; private set; }
+    public Period Period { get; private set; } = null!;
 
     public AppointmentStatus Status { get; private set; } = AppointmentStatus.Pending;
 

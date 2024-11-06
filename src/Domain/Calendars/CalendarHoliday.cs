@@ -1,7 +1,7 @@
-﻿using AgendaManager.Domain.Calendars.ValueObjects;
+﻿using AgendaManager.Domain.Calendars.Events;
+using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.ValueObjects;
-using AgendaManager.Domain.Resources.Events;
 
 namespace AgendaManager.Domain.Calendars;
 

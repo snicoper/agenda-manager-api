@@ -27,6 +27,8 @@ public class ResourceType : AuditableEntity
 
     public string Description { get; private set; } = default!;
 
+    public bool RequiredRole { get; private set; }
+
     public IReadOnlyList<Resource> Resources => _resources.AsReadOnly();
 
     public IReadOnlyList<Service> Services => _services.AsReadOnly();

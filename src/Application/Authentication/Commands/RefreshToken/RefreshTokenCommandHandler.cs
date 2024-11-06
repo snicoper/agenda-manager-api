@@ -23,7 +23,7 @@ internal class RefreshTokenCommandHandler(
         }
 
         var tokenResult = await jwtTokenGenerator.GenerateAccessTokenAsync(user.Id, cancellationToken);
-        var refreshToken = Domain.Users.ValueObjects.RefreshToken.Create(tokenResult.RefreshToken, tokenResult.Expires);
+        var refreshToken = Domain.Users.ValueObjects.RefreshToken.From(tokenResult.RefreshToken, tokenResult.Expires);
 
         user.UpdateRefreshToken(refreshToken);
         userRepository.Update(user);

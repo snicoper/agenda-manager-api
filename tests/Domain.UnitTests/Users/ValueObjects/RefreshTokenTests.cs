@@ -15,7 +15,7 @@ public class RefreshTokenTests
         var expiryTime = DateTimeOffset.UtcNow.AddDays(1);
 
         // Act
-        var refreshToken = RefreshToken.Create(token, expiryTime);
+        var refreshToken = RefreshToken.From(token, expiryTime);
 
         // Assert
         refreshToken.Token.Should().NotBeNull();
@@ -30,7 +30,7 @@ public class RefreshTokenTests
         var expiryTime = DateTimeOffset.UtcNow.AddDays(1);
 
         // Act
-        var refreshToken = () => RefreshToken.Create(token, expiryTime);
+        var refreshToken = () => RefreshToken.From(token, expiryTime);
 
         // Assert
         refreshToken.Should().Throw<ArgumentException>();
@@ -44,7 +44,7 @@ public class RefreshTokenTests
         var expiryTime = DateTimeOffset.MinValue;
 
         // Act
-        var refreshToken = () => RefreshToken.Create(token, expiryTime);
+        var refreshToken = () => RefreshToken.From(token, expiryTime);
 
         // Assert
         refreshToken.Should().Throw<ArgumentException>();
@@ -58,7 +58,7 @@ public class RefreshTokenTests
         var expiryTime = DateTimeOffset.UtcNow.AddDays(1);
 
         // Act
-        var refreshToken = () => RefreshToken.Create(token, expiryTime);
+        var refreshToken = () => RefreshToken.From(token, expiryTime);
 
         // Assert
         refreshToken.Should().Throw<ArgumentException>();

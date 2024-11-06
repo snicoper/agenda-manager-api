@@ -31,10 +31,10 @@ public class RefreshToken : ValueObject
 
         var expiryTime = DateTimeOffset.UtcNow.Add(lifetime);
 
-        return Create(token, expiryTime);
+        return From(token, expiryTime);
     }
 
-    public static RefreshToken Create(string token, DateTimeOffset expiryTime)
+    public static RefreshToken From(string token, DateTimeOffset expiryTime)
     {
         if (string.IsNullOrWhiteSpace(token) || token.Length > TokenLength)
         {

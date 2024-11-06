@@ -27,6 +27,8 @@ public class ResourceTypeConfiguration : IEntityTypeConfiguration<ResourceType>
             .HasMaxLength(500)
             .IsRequired();
 
+        builder.Property(rt => rt.RequiredRole);
+
         builder.HasMany(rt => rt.Resources)
             .WithOne(r => r.Type)
             .HasForeignKey(r => r.TypeId)

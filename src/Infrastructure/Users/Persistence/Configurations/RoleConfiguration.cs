@@ -16,22 +16,21 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
         builder.HasIndex(r => r.Name)
             .IsUnique();
 
-        builder
-            .HasMany(r => r.Permissions)
+        builder.HasMany(r => r.Permissions)
             .WithMany(p => p.Roles)
             .UsingEntity(
-                j =>
+                typeBuilder =>
                 {
-                    j.ToTable("RolePermissions");
-                    j.Property<RoleId>("RoleId").HasColumnName("RoleId");
-                    j.Property<PermissionId>("PermissionId").HasColumnName("PermissionId");
-                    j.HasKey("RoleId", "PermissionId");
+                    typeBuilder.ToTable("RolePermissions");
+                    typeBuilder.Property<RoleId>("RoleId").HasColumnName("RoleId");
+                    typeBuilder.Property<PermissionId>("PermissionId").HasColumnName("PermissionId");
+                    typeBuilder.HasKey("RoleId", "PermissionId");
 
                     // Campos de auditoría.
-                    j.Property<DateTimeOffset>("CreatedAt");
-                    j.Property<string>("CreatedBy");
-                    j.Property<DateTimeOffset>("LastModifiedAt");
-                    j.Property<string>("LastModifiedBy");
+                    typeBuilder.Property<DateTimeOffset>("CreatedAt");
+                    typeBuilder.Property<string>("CreatedBy");
+                    typeBuilder.Property<DateTimeOffset>("LastModifiedAt");
+                    typeBuilder.Property<string>("LastModifiedBy");
                 });
 
         builder.Property(r => r.Id)
