@@ -237,9 +237,8 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<int[]>("AvailableDays")
-                        .IsRequired()
-                        .HasColumnType("integer[]");
+                    b.Property<int>("AvailableDays")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("CalendarId")
                         .HasColumnType("uuid");

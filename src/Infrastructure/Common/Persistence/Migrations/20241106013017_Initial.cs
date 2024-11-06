@@ -329,7 +329,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     StartDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     EndDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     Type = table.Column<int>(type: "integer", nullable: false),
-                    AvailableDays = table.Column<int[]>(type: "integer[]", nullable: false),
+                    AvailableDays = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),

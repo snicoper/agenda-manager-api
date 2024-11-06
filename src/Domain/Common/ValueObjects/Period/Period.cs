@@ -1,7 +1,6 @@
 ﻿using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Common.Exceptions;
 
-namespace AgendaManager.Domain.Common.ValueObjects;
+namespace AgendaManager.Domain.Common.ValueObjects.Period;
 
 public class Period : ValueObject
 {

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241106000803_Initial")]
+    [Migration("20241106013017_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -240,9 +240,8 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<int[]>("AvailableDays")
-                        .IsRequired()
-                        .HasColumnType("integer[]");
+                    b.Property<int>("AvailableDays")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("CalendarId")
                         .HasColumnType("uuid");
