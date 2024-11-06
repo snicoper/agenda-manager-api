@@ -46,12 +46,12 @@ public class CalendarService(ICalendarRepository calendarRepository)
             return CalendarErrors.InvalidFormatDescription;
         }
 
-        if (!await NameIsUniqueAsync(calendar, cancellationToken))
+        if (await NameIsUniqueAsync(calendar, cancellationToken))
         {
             return CalendarErrors.NameAlreadyExists(calendar.Name);
         }
 
-        if (!await DescriptionIsUniqueAsync(calendar, cancellationToken))
+        if (await DescriptionIsUniqueAsync(calendar, cancellationToken))
         {
             return CalendarErrors.DescriptionAlreadyExists(calendar.Description);
         }
@@ -61,11 +61,15 @@ public class CalendarService(ICalendarRepository calendarRepository)
 
     public async Task<bool> NameIsUniqueAsync(Calendar calendar, CancellationToken cancellationToken)
     {
-        return await calendarRepository.NameIsUniqueAsync(calendar, cancellationToken);
+        var nameIsUnique = await calendarRepository.NameIsUniqueAsync(calendar, cancellationToken);
+
+        return nameIsUnique;
     }
 
     public async Task<bool> DescriptionIsUniqueAsync(Calendar calendar, CancellationToken cancellationToken)
     {
-        return await calendarRepository.DescriptionIsUniqueAsync(calendar, cancellationToken);
+        var descriptionIsUnique = await calendarRepository.DescriptionIsUniqueAsync(calendar, cancellationToken);
+
+        return descriptionIsUnique;
     }
 }

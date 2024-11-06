@@ -10,7 +10,7 @@ public static class CalendarErrors
     public static Error InvalidFormatDescription =>
         Error.Validation(
             nameof(Calendar.Description),
-            "Description cannot be empty and must be less than 100 characters.");
+            "Description cannot be empty and must be less than 500 characters.");
 
     public static Error NameAlreadyExists(string name)
     {

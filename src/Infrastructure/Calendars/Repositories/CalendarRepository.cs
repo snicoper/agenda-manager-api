@@ -19,13 +19,17 @@ public class CalendarRepository(AppDbContext context) : ICalendarRepository
 
     public async Task<bool> NameIsUniqueAsync(Calendar calendar, CancellationToken cancellationToken = default)
     {
-        return await context.Calendars
+        var nameIsUnique = !await context.Calendars
             .AnyAsync(c => c.Name.Equals(calendar.Name) && c.Id != calendar.Id, cancellationToken);
+
+        return nameIsUnique;
     }
 
     public async Task<bool> DescriptionIsUniqueAsync(Calendar calendar, CancellationToken cancellationToken = default)
     {
-        return await context.Calendars
+        var descriptionIsUnique = !await context.Calendars
             .AnyAsync(c => c.Description.Equals(calendar.Description) && c.Id != calendar.Id, cancellationToken);
+
+        return descriptionIsUnique;
     }
 }
