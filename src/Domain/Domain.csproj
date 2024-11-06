@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="AgendaManager.Domain.UnitTests"/>
+    <InternalsVisibleTo Include="AgendaManager.TestCommon"/>
   </ItemGroup>
 
 </Project>
