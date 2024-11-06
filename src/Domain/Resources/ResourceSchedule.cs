@@ -2,6 +2,7 @@
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.ValueObjects;
+using AgendaManager.Domain.Common.WekDays;
 using AgendaManager.Domain.Resources.Enums;
 using AgendaManager.Domain.Resources.Events;
 using AgendaManager.Domain.Resources.ValueObjects;
@@ -33,7 +34,7 @@ public class ResourceSchedule : AggregateRoot
 
     public ResourceScheduleType Type { get; private set; } = ResourceScheduleType.Available;
 
-    public List<DayOfWeek> AvailableDays { get; private set; } = null!;
+    public WeekDays AvailableDays { get; private set; } = WeekDays.None;
 
     public string Name { get; private set; } = null!;
 

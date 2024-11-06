@@ -57,6 +57,7 @@ public class ResourceScheduleConfiguration : IEntityTypeConfiguration<ResourceSc
             .IsRequired();
 
         builder.Property(rs => rs.AvailableDays)
+            .HasConversion<int>()
             .IsRequired();
 
         builder.Property(rs => rs.Name)
