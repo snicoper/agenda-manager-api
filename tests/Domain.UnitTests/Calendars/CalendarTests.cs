@@ -19,9 +19,9 @@ public class CalendarTests
         calendar.Description.Should().Be(calendar.Description);
     }
 
+    [Theory]
     [InlineData(0)]
     [InlineData(51)]
-    [Theory]
     public void Calendar_ShouldThrowDomainException_WhenInvalidNameIsProvided(int characters)
     {
         // Arrange
@@ -34,9 +34,9 @@ public class CalendarTests
         exception.Message.Should().Be("Name cannot be empty and must be less than 50 characters.");
     }
 
+    [Theory]
     [InlineData(0)]
     [InlineData(501)]
-    [Theory]
     public void Calendar_ShouldThrowDomainException_WhenInvalidDescriptionIsProvided(int characters)
     {
         // Arrange
