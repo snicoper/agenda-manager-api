@@ -14,7 +14,7 @@ public class PermissionService(IPermissionRepository permissionRepository)
     {
         Permission permission = new(permissionId, name);
 
-        var validationResult = await ValidateAsync(permission, cancellationToken);
+        var validationResult = await IsValidAsync(permission, cancellationToken);
         if (validationResult.IsFailure)
         {
             return validationResult.MapToValue<Permission>();
@@ -25,7 +25,7 @@ public class PermissionService(IPermissionRepository permissionRepository)
         return Result.Create(permission);
     }
 
-    public async Task<Result> ValidateAsync(Permission permission, CancellationToken cancellationToken)
+    public async Task<Result> IsValidAsync(Permission permission, CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(permission.Name) || permission.Name.Length > 100)
         {

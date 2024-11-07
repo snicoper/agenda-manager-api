@@ -15,7 +15,7 @@ public class RoleService(IRoleRepository roleRepository)
     {
         Role role = new(roleId, name, editable);
 
-        var validationResult = await ValidateAsync(role, cancellationToken);
+        var validationResult = await IsValidAsync(role, cancellationToken);
         if (validationResult.IsFailure)
         {
             return validationResult.MapToValue<Role>();
@@ -28,7 +28,7 @@ public class RoleService(IRoleRepository roleRepository)
 
     public async Task<Result> UpdateAsync(Role role, CancellationToken cancellationToken)
     {
-        var validationResult = await ValidateAsync(role, cancellationToken);
+        var validationResult = await IsValidAsync(role, cancellationToken);
         if (validationResult.IsFailure)
         {
             return validationResult;
@@ -39,7 +39,7 @@ public class RoleService(IRoleRepository roleRepository)
         return Result.Success();
     }
 
-    public async Task<Result> ValidateAsync(Role role, CancellationToken cancellationToken)
+    public async Task<Result> IsValidAsync(Role role, CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(role.Name) || role.Name.Length > 100)
         {

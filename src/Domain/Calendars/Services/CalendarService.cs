@@ -14,7 +14,7 @@ public class CalendarService(ICalendarRepository calendarRepository)
         CancellationToken cancellationToken)
     {
         Calendar calendar = new(calendarId, name, description);
-        var validationResult = await ValidateAsync(calendar, cancellationToken);
+        var validationResult = await IsValidAsync(calendar, cancellationToken);
         if (validationResult.IsFailure)
         {
             return validationResult.MapToValue<Calendar>();
@@ -27,7 +27,7 @@ public class CalendarService(ICalendarRepository calendarRepository)
 
     public async Task<Result<Calendar>> UpdateAsync(Calendar calendar, CancellationToken cancellationToken)
     {
-        var validationResult = await ValidateAsync(calendar, cancellationToken);
+        var validationResult = await IsValidAsync(calendar, cancellationToken);
         if (validationResult.IsFailure)
         {
             validationResult.MapToValue<Calendar>();
@@ -39,7 +39,7 @@ public class CalendarService(ICalendarRepository calendarRepository)
         return Result.Create(calendar);
     }
 
-    public async Task<Result> ValidateAsync(Calendar calendar, CancellationToken cancellationToken)
+    public async Task<Result> IsValidAsync(Calendar calendar, CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(calendar.Name) || calendar.Name.Length > 50)
         {

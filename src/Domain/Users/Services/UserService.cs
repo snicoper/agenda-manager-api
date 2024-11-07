@@ -26,7 +26,7 @@ public class UserService(IUserRepository userRepository)
             user.ConfirmEmail();
         }
 
-        var validationResult = await ValidateAsync(user, cancellationToken);
+        var validationResult = await IsValidAsync(user, cancellationToken);
         if (validationResult.IsFailure)
         {
             return validationResult.MapToValue<User>();
@@ -39,7 +39,7 @@ public class UserService(IUserRepository userRepository)
 
     public async Task<Result> UpdateAsync(User user, CancellationToken cancellationToken)
     {
-        var validationResult = await ValidateAsync(user, cancellationToken);
+        var validationResult = await IsValidAsync(user, cancellationToken);
         if (validationResult.IsFailure)
         {
             return validationResult.MapToValue<User>();
@@ -51,7 +51,7 @@ public class UserService(IUserRepository userRepository)
         return Result.Success();
     }
 
-    public async Task<Result> ValidateAsync(User user, CancellationToken cancellationToken)
+    public async Task<Result> IsValidAsync(User user, CancellationToken cancellationToken)
     {
         if (!string.IsNullOrEmpty(user.FirstName) && user.FirstName.Length > 256)
         {
