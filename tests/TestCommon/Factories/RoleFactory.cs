@@ -6,18 +6,18 @@ namespace AgendaManager.TestCommon.Factories;
 
 public abstract class RoleFactory
 {
-    public static Role CreateRoleAdmin()
+    public static Role CreateRoleAdmin(RoleId? roleId = null, string name = Roles.Admin)
     {
-        return new Role(RoleId.Create(), Roles.Admin);
+        return new Role(roleId ?? RoleId.Create(), name);
     }
 
-    public static Role CreateRoleManager()
+    public static Role CreateRoleManager(RoleId? roleId = null, string name = Roles.Manager)
     {
-        return new Role(RoleId.Create(), Roles.Manager);
+        return new Role(roleId ?? RoleId.Create(), name);
     }
 
-    public static Role CreateRoleClient()
+    public static Role CreateRoleClient(RoleId? roleId = null, string name = Roles.Client)
     {
-        return new Role(RoleId.Create(), Roles.Client);
+        return new Role(roleId ?? RoleId.Create(), name);
     }
 }

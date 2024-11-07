@@ -2,21 +2,22 @@
 using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.Interfaces;
+using AgendaManager.Domain.Users.Services;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 using NSubstitute;
 
-namespace AgendaManager.Domain.UnitTests.Users.Services.UserService;
+namespace AgendaManager.Domain.UnitTests.Users.Services.UserServices;
 
 public class UserServiceCreateTests
 {
-    private readonly Domain.Users.Services.UserService _sut;
+    private readonly UserService _sut;
     private readonly IUserRepository _userRepository;
 
     public UserServiceCreateTests()
     {
         _userRepository = Substitute.For<IUserRepository>();
-        _sut = new Domain.Users.Services.UserService(_userRepository);
+        _sut = new UserService(_userRepository);
     }
 
     [Fact]
