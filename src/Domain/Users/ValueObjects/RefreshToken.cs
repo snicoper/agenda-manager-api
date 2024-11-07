@@ -36,12 +36,7 @@ public class RefreshToken : ValueObject
 
     public static RefreshToken From(string token, DateTimeOffset expires)
     {
-        if (string.IsNullOrEmpty(token) || token.Length > TokenLength)
-        {
-            throw new ArgumentException(
-                $"Value cannot be null, whitespace or greater than {TokenLength} characters.",
-                nameof(token));
-        }
+        GuardAgainstToken(token);
 
         if (expires <= DateTimeOffset.UtcNow)
         {
@@ -60,5 +55,15 @@ public class RefreshToken : ValueObject
     {
         yield return Token;
         yield return Expires;
+    }
+
+    private static void GuardAgainstToken(string token)
+    {
+        if (string.IsNullOrEmpty(token) || token.Length > TokenLength)
+        {
+            throw new ArgumentException(
+                $"Value cannot be null, whitespace or greater than {TokenLength} characters.",
+                nameof(token));
+        }
     }
 }
