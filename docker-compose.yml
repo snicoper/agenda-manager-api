@@ -33,6 +33,20 @@ services:
     volumes:
       - ./.containers/postgresql:/var/lib/postgresql/data
 
+  agenda-manager-keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: agenda-manager-keycloak
+    command: start-dev
+    restart: always
+    environment:
+      - KC_HEALTH_ENABLED=true
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+    volumes:
+      - ./.containers/keycloak:/opt/keycloak/data
+    ports:
+      - "18080:8080"
+
   agenda-manager-seq:
     image: datalust/seq:latest
     container_name: agenda-manager-serilog-seq
