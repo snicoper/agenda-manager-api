@@ -1,8 +1,7 @@
 ﻿using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Users.Exceptions;
 using DomainRegex = AgendaManager.Domain.Common.Utils.DomainRegex;
 
-namespace AgendaManager.Domain.Users.ValueObjects;
+namespace AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 
 public class EmailAddress : ValueObject
 {

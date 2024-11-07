@@ -5,7 +5,7 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users.Services;
 
-public class RoleService(IRoleRepository roleRepository)
+public class RoleManager(IRoleRepository roleRepository)
 {
     public async Task<Result<Role>> CreateAsync(
         RoleId roleId,
@@ -41,11 +41,6 @@ public class RoleService(IRoleRepository roleRepository)
 
     public async Task<Result> IsValidAsync(Role role, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrEmpty(role.Name) || role.Name.Length > 100)
-        {
-            return RoleErrors.RoleNameExceedsLength;
-        }
-
         if (await NameExistsAsync(role, cancellationToken))
         {
             return RoleErrors.RoleNameAlreadyExists;

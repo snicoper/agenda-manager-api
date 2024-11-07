@@ -1,6 +1,7 @@
 ﻿using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users.Events;
+using AgendaManager.Domain.Users.Exceptions;
 using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users;
@@ -12,6 +13,8 @@ public sealed class Role : AggregateRoot
 
     internal Role(RoleId roleId, string name, bool editable = false)
     {
+        GuardAgainstInvalidName(name);
+
         Id = roleId;
         Name = name;
         Editable = editable;
@@ -49,5 +52,13 @@ public sealed class Role : AggregateRoot
         AddDomainEvent(new RolePermissionRemovedDomainEvent(Id, permission.Id));
 
         return Result.Success();
+    }
+
+    private static void GuardAgainstInvalidName(string name)
+    {
+        if (string.IsNullOrEmpty(name) || name.Length > 100)
+        {
+            throw new RoleDomainException("Role name is null or exceeds length of 100 characters.");
+        }
     }
 }

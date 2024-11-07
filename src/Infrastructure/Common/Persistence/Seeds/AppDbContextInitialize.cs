@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Common.Constants;
+using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.Services;
@@ -10,9 +11,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Seeds;
 
 public class AppDbContextInitialize(
     AppDbContext context,
-    UserService userService,
-    RoleService roleService,
-    PermissionService permissionService,
+    UserManager userManager,
+    RoleManager roleManager,
+    PermissionManager permissionManager,
     IPasswordHasher passwordHasher,
     UserAuthorizationManager userAuthorizationManager,
     ILogger<AppDbContextInitialize> logger)
@@ -60,9 +61,9 @@ public class AppDbContextInitialize(
             return;
         }
 
-        var adminRole = await roleService.CreateAsync(RoleId.Create(), Roles.Admin);
-        var managerRole = await roleService.CreateAsync(RoleId.Create(), Roles.Manager);
-        var clientRole = await roleService.CreateAsync(RoleId.Create(), Roles.Client);
+        var adminRole = await roleManager.CreateAsync(RoleId.Create(), Roles.Admin);
+        var managerRole = await roleManager.CreateAsync(RoleId.Create(), Roles.Manager);
+        var clientRole = await roleManager.CreateAsync(RoleId.Create(), Roles.Client);
 
         _roles = [adminRole.Value!, managerRole.Value!, clientRole.Value!];
 
@@ -81,10 +82,10 @@ public class AppDbContextInitialize(
             return;
         }
 
-        var userReadPermission = await permissionService.CreateAsync(PermissionId.Create(), Permissions.User.Read);
-        var userCreatePermission = await permissionService.CreateAsync(PermissionId.Create(), Permissions.User.Create);
-        var userUpdatePermission = await permissionService.CreateAsync(PermissionId.Create(), Permissions.User.Update);
-        var userDeletePermission = await permissionService.CreateAsync(PermissionId.Create(), Permissions.User.Delete);
+        var userReadPermission = await permissionManager.CreateAsync(PermissionId.Create(), Permissions.User.Read);
+        var userCreatePermission = await permissionManager.CreateAsync(PermissionId.Create(), Permissions.User.Create);
+        var userUpdatePermission = await permissionManager.CreateAsync(PermissionId.Create(), Permissions.User.Update);
+        var userDeletePermission = await permissionManager.CreateAsync(PermissionId.Create(), Permissions.User.Delete);
 
         _permissions =
         [
@@ -131,7 +132,7 @@ public class AppDbContextInitialize(
         var passwordHash = passwordHasher.HashPassword("Password4!");
 
         // Admin user.
-        var adminResult = await userService.CreateAsync(
+        var adminResult = await userManager.CreateAsync(
             userId: UserId.Create(),
             email: EmailAddress.From("alice@example.com"),
             passwordHash: passwordHash,
@@ -160,7 +161,7 @@ public class AppDbContextInitialize(
         }
 
         // Manager user.
-        var managerResult = await userService.CreateAsync(
+        var managerResult = await userManager.CreateAsync(
             UserId.Create(),
             EmailAddress.From("bob@example.com"),
             passwordHash,
@@ -187,7 +188,7 @@ public class AppDbContextInitialize(
         }
 
         // Client user.
-        var clientResult = await userService.CreateAsync(
+        var clientResult = await userManager.CreateAsync(
             UserId.Create(),
             EmailAddress.From("carol@example.com"),
             passwordHash,
@@ -211,7 +212,7 @@ public class AppDbContextInitialize(
         }
 
         // Client user.
-        var client2Result = await userService.CreateAsync(
+        var client2Result = await userManager.CreateAsync(
             UserId.Create(),
             EmailAddress.From("lexi@example.com"),
             passwordHash,

@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Users.ValueObjects;
+﻿using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
+using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.TestCommon.Seeds;
 

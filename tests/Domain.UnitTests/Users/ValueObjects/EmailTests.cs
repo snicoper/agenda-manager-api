@@ -1,5 +1,4 @@
-﻿using AgendaManager.Domain.Users.Exceptions;
-using AgendaManager.Domain.Users.ValueObjects;
+﻿using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 using FluentAssertions;
 
 namespace AgendaManager.Domain.UnitTests.Users.ValueObjects;

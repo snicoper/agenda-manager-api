@@ -1,6 +1,8 @@
 ﻿using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.Responses;
+using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 using AgendaManager.Domain.Users.Events;
+using AgendaManager.Domain.Users.Exceptions;
 using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users;
@@ -18,6 +20,9 @@ public sealed class User : AggregateRoot
         bool active = true,
         bool emailConfirmed = false)
     {
+        GuardAgainstInvalidFirstName(firstName);
+        GuardAgainstInvalidLastName(lastName);
+
         Id = userId;
         Email = email;
         PasswordHash = passwordHash;
@@ -25,9 +30,6 @@ public sealed class User : AggregateRoot
         LastName = lastName;
         Active = active;
         IsEmailConfirmed = emailConfirmed;
-
-        Active = true;
-        IsEmailConfirmed = false;
 
         AddDomainEvent(new UserCreatedDomainEvent(userId));
     }
@@ -138,5 +140,21 @@ public sealed class User : AggregateRoot
         Email = email;
 
         AddDomainEvent(new UserEmailUpdatedDomainEvent(Id));
+    }
+
+    private static void GuardAgainstInvalidFirstName(string? firstName)
+    {
+        if (!string.IsNullOrEmpty(firstName) && firstName?.Length > 256)
+        {
+            throw new UserDomainException("First name exceeds length of 256 characters.");
+        }
+    }
+
+    private static void GuardAgainstInvalidLastName(string? lastName)
+    {
+        if (!string.IsNullOrEmpty(lastName) && lastName?.Length > 256)
+        {
+            throw new UserDomainException("Last name exceeds length of 256 characters.");
+        }
     }
 }

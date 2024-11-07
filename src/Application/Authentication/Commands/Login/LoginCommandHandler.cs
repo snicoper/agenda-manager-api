@@ -3,10 +3,10 @@ using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Models.Users;
 using AgendaManager.Domain.Common.Responses;
+using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.Services;
-using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Application.Authentication.Commands.Login;
 

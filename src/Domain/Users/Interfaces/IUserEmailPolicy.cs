@@ -1,5 +1,5 @@
 ﻿using AgendaManager.Domain.Common.Responses;
-using AgendaManager.Domain.Users.ValueObjects;
+using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 
 namespace AgendaManager.Domain.Users.Interfaces;
 

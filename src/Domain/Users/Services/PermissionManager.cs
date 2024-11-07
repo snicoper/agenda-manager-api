@@ -5,7 +5,7 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users.Services;
 
-public class PermissionService(IPermissionRepository permissionRepository)
+public class PermissionManager(IPermissionRepository permissionRepository)
 {
     public async Task<Result<Permission>> CreateAsync(
         PermissionId permissionId,
@@ -27,11 +27,6 @@ public class PermissionService(IPermissionRepository permissionRepository)
 
     public async Task<Result> IsValidAsync(Permission permission, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrEmpty(permission.Name) || permission.Name.Length > 100)
-        {
-            return PermissionErrors.PermissionNameExceedsLength;
-        }
-
         if (await NameExistsAsync(permission, cancellationToken))
         {
             return PermissionErrors.PermissionNameAlreadyExists;

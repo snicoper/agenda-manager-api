@@ -2,15 +2,6 @@
 
 namespace AgendaManager.Domain.Calendars.Exxceptions;
 
-public class CalendarDomainException : DomainException
+public class CalendarDomainException(string message) : DomainException(message)
 {
-    public CalendarDomainException(string message)
-        : base(message)
-    {
-    }
-
-    public CalendarDomainException(string message, Exception innerException)
-        : base(message, innerException)
-    {
-    }
 }

@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Users.Events;
+﻿using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
+using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.ValueObjects;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;

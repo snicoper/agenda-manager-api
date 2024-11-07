@@ -1,23 +1,26 @@
 ﻿using AgendaManager.Domain.Common.Responses;
+using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Events;
+using AgendaManager.Domain.Users.Exceptions;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.Services;
+using AgendaManager.Domain.Users.ValueObjects;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 using NSubstitute;
 
-namespace AgendaManager.Domain.UnitTests.Users.Services.UserServices;
+namespace AgendaManager.Domain.UnitTests.Users.Services.UserManagers;
 
-public class UserServiceCreateTests
+public class UserManagerCreateTests
 {
-    private readonly UserService _sut;
+    private readonly UserManager _sut;
     private readonly IUserRepository _userRepository;
 
-    public UserServiceCreateTests()
+    public UserManagerCreateTests()
     {
         _userRepository = Substitute.For<IUserRepository>();
-        _sut = new UserService(_userRepository);
+        _sut = new UserManager(_userRepository);
     }
 
     [Fact]
@@ -69,44 +72,32 @@ public class UserServiceCreateTests
     }
 
     [Fact]
-    public async Task CreateAsync_ShouldReturnResultFailure_WhenFirstNameIsGreaterThan256()
+    public async Task CreateAsync_ShouldThrowUserDomainException_WhenFirstNameIsGreaterThan256()
     {
-        var user = UserFactory.CreateUserAlice();
         var firstName = new string('a', 257);
 
-        // Act
-        var userResult = await _sut.CreateAsync(
-            userId: user.Id,
-            email: user.Email,
-            passwordHash: user.PasswordHash,
-            firstName: firstName,
-            lastName: user.LastName);
-
-        // Assert
-        userResult.Should().BeOfType<Result<User>>();
-        userResult.ResultType.Should().Be(ResultType.Conflict);
-        userResult.IsFailure.Should().BeTrue();
-        userResult.Error?.FirstError()?.Description.Should().Be("First name exceeds length.");
+        // Act & Assert
+        await Assert.ThrowsAsync<UserDomainException>(
+            () => _sut.CreateAsync(
+                userId: UserId.Create(),
+                email: EmailAddress.From("email@example.com"),
+                passwordHash: "passwordHash",
+                firstName: firstName,
+                lastName: "lastName"));
     }
 
     [Fact]
-    public async Task CreateAsync_ShouldReturnResultFailure_WhenLastNameIsGreaterThan256()
+    public async Task CreateAsync_ShouldThrowUserDomainException_WhenLastNameIsGreaterThan256()
     {
-        var user = UserFactory.CreateUserAlice();
         var lastName = new string('a', 257);
 
-        // Act
-        var userResult = await _sut.CreateAsync(
-            userId: user.Id,
-            email: user.Email,
-            passwordHash: user.PasswordHash,
-            firstName: user.FirstName,
-            lastName: lastName);
-
-        // Assert
-        userResult.Should().BeOfType<Result<User>>();
-        userResult.ResultType.Should().Be(ResultType.Conflict);
-        userResult.IsFailure.Should().BeTrue();
-        userResult.Error?.FirstError()?.Description.Should().Be("Last name exceeds length.");
+        // Act & Assert
+        await Assert.ThrowsAsync<UserDomainException>(
+            () => _sut.CreateAsync(
+                userId: UserId.Create(),
+                email: EmailAddress.From("email@example.com"),
+                passwordHash: "passwordHash",
+                firstName: "firstName",
+                lastName: lastName));
     }
 }

@@ -1,23 +1,25 @@
 ﻿using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Events;
+using AgendaManager.Domain.Users.Exceptions;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.Services;
+using AgendaManager.Domain.Users.ValueObjects;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 using NSubstitute;
 
-namespace AgendaManager.Domain.UnitTests.Users.Services.RoleServices;
+namespace AgendaManager.Domain.UnitTests.Users.Services.RoleManagers;
 
-public class RoleServiceCreateTests
+public class RoleManagerCreateTests
 {
     private readonly IRoleRepository _roleRepository;
-    private readonly RoleService _sut;
+    private readonly RoleManager _sut;
 
-    public RoleServiceCreateTests()
+    public RoleManagerCreateTests()
     {
         _roleRepository = Substitute.For<IRoleRepository>();
-        _sut = new RoleService(_roleRepository);
+        _sut = new RoleManager(_roleRepository);
     }
 
     [Fact]
@@ -57,19 +59,12 @@ public class RoleServiceCreateTests
     }
 
     [Fact]
-    public async Task CreateAsync_ShouldReturnResultFailure_WhenNameExceedsLength()
+    public async Task CreateAsync_ShouldThrowRoleDomainException_WhenNameExceedsLength()
     {
         // Arrange
         var roleName = new string('a', 101);
-        var role = RoleFactory.CreateRoleAdmin(name: roleName);
 
-        // Act
-        var roleResult = await _sut.CreateAsync(role.Id, role.Name, role.Editable);
-
-        // Assert
-        roleResult.Should().BeOfType<Result<Role>>();
-        roleResult.IsSuccess.Should().BeFalse();
-        roleResult.ResultType.Should().Be(ResultType.Validation);
-        roleResult.Error?.FirstError()?.Description.Should().Be("Role name exceeds length.");
+        // Act & Assert
+        await Assert.ThrowsAsync<RoleDomainException>(() => _sut.CreateAsync(RoleId.Create(), roleName, true));
     }
 }

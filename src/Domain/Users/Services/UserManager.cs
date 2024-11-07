@@ -1,11 +1,12 @@
 ﻿using AgendaManager.Domain.Common.Responses;
+using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users.Services;
 
-public class UserService(IUserRepository userRepository)
+public class UserManager(IUserRepository userRepository)
 {
     public async Task<Result<User>> CreateAsync(
         UserId userId,
@@ -53,16 +54,6 @@ public class UserService(IUserRepository userRepository)
 
     public async Task<Result> IsValidAsync(User user, CancellationToken cancellationToken)
     {
-        if (!string.IsNullOrEmpty(user.FirstName) && user.FirstName.Length > 256)
-        {
-            return UserErrors.FirstNameExceedsLength;
-        }
-
-        if (!string.IsNullOrEmpty(user.LastName) && user.LastName.Length > 256)
-        {
-            return UserErrors.LastNameExceedsLength;
-        }
-
         if (await EmailExistsAsync(user, cancellationToken))
         {
             return UserErrors.EmailAlreadyExists;
