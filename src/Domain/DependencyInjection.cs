@@ -30,6 +30,6 @@ public static class DependencyInjection
 
     private static void AddCalendars(this IServiceCollection services)
     {
-        services.AddScoped<CalendarService>();
+        services.AddScoped<CalendarManager>();
     }
 }

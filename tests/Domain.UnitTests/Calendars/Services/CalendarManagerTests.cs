@@ -1,6 +1,8 @@
 ﻿using AgendaManager.Domain.Calendars;
+using AgendaManager.Domain.Calendars.Exxceptions;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.Services;
+using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
@@ -8,15 +10,15 @@ using NSubstitute;
 
 namespace AgendaManager.Domain.UnitTests.Calendars.Services;
 
-public class CalendarServiceTests
+public class CalendarManagerTests
 {
-    private readonly CalendarService _sut;
+    private readonly CalendarManager _sut;
     private readonly ICalendarRepository _calendarRepository;
 
-    public CalendarServiceTests()
+    public CalendarManagerTests()
     {
         _calendarRepository = Substitute.For<ICalendarRepository>();
-        _sut = new CalendarService(_calendarRepository);
+        _sut = new CalendarManager(_calendarRepository);
     }
 
     [Fact]
@@ -33,47 +35,35 @@ public class CalendarServiceTests
     [Theory]
     [InlineData(0)]
     [InlineData(51)]
-    public async Task Calendar_ShouldReturnResultFailure_WhenInvalidNameIsProvided(int characters)
+    public async Task Calendar_ShouldThrowCalendarDomainException_WhenInvalidNameIsProvided(int characters)
     {
         // Arrange
         var name = new string('a', characters);
-        var calendar = CalendarFactory.CreateCalendar(name: name);
 
-        // Act
-        var result = await _sut.CreateAsync(
-            calendarId: calendar.Id,
-            name: calendar.Name,
-            description: calendar.Description,
-            CancellationToken.None);
-
-        // Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error?.FirstError()?.Code.Should().Be(nameof(Calendar.Name));
-        result.Error?.FirstError()?.Description.Should()
-            .Be("Name cannot be empty and must be less than 50 characters.");
+        // Act & Assert
+        await Assert.ThrowsAsync<CalendarDomainException>(
+            () => _sut.CreateAsync(
+                calendarId: CalendarId.Create(),
+                name: name,
+                description: "Description of my calendar",
+                CancellationToken.None));
     }
 
     [Theory]
     [InlineData(0)]
     [InlineData(501)]
-    public async Task Calendar_ShouldReturnResultFailure_WhenInvalidDescriptionIsProvided(int characters)
+    public async Task Calendar_ShouldThrowCalendarDomainException_WhenInvalidDescriptionIsProvided(int characters)
     {
         // Arrange
         var description = new string('a', characters);
-        var calendar = CalendarFactory.CreateCalendar(description: description);
 
-        // Act
-        var result = await _sut.CreateAsync(
-            calendarId: calendar.Id,
-            name: calendar.Name,
-            description: calendar.Description,
-            CancellationToken.None);
-
-        // Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error?.FirstError()?.Code.Should().Be(nameof(Calendar.Description));
-        result.Error?.FirstError()?.Description.Should()
-            .Be("Description cannot be empty and must be less than 500 characters.");
+        // Act & Assert
+        await Assert.ThrowsAsync<CalendarDomainException>(
+            () => _sut.CreateAsync(
+                calendarId: CalendarId.Create(),
+                name: "My calendar",
+                description: description,
+                CancellationToken.None));
     }
 
     [Fact]

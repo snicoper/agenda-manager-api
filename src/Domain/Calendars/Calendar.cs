@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Calendars.Events;
+using AgendaManager.Domain.Calendars.Exxceptions;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 
@@ -8,6 +9,9 @@ public class Calendar : AggregateRoot
 {
     internal Calendar(CalendarId id, string name, string description)
     {
+        GuardAgainstInvalidName(name);
+        GuardAgainstInvalidDescription(description);
+
         Id = id;
         Name = name;
         Description = description;
@@ -27,6 +31,9 @@ public class Calendar : AggregateRoot
 
     internal void Update(string name, string description)
     {
+        GuardAgainstInvalidName(name);
+        GuardAgainstInvalidDescription(description);
+
         if (Name == name && Description == description)
         {
             return;
@@ -36,5 +43,21 @@ public class Calendar : AggregateRoot
         Description = description;
 
         AddDomainEvent(new CalendarUpdatedDomainEvent(Id));
+    }
+
+    private static void GuardAgainstInvalidName(string name)
+    {
+        if (string.IsNullOrEmpty(name) || name.Length > 50)
+        {
+            throw new CalendarDomainException(name);
+        }
+    }
+
+    private static void GuardAgainstInvalidDescription(string description)
+    {
+        if (string.IsNullOrEmpty(description) || description.Length > 500)
+        {
+            throw new CalendarDomainException(description);
+        }
     }
 }

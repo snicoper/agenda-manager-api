@@ -5,7 +5,7 @@ using AgendaManager.Domain.Common.Responses;
 
 namespace AgendaManager.Domain.Calendars.Services;
 
-public class CalendarService(ICalendarRepository calendarRepository)
+public class CalendarManager(ICalendarRepository calendarRepository)
 {
     public async Task<Result<Calendar>> CreateAsync(
         CalendarId calendarId,
@@ -41,16 +41,6 @@ public class CalendarService(ICalendarRepository calendarRepository)
 
     public async Task<Result> IsValidAsync(Calendar calendar, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrEmpty(calendar.Name) || calendar.Name.Length > 50)
-        {
-            return CalendarErrors.InvalidFormatName;
-        }
-
-        if (string.IsNullOrEmpty(calendar.Description) || calendar.Description.Length > 500)
-        {
-            return CalendarErrors.InvalidFormatDescription;
-        }
-
         if (await NameExistsAsync(calendar, cancellationToken))
         {
             return CalendarErrors.NameAlreadyExists;
