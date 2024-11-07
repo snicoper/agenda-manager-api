@@ -55,6 +55,11 @@ public class AppDbContextInitialize(
 
     private async Task CreateRolesAsync()
     {
+        if (context.Roles.Any())
+        {
+            return;
+        }
+
         var adminRole = await roleService.CreateAsync(RoleId.Create(), Roles.Admin);
         var managerRole = await roleService.CreateAsync(RoleId.Create(), Roles.Manager);
         var clientRole = await roleService.CreateAsync(RoleId.Create(), Roles.Client);
@@ -71,6 +76,11 @@ public class AppDbContextInitialize(
 
     private async Task CreatePermissionsAsync()
     {
+        if (context.Permissions.Any())
+        {
+            return;
+        }
+
         var userReadPermission = await permissionService.CreateAsync(PermissionId.Create(), Permissions.User.Read);
         var userCreatePermission = await permissionService.CreateAsync(PermissionId.Create(), Permissions.User.Create);
         var userUpdatePermission = await permissionService.CreateAsync(PermissionId.Create(), Permissions.User.Update);

@@ -20,14 +20,14 @@ public class PermissionService(IPermissionRepository permissionRepository)
             return validationResult.MapToValue<Permission>();
         }
 
-        await permissionRepository.AddAsync(permission);
+        await permissionRepository.AddAsync(permission, cancellationToken);
 
         return Result.Create(permission);
     }
 
     public async Task<Result> ValidateAsync(Permission permission, CancellationToken cancellationToken)
     {
-        if (!string.IsNullOrWhiteSpace(permission.Name) || permission.Name.Length > 100)
+        if (string.IsNullOrEmpty(permission.Name) || permission.Name.Length > 100)
         {
             return PermissionErrors.PermissionNameExceedsLength;
         }

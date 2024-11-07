@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Calendars.Interfaces;
+﻿using AgendaManager.Domain.Calendars.Errors;
+using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
 

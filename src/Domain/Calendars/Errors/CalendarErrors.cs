@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Common.Responses;
 
-namespace AgendaManager.Domain.Calendars;
+namespace AgendaManager.Domain.Calendars.Errors;
 
 public static class CalendarErrors
 {

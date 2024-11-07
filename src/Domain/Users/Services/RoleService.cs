@@ -41,7 +41,7 @@ public class RoleService(IRoleRepository roleRepository)
 
     public async Task<Result> ValidateAsync(Role role, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(role.Name) || role.Name.Length > 100)
+        if (string.IsNullOrEmpty(role.Name) || role.Name.Length > 100)
         {
             return RoleErrors.RoleNameExceedsLength;
         }
