@@ -1,7 +1,6 @@
 services:
-
   agenda-manager-api:
-    image: ${DOCKER_REGISTRY-}agenda-manager-api
+    image: agenda-manager-api
     container_name: agenda-manager-api
     build:
       context: .
@@ -16,8 +15,12 @@ services:
       - ConnectionStrings__DefaultConnection=Server=agenda-manager-db;Port=5432;Database=AgendaManager;User ID=postgres;Password=postgres;
     depends_on:
       - agenda-manager-db
+      - agenda-manager-keycloak
+      - agenda-manager-seq
     volumes:
       - ./.containers/https:/https
+    networks:
+      - agenda-net
 
   agenda-manager-db:
     image: postgres:latest
@@ -32,6 +35,13 @@ services:
       - TZ=UTC
     volumes:
       - ./.containers/postgresql:/var/lib/postgresql/data
+    networks:
+      - agenda-net
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   agenda-manager-keycloak:
     image: quay.io/keycloak/keycloak:latest
@@ -40,12 +50,22 @@ services:
     restart: always
     environment:
       - KC_HEALTH_ENABLED=true
-      - KEYCLOAK_USER=admin
-      - KEYCLOAK_PASSWORD=admin
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
     volumes:
       - ./.containers/keycloak:/opt/keycloak/data
+      - ./keycloak-config.json:/opt/keycloak/keycloak-config.json
     ports:
       - "18080:8080"
+    depends_on:
+      - agenda-manager-db
+    networks:
+      - agenda-net
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/auth || exit 1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   agenda-manager-seq:
     image: datalust/seq:latest
@@ -56,3 +76,9 @@ services:
     ports:
       - "5341:5341"
       - "8081:80"
+    networks:
+      - agenda-net
+
+networks:
+  agenda-net:
+    driver: bridge
