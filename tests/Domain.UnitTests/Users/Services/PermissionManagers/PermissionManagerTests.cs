@@ -23,13 +23,16 @@ public class PermissionManagerTests
     }
 
     [Fact]
-    public async Task CreateAsync_Should_ReturnResultSuccess_WhenPermissionIsCreated()
+    public async Task CreatePermissionAsync_Should_ReturnResultSuccess_WhenPermissionIsCreated()
     {
         // Arrange
         var permission = PermissionFactory.CreatePermissionUsersCreate();
 
         // Act
-        var permissionResult = await _sut.CreateAsync(permission.Id, permission.Name, Arg.Any<CancellationToken>());
+        var permissionResult = await _sut.CreatePermissionAsync(
+            permission.Id,
+            permission.Name,
+            Arg.Any<CancellationToken>());
 
         // Assert
         permissionResult.Should().BeOfType<Result<Permission>>();
@@ -41,14 +44,14 @@ public class PermissionManagerTests
     }
 
     [Fact]
-    public async Task CreateAsync_ShouldReturnResultFailure_WhenNameAlreadyExists()
+    public async Task CreatePermissionAsync_ShouldReturnResultFailure_WhenNameAlreadyExists()
     {
         // Arrange
         var permission = PermissionFactory.CreatePermissionUsersCreate();
 
         // Act
         _permissionRepository.NameExistsAsync(Arg.Any<Permission>(), CancellationToken.None).Returns(true);
-        var permissionResult = await _sut.CreateAsync(permission.Id, permission.Name);
+        var permissionResult = await _sut.CreatePermissionAsync(permission.Id, permission.Name);
 
         // Assert
         permissionResult.Should().BeOfType<Result<Permission>>();
@@ -58,13 +61,13 @@ public class PermissionManagerTests
     }
 
     [Fact]
-    public async Task CreateAsync_ShouldThrowPermissionDomainException_WhenNameExceedsLength()
+    public async Task CreatePermissionAsync_ShouldThrowPermissionDomainException_WhenNameExceedsLength()
     {
         // Arrange
         var permissionName = new string('a', 101);
 
-        // Act & Assert
+        // Assert
         await Assert.ThrowsAsync<PermissionDomainException>(
-            () => _sut.CreateAsync(PermissionId.Create(), permissionName));
+            () => _sut.CreatePermissionAsync(PermissionId.Create(), permissionName));
     }
 }

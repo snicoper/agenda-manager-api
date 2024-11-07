@@ -8,7 +8,7 @@ namespace AgendaManager.Domain.Users.Services;
 
 public class UserManager(IUserRepository userRepository)
 {
-    public async Task<Result<User>> CreateAsync(
+    public async Task<Result<User>> CreateUserAsync(
         UserId userId,
         EmailAddress email,
         string passwordHash,
@@ -20,11 +20,11 @@ public class UserManager(IUserRepository userRepository)
     {
         User user = new(userId, email, passwordHash, firstName, lastName);
 
-        user.SetActiveState(active);
+        user.UpdateActiveState(active);
 
         if (emailConfirmed)
         {
-            user.ConfirmEmail();
+            user.SetEmailConfirmed();
         }
 
         var validationResult = await IsValidAsync(user, cancellationToken);
@@ -38,7 +38,7 @@ public class UserManager(IUserRepository userRepository)
         return Result.Create(user);
     }
 
-    public async Task<Result> UpdateAsync(User user, CancellationToken cancellationToken)
+    public async Task<Result> UpdateUserAsync(User user, CancellationToken cancellationToken)
     {
         var validationResult = await IsValidAsync(user, cancellationToken);
         if (validationResult.IsFailure)

@@ -7,7 +7,7 @@ namespace AgendaManager.Domain.Users.Services;
 
 public class RoleManager(IRoleRepository roleRepository)
 {
-    public async Task<Result<Role>> CreateAsync(
+    public async Task<Result<Role>> CreateRoleAsync(
         RoleId roleId,
         string name,
         bool editable = false,
@@ -26,7 +26,7 @@ public class RoleManager(IRoleRepository roleRepository)
         return Result.Create(role);
     }
 
-    public async Task<Result> UpdateAsync(Role role, CancellationToken cancellationToken)
+    public async Task<Result> UpdateRoleAsync(Role role, CancellationToken cancellationToken)
     {
         var validationResult = await IsValidAsync(role, cancellationToken);
         if (validationResult.IsFailure)

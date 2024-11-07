@@ -68,7 +68,7 @@ public sealed class User : AggregateRoot
         AddDomainEvent(new UserRefreshTokenUpdatedDomainEvent(Id));
     }
 
-    public void ConfirmEmail()
+    public void SetEmailConfirmed()
     {
         if (IsEmailConfirmed)
         {
@@ -80,7 +80,7 @@ public sealed class User : AggregateRoot
         AddDomainEvent(new UserEmailConfirmedDomainEvent(Id));
     }
 
-    public void SetActiveState(bool state)
+    public void UpdateActiveState(bool state)
     {
         if (Active == state)
         {

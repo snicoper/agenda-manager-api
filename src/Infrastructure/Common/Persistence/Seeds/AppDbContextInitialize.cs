@@ -61,9 +61,9 @@ public class AppDbContextInitialize(
             return;
         }
 
-        var adminRole = await roleManager.CreateAsync(RoleId.Create(), Roles.Admin);
-        var managerRole = await roleManager.CreateAsync(RoleId.Create(), Roles.Manager);
-        var clientRole = await roleManager.CreateAsync(RoleId.Create(), Roles.Client);
+        var adminRole = await roleManager.CreateRoleAsync(RoleId.Create(), Roles.Admin);
+        var managerRole = await roleManager.CreateRoleAsync(RoleId.Create(), Roles.Manager);
+        var clientRole = await roleManager.CreateRoleAsync(RoleId.Create(), Roles.Client);
 
         _roles = [adminRole.Value!, managerRole.Value!, clientRole.Value!];
 
@@ -82,10 +82,14 @@ public class AppDbContextInitialize(
             return;
         }
 
-        var userReadPermission = await permissionManager.CreateAsync(PermissionId.Create(), Permissions.User.Read);
-        var userCreatePermission = await permissionManager.CreateAsync(PermissionId.Create(), Permissions.User.Create);
-        var userUpdatePermission = await permissionManager.CreateAsync(PermissionId.Create(), Permissions.User.Update);
-        var userDeletePermission = await permissionManager.CreateAsync(PermissionId.Create(), Permissions.User.Delete);
+        var userReadPermission =
+            await permissionManager.CreatePermissionAsync(PermissionId.Create(), Permissions.User.Read);
+        var userCreatePermission =
+            await permissionManager.CreatePermissionAsync(PermissionId.Create(), Permissions.User.Create);
+        var userUpdatePermission =
+            await permissionManager.CreatePermissionAsync(PermissionId.Create(), Permissions.User.Update);
+        var userDeletePermission =
+            await permissionManager.CreatePermissionAsync(PermissionId.Create(), Permissions.User.Delete);
 
         _permissions =
         [
@@ -132,7 +136,7 @@ public class AppDbContextInitialize(
         var passwordHash = passwordHasher.HashPassword("Password4!");
 
         // Admin user.
-        var adminResult = await userManager.CreateAsync(
+        var adminResult = await userManager.CreateUserAsync(
             userId: UserId.Create(),
             email: EmailAddress.From("alice@example.com"),
             passwordHash: passwordHash,
@@ -161,7 +165,7 @@ public class AppDbContextInitialize(
         }
 
         // Manager user.
-        var managerResult = await userManager.CreateAsync(
+        var managerResult = await userManager.CreateUserAsync(
             UserId.Create(),
             EmailAddress.From("bob@example.com"),
             passwordHash,
@@ -188,7 +192,7 @@ public class AppDbContextInitialize(
         }
 
         // Client user.
-        var clientResult = await userManager.CreateAsync(
+        var clientResult = await userManager.CreateUserAsync(
             UserId.Create(),
             EmailAddress.From("carol@example.com"),
             passwordHash,
@@ -212,7 +216,7 @@ public class AppDbContextInitialize(
         }
 
         // Client user.
-        var client2Result = await userManager.CreateAsync(
+        var client2Result = await userManager.CreateUserAsync(
             UserId.Create(),
             EmailAddress.From("lexi@example.com"),
             passwordHash,

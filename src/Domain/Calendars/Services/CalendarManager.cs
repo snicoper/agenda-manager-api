@@ -7,7 +7,7 @@ namespace AgendaManager.Domain.Calendars.Services;
 
 public class CalendarManager(ICalendarRepository calendarRepository)
 {
-    public async Task<Result<Calendar>> CreateAsync(
+    public async Task<Result<Calendar>> CreateCalendarAsync(
         CalendarId calendarId,
         string name,
         string description,
@@ -25,7 +25,7 @@ public class CalendarManager(ICalendarRepository calendarRepository)
         return Result.Create(calendar);
     }
 
-    public async Task<Result<Calendar>> UpdateAsync(Calendar calendar, CancellationToken cancellationToken)
+    public async Task<Result<Calendar>> UpdateCalendarAsync(Calendar calendar, CancellationToken cancellationToken)
     {
         var validationResult = await IsValidAsync(calendar, cancellationToken);
         if (validationResult.IsFailure)

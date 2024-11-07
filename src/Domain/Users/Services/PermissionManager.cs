@@ -7,7 +7,7 @@ namespace AgendaManager.Domain.Users.Services;
 
 public class PermissionManager(IPermissionRepository permissionRepository)
 {
-    public async Task<Result<Permission>> CreateAsync(
+    public async Task<Result<Permission>> CreatePermissionAsync(
         PermissionId permissionId,
         string name,
         CancellationToken cancellationToken = default)

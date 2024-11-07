@@ -24,13 +24,13 @@ public class UserManagerCreateTests
     }
 
     [Fact]
-    public async Task CreateAsync_ShouldReturnResultSuccess_WhenUserIsCreated()
+    public async Task CreateUserAsync_ShouldReturnResultSuccess_WhenUserIsCreated()
     {
         // Arrange
         var user = UserFactory.CreateUserAlice();
 
         // Act
-        var userResult = await _sut.CreateAsync(
+        var userResult = await _sut.CreateUserAsync(
             userId: user.Id,
             email: user.Email,
             passwordHash: user.PasswordHash,
@@ -51,13 +51,14 @@ public class UserManagerCreateTests
     }
 
     [Fact]
-    public async Task CreateAsync_ShouldReturnResultFailure_WhenEmailAlreadyExists()
+    public async Task CreateUserAsync_ShouldReturnResultFailure_WhenEmailAlreadyExists()
     {
+        // Arrange
         var user = UserFactory.CreateUserAlice();
+        _userRepository.EmailExistsAsync(Arg.Any<User>(), Arg.Any<CancellationToken>()).Returns(true);
 
         // Act
-        _userRepository.EmailExistsAsync(Arg.Any<User>(), Arg.Any<CancellationToken>()).Returns(true);
-        var userResult = await _sut.CreateAsync(
+        var userResult = await _sut.CreateUserAsync(
             userId: user.Id,
             email: user.Email,
             passwordHash: user.PasswordHash,
@@ -72,13 +73,14 @@ public class UserManagerCreateTests
     }
 
     [Fact]
-    public async Task CreateAsync_ShouldThrowUserDomainException_WhenFirstNameIsGreaterThan256()
+    public async Task CreateUserAsync_ShouldThrowUserDomainException_WhenFirstNameIsGreaterThan256()
     {
+        // Arrange
         var firstName = new string('a', 257);
 
-        // Act & Assert
+        // Assert
         await Assert.ThrowsAsync<UserDomainException>(
-            () => _sut.CreateAsync(
+            () => _sut.CreateUserAsync(
                 userId: UserId.Create(),
                 email: EmailAddress.From("email@example.com"),
                 passwordHash: "passwordHash",
@@ -87,13 +89,14 @@ public class UserManagerCreateTests
     }
 
     [Fact]
-    public async Task CreateAsync_ShouldThrowUserDomainException_WhenLastNameIsGreaterThan256()
+    public async Task CreateUserAsync_ShouldThrowUserDomainException_WhenLastNameIsGreaterThan256()
     {
+        // Arrange
         var lastName = new string('a', 257);
 
-        // Act & Assert
+        // Assert
         await Assert.ThrowsAsync<UserDomainException>(
-            () => _sut.CreateAsync(
+            () => _sut.CreateUserAsync(
                 userId: UserId.Create(),
                 email: EmailAddress.From("email@example.com"),
                 passwordHash: "passwordHash",

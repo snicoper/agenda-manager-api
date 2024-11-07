@@ -176,10 +176,10 @@ public class ErrorTests
         var error = Error.Unauthorized();
 
         // Act
-        var result = error.ToResult<ErrorTests>();
+        var errorResult = error.ToResult<ErrorTests>();
 
         // Assert
-        result.Should().BeOfType<Result<ErrorTests>>();
+        errorResult.Should().BeOfType<Result<ErrorTests>>();
     }
 
     [Fact]

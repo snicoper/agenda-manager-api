@@ -23,13 +23,13 @@ public class RoleManagerCreateTests
     }
 
     [Fact]
-    public async Task CreateAsync_Should_ReturnResultSuccess_WhenRoleIsCreated()
+    public async Task CreateRoleAsync_Should_ReturnResultSuccess_WhenRoleIsCreated()
     {
         // Arrange
         var role = RoleFactory.CreateRoleAdmin();
 
         // Act
-        var roleResult = await _sut.CreateAsync(role.Id, role.Name, role.Editable, Arg.Any<CancellationToken>());
+        var roleResult = await _sut.CreateRoleAsync(role.Id, role.Name, role.Editable, Arg.Any<CancellationToken>());
 
         // Assert
         roleResult.Should().BeOfType<Result<Role>>();
@@ -42,14 +42,14 @@ public class RoleManagerCreateTests
     }
 
     [Fact]
-    public async Task CreateAsync_ShouldReturnResultFailure_WhenNameAlreadyExists()
+    public async Task CreateRoleAsync_ShouldReturnResultFailure_WhenNameAlreadyExists()
     {
         // Arrange
         var role = RoleFactory.CreateRoleAdmin();
 
         // Act
         _roleRepository.NameExistsAsync(Arg.Any<Role>(), CancellationToken.None).Returns(true);
-        var roleResult = await _sut.CreateAsync(role.Id, role.Name, role.Editable);
+        var roleResult = await _sut.CreateRoleAsync(role.Id, role.Name, role.Editable);
 
         // Assert
         roleResult.Should().BeOfType<Result<Role>>();
@@ -59,12 +59,12 @@ public class RoleManagerCreateTests
     }
 
     [Fact]
-    public async Task CreateAsync_ShouldThrowRoleDomainException_WhenNameExceedsLength()
+    public async Task CreateRoleAsync_ShouldThrowRoleDomainException_WhenNameExceedsLength()
     {
         // Arrange
         var roleName = new string('a', 101);
 
-        // Act & Assert
-        await Assert.ThrowsAsync<RoleDomainException>(() => _sut.CreateAsync(RoleId.Create(), roleName, true));
+        // Assert
+        await Assert.ThrowsAsync<RoleDomainException>(() => _sut.CreateRoleAsync(RoleId.Create(), roleName, true));
     }
 }

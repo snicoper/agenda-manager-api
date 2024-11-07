@@ -14,7 +14,7 @@ public class ICommandHandlerTests
         // Arrange
         var commandHandlerSub = Substitute.For<ICommandHandler<ICommand>>();
 
-        // Act & Assert
+        // Assert
         commandHandlerSub.Should().BeAssignableTo<IRequestHandler<ICommand, Result>>();
     }
 
@@ -24,7 +24,7 @@ public class ICommandHandlerTests
         // Arrange
         var commandHandlerSub = Substitute.For<ICommandHandler<ICommand<string>, string>>();
 
-        // Act & Assert
+        // Assert
         commandHandlerSub.Should().BeAssignableTo<IRequestHandler<ICommand<string>, Result<string>>>();
     }
 }

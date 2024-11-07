@@ -91,13 +91,13 @@ public class UserTests
     }
 
     [Fact]
-    public void User_ShouldRaiseEvent_WhenConfirmEmail()
+    public void User_ShouldRaiseEvent_WhenSetEmailConfirmed()
     {
         // Arrange
         var user = UserFactory.CreateUserAlice();
 
         // Act
-        user.ConfirmEmail();
+        user.SetEmailConfirmed();
 
         // Assert
         user.DomainEvents.Should().Contain(x => x is UserEmailConfirmedDomainEvent);
@@ -121,7 +121,7 @@ public class UserTests
         var user = UserFactory.CreateUserAlice();
 
         // Act
-        user.SetActiveState(false);
+        user.UpdateActiveState(false);
 
         // Assert
         user.DomainEvents.Should().Contain(x => x is UserActiveStateChangedDomainEvent);

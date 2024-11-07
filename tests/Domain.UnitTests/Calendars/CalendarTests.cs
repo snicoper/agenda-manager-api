@@ -11,7 +11,7 @@ public class CalendarTests
         // Arrange
         var calendar = CalendarFactory.CreateCalendar();
 
-        // Act & Assert
+        // Assert
         calendar.Should().NotBeNull();
         calendar.Id.Should().Be(calendar.Id);
         calendar.Name.Should().Be(calendar.Name);

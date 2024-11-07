@@ -24,12 +24,12 @@ public class CalendarManagerTests
     [Fact]
     public async Task Calendar_ShouldReturnResultSuccess_WhenValidCalendarIsProvided()
     {
-        // Act
-        var result = await CreateCalendarAsync();
+        // Arrange
+        var calendarResult = await CreateCalendarAsync();
 
         // Assert
-        result.IsSuccess.Should().BeTrue();
-        result.Value?.DomainEvents.Count.Should().BeGreaterThan(0);
+        calendarResult.IsSuccess.Should().BeTrue();
+        calendarResult.Value?.DomainEvents.Count.Should().BeGreaterThan(0);
     }
 
     [Theory]
@@ -40,9 +40,9 @@ public class CalendarManagerTests
         // Arrange
         var name = new string('a', characters);
 
-        // Act & Assert
+        // Assert
         await Assert.ThrowsAsync<CalendarDomainException>(
-            () => _sut.CreateAsync(
+            () => _sut.CreateCalendarAsync(
                 calendarId: CalendarId.Create(),
                 name: name,
                 description: "Description of my calendar",
@@ -57,9 +57,9 @@ public class CalendarManagerTests
         // Arrange
         var description = new string('a', characters);
 
-        // Act & Assert
+        // Assert
         await Assert.ThrowsAsync<CalendarDomainException>(
-            () => _sut.CreateAsync(
+            () => _sut.CreateCalendarAsync(
                 calendarId: CalendarId.Create(),
                 name: "My calendar",
                 description: description,
@@ -69,54 +69,54 @@ public class CalendarManagerTests
     [Fact]
     public async Task Calendar_ShouldReturnResultSuccess_WhenNameNotAlreadyExists()
     {
-        // Act
+        // Arrange
+        var calendarResult = await CreateCalendarAsync();
         _calendarRepository.NameExistsAsync(Arg.Any<Calendar>(), Arg.Any<CancellationToken>()).Returns(false);
-        var result = await CreateCalendarAsync();
 
         // Assert
-        result.IsSuccess.Should().BeTrue();
+        calendarResult.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
     public async Task Calendar_ShouldReturnResultFailure_WhenNameAlreadyExists()
     {
-        // Act
+        // Arrange
+        var calendarResult = await CreateCalendarAsync();
         _calendarRepository.NameExistsAsync(Arg.Any<Calendar>(), Arg.Any<CancellationToken>()).Returns(true);
-        var result = await CreateCalendarAsync();
 
         // Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error?.FirstError()?.Code.Should().Be(nameof(Calendar.Name));
+        calendarResult.IsFailure.Should().BeTrue();
+        calendarResult.Error?.FirstError()?.Code.Should().Be(nameof(Calendar.Name));
     }
 
     [Fact]
     public async Task Calendar_ShouldReturnResultSuccess_WhenDescriptionNotAlreadyExists()
     {
-        // Act
+        // Arrange
+        var calendarResult = await CreateCalendarAsync();
         _calendarRepository.DescriptionExistsAsync(Arg.Any<Calendar>(), Arg.Any<CancellationToken>()).Returns(false);
-        var result = await CreateCalendarAsync();
 
         // Assert
-        result.IsSuccess.Should().BeTrue();
+        calendarResult.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
     public async Task Calendar_ShouldReturnResultFailure_WhenDescriptionAlreadyExists()
     {
-        // Act
+        // Arrange
+        var calendarResult = await CreateCalendarAsync();
         _calendarRepository.DescriptionExistsAsync(Arg.Any<Calendar>(), Arg.Any<CancellationToken>()).Returns(true);
-        var result = await CreateCalendarAsync();
 
         // Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error?.FirstError()?.Code.Should().Be(nameof(Calendar.Description));
+        calendarResult.IsFailure.Should().BeTrue();
+        calendarResult.Error?.FirstError()?.Code.Should().Be(nameof(Calendar.Description));
     }
 
     private async Task<Result<Calendar>> CreateCalendarAsync()
     {
         var calendar = CalendarFactory.CreateCalendar();
 
-        var result = await _sut.CreateAsync(
+        var result = await _sut.CreateCalendarAsync(
             calendarId: calendar.Id,
             name: calendar.Name,
             description: calendar.Description,
