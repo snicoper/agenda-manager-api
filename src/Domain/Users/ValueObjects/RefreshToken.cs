@@ -36,7 +36,7 @@ public class RefreshToken : ValueObject
 
     public static RefreshToken From(string token, DateTimeOffset expiryTime)
     {
-        if (string.IsNullOrWhiteSpace(token) || token.Length > TokenLength)
+        if (string.IsNullOrEmpty(token) || token.Length > TokenLength)
         {
             throw new ArgumentException(
                 $"Value cannot be null, whitespace or greater than {TokenLength} characters.",

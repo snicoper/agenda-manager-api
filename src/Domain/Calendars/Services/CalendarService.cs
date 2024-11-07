@@ -41,12 +41,12 @@ public class CalendarService(ICalendarRepository calendarRepository)
 
     public async Task<Result> ValidateAsync(Calendar calendar, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(calendar.Name) || calendar.Name.Length > 50)
+        if (string.IsNullOrEmpty(calendar.Name) || calendar.Name.Length > 50)
         {
             return CalendarErrors.InvalidFormatName;
         }
 
-        if (string.IsNullOrWhiteSpace(calendar.Description) || calendar.Description.Length > 500)
+        if (string.IsNullOrEmpty(calendar.Description) || calendar.Description.Length > 500)
         {
             return CalendarErrors.InvalidFormatDescription;
         }
