@@ -7,15 +7,15 @@ public class RefreshToken : ValueObject
 {
     private const int TokenLength = 200;
 
-    private RefreshToken(string token, DateTimeOffset expiryTime)
+    private RefreshToken(string token, DateTimeOffset expires)
     {
         Token = token;
-        ExpiryTime = expiryTime;
+        Expires = expires;
     }
 
     public string Token { get; }
 
-    public DateTimeOffset ExpiryTime { get; }
+    public DateTimeOffset Expires { get; }
 
     public static RefreshToken Generate(TimeSpan lifetime)
     {
@@ -29,12 +29,12 @@ public class RefreshToken : ValueObject
             token = token[..TokenLength];
         }
 
-        var expiryTime = DateTimeOffset.UtcNow.Add(lifetime);
+        var espirationDate = DateTimeOffset.UtcNow.Add(lifetime);
 
-        return From(token, expiryTime);
+        return From(token, espirationDate);
     }
 
-    public static RefreshToken From(string token, DateTimeOffset expiryTime)
+    public static RefreshToken From(string token, DateTimeOffset expires)
     {
         if (string.IsNullOrEmpty(token) || token.Length > TokenLength)
         {
@@ -43,22 +43,22 @@ public class RefreshToken : ValueObject
                 nameof(token));
         }
 
-        if (expiryTime <= DateTimeOffset.UtcNow)
+        if (expires <= DateTimeOffset.UtcNow)
         {
-            throw new ArgumentException("Value cannot be in the past.", nameof(expiryTime));
+            throw new ArgumentException("Value cannot be in the past.", nameof(expires));
         }
 
-        return new RefreshToken(token, expiryTime);
+        return new RefreshToken(token, expires);
     }
 
     public bool IsExpired()
     {
-        return DateTimeOffset.UtcNow >= ExpiryTime;
+        return DateTimeOffset.UtcNow >= Expires;
     }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Token;
-        yield return ExpiryTime;
+        yield return Expires;
     }
 }

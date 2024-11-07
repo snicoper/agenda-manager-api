@@ -74,8 +74,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                     .HasMaxLength(200)
                     .IsUnicode(false);
 
-                refreshTokenBuilder.Property(rt => rt.ExpiryTime)
-                    .HasColumnName("RefreshTokenExpiryTime");
+                refreshTokenBuilder.Property(rt => rt.Expires)
+                    .HasColumnName("RefreshTokenExpires");
             });
     }
 }

@@ -79,8 +79,8 @@ public class UserTests
         // Arrange
         var user = UserFactory.CreateUserAlice();
         var token = Guid.NewGuid().ToString();
-        var expiryTime = DateTimeOffset.UtcNow.AddDays(1);
-        var newRefreshToken = RefreshToken.From(token, expiryTime);
+        var expires = DateTimeOffset.UtcNow.AddDays(1);
+        var newRefreshToken = RefreshToken.From(token, expires);
 
         // Act
         user.UpdateRefreshToken(newRefreshToken);

@@ -830,9 +830,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                             b1.Property<Guid>("UserId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<DateTimeOffset>("ExpiryTime")
+                            b1.Property<DateTimeOffset>("Expires")
                                 .HasColumnType("timestamp with time zone")
-                                .HasColumnName("RefreshTokenExpiryTime");
+                                .HasColumnName("RefreshTokenExpires");
 
                             b1.Property<string>("Token")
                                 .IsRequired()

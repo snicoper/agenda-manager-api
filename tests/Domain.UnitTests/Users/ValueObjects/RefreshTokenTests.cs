@@ -12,14 +12,14 @@ public class RefreshTokenTests
     {
         // Arrange
         var token = Guid.NewGuid().ToString();
-        var expiryTime = DateTimeOffset.UtcNow.AddDays(1);
+        var expires = DateTimeOffset.UtcNow.AddDays(1);
 
         // Act
-        var refreshToken = RefreshToken.From(token, expiryTime);
+        var refreshToken = RefreshToken.From(token, expires);
 
         // Assert
         refreshToken.Token.Should().NotBeNull();
-        refreshToken.ExpiryTime.Should().BeAfter(DateTimeOffset.UtcNow);
+        refreshToken.Expires.Should().BeAfter(DateTimeOffset.UtcNow);
     }
 
     [Fact]
@@ -27,10 +27,10 @@ public class RefreshTokenTests
     {
         // Arrange
         var token = new string('a', TokenLength + 1);
-        var expiryTime = DateTimeOffset.UtcNow.AddDays(1);
+        var expires = DateTimeOffset.UtcNow.AddDays(1);
 
         // Act
-        var refreshToken = () => RefreshToken.From(token, expiryTime);
+        var refreshToken = () => RefreshToken.From(token, expires);
 
         // Assert
         refreshToken.Should().Throw<ArgumentException>();
@@ -41,10 +41,10 @@ public class RefreshTokenTests
     {
         // Arrange
         var token = Guid.NewGuid().ToString();
-        var expiryTime = DateTimeOffset.MinValue;
+        var expires = DateTimeOffset.MinValue;
 
         // Act
-        var refreshToken = () => RefreshToken.From(token, expiryTime);
+        var refreshToken = () => RefreshToken.From(token, expires);
 
         // Assert
         refreshToken.Should().Throw<ArgumentException>();
@@ -55,10 +55,10 @@ public class RefreshTokenTests
     {
         // Arrange
         var token = string.Empty;
-        var expiryTime = DateTimeOffset.UtcNow.AddDays(1);
+        var expires = DateTimeOffset.UtcNow.AddDays(1);
 
         // Act
-        var refreshToken = () => RefreshToken.From(token, expiryTime);
+        var refreshToken = () => RefreshToken.From(token, expires);
 
         // Assert
         refreshToken.Should().Throw<ArgumentException>();
@@ -76,8 +76,8 @@ public class RefreshTokenTests
         // Assert
         refreshToken.Should().NotBeNull();
         refreshToken.Token.Should().NotBeNull();
-        refreshToken.ExpiryTime.Should().BeAfter(DateTimeOffset.UtcNow);
-        refreshToken.ExpiryTime.Should().BeBefore(DateTimeOffset.UtcNow.Add(lifetime));
+        refreshToken.Expires.Should().BeAfter(DateTimeOffset.UtcNow);
+        refreshToken.Expires.Should().BeBefore(DateTimeOffset.UtcNow.Add(lifetime));
         refreshToken.Token.Length.Should().BeLessThan(TokenLength);
     }
 
@@ -93,7 +93,7 @@ public class RefreshTokenTests
         // Assert
         refreshToken.Should().NotBeNull();
         refreshToken.IsExpired().Should().BeFalse();
-        refreshToken.ExpiryTime.Should().BeAfter(DateTimeOffset.UtcNow);
+        refreshToken.Expires.Should().BeAfter(DateTimeOffset.UtcNow);
     }
 
     [Fact]

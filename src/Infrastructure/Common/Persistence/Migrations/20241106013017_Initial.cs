@@ -91,7 +91,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     LastName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Active = table.Column<bool>(type: "boolean", nullable: false),
                     RefreshTokenToken = table.Column<string>(type: "character varying(200)", unicode: false, maxLength: 200, nullable: true),
-                    RefreshTokenExpiryTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    RefreshTokenExpires = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: false),

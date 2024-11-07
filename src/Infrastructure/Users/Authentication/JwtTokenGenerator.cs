@@ -45,7 +45,7 @@ public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions, IUserRepository 
         var refreshTokenLifetime = TimeSpan.FromDays(_jwtOptions.RefreshTokenLifeTimeDays);
         var refreshToken = RefreshToken.Generate(refreshTokenLifetime);
 
-        var tokenResponse = new TokenResult(jwtSecurityToken, refreshToken.Token, refreshToken.ExpiryTime);
+        var tokenResponse = new TokenResult(jwtSecurityToken, refreshToken.Token, refreshToken.Expires);
 
         return tokenResponse;
     }
