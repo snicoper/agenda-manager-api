@@ -14,14 +14,18 @@ public abstract class UserFactory
         EmailAddress? email = null,
         string? passwordHash = null,
         string? firstName = null,
-        string? lastName = null)
+        string? lastName = null,
+        bool active = true,
+        bool emailConfirmed = false)
     {
         User user = new(
             id ?? Users.UserAlice.Id,
             email ?? Users.UserAlice.Email,
             passwordHash ?? BcryptPasswordHasher.HashPassword("Password4!"),
             firstName ?? Users.UserAlice.FirstName,
-            lastName ?? Users.UserAlice.LastName);
+            lastName ?? Users.UserAlice.LastName,
+            active,
+            emailConfirmed);
 
         return user;
     }

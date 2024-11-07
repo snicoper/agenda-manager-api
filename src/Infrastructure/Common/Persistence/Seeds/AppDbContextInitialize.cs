@@ -122,7 +122,7 @@ public class AppDbContextInitialize(
             firstName: "Alice",
             lastName: "Doe",
             active: true,
-            confirmEmail: true,
+            emailConfirmed: true,
             cancellationToken: CancellationToken.None);
 
         if (adminResult.IsFailure || adminResult.Value is null)
@@ -151,7 +151,7 @@ public class AppDbContextInitialize(
             "Bob",
             "Doe",
             active: true,
-            confirmEmail: true,
+            emailConfirmed: true,
             CancellationToken.None);
 
         if (managerResult.IsFailure || managerResult.Value is null)
@@ -178,7 +178,7 @@ public class AppDbContextInitialize(
             "Carol",
             "Doe",
             active: true,
-            confirmEmail: true,
+            emailConfirmed: true,
             CancellationToken.None);
 
         if (clientResult.IsFailure || clientResult.Value is null)
@@ -202,7 +202,7 @@ public class AppDbContextInitialize(
             "Lexi",
             "Doe",
             active: true,
-            confirmEmail: false,
+            emailConfirmed: false,
             CancellationToken.None);
 
         if (client2Result.IsFailure || client2Result.Value is null)

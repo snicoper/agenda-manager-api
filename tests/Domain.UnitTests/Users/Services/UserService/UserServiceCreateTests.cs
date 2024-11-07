@@ -1,22 +1,22 @@
 ﻿using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users;
+using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.Interfaces;
-using AgendaManager.Domain.Users.Services;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 using NSubstitute;
 
-namespace AgendaManager.Domain.UnitTests.Users.Services;
+namespace AgendaManager.Domain.UnitTests.Users.Services.UserService;
 
-public class UserServiceTests
+public class UserServiceCreateTests
 {
-    private readonly UserService _sut;
+    private readonly Domain.Users.Services.UserService _sut;
     private readonly IUserRepository _userRepository;
 
-    public UserServiceTests()
+    public UserServiceCreateTests()
     {
         _userRepository = Substitute.For<IUserRepository>();
-        _sut = new UserService(_userRepository);
+        _sut = new Domain.Users.Services.UserService(_userRepository);
     }
 
     [Fact]
@@ -26,27 +26,24 @@ public class UserServiceTests
         var user = UserFactory.CreateUserAlice();
 
         // Act
-        var result = await _sut.CreateAsync(
+        var userResult = await _sut.CreateAsync(
             userId: user.Id,
             email: user.Email,
             passwordHash: user.PasswordHash,
             firstName: user.FirstName,
-            lastName: user.LastName,
-            active: false,
-            confirmEmail: true,
-            cancellationToken: CancellationToken.None);
+            lastName: user.LastName);
 
         // Assert
-        result.Should().BeOfType<Result<User>>();
-        result.IsSuccess.Should().BeTrue();
-        result.ResultType.Should().Be(ResultType.Created);
-        result.Value!.Id.Should().Be(user.Id);
-        result.Value.Email.Should().Be(user.Email);
-        result.Value.FirstName.Should().Be(user.FirstName);
-        result.Value.LastName.Should().Be(user.LastName);
-        result.Value.Active.Should().BeFalse();
-        result.Value.IsEmailConfirmed.Should().BeTrue();
-        result.Value.DomainEvents.Count.Should().BeGreaterThan(0);
+        userResult.Should().BeOfType<Result<User>>();
+        userResult.IsSuccess.Should().BeTrue();
+        userResult.ResultType.Should().Be(ResultType.Created);
+        userResult.Value!.Id.Should().Be(user.Id);
+        userResult.Value.Email.Should().Be(user.Email);
+        userResult.Value.FirstName.Should().Be(user.FirstName);
+        userResult.Value.LastName.Should().Be(user.LastName);
+        userResult.Value.Active.Should().BeTrue();
+        userResult.Value.IsEmailConfirmed.Should().BeFalse();
+        userResult.Value.DomainEvents.Should().Contain(x => x is UserCreatedDomainEvent);
     }
 
     [Fact]
@@ -56,7 +53,7 @@ public class UserServiceTests
 
         // Act
         _userRepository.EmailExistsAsync(Arg.Any<User>(), Arg.Any<CancellationToken>()).Returns(true);
-        var result = await _sut.CreateAsync(
+        var userResult = await _sut.CreateAsync(
             userId: user.Id,
             email: user.Email,
             passwordHash: user.PasswordHash,
@@ -64,11 +61,10 @@ public class UserServiceTests
             lastName: user.LastName);
 
         // Assert
-        result.Should().BeOfType<Result<User>>();
-        result.ResultType.Should().Be(ResultType.Validation);
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().BeOfType<Error>();
-        result.Error?.FirstError()?.Description.Should().Be("Email already exists.");
+        userResult.Should().BeOfType<Result<User>>();
+        userResult.ResultType.Should().Be(ResultType.Validation);
+        userResult.IsFailure.Should().BeTrue();
+        userResult.Error?.FirstError()?.Description.Should().Be("Email already exists.");
     }
 
     [Fact]
@@ -78,7 +74,7 @@ public class UserServiceTests
         var firstName = new string('a', 257);
 
         // Act
-        var result = await _sut.CreateAsync(
+        var userResult = await _sut.CreateAsync(
             userId: user.Id,
             email: user.Email,
             passwordHash: user.PasswordHash,
@@ -86,11 +82,10 @@ public class UserServiceTests
             lastName: user.LastName);
 
         // Assert
-        result.Should().BeOfType<Result<User>>();
-        result.ResultType.Should().Be(ResultType.Conflict);
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().BeOfType<Error>();
-        result.Error?.FirstError()?.Description.Should().Be("First name exceeds length.");
+        userResult.Should().BeOfType<Result<User>>();
+        userResult.ResultType.Should().Be(ResultType.Conflict);
+        userResult.IsFailure.Should().BeTrue();
+        userResult.Error?.FirstError()?.Description.Should().Be("First name exceeds length.");
     }
 
     [Fact]
@@ -100,7 +95,7 @@ public class UserServiceTests
         var lastName = new string('a', 257);
 
         // Act
-        var result = await _sut.CreateAsync(
+        var userResult = await _sut.CreateAsync(
             userId: user.Id,
             email: user.Email,
             passwordHash: user.PasswordHash,
@@ -108,10 +103,9 @@ public class UserServiceTests
             lastName: lastName);
 
         // Assert
-        result.Should().BeOfType<Result<User>>();
-        result.ResultType.Should().Be(ResultType.Conflict);
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().BeOfType<Error>();
-        result.Error?.FirstError()?.Description.Should().Be("Last name exceeds length.");
+        userResult.Should().BeOfType<Result<User>>();
+        userResult.ResultType.Should().Be(ResultType.Conflict);
+        userResult.IsFailure.Should().BeTrue();
+        userResult.Error?.FirstError()?.Description.Should().Be("Last name exceeds length.");
     }
 }

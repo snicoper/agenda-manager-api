@@ -14,13 +14,17 @@ public sealed class User : AggregateRoot
         EmailAddress email,
         string passwordHash,
         string? firstName,
-        string? lastName)
+        string? lastName,
+        bool active = true,
+        bool emailConfirmed = false)
     {
         Id = userId;
         Email = email;
         PasswordHash = passwordHash;
         FirstName = firstName;
         LastName = lastName;
+        Active = active;
+        IsEmailConfirmed = emailConfirmed;
 
         Active = true;
         IsEmailConfirmed = false;

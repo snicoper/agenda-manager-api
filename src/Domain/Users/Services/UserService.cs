@@ -13,22 +13,22 @@ public class UserService(IUserRepository userRepository)
         string? firstName,
         string? lastName,
         bool active = true,
-        bool confirmEmail = false,
+        bool emailConfirmed = false,
         CancellationToken cancellationToken = default)
     {
         User user = new(userId, email, passwordHash, firstName, lastName);
+
+        user.SetActiveState(active);
+
+        if (emailConfirmed)
+        {
+            user.ConfirmEmail();
+        }
 
         var createdValidationResult = await ValidateAsync(user, cancellationToken);
         if (createdValidationResult.IsFailure)
         {
             return createdValidationResult.MapToValue<User>();
-        }
-
-        user.SetActiveState(active);
-
-        if (confirmEmail)
-        {
-            user.ConfirmEmail();
         }
 
         await userRepository.AddAsync(user, cancellationToken);
