@@ -9,11 +9,7 @@ public sealed class User : AggregateRoot
 {
     private readonly List<Role> _roles = [];
 
-    private User()
-    {
-    }
-
-    private User(
+    internal User(
         UserId userId,
         EmailAddress email,
         string passwordHash,
@@ -28,6 +24,12 @@ public sealed class User : AggregateRoot
 
         Active = true;
         IsEmailConfirmed = false;
+
+        AddDomainEvent(new UserCreatedDomainEvent(userId));
+    }
+
+    private User()
+    {
     }
 
     public UserId Id { get; } = null!;
@@ -82,20 +84,6 @@ public sealed class User : AggregateRoot
         Active = state;
 
         AddDomainEvent(new UserActiveStateChangedDomainEvent(Id, state));
-    }
-
-    internal static User Create(
-        UserId userId,
-        EmailAddress email,
-        string passwordHash,
-        string? firstName,
-        string? lastName)
-    {
-        User user = new(userId, email, passwordHash, firstName, lastName);
-
-        user.AddDomainEvent(new UserCreatedDomainEvent(userId));
-
-        return user;
     }
 
     internal void UpdateUser(string? firstName, string? lastName)

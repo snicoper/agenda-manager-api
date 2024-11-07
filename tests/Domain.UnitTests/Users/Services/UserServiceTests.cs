@@ -46,6 +46,7 @@ public class UserServiceTests
         result.Value.LastName.Should().Be(user.LastName);
         result.Value.Active.Should().BeFalse();
         result.Value.IsEmailConfirmed.Should().BeTrue();
+        result.Value.DomainEvents.Count.Should().BeGreaterThan(0);
     }
 
     [Fact]

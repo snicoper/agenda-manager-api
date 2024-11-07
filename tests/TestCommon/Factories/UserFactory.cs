@@ -16,7 +16,7 @@ public abstract class UserFactory
         string? firstName = null,
         string? lastName = null)
     {
-        var user = User.Create(
+        User user = new(
             id ?? Users.UserAlice.Id,
             email ?? Users.UserAlice.Email,
             passwordHash ?? BcryptPasswordHasher.HashPassword("Password4!"),

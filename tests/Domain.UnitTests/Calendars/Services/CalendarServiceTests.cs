@@ -1,6 +1,7 @@
 ﻿using AgendaManager.Domain.Calendars;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.Services;
+using AgendaManager.Domain.Common.Responses;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 using NSubstitute;
@@ -21,14 +22,12 @@ public class CalendarServiceTests
     [Fact]
     public async Task Calendar_ShouldReturnResultSuccess_WhenValidCalendarIsProvided()
     {
-        // Arrange
-        var calendar = CalendarFactory.CreateCalendar();
-
         // Act
-        var result = await _sut.CreateAsync(calendar, CancellationToken.None);
+        var result = await CreateCalendarAsync();
 
         // Assert
         result.IsSuccess.Should().BeTrue();
+        result.Value?.DomainEvents.Count.Should().BeGreaterThan(0);
     }
 
     [Theory]
@@ -41,7 +40,11 @@ public class CalendarServiceTests
         var calendar = CalendarFactory.CreateCalendar(name: name);
 
         // Act
-        var result = await _sut.CreateAsync(calendar, CancellationToken.None);
+        var result = await _sut.CreateAsync(
+            calendarId: calendar.Id,
+            name: calendar.Name,
+            description: calendar.Description,
+            CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -60,7 +63,11 @@ public class CalendarServiceTests
         var calendar = CalendarFactory.CreateCalendar(description: description);
 
         // Act
-        var result = await _sut.CreateAsync(calendar, CancellationToken.None);
+        var result = await _sut.CreateAsync(
+            calendarId: calendar.Id,
+            name: calendar.Name,
+            description: calendar.Description,
+            CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -72,12 +79,9 @@ public class CalendarServiceTests
     [Fact]
     public async Task Calendar_ShouldReturnResultSuccess_WhenNameNotAlreadyExists()
     {
-        // Arrange
-        var calendar = CalendarFactory.CreateCalendar();
-
         // Act
         _calendarRepository.NameExistsAsync(Arg.Any<Calendar>(), Arg.Any<CancellationToken>()).Returns(false);
-        var result = await _sut.CreateAsync(calendar, CancellationToken.None);
+        var result = await CreateCalendarAsync();
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -86,12 +90,9 @@ public class CalendarServiceTests
     [Fact]
     public async Task Calendar_ShouldReturnResultFailure_WhenNameAlreadyExists()
     {
-        // Arrange
-        var calendar = CalendarFactory.CreateCalendar();
-
         // Act
         _calendarRepository.NameExistsAsync(Arg.Any<Calendar>(), Arg.Any<CancellationToken>()).Returns(true);
-        var result = await _sut.CreateAsync(calendar, CancellationToken.None);
+        var result = await CreateCalendarAsync();
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -101,12 +102,9 @@ public class CalendarServiceTests
     [Fact]
     public async Task Calendar_ShouldReturnResultSuccess_WhenDescriptionNotAlreadyExists()
     {
-        // Arrange
-        var calendar = CalendarFactory.CreateCalendar();
-
         // Act
         _calendarRepository.DescriptionExistsAsync(Arg.Any<Calendar>(), Arg.Any<CancellationToken>()).Returns(false);
-        var result = await _sut.CreateAsync(calendar, CancellationToken.None);
+        var result = await CreateCalendarAsync();
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -115,15 +113,25 @@ public class CalendarServiceTests
     [Fact]
     public async Task Calendar_ShouldReturnResultFailure_WhenDescriptionAlreadyExists()
     {
-        // Arrange
-        var calendar = CalendarFactory.CreateCalendar();
-
         // Act
         _calendarRepository.DescriptionExistsAsync(Arg.Any<Calendar>(), Arg.Any<CancellationToken>()).Returns(true);
-        var result = await _sut.CreateAsync(calendar, CancellationToken.None);
+        var result = await CreateCalendarAsync();
 
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error?.FirstError()?.Code.Should().Be(nameof(Calendar.Description));
+    }
+
+    private async Task<Result<Calendar>> CreateCalendarAsync()
+    {
+        var calendar = CalendarFactory.CreateCalendar();
+
+        var result = await _sut.CreateAsync(
+            calendarId: calendar.Id,
+            name: calendar.Name,
+            description: calendar.Description,
+            CancellationToken.None);
+
+        return result;
     }
 }

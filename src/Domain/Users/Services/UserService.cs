@@ -16,7 +16,7 @@ public class UserService(IUserRepository userRepository)
         bool confirmEmail = false,
         CancellationToken cancellationToken = default)
     {
-        var user = User.Create(userId, email, passwordHash, firstName, lastName);
+        User user = new(userId, email, passwordHash, firstName, lastName);
 
         var createdValidationResult = await ValidateAsync(user, cancellationToken);
         if (createdValidationResult.IsFailure)
@@ -24,17 +24,16 @@ public class UserService(IUserRepository userRepository)
             return createdValidationResult.MapToValue<User>();
         }
 
-        var newUser = User.Create(user.Id, user.Email, user.PasswordHash, user.FirstName, user.LastName);
-        newUser.SetActiveState(active);
+        user.SetActiveState(active);
 
         if (confirmEmail)
         {
-            newUser.ConfirmEmail();
+            user.ConfirmEmail();
         }
 
-        await userRepository.AddAsync(newUser, cancellationToken);
+        await userRepository.AddAsync(user, cancellationToken);
 
-        return Result.Create(newUser);
+        return Result.Create(user);
     }
 
     public async Task<Result> UpdateAsync(User user, CancellationToken cancellationToken)

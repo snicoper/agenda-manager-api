@@ -10,7 +10,7 @@ public abstract class CalendarFactory
         string? name = null,
         string? description = null)
     {
-        var calendar = Calendar.Create(
+        Calendar calendar = new(
             calendarId ?? CalendarId.Create(),
             name ?? "My calendar",
             description ?? "Description of my calendar");

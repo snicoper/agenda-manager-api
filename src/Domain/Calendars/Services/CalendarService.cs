@@ -1,22 +1,27 @@
 ﻿using AgendaManager.Domain.Calendars.Interfaces;
+using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
 
 namespace AgendaManager.Domain.Calendars.Services;
 
 public class CalendarService(ICalendarRepository calendarRepository)
 {
-    public async Task<Result<Calendar>> CreateAsync(Calendar calendar, CancellationToken cancellationToken)
+    public async Task<Result<Calendar>> CreateAsync(
+        CalendarId calendarId,
+        string name,
+        string description,
+        CancellationToken cancellationToken)
     {
+        Calendar calendar = new(calendarId, name, description);
         var createdValidationResult = await ValidateAsync(calendar, cancellationToken);
         if (createdValidationResult.IsFailure)
         {
             return createdValidationResult.MapToValue<Calendar>();
         }
 
-        var newCalendar = Calendar.Create(calendar.Id, calendar.Name, calendar.Description);
-        await calendarRepository.AddAsync(newCalendar, cancellationToken);
+        await calendarRepository.AddAsync(calendar, cancellationToken);
 
-        return Result.Create(newCalendar);
+        return Result.Create(calendar);
     }
 
     public async Task<Result<Calendar>> UpdateAsync(Calendar calendar, CancellationToken cancellationToken)

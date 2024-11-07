@@ -6,15 +6,17 @@ namespace AgendaManager.Domain.Calendars;
 
 public class Calendar : AggregateRoot
 {
-    private Calendar()
-    {
-    }
-
-    private Calendar(CalendarId id, string name, string description)
+    internal Calendar(CalendarId id, string name, string description)
     {
         Id = id;
         Name = name;
         Description = description;
+
+        AddDomainEvent(new CalendarCreatedDomainEvent(id));
+    }
+
+    private Calendar()
+    {
     }
 
     public CalendarId Id { get; } = null!;
@@ -22,15 +24,6 @@ public class Calendar : AggregateRoot
     public string Name { get; private set; } = default!;
 
     public string Description { get; private set; } = default!;
-
-    internal static Calendar Create(CalendarId id, string name, string description)
-    {
-        Calendar calendar = new(id, name, description);
-
-        calendar.AddDomainEvent(new CalendarCreatedDomainEvent(calendar.Id));
-
-        return calendar;
-    }
 
     internal void Update(string name, string description)
     {
