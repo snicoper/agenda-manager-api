@@ -18,4 +18,18 @@ public class PermissionRepository(AppDbContext context) : IPermissionRepository
 
         return permission;
     }
+
+    public Task<bool> NameExistsAsync(Permission permission, CancellationToken cancellationToken = default)
+    {
+        var nameIsUnique = context
+            .Permissions
+            .AnyAsync(r => r.Name == permission.Name && r.Id != permission.Id, cancellationToken);
+
+        return nameIsUnique;
+    }
+
+    public async Task AddAsync(Permission permission, CancellationToken cancellationToken = default)
+    {
+        await context.Permissions.AddAsync(permission, cancellationToken);
+    }
 }

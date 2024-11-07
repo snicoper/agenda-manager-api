@@ -11,6 +11,8 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Seeds;
 public class AppDbContextInitialize(
     AppDbContext context,
     UserService userService,
+    RoleService roleService,
+    PermissionService permissionService,
     IPasswordHasher passwordHasher,
     UserAuthorizationManager userAuthorizationManager,
     ILogger<AppDbContextInitialize> logger)
@@ -53,12 +55,11 @@ public class AppDbContextInitialize(
 
     private async Task CreateRolesAsync()
     {
-        _roles =
-        [
-            Role.Create(RoleId.Create(), Roles.Admin),
-            Role.Create(RoleId.Create(), Roles.Manager),
-            Role.Create(RoleId.Create(), Roles.Client)
-        ];
+        var adminRole = await roleService.CreateAsync(RoleId.Create(), Roles.Admin);
+        var managerRole = await roleService.CreateAsync(RoleId.Create(), Roles.Manager);
+        var clientRole = await roleService.CreateAsync(RoleId.Create(), Roles.Client);
+
+        _roles = [adminRole.Value!, managerRole.Value!, clientRole.Value!];
 
         foreach (var role in _roles.Where(role => context.Roles.All(r => r.Name != role.Name)))
         {
@@ -70,12 +71,17 @@ public class AppDbContextInitialize(
 
     private async Task CreatePermissionsAsync()
     {
+        var userReadPermission = await permissionService.CreateAsync(PermissionId.Create(), Permissions.User.Read);
+        var userCreatePermission = await permissionService.CreateAsync(PermissionId.Create(), Permissions.User.Create);
+        var userUpdatePermission = await permissionService.CreateAsync(PermissionId.Create(), Permissions.User.Update);
+        var userDeletePermission = await permissionService.CreateAsync(PermissionId.Create(), Permissions.User.Delete);
+
         _permissions =
         [
-            Permission.Create(PermissionId.Create(), Permissions.User.Read),
-            Permission.Create(PermissionId.Create(), Permissions.User.Create),
-            Permission.Create(PermissionId.Create(), Permissions.User.Update),
-            Permission.Create(PermissionId.Create(), Permissions.User.Delete)
+            userReadPermission.Value!,
+            userCreatePermission.Value!,
+            userUpdatePermission.Value!,
+            userDeletePermission.Value!
         ];
 
         foreach (var permission in _permissions.Where(

@@ -8,16 +8,16 @@ public abstract class RoleFactory
 {
     public static Role CreateRoleAdmin()
     {
-        return Role.Create(RoleId.Create(), Roles.Admin);
+        return new Role(RoleId.Create(), Roles.Admin);
     }
 
     public static Role CreateRoleManager()
     {
-        return Role.Create(RoleId.Create(), Roles.Manager);
+        return new Role(RoleId.Create(), Roles.Manager);
     }
 
     public static Role CreateRoleClient()
     {
-        return Role.Create(RoleId.Create(), Roles.Client);
+        return new Role(RoleId.Create(), Roles.Client);
     }
 }

@@ -23,4 +23,23 @@ public class RoleRepository(AppDbContext context) : IRoleRepository
 
         return role;
     }
+
+    public async Task<bool> NameExistsAsync(Role role, CancellationToken cancellationToken = default)
+    {
+        var nameIsUnique = await context
+            .Roles
+            .AnyAsync(r => r.Name == role.Name && r.Id != role.Id, cancellationToken);
+
+        return nameIsUnique;
+    }
+
+    public async Task AddAsync(Role role, CancellationToken cancellationToken = default)
+    {
+        await context.Roles.AddAsync(role, cancellationToken);
+    }
+
+    public void Update(Role role)
+    {
+        context.Update(role);
+    }
 }

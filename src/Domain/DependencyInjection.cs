@@ -18,6 +18,8 @@ public static class DependencyInjection
     private static void AddUsers(this IServiceCollection services)
     {
         services.AddScoped<UserService>();
+        services.AddScoped<RoleService>();
+        services.AddScoped<PermissionService>();
         services.AddScoped<IPasswordPolicy, StrongPasswordPolicy>();
         services.AddScoped<UserPasswordService>();
         services.AddScoped<IUserEmailPolicy, StandardUserEmailPolicy>();

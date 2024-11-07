@@ -10,15 +10,17 @@ public sealed class Role : AggregateRoot
     private readonly List<Permission> _permissions = [];
     private readonly List<User> _users = [];
 
-    private Role()
-    {
-    }
-
-    private Role(RoleId roleId, string name, bool editable)
+    internal Role(RoleId roleId, string name, bool editable = false)
     {
         Id = roleId;
         Name = name;
         Editable = editable;
+
+        AddDomainEvent(new RoleCreatedDomainEvent(Id));
+    }
+
+    private Role()
+    {
     }
 
     public RoleId Id { get; } = null!;
@@ -30,15 +32,6 @@ public sealed class Role : AggregateRoot
     public IReadOnlyCollection<Permission> Permissions => _permissions.AsReadOnly();
 
     public IReadOnlyCollection<User> Users => _users.AsReadOnly();
-
-    public static Role Create(RoleId roleId, string name, bool editable = false)
-    {
-        Role role = new(roleId, name, editable);
-
-        role.AddDomainEvent(new RoleCreatedDomainEvent(role.Id));
-
-        return role;
-    }
 
     internal Result AddPermission(Permission permission)
     {

@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Common.Responses;
+using AgendaManager.Domain.Users.Errors;
 
 namespace AgendaManager.Domain.Users.Services;
 

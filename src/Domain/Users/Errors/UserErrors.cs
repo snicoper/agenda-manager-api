@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Common.Responses;
 
-namespace AgendaManager.Domain.Users;
+namespace AgendaManager.Domain.Users.Errors;
 
 public static class UserErrors
 {
@@ -14,17 +14,7 @@ public static class UserErrors
 
     public static Error EmailIsNotConfirmed => Error.Conflict("Email is not confirmed.");
 
-    public static Error RoleNotFound => Error.NotFound("Role not found.");
-
-    public static Error RoleAlreadyExists => Error.Conflict("Role already exists.");
-
     public static Error UserDoesNotHaveRoleAssigned => Error.Conflict("User does not have role assigned.");
-
-    public static Error PermissionNotFound => Error.NotFound("Permission not found.");
-
-    public static Error PermissionAlreadyExists => Error.Conflict("Permission already exists.");
-
-    public static Error RoleDoesNotHavePermissionAssigned => Error.Conflict("Role does not have permission assigned.");
 
     public static Error InvalidFormatPassword => Error.Validation(
         "Password",

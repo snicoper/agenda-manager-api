@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Common.Responses;
+using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
 
@@ -25,10 +26,10 @@ public class UserService(IUserRepository userRepository)
             user.ConfirmEmail();
         }
 
-        var createdValidationResult = await ValidateAsync(user, cancellationToken);
-        if (createdValidationResult.IsFailure)
+        var validationResult = await ValidateAsync(user, cancellationToken);
+        if (validationResult.IsFailure)
         {
-            return createdValidationResult.MapToValue<User>();
+            return validationResult.MapToValue<User>();
         }
 
         await userRepository.AddAsync(user, cancellationToken);
@@ -38,10 +39,10 @@ public class UserService(IUserRepository userRepository)
 
     public async Task<Result> UpdateAsync(User user, CancellationToken cancellationToken)
     {
-        var updatedValidationResult = await ValidateAsync(user, cancellationToken);
-        if (updatedValidationResult.IsFailure)
+        var validationResult = await ValidateAsync(user, cancellationToken);
+        if (validationResult.IsFailure)
         {
-            return updatedValidationResult.MapToValue<User>();
+            return validationResult.MapToValue<User>();
         }
 
         user.UpdateUser(user.FirstName, user.LastName);
