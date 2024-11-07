@@ -52,7 +52,7 @@ public class UserManager(IUserRepository userRepository)
         return Result.Success();
     }
 
-    public async Task<Result> IsValidAsync(User user, CancellationToken cancellationToken)
+    private async Task<Result> IsValidAsync(User user, CancellationToken cancellationToken)
     {
         if (await EmailExistsAsync(user, cancellationToken))
         {
@@ -62,7 +62,7 @@ public class UserManager(IUserRepository userRepository)
         return Result.Success();
     }
 
-    public async Task<bool> EmailExistsAsync(User user, CancellationToken cancellationToken)
+    private async Task<bool> EmailExistsAsync(User user, CancellationToken cancellationToken)
     {
         var emailIsUnique = await userRepository.EmailExistsAsync(user, cancellationToken);
 

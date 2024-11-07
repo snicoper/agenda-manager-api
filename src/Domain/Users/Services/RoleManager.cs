@@ -39,7 +39,7 @@ public class RoleManager(IRoleRepository roleRepository)
         return Result.Success();
     }
 
-    public async Task<Result> IsValidAsync(Role role, CancellationToken cancellationToken)
+    private async Task<Result> IsValidAsync(Role role, CancellationToken cancellationToken)
     {
         if (await NameExistsAsync(role, cancellationToken))
         {
@@ -49,7 +49,7 @@ public class RoleManager(IRoleRepository roleRepository)
         return Result.Success();
     }
 
-    public async Task<bool> NameExistsAsync(Role role, CancellationToken cancellationToken)
+    private async Task<bool> NameExistsAsync(Role role, CancellationToken cancellationToken)
     {
         var nameIsUnique = await roleRepository.NameExistsAsync(role, cancellationToken);
 

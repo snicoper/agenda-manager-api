@@ -25,7 +25,7 @@ public class PermissionManager(IPermissionRepository permissionRepository)
         return Result.Create(permission);
     }
 
-    public async Task<Result> IsValidAsync(Permission permission, CancellationToken cancellationToken)
+    private async Task<Result> IsValidAsync(Permission permission, CancellationToken cancellationToken)
     {
         if (await NameExistsAsync(permission, cancellationToken))
         {
@@ -35,7 +35,7 @@ public class PermissionManager(IPermissionRepository permissionRepository)
         return Result.Success();
     }
 
-    public async Task<bool> NameExistsAsync(Permission permission, CancellationToken cancellationToken)
+    private async Task<bool> NameExistsAsync(Permission permission, CancellationToken cancellationToken)
     {
         var nameIsUnique = await permissionRepository.NameExistsAsync(permission, cancellationToken);
 

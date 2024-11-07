@@ -46,7 +46,7 @@ public class CalendarManagerTests
                 calendarId: CalendarId.Create(),
                 name: name,
                 description: "Description of my calendar",
-                CancellationToken.None));
+                cancellationToken: CancellationToken.None));
     }
 
     [Theory]
@@ -63,7 +63,7 @@ public class CalendarManagerTests
                 calendarId: CalendarId.Create(),
                 name: "My calendar",
                 description: description,
-                CancellationToken.None));
+                cancellationToken: CancellationToken.None));
     }
 
     [Fact]
@@ -120,7 +120,7 @@ public class CalendarManagerTests
             calendarId: calendar.Id,
             name: calendar.Name,
             description: calendar.Description,
-            CancellationToken.None);
+            cancellationToken: CancellationToken.None);
 
         return result;
     }
