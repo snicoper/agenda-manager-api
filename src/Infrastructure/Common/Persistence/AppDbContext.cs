@@ -41,16 +41,33 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
 
         base.OnModelCreating(builder);
 
-        // Set row version for auditable entities.
+        // Auditable entities.
         foreach (var entityType in builder.Model.GetEntityTypes())
         {
-            if (typeof(IAuditableEntity).IsAssignableFrom(entityType.ClrType))
+            if (!typeof(IAuditableEntity).IsAssignableFrom(entityType.ClrType))
             {
-                builder.Entity(entityType.ClrType).Property<uint>(nameof(IAuditableEntity.RowVersion))
-                    .IsRowVersion()
-                    .HasColumnName("xmin")
-                    .HasColumnType("xid");
+                continue;
             }
+
+            builder.Entity(entityType.ClrType)
+                .Property(nameof(IAuditableEntity.CreatedBy))
+                .IsRequired();
+
+            builder.Entity(entityType.ClrType)
+                .Property(nameof(IAuditableEntity.CreatedAt))
+                .IsRequired();
+
+            builder.Entity(entityType.ClrType)
+                .Property(nameof(IAuditableEntity.LastModifiedBy))
+                .IsRequired();
+
+            builder.Entity(entityType.ClrType)
+                .Property(nameof(IAuditableEntity.LastModifiedAt))
+                .IsRequired();
+
+            builder.Entity(entityType.ClrType)
+                .Property(nameof(IAuditableEntity.Version))
+                .IsRequired();
         }
     }
 }

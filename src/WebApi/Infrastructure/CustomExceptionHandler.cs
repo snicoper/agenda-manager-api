@@ -1,6 +1,7 @@
 ﻿using AgendaManager.Application.Common.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AgendaManager.WebApi.Infrastructure;
 
@@ -11,7 +12,8 @@ public class CustomExceptionHandler : IExceptionHandler
         { typeof(BadRequestException), HandleValidationException },
         { typeof(NotFoundException), HandleNotFoundException },
         { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
-        { typeof(ForbiddenAccessException), HandleForbiddenAccessException }
+        { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
+        { typeof(DbUpdateConcurrencyException), HandleDbUpdateConcurrencyException }
     };
 
     public async ValueTask<bool> TryHandleAsync(
@@ -89,6 +91,20 @@ public class CustomExceptionHandler : IExceptionHandler
                 Status = StatusCodes.Status403Forbidden,
                 Title = "Forbidden",
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3",
+                Detail = exception.Message
+            });
+    }
+
+    private static async Task HandleDbUpdateConcurrencyException(HttpContext httpContext, Exception exception)
+    {
+        httpContext.Response.StatusCode = StatusCodes.Status409Conflict;
+
+        await httpContext.Response.WriteAsJsonAsync(
+            new ProblemDetails
+            {
+                Status = StatusCodes.Status409Conflict,
+                Title = "Conflict",
+                Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.8",
                 Detail = exception.Message
             });
     }

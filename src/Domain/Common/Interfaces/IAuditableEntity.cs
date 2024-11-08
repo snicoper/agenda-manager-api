@@ -10,5 +10,5 @@ public interface IAuditableEntity
 
     string LastModifiedBy { get; set; }
 
-    public uint RowVersion { get; set; }
+    public int Version { get; set; }
 }
