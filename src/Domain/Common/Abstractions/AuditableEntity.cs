@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Common.Interfaces;
+﻿using System.ComponentModel.DataAnnotations;
+using AgendaManager.Domain.Common.Interfaces;
 
 namespace AgendaManager.Domain.Common.Abstractions;
 
@@ -11,4 +12,7 @@ public abstract class AuditableEntity : Entity, IAuditableEntity
     public string LastModifiedBy { get; set; } = default!;
 
     public DateTimeOffset LastModifiedAt { get; set; }
+
+    [ConcurrencyCheck]
+    public uint RowVersion { get; set; }
 }

@@ -2,6 +2,7 @@
 using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Domain.Appointments;
 using AgendaManager.Domain.Calendars;
+using AgendaManager.Domain.Common.Interfaces;
 using AgendaManager.Domain.Resources;
 using AgendaManager.Domain.Services;
 using AgendaManager.Domain.Users;
@@ -39,5 +40,17 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         base.OnModelCreating(builder);
+
+        // Set row version for auditable entities.
+        foreach (var entityType in builder.Model.GetEntityTypes())
+        {
+            if (typeof(IAuditableEntity).IsAssignableFrom(entityType.ClrType))
+            {
+                builder.Entity(entityType.ClrType).Property<uint>(nameof(IAuditableEntity.RowVersion))
+                    .IsRowVersion()
+                    .HasColumnName("xmin")
+                    .HasColumnType("xid");
+            }
+        }
     }
 }

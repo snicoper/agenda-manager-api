@@ -9,4 +9,6 @@ public interface IAuditableEntity
     DateTimeOffset LastModifiedAt { get; set; }
 
     string LastModifiedBy { get; set; }
+
+    public uint RowVersion { get; set; }
 }
