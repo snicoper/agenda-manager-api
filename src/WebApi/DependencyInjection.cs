@@ -4,6 +4,8 @@ using AgendaManager.Application.Common.Localization;
 using AgendaManager.WebApi.Infrastructure;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc.Razor;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 
 namespace AgendaManager.WebApi;
 
@@ -35,6 +37,8 @@ public static class DependencyInjection
 
         AddApiVersioning(services);
 
+        AddOpenTelemetry(services);
+
         AddRazorViewsForEmails(services);
 
         return services;
@@ -62,6 +66,20 @@ public static class DependencyInjection
                 options.GroupNameFormat = "'v'VVV";
                 options.SubstituteApiVersionInUrl = true;
             });
+    }
+
+    private static void AddOpenTelemetry(IServiceCollection services)
+    {
+        services.AddOpenTelemetry()
+            .ConfigureResource(resource => resource.AddService("AgendaManager.WebApi"))
+            .WithTracing(
+                tracing =>
+                {
+                    tracing.AddAspNetCoreInstrumentation()
+                        .AddHttpClientInstrumentation();
+
+                    tracing.AddOtlpExporter();
+                });
     }
 
     private static void AddRazorViewsForEmails(IServiceCollection services)

@@ -13,6 +13,7 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Environment=Development
       - ConnectionStrings__DefaultConnection=Server=agenda-manager-db;Port=5432;Database=AgendaManager;User ID=postgres;Password=postgres;
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://agenda-manager-jeager:4317
     depends_on:
       - agenda-manager-db
       - agenda-manager-keycloak
@@ -76,6 +77,19 @@ services:
     ports:
       - "5341:5341"
       - "8081:80"
+    networks:
+      - agenda-net
+
+  agenda-manager-jeager:
+    image: jaegertracing/all-in-one:latest
+    container_name: agenda-manager-jeager
+    restart: always
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+      - "16686:16686"
+    depends_on:
+      - agenda-manager-api
     networks:
       - agenda-net
 
