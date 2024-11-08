@@ -19,7 +19,9 @@ public class UserRepository(AppDbContext context) : IUserRepository
         return await context.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
     }
 
-    public async Task<User?> GetByIdWithRolesAsync(UserId userId, CancellationToken cancellationToken = default)
+    public async Task<User?> GetByIdWithRolesAsync(
+        UserId userId,
+        CancellationToken cancellationToken = default)
     {
         return await context
             .Users
@@ -40,7 +42,9 @@ public class UserRepository(AppDbContext context) : IUserRepository
         return user;
     }
 
-    public async Task<User?> GetByEmailAsync(EmailAddress email, CancellationToken cancellationToken = default)
+    public async Task<User?> GetByEmailAsync(
+        EmailAddress email,
+        CancellationToken cancellationToken = default)
     {
         return await context.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
@@ -54,7 +58,9 @@ public class UserRepository(AppDbContext context) : IUserRepository
         return emailExists;
     }
 
-    public async Task<User?> GetByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
+    public async Task<User?> GetByRefreshTokenAsync(
+        string refreshToken,
+        CancellationToken cancellationToken = default)
     {
         return await context.Users.FirstOrDefaultAsync(
             u => u.RefreshToken != null && u.RefreshToken.Token == refreshToken,

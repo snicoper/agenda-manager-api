@@ -41,7 +41,7 @@ public class AuthorizationBehaviourTest
     {
         // Arrange
         List<string> roles = [Roles.Admin, Roles.Manager, Roles.Client];
-        List<string> permissions = [Permissions.User.Delete];
+        List<string> permissions = [PermissionNames.Users.Delete];
 
         TestAdminRequest request = new();
         _currentUserProvider.IsAuthenticated.Returns(true);
@@ -102,7 +102,7 @@ public class AuthorizationBehaviourTest
     {
         // Arrange
         List<string> roles = [Roles.Manager, Roles.Client];
-        List<string> permissions = [Permissions.User.Delete];
+        List<string> permissions = [PermissionNames.Users.Delete];
 
         TestAdminRequest request = new();
         _currentUserProvider.IsAuthenticated.Returns(true);
@@ -126,7 +126,7 @@ public class AuthorizationBehaviourTest
     {
         // Arrange
         List<string> roles = [Roles.Admin, Roles.Manager, Roles.Client];
-        List<string> permissions = [Permissions.User.Update];
+        List<string> permissions = [PermissionNames.Users.Update];
 
         TestAdminRequest request = new();
         _currentUserProvider.IsAuthenticated.Returns(true);
@@ -147,6 +147,6 @@ public class AuthorizationBehaviourTest
 
     private record TestRequest : IAppBaseRequest;
 
-    [Authorize(Roles = Roles.Admin, Permissions = Permissions.User.Delete)]
+    [Authorize(Roles = Roles.Admin, Permissions = PermissionNames.Users.Delete)]
     private record TestAdminRequest : IAppBaseRequest;
 }

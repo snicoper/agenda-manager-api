@@ -82,21 +82,216 @@ public class AppDbContextInitialize(
             return;
         }
 
-        var userReadPermission =
-            await permissionManager.CreatePermissionAsync(PermissionId.Create(), Permissions.User.Read);
-        var userCreatePermission =
-            await permissionManager.CreatePermissionAsync(PermissionId.Create(), Permissions.User.Create);
-        var userUpdatePermission =
-            await permissionManager.CreatePermissionAsync(PermissionId.Create(), Permissions.User.Update);
-        var userDeletePermission =
-            await permissionManager.CreatePermissionAsync(PermissionId.Create(), Permissions.User.Delete);
+        // Appointment permissions.
+        var appointmentReadPermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Appointments.Read);
+        var appointmentCreatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Appointments.Create);
+        var appointmentUpdatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Appointments.Update);
+        var appointmentDeletePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Appointments.Delete);
+
+        // AppointmentStatus permissions.
+        var appointmentStatusReadPermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.AppointmentStatuses.Read);
+        var appointmentStatusCreatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.AppointmentStatuses.Create);
+        var appointmentStatusUpdatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.AppointmentStatuses.Update);
+        var appointmentStatusDeletePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.AppointmentStatuses.Delete);
+
+        // Calendar permissions.
+        var calendarReadPermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Calendars.Read);
+        var calendarCreatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Calendars.Create);
+        var calendarUpdatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Calendars.Update);
+        var calendarDeletePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Calendars.Delete);
+
+        // CalendarHoliday permissions.
+        var calendarHolidayReadPermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.CalendarHolidays.Read);
+        var calendarHolidayCreatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.CalendarHolidays.Create);
+        var calendarHolidayUpdatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.CalendarHolidays.Update);
+        var calendarHolidayDeletePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.CalendarHolidays.Delete);
+
+        // Resource permissions.
+        var resourceReadPermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Resources.Read);
+        var resourceCreatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Resources.Create);
+        var resourceUpdatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Resources.Update);
+        var resourceDeletePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Resources.Delete);
+
+        // ResourceSchedule permissions.
+        var resourceScheduleReadPermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.ResourceSchedules.Read);
+        var resourceScheduleCreatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.ResourceSchedules.Create);
+        var resourceScheduleUpdatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.ResourceSchedules.Update);
+        var resourceScheduleDeletePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.ResourceSchedules.Delete);
+
+        // ResourceType permissions.
+        var resourceTypeReadPermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.ResourceTypes.Read);
+        var resourceTypeCreatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.ResourceTypes.Create);
+        var resourceTypeUpdatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.ResourceTypes.Update);
+        var resourceTypeDeletePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.ResourceTypes.Delete);
+
+        // Service permissions.
+        var serviceReadPermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Services.Read);
+        var serviceCreatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Services.Create);
+        var serviceUpdatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Services.Update);
+        var serviceDeletePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Services.Delete);
+
+        // User permissions.
+        var userReadPermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Users.Read);
+        var userCreatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Users.Create);
+        var userUpdatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Users.Update);
+        var userDeletePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Users.Delete);
+
+        // Role permissions.
+        var roleReadPermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Roles.Read);
+        var roleCreatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Roles.Create);
+        var roleUpdatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Roles.Update);
+        var roleDeletePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Roles.Delete);
+
+        // Permission permissions.
+        var permissionReadPermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Permissions.Read);
+        var permissionCreatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Permissions.Create);
+        var permissionUpdatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Permissions.Update);
+        var permissionDeletePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            PermissionNames.Permissions.Delete);
 
         _permissions =
         [
+            appointmentReadPermission.Value!,
+            appointmentCreatePermission.Value!,
+            appointmentUpdatePermission.Value!,
+            appointmentDeletePermission.Value!,
+
+            appointmentStatusReadPermission.Value!,
+            appointmentStatusCreatePermission.Value!,
+            appointmentStatusUpdatePermission.Value!,
+            appointmentStatusDeletePermission.Value!,
+
+            calendarReadPermission.Value!,
+            calendarCreatePermission.Value!,
+            calendarUpdatePermission.Value!,
+            calendarDeletePermission.Value!,
+
+            calendarHolidayReadPermission.Value!,
+            calendarHolidayCreatePermission.Value!,
+            calendarHolidayUpdatePermission.Value!,
+            calendarHolidayDeletePermission.Value!,
+
+            resourceReadPermission.Value!,
+            resourceCreatePermission.Value!,
+            resourceUpdatePermission.Value!,
+            resourceDeletePermission.Value!,
+
+            resourceScheduleReadPermission.Value!,
+            resourceScheduleCreatePermission.Value!,
+            resourceScheduleUpdatePermission.Value!,
+            resourceScheduleDeletePermission.Value!,
+
+            resourceTypeReadPermission.Value!,
+            resourceTypeCreatePermission.Value!,
+            resourceTypeUpdatePermission.Value!,
+            resourceTypeDeletePermission.Value!,
+
+            serviceReadPermission.Value!,
+            serviceCreatePermission.Value!,
+            serviceUpdatePermission.Value!,
+            serviceDeletePermission.Value!,
+
             userReadPermission.Value!,
             userCreatePermission.Value!,
             userUpdatePermission.Value!,
-            userDeletePermission.Value!
+            userDeletePermission.Value!,
+
+            roleReadPermission.Value!,
+            roleCreatePermission.Value!,
+            roleUpdatePermission.Value!,
+            roleDeletePermission.Value!,
+
+            permissionReadPermission.Value!,
+            permissionCreatePermission.Value!,
+            permissionUpdatePermission.Value!,
+            permissionDeletePermission.Value!
         ];
 
         foreach (var permission in _permissions.Where(
