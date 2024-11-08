@@ -28,7 +28,7 @@ public class AuditableEntityInterceptor(ICurrentUserProvider currentUserProvider
         return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
 
-    private static void UpdateAuditableModifiedFields(
+    private static void UpdateAuditableLastModifiedFields(
         EntityEntry entry,
         string currentUserId,
         DateTimeOffset currentDateTime)
@@ -126,7 +126,7 @@ public class AuditableEntityInterceptor(ICurrentUserProvider currentUserProvider
                 continue;
             }
 
-            UpdateAuditableModifiedFields(entry, currentUserId, currentDateTime);
+            UpdateAuditableLastModifiedFields(entry, currentUserId, currentDateTime);
 
             UpdateConcurrencyVersion(entry);
         }
