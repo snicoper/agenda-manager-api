@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241106013017_Initial")]
+    [Migration("20241108175715_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -46,6 +46,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<string>("LastModifiedBy")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uuid");
@@ -99,6 +105,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
@@ -137,6 +149,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
+
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -179,6 +197,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CalendarId");
@@ -217,6 +241,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
+
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<Guid>("TypeId")
                         .HasColumnType("uuid");
@@ -273,6 +303,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<Guid>("ResourceId")
                         .HasColumnType("uuid");
 
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 
@@ -317,6 +353,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<bool>("RequiredRole")
                         .HasColumnType("boolean");
 
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.HasKey("Id");
 
                     b.ToTable("ResourceTypes", (string)null);
@@ -357,6 +399,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CalendarId");
@@ -387,6 +435,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -422,6 +476,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -472,6 +532,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -588,7 +654,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Period", "Period", b1 =>
+                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Period.Period", "Period", b1 =>
                         {
                             b1.Property<Guid>("AppointmentId")
                                 .HasColumnType("uuid");
@@ -627,7 +693,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Period", "Period", b1 =>
+                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Period.Period", "Period", b1 =>
                         {
                             b1.Property<Guid>("AppointmentStatusChangeId")
                                 .HasColumnType("uuid");
@@ -662,7 +728,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Period", "Period", b1 =>
+                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Period.Period", "Period", b1 =>
                         {
                             b1.Property<Guid>("CalendarHolidayId")
                                 .HasColumnType("uuid");
@@ -757,7 +823,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Period", "Period", b1 =>
+                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Period.Period", "Period", b1 =>
                         {
                             b1.Property<Guid>("ResourceScheduleId")
                                 .HasColumnType("uuid");
