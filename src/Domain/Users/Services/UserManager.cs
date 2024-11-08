@@ -38,9 +38,15 @@ public class UserManager(IUserRepository userRepository)
         return Result.Create(user);
     }
 
-    public async Task<Result> UpdateUserAsync(User user, CancellationToken cancellationToken)
+    public async Task<Result> UpdateUserAsync(
+        User user,
+        string firstName,
+        string lastName,
+        CancellationToken cancellationToken)
     {
+        user.UpdateUser(firstName, lastName);
         var validationResult = await IsValidAsync(user, cancellationToken);
+
         if (validationResult.IsFailure)
         {
             return validationResult.MapToValue<User>();
