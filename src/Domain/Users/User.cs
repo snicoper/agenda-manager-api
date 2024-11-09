@@ -151,7 +151,7 @@ public sealed class User : AggregateRoot
 
     private static void GuardAgainstInvalidFirstName(string? firstName)
     {
-        if (!string.IsNullOrEmpty(firstName) && firstName?.Length > 256)
+        if (!string.IsNullOrWhiteSpace(firstName) && firstName?.Length > 256)
         {
             throw new UserDomainException("First name exceeds length of 256 characters.");
         }
@@ -159,7 +159,7 @@ public sealed class User : AggregateRoot
 
     private static void GuardAgainstInvalidLastName(string? lastName)
     {
-        if (!string.IsNullOrEmpty(lastName) && lastName?.Length > 256)
+        if (!string.IsNullOrWhiteSpace(lastName) && lastName.Length > 256)
         {
             throw new UserDomainException("Last name exceeds length of 256 characters.");
         }
