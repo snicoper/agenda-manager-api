@@ -17,8 +17,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     AggregateId = table.Column<Guid>(type: "uuid", maxLength: 16, nullable: false),
+                    NamespaceName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     AggregateName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    FieldName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    PropertyName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     OldValue = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
                     NewValue = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
                     ActionType = table.Column<int>(type: "integer", nullable: false),

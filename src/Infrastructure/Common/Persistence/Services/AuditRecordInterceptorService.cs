@@ -3,7 +3,6 @@ using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Domain.AuditRecords;
 using AgendaManager.Domain.AuditRecords.Enums;
 using AgendaManager.Domain.AuditRecords.ValueObjects;
-using AgendaManager.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -11,12 +10,16 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Services;
 
 public class AuditRecordInterceptorService(ICurrentUserProvider currentUserProvider, IDateTimeProvider dateTimeProvider)
 {
-    public AuditRecord CreateAuditRecord(
+    public AuditRecord CreateAuditRecord<TAggregate>(
         Guid aggregateId,
+        string propertyName,
         string originalValue,
         string currentValue,
         ActionType actionType)
     {
+        var namespaceName = $"{typeof(TAggregate).Namespace}{typeof(TAggregate).Name}";
+        var aggregateName = typeof(TAggregate).Name;
+
         var currentDateTime = dateTimeProvider.UtcNow;
         var currentUser = currentUserProvider.GetCurrentUser();
         var currentUserId = currentUser?.Id.Value.ToString() ?? "System";
@@ -24,8 +27,9 @@ public class AuditRecordInterceptorService(ICurrentUserProvider currentUserProvi
         var auditRecord = AuditRecord.Create(
             id: AuditRecordId.Create(),
             aggregateId: aggregateId,
-            aggregateName: nameof(User),
-            fieldName: nameof(User.Active),
+            namespaceName: namespaceName,
+            aggregateName: aggregateName,
+            propertyName: propertyName,
             oldValue: originalValue,
             newValue: currentValue,
             actionType: actionType);
@@ -39,18 +43,18 @@ public class AuditRecordInterceptorService(ICurrentUserProvider currentUserProvi
         return auditRecord;
     }
 
-    public string GetOriginalValue(EntityEntry entry)
+    public string GetOriginalValue(EntityEntry entry, string propertyName)
     {
         return entry.State == EntityState.Added
             ? string.Empty
-            : entry.Property(nameof(User.Active)).OriginalValue?.ToString() ?? string.Empty;
+            : entry.Property(propertyName).OriginalValue?.ToString() ?? string.Empty;
     }
 
-    public string GetCurrentValue(EntityEntry entry)
+    public string GetCurrentValue(EntityEntry entry, string propertyName)
     {
         return entry.State == EntityState.Deleted
             ? string.Empty
-            : entry.Property(nameof(User.Active)).CurrentValue?.ToString() ?? string.Empty;
+            : entry.Property(propertyName).CurrentValue?.ToString() ?? string.Empty;
     }
 
     public ActionType GetActionType(EntityState state)

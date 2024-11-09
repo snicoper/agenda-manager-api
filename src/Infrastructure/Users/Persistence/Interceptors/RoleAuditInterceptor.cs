@@ -9,9 +9,9 @@ using Microsoft.Extensions.Logging;
 
 namespace AgendaManager.Infrastructure.Users.Persistence.Interceptors;
 
-public class UserAuditInterceptor(
+public class RoleAuditInterceptor(
     AuditRecordInterceptorService auditRecordInterceptorService,
-    ILogger<UserAuditInterceptor> logger)
+    ILogger<RoleAuditInterceptor> logger)
     : SaveChangesInterceptor
 {
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
@@ -22,7 +22,7 @@ public class UserAuditInterceptor(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error updating user audit records.");
+            logger.LogError(ex, "Error updating role audit records.");
         }
 
         return base.SavingChanges(eventData, result);
@@ -39,7 +39,7 @@ public class UserAuditInterceptor(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error updating user audit records.");
+            logger.LogError(ex, "Error updating role audit records.");
         }
 
         return base.SavingChangesAsync(eventData, result, cancellationToken);
@@ -53,7 +53,7 @@ public class UserAuditInterceptor(
         }
 
         var auditRecords = new List<AuditRecord>();
-        var auditEntries = context.ChangeTracker.Entries().Where(e => e.Entity is User);
+        var auditEntries = context.ChangeTracker.Entries().Where(e => e.Entity is Role);
 
         foreach (var entry in auditEntries)
         {
@@ -62,7 +62,7 @@ public class UserAuditInterceptor(
                 continue;
             }
 
-            const string propertyName = nameof(User.Active);
+            const string propertyName = nameof(Role.Editable);
             var originalValue = auditRecordInterceptorService.GetOriginalValue(entry, propertyName);
             var currentValue = auditRecordInterceptorService.GetCurrentValue(entry, propertyName);
             var actionType = auditRecordInterceptorService.GetActionType(entry.State);
@@ -72,9 +72,9 @@ public class UserAuditInterceptor(
                 continue;
             }
 
-            var fieldId = entry.Property(nameof(User.Id));
-            var auditRecord = auditRecordInterceptorService.CreateAuditRecord<User>(
-                aggregateId: ((UserId)fieldId.CurrentValue!).Value,
+            var fieldId = entry.Property(nameof(Role.Id));
+            var auditRecord = auditRecordInterceptorService.CreateAuditRecord<Role>(
+                aggregateId: ((RoleId)fieldId.CurrentValue!).Value,
                 propertyName: propertyName,
                 originalValue: originalValue,
                 currentValue: currentValue,

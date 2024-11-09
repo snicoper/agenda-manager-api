@@ -27,11 +27,15 @@ public class AuditRecordConfiguration : IEntityTypeConfiguration<AuditRecord>
             .HasMaxLength(16)
             .IsRequired();
 
+        builder.Property(cl => cl.NamespaceName)
+            .HasMaxLength(256)
+            .IsRequired();
+
         builder.Property(cl => cl.AggregateName)
             .HasMaxLength(100)
             .IsRequired();
 
-        builder.Property(cl => cl.FieldName)
+        builder.Property(cl => cl.PropertyName)
             .HasMaxLength(100)
             .IsRequired();
 

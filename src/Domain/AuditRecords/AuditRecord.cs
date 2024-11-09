@@ -14,16 +14,18 @@ public class AuditRecord : AggregateRoot
     private AuditRecord(
         AuditRecordId id,
         Guid aggregateId,
+        string namespaceName,
         string aggregateName,
-        string fieldName,
+        string propertyName,
         string oldValue,
         string newValue,
         ActionType actionType)
     {
         Id = id;
         AggregateId = aggregateId;
+        NamespaceName = namespaceName;
         AggregateName = aggregateName;
-        FieldName = fieldName;
+        PropertyName = propertyName;
         OldValue = oldValue;
         NewValue = newValue;
         ActionType = actionType;
@@ -33,9 +35,11 @@ public class AuditRecord : AggregateRoot
 
     public Guid AggregateId { get; private set; }
 
+    public string NamespaceName { get; private set; } = default!;
+
     public string AggregateName { get; private set; } = default!;
 
-    public string FieldName { get; private set; } = default!;
+    public string PropertyName { get; private set; } = default!;
 
     public string OldValue { get; private set; } = default!;
 
@@ -46,13 +50,22 @@ public class AuditRecord : AggregateRoot
     public static AuditRecord Create(
         AuditRecordId id,
         Guid aggregateId,
+        string namespaceName,
         string aggregateName,
-        string fieldName,
+        string propertyName,
         string oldValue,
         string newValue,
         ActionType actionType)
     {
-        AuditRecord auditRecord = new(id, aggregateId, aggregateName, fieldName, oldValue, newValue, actionType);
+        AuditRecord auditRecord = new(
+            id,
+            aggregateId,
+            namespaceName,
+            aggregateName,
+            propertyName,
+            oldValue,
+            newValue,
+            actionType);
 
         auditRecord.AddDomainEvent(new AuditRecordCreatedDomainEvent(id));
 
