@@ -29,7 +29,7 @@ public class PasswordHash : ValueObject
         return new PasswordHash(hashedPassword);
     }
 
-    public static Result<PasswordHash> Create(
+    public static Result<PasswordHash> FromRaw(
         string rawPassword,
         IPasswordHasher passwordHasher,
         IPasswordPolicy passwordPolicy)

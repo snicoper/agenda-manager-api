@@ -4,9 +4,9 @@ using AgendaManager.Domain.Users.Interfaces;
 
 namespace AgendaManager.Domain.Users.Services;
 
-public class UserAuthenticationService(IUserPasswordManager userPasswordManager)
+public class UserAuthenticationService(IPasswordHasher passwordHasher)
 {
-    public Result AuthenticateUser(User user, string password)
+    public Result AuthenticateUser(User user, string rawPassword)
     {
         var validationResult = Validate(user);
         if (validationResult.IsFailure)
@@ -14,7 +14,7 @@ public class UserAuthenticationService(IUserPasswordManager userPasswordManager)
             return validationResult;
         }
 
-        return userPasswordManager.VerifyPassword(password, user.PasswordHash) is false
+        return user.PasswordHash.Verify(rawPassword, passwordHasher) is false
             ? UserErrors.InvalidCredentials
             : Result.Success();
     }

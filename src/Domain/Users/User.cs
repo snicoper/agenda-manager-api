@@ -56,6 +56,20 @@ public sealed class User : AggregateRoot
 
     public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
 
+    public Result UpdatePassword(PasswordHash newPasswordHash)
+    {
+        if (PasswordHash.Equals(newPasswordHash))
+        {
+            return Result.Success();
+        }
+
+        PasswordHash = newPasswordHash;
+
+        AddDomainEvent(new UserPasswordUpdatedDomainEvent(Id));
+
+        return Result.Success();
+    }
+
     public void UpdateRefreshToken(RefreshToken refreshToken)
     {
         if (RefreshToken is not null && RefreshToken.Equals(refreshToken))
@@ -121,19 +135,6 @@ public sealed class User : AggregateRoot
         AddDomainEvent(new UserRoleRemovedDomainEvent(Id, role.Id));
 
         return Result.Success();
-    }
-
-    internal void UpdatePassword(string passwordHash)
-    {
-        var newPasswordHash = PasswordHash.FromHashed(passwordHash);
-        if (PasswordHash.Equals(newPasswordHash))
-        {
-            return;
-        }
-
-        PasswordHash = newPasswordHash;
-
-        AddDomainEvent(new UserPasswordUpdatedDomainEvent(Id));
     }
 
     internal void UpdateEmail(EmailAddress email)

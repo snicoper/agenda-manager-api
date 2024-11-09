@@ -50,7 +50,10 @@ public class UserTests
     {
         // Arrange
         var user = UserFactory.CreateUserBob();
-        var passwordHash = UserFactory.BcryptPasswordHasher.HashPassword(TestCommon.Seeds.Users.UserAlice.RawPassword);
+        var passwordHashed = UserFactory
+            .BcryptPasswordHasher
+            .HashPassword(TestCommon.Seeds.Users.UserAlice.RawPassword);
+        var passwordHash = PasswordHash.FromHashed(passwordHashed);
 
         // Act
         user.UpdatePassword(passwordHash);
