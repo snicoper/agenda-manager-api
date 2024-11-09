@@ -14,11 +14,6 @@ public class PasswordHash : ValueObject
 
     public string HashedValue { get; }
 
-    public static explicit operator string(PasswordHash passwordHash)
-    {
-        return passwordHash.HashedValue;
-    }
-
     public static PasswordHash FromHashed(string hashedPassword)
     {
         if (string.IsNullOrWhiteSpace(hashedPassword))
@@ -42,9 +37,9 @@ public class PasswordHash : ValueObject
         }
 
         var hashedPassword = passwordHasher.HashPassword(rawPassword);
-        var password = new PasswordHash(hashedPassword);
+        PasswordHash passwordHash = new(hashedPassword);
 
-        return Result.Success(password);
+        return Result.Success(passwordHash);
     }
 
     public bool Verify(string rawPassword, IPasswordHasher passwordHasher)

@@ -131,7 +131,7 @@ public class UserTests
         user.UpdateActiveState(false);
 
         // Assert
-        user.DomainEvents.Should().Contain(x => x is UserActiveStateChangedDomainEvent);
+        user.DomainEvents.Should().Contain(x => x is UserActiveStateUpdatetedDomainEvent);
         user.Active.Should().BeFalse();
     }
 

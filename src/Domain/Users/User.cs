@@ -73,21 +73,21 @@ public sealed class User : AggregateRoot
     }
 
     public async Task<Result> UpdateEmail(
-        EmailAddress email,
+        EmailAddress newEmail,
         IEmailUniquenessChecker emailUniquenessChecker,
         CancellationToken cancellationToken)
     {
-        if (Email.Equals(email))
+        if (Email.Equals(newEmail))
         {
             return Result.Success();
         }
 
-        if (!await emailUniquenessChecker.IsUnique(email, cancellationToken))
+        if (!await emailUniquenessChecker.IsUnique(newEmail, cancellationToken))
         {
             return UserErrors.EmailAlreadyExists;
         }
 
-        Email = email;
+        Email = newEmail;
 
         AddDomainEvent(new UserEmailUpdatedDomainEvent(Id));
 
@@ -118,16 +118,16 @@ public sealed class User : AggregateRoot
         AddDomainEvent(new UserEmailConfirmedDomainEvent(Id));
     }
 
-    public void UpdateActiveState(bool state)
+    public void UpdateActiveState(bool newState)
     {
-        if (Active == state)
+        if (Active == newState)
         {
             return;
         }
 
-        Active = state;
+        Active = newState;
 
-        AddDomainEvent(new UserActiveStateChangedDomainEvent(Id, state));
+        AddDomainEvent(new UserActiveStateUpdatetedDomainEvent(Id, newState));
     }
 
     internal void UpdateUser(string? firstName, string? lastName)
