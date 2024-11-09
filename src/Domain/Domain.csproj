@@ -6,14 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BCrypt.Net-Next"/>
-    <PackageReference Include="MediatR.Contracts"/>
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions"/>
+    <PackageReference Include="BCrypt.Net-Next" />
+    <PackageReference Include="MediatR.Contracts" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="AgendaManager.Domain.UnitTests"/>
-    <InternalsVisibleTo Include="AgendaManager.TestCommon"/>
+    <InternalsVisibleTo Include="AgendaManager.Domain.UnitTests" />
+    <InternalsVisibleTo Include="AgendaManager.TestCommon" />
   </ItemGroup>
 
 </Project>

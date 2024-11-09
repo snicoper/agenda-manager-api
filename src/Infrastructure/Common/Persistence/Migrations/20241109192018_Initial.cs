@@ -12,6 +12,28 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AuditRecords",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    AggregateId = table.Column<Guid>(type: "uuid", maxLength: 16, nullable: false),
+                    AggregateName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    FieldName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    OldValue = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    NewValue = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    ActionType = table.Column<int>(type: "integer", nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: false),
+                    LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    Version = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AuditRecords", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Calendars",
                 columns: table => new
                 {
@@ -415,6 +437,21 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 column: "AppointmentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AuditRecords_AggregateId",
+                table: "AuditRecords",
+                column: "AggregateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AuditRecords_AggregateName",
+                table: "AuditRecords",
+                column: "AggregateName");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AuditRecords_AggregateName_AggregateId",
+                table: "AuditRecords",
+                columns: new[] { "AggregateName", "AggregateId" });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CalendarHolidays_CalendarId",
                 table: "CalendarHolidays",
                 column: "CalendarId");
@@ -494,6 +531,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
         {
             migrationBuilder.DropTable(
                 name: "AppointmentStatusChanges");
+
+            migrationBuilder.DropTable(
+                name: "AuditRecords");
 
             migrationBuilder.DropTable(
                 name: "CalendarHolidays");

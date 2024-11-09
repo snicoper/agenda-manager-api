@@ -44,7 +44,7 @@ public class RoleTests
     }
 
     [Fact]
-    public void Role_ShouldRaiseEvent_WhenAddingPermission()
+    public void Role_ShouldRaiseEvent_WhenPermissionAdded()
     {
         // Arrange
         var role = RoleFactory.CreateRoleAdmin();
@@ -60,7 +60,7 @@ public class RoleTests
     }
 
     [Fact]
-    public void Role_ShouldRaiseEvent_WhenRemovingPermission()
+    public void Role_ShouldRaiseEvent_WhenPermissionRemoved()
     {
         // Arrange
         var role = RoleFactory.CreateRoleAdmin();

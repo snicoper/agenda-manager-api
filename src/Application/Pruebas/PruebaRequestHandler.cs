@@ -24,7 +24,7 @@ internal class PruebaRequestHandler(IUnitOfWork unitOfWork, IUserRepository user
             return UserErrors.UserNotFound;
         }
 
-        user.Version = 123;
+        user.UpdateActiveState(false);
 
         await userManager.UpdateUserAsync(user, "Perico", "Palotes", cancellationToken);
 

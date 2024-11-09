@@ -50,7 +50,7 @@ public class UserTests
     }
 
     [Fact]
-    public void User_ShouldRaiseEvent_WhenUserPasswordIsChanged()
+    public void User_ShouldRaiseEvent_WhenUserPasswordIsUpdate()
     {
         // Arrange
         var user = UserFactory.CreateUserBob();
@@ -67,7 +67,7 @@ public class UserTests
     }
 
     [Fact]
-    public void User_ShouldRaiseEvent_WhenUpdateRefreshTokenIsCalled()
+    public void User_ShouldRaiseEvent_WhenUpdateRefreshTokenIsUpdate()
     {
         // Arrange
         var user = UserFactory.CreateUserCarol();
@@ -81,7 +81,7 @@ public class UserTests
     }
 
     [Fact]
-    public void User_ShouldAddRefreshToken_WhenIsSet()
+    public void User_ShouldAddRefreshToken_WhenIsUpdate()
     {
         // Arrange
         var user = UserFactory.CreateUserAlice();
@@ -98,7 +98,7 @@ public class UserTests
     }
 
     [Fact]
-    public void User_ShouldRaiseEvent_WhenSetEmailConfirmed()
+    public void User_ShouldRaiseEvent_WhenEmailIsConfirmed()
     {
         // Arrange
         var user = UserFactory.CreateUserAlice();
@@ -122,7 +122,7 @@ public class UserTests
     }
 
     [Fact]
-    public void User_ShouldRaiseEvent_WhenUserIsActiveStateIsChanged()
+    public void User_ShouldRaiseEvent_WhenUserIsActiveStateIsUpdated()
     {
         // Arrange
         var user = UserFactory.CreateUserAlice();
@@ -136,7 +136,7 @@ public class UserTests
     }
 
     [Fact]
-    public void User_ShouldRaiseEvent_WhenAddingRole()
+    public void User_ShouldRaiseEvent_WhenRoleIsAdded()
     {
         // Arrange
         var user = UserFactory.CreateUserAlice();
@@ -153,7 +153,7 @@ public class UserTests
     }
 
     [Fact]
-    public void User_ShouldRaiseEvent_WhenRemovingRole()
+    public void User_ShouldRaiseEvent_WhenRoleIsRemoved()
     {
         // Arrange
         var user = UserFactory.CreateUserAlice();
@@ -187,7 +187,7 @@ public class UserTests
     }
 
     [Fact]
-    public async Task User_ShouldNotRaiseEvent_WhenUserEmailIsSame()
+    public async Task User_ShouldNotRaiseEvent_WhenUserEmailIsNotUpdated()
     {
         // Arrange
         var user = UserFactory.CreateUserLexi();

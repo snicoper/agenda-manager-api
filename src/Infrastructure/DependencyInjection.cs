@@ -4,6 +4,7 @@ using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Users.Interfaces;
+using AgendaManager.Infrastructure.Appointments.Persistence.Interceptors;
 using AgendaManager.Infrastructure.Calendars.Repositories;
 using AgendaManager.Infrastructure.Common.Clock;
 using AgendaManager.Infrastructure.Common.Persistence;
@@ -78,6 +79,7 @@ public static class DependencyInjection
     {
         services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
         services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
+        services.AddScoped<ISaveChangesInterceptor, UserAuditInterceptor>();
 
         services.AddDbContext<AppDbContext>(
             (provider, options) =>

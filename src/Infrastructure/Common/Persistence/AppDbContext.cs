@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Domain.Appointments;
+using AgendaManager.Domain.AuditRecords;
 using AgendaManager.Domain.Calendars;
 using AgendaManager.Domain.Common.Interfaces;
 using AgendaManager.Domain.Resources;
@@ -18,6 +19,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<AppointmentStatusChange> AppointmentStatusChanges => Set<AppointmentStatusChange>();
 
     public DbSet<Calendar> Calendars => Set<Calendar>();
+
+    public DbSet<AuditRecord> ChangeLogs => Set<AuditRecord>();
 
     public DbSet<CalendarHoliday> CalendarHolidays => Set<CalendarHoliday>();
 

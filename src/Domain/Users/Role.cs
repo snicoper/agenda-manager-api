@@ -88,7 +88,7 @@ public sealed class Role : AuditableEntity
 
     private static void GuardAgainstInvalidName(string name)
     {
-        if (string.IsNullOrWhiteSpace(name) || name.Length > 100)
+        if (string.IsNullOrEmpty(name) || name.Length > 100)
         {
             throw new RoleDomainException("Role name is null or exceeds length of 100 characters.");
         }
@@ -96,7 +96,7 @@ public sealed class Role : AuditableEntity
 
     private static void GuardAgainstInvalidDescription(string description)
     {
-        if (string.IsNullOrWhiteSpace(description) || description.Length > 500)
+        if (string.IsNullOrEmpty(description) || description.Length > 500)
         {
             throw new RoleDomainException("Role description is null or exceeds length of 100 characters.");
         }
