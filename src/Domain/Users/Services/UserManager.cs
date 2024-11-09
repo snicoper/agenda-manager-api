@@ -49,7 +49,7 @@ public class UserManager(IUserRepository userRepository)
 
         if (validationResult.IsFailure)
         {
-            return validationResult.MapToValue<User>();
+            return validationResult;
         }
 
         user.UpdateUser(user.FirstName, user.LastName);
@@ -60,7 +60,7 @@ public class UserManager(IUserRepository userRepository)
 
     private async Task<Result> IsValidAsync(User user, CancellationToken cancellationToken)
     {
-        if (await EmailExistsAsync(user, cancellationToken))
+        if (await EmailExistsAsync(user.Email, cancellationToken))
         {
             return UserErrors.EmailAlreadyExists;
         }
@@ -68,9 +68,9 @@ public class UserManager(IUserRepository userRepository)
         return Result.Success();
     }
 
-    private async Task<bool> EmailExistsAsync(User user, CancellationToken cancellationToken)
+    private async Task<bool> EmailExistsAsync(EmailAddress email, CancellationToken cancellationToken)
     {
-        var emailIsUnique = await userRepository.EmailExistsAsync(user, cancellationToken);
+        var emailIsUnique = await userRepository.EmailExistsAsync(email, cancellationToken);
 
         return emailIsUnique;
     }

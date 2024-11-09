@@ -3,7 +3,9 @@ using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 
 namespace AgendaManager.Domain.Users.Interfaces;
 
-public interface IUserEmailPolicy
+public interface IUserEmailManager
 {
+    Task<Result> UpdateUserEmailAsync(User user, EmailAddress newEmail);
+
     Task<Result> ValidateEmailAsync(User user, EmailAddress newEmail);
 }

@@ -9,7 +9,7 @@ public class EmailAddress : ValueObject
     {
         Value = value;
 
-        if (!Validate())
+        if (!IsValid())
         {
             throw new InvalidEmailAddressException();
         }
@@ -27,7 +27,7 @@ public class EmailAddress : ValueObject
         yield return Value;
     }
 
-    private bool Validate()
+    private bool IsValid()
     {
         return !(string.IsNullOrEmpty(Value) || Value.Length > 256 || DomainRegex.ValidEmail().IsMatch(Value) is false);
     }

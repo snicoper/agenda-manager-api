@@ -43,6 +43,10 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
             .HasMaxLength(100)
             .IsRequired();
 
+        builder.Property(r => r.Description)
+            .HasMaxLength(500)
+            .IsRequired();
+
         builder.Property(r => r.Editable);
     }
 }

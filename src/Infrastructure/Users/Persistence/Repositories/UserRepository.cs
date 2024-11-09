@@ -49,11 +49,11 @@ public class UserRepository(AppDbContext context) : IUserRepository
         return await context.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
-    public async Task<bool> EmailExistsAsync(User user, CancellationToken cancellationToken = default)
+    public async Task<bool> EmailExistsAsync(EmailAddress email, CancellationToken cancellationToken = default)
     {
         var emailExists = await context
             .Users
-            .AnyAsync(u => u.Email == user.Email && u.Id != user.Id, cancellationToken);
+            .AnyAsync(u => u.Email == email, cancellationToken);
 
         return emailExists;
     }

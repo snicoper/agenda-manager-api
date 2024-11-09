@@ -20,10 +20,9 @@ public static class DependencyInjection
         services.AddScoped<UserManager>();
         services.AddScoped<RoleManager>();
         services.AddScoped<PermissionManager>();
-        services.AddScoped<IPasswordPolicy, StrongPasswordPolicy>();
-        services.AddScoped<UserPasswordService>();
-        services.AddScoped<IUserEmailPolicy, StandardUserEmailPolicy>();
-        services.AddScoped<UserEmailService>();
+        services.AddScoped<IUserPasswordManager, UserUserPasswordManager>();
+        services.AddScoped<IUserEmailManager, UserEmailManager>();
+        services.AddScoped<UserEmailManager>();
         services.AddScoped<UserAuthenticationService>();
         services.AddScoped<UserAuthorizationManager>();
     }

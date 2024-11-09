@@ -1,9 +1,10 @@
 ﻿using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users.Errors;
+using AgendaManager.Domain.Users.Interfaces;
 
 namespace AgendaManager.Domain.Users.Services;
 
-public class UserAuthenticationService(UserPasswordService userPasswordService)
+public class UserAuthenticationService(IUserPasswordManager userPasswordManager)
 {
     public Result AuthenticateUser(User user, string password)
     {
@@ -13,7 +14,7 @@ public class UserAuthenticationService(UserPasswordService userPasswordService)
             return validationResult;
         }
 
-        return userPasswordService.VerifyPassword(password, user.PasswordHash) is false
+        return userPasswordManager.VerifyPassword(password, user.PasswordHash) is false
             ? UserErrors.InvalidCredentials
             : Result.Success();
     }

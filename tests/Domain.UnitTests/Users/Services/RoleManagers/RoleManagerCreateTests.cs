@@ -29,7 +29,12 @@ public class RoleManagerCreateTests
         var role = RoleFactory.CreateRoleAdmin();
 
         // Act
-        var roleResult = await _sut.CreateRoleAsync(role.Id, role.Name, role.Editable, Arg.Any<CancellationToken>());
+        var roleResult = await _sut.CreateRoleAsync(
+            role.Id,
+            role.Name,
+            role.Description,
+            role.Editable,
+            Arg.Any<CancellationToken>());
 
         // Assert
         roleResult.Should().BeOfType<Result<Role>>();
@@ -49,7 +54,7 @@ public class RoleManagerCreateTests
 
         // Act
         _roleRepository.NameExistsAsync(Arg.Any<Role>(), CancellationToken.None).Returns(true);
-        var roleResult = await _sut.CreateRoleAsync(role.Id, role.Name, role.Editable);
+        var roleResult = await _sut.CreateRoleAsync(role.Id, role.Name, role.Description, role.Editable);
 
         // Assert
         roleResult.Should().BeOfType<Result<Role>>();
@@ -63,8 +68,10 @@ public class RoleManagerCreateTests
     {
         // Arrange
         var roleName = new string('a', 101);
+        var roleDescription = "Description";
 
         // Assert
-        await Assert.ThrowsAsync<RoleDomainException>(() => _sut.CreateRoleAsync(RoleId.Create(), roleName, true));
+        await Assert.ThrowsAsync<RoleDomainException>(
+            () => _sut.CreateRoleAsync(RoleId.Create(), roleName, roleDescription, true));
     }
 }

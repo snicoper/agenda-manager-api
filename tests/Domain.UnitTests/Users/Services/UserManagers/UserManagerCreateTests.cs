@@ -55,7 +55,7 @@ public class UserManagerCreateTests
     {
         // Arrange
         var user = UserFactory.CreateUserAlice();
-        _userRepository.EmailExistsAsync(Arg.Any<User>(), Arg.Any<CancellationToken>()).Returns(true);
+        _userRepository.EmailExistsAsync(Arg.Any<EmailAddress>(), Arg.Any<CancellationToken>()).Returns(true);
 
         // Act
         var userResult = await _sut.CreateUserAsync(

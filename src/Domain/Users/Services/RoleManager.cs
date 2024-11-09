@@ -10,10 +10,11 @@ public class RoleManager(IRoleRepository roleRepository)
     public async Task<Result<Role>> CreateRoleAsync(
         RoleId roleId,
         string name,
+        string description,
         bool editable = false,
         CancellationToken cancellationToken = default)
     {
-        Role role = new(roleId, name, editable);
+        Role role = new(roleId, name, description, editable);
 
         var validationResult = await IsValidAsync(role, cancellationToken);
         if (validationResult.IsFailure)
@@ -26,7 +27,11 @@ public class RoleManager(IRoleRepository roleRepository)
         return Result.Create(role);
     }
 
-    public async Task<Result> UpdateRoleAsync(Role role, CancellationToken cancellationToken)
+    public async Task<Result> UpdateRoleAsync(
+        Role role,
+        string name,
+        string description,
+        CancellationToken cancellationToken)
     {
         var validationResult = await IsValidAsync(role, cancellationToken);
         if (validationResult.IsFailure)
@@ -34,6 +39,7 @@ public class RoleManager(IRoleRepository roleRepository)
             return validationResult;
         }
 
+        role.UpdateRole(name, description);
         roleRepository.Update(role);
 
         return Result.Success();

@@ -61,9 +61,9 @@ public class AppDbContextInitialize(
             return;
         }
 
-        var adminRole = await roleManager.CreateRoleAsync(RoleId.Create(), Roles.Admin);
-        var managerRole = await roleManager.CreateRoleAsync(RoleId.Create(), Roles.Manager);
-        var clientRole = await roleManager.CreateRoleAsync(RoleId.Create(), Roles.Client);
+        var adminRole = await roleManager.CreateRoleAsync(RoleId.Create(), Roles.Admin, "Admin role");
+        var managerRole = await roleManager.CreateRoleAsync(RoleId.Create(), Roles.Manager, "Manager role");
+        var clientRole = await roleManager.CreateRoleAsync(RoleId.Create(), Roles.Client, "Client role");
 
         _roles = [adminRole.Value!, managerRole.Value!, clientRole.Value!];
 
