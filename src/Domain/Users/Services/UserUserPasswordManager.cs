@@ -2,6 +2,7 @@
 using AgendaManager.Domain.Common.Utils;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
+using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users.Services;
 
@@ -30,8 +31,8 @@ public class UserUserPasswordManager(IPasswordHasher passwordHasher) : IUserPass
             : UserErrors.InvalidFormatPassword;
     }
 
-    public bool VerifyPassword(string rawPassword, string hashedPassword)
+    public bool VerifyPassword(string rawPassword, PasswordHash passwordHash)
     {
-        return passwordHasher.VerifyPassword(rawPassword, hashedPassword);
+        return passwordHasher.VerifyPassword(rawPassword, passwordHash);
     }
 }

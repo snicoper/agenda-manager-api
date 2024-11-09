@@ -334,7 +334,7 @@ public class AppDbContextInitialize(
         var adminResult = await userManager.CreateUserAsync(
             userId: UserId.Create(),
             email: EmailAddress.From("alice@example.com"),
-            passwordHash: passwordHash,
+            passwordHash: PasswordHash.FromHashed(passwordHash),
             firstName: "Alice",
             lastName: "Doe",
             active: true,
@@ -363,7 +363,7 @@ public class AppDbContextInitialize(
         var managerResult = await userManager.CreateUserAsync(
             UserId.Create(),
             EmailAddress.From("bob@example.com"),
-            passwordHash,
+            passwordHash: PasswordHash.FromHashed(passwordHash),
             "Bob",
             "Doe",
             active: true,
@@ -390,7 +390,7 @@ public class AppDbContextInitialize(
         var clientResult = await userManager.CreateUserAsync(
             UserId.Create(),
             EmailAddress.From("carol@example.com"),
-            passwordHash,
+            passwordHash: PasswordHash.FromHashed(passwordHash),
             "Carol",
             "Doe",
             active: true,
@@ -414,7 +414,7 @@ public class AppDbContextInitialize(
         var client2Result = await userManager.CreateUserAsync(
             UserId.Create(),
             EmailAddress.From("lexi@example.com"),
-            passwordHash,
+            passwordHash: PasswordHash.FromHashed(passwordHash),
             "Lexi",
             "Doe",
             active: true,

@@ -83,7 +83,7 @@ public class UserManagerCreateTests
             () => _sut.CreateUserAsync(
                 userId: UserId.Create(),
                 email: EmailAddress.From("email@example.com"),
-                passwordHash: "passwordHash",
+                passwordHash: PasswordHash.FromHashed(UserFactory.BcryptPasswordHasher.HashPassword("passwordHash")),
                 firstName: firstName,
                 lastName: "lastName"));
     }
@@ -99,7 +99,7 @@ public class UserManagerCreateTests
             () => _sut.CreateUserAsync(
                 userId: UserId.Create(),
                 email: EmailAddress.From("email@example.com"),
-                passwordHash: "passwordHash",
+                passwordHash: PasswordHash.FromHashed(UserFactory.BcryptPasswordHasher.HashPassword("passwordHash")),
                 firstName: "firstName",
                 lastName: lastName));
     }

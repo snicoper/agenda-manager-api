@@ -14,7 +14,7 @@ public sealed class User : AggregateRoot
     internal User(
         UserId userId,
         EmailAddress email,
-        string passwordHash,
+        PasswordHash passwordHash,
         string? firstName,
         string? lastName,
         bool active = true,
@@ -40,7 +40,7 @@ public sealed class User : AggregateRoot
 
     public UserId Id { get; } = null!;
 
-    public string PasswordHash { get; private set; } = default!;
+    public PasswordHash PasswordHash { get; private set; } = default!;
 
     public EmailAddress Email { get; private set; } = null!;
 
@@ -125,7 +125,13 @@ public sealed class User : AggregateRoot
 
     internal void UpdatePassword(string passwordHash)
     {
-        PasswordHash = passwordHash;
+        var newPasswordHash = PasswordHash.FromHashed(passwordHash);
+        if (PasswordHash.Equals(newPasswordHash))
+        {
+            return;
+        }
+
+        PasswordHash = newPasswordHash;
 
         AddDomainEvent(new UserPasswordUpdatedDomainEvent(Id));
     }

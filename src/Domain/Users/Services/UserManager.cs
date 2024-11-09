@@ -11,7 +11,7 @@ public class UserManager(IUserRepository userRepository)
     public async Task<Result<User>> CreateUserAsync(
         UserId userId,
         EmailAddress email,
-        string passwordHash,
+        PasswordHash passwordHash,
         string? firstName,
         string? lastName,
         bool active = true,

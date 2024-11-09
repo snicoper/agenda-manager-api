@@ -14,31 +14,20 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasKey(u => u.Id);
 
-        builder.HasIndex(u => u.Email)
-            .IsUnique();
-
-        builder.HasMany(u => u.Roles)
-            .WithMany(r => r.Users)
-            .UsingEntity(
-                typeBuilder =>
-                {
-                    typeBuilder.ToTable("UserRoles");
-                    typeBuilder.Property<UserId>("UserId").HasColumnName("UserId");
-                    typeBuilder.Property<RoleId>("RoleId").HasColumnName("RoleId");
-                    typeBuilder.HasKey("UserId", "RoleId");
-
-                    // Campos de auditoría.
-                    typeBuilder.Property<DateTimeOffset>("CreatedAt");
-                    typeBuilder.Property<string>("CreatedBy");
-                    typeBuilder.Property<DateTimeOffset>("LastModifiedAt");
-                    typeBuilder.Property<string>("LastModifiedBy");
-                });
-
         builder.Property(u => u.Id)
             .HasConversion(
                 id => id.Value,
                 value => UserId.From(value))
             .IsRequired();
+
+        builder.Property(u => u.PasswordHash)
+            .HasConversion(
+                password => password.HashedValue,
+                value => PasswordHash.FromHashed(value))
+            .IsRequired();
+
+        builder.HasIndex(u => u.Email)
+            .IsUnique();
 
         builder.Property(u => u.Email)
             .HasConversion(
@@ -59,9 +48,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.Active)
             .IsRequired();
 
-        builder.Property(u => u.PasswordHash)
-            .IsRequired();
-
         builder.OwnsOne(
             user => user.RefreshToken,
             refreshTokenBuilder =>
@@ -77,5 +63,22 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 refreshTokenBuilder.Property(rt => rt.Expires)
                     .HasColumnName("RefreshTokenExpires");
             });
+
+        builder.HasMany(u => u.Roles)
+            .WithMany(r => r.Users)
+            .UsingEntity(
+                typeBuilder =>
+                {
+                    typeBuilder.ToTable("UserRoles");
+                    typeBuilder.Property<UserId>("UserId").HasColumnName("UserId");
+                    typeBuilder.Property<RoleId>("RoleId").HasColumnName("RoleId");
+                    typeBuilder.HasKey("UserId", "RoleId");
+
+                    // Campos de auditoría.
+                    typeBuilder.Property<DateTimeOffset>("CreatedAt");
+                    typeBuilder.Property<string>("CreatedBy");
+                    typeBuilder.Property<DateTimeOffset>("LastModifiedAt");
+                    typeBuilder.Property<string>("LastModifiedBy");
+                });
     }
 }

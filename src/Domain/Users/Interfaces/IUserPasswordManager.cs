@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Common.Responses;
+using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users.Interfaces;
 
@@ -8,5 +9,5 @@ public interface IUserPasswordManager
 
     Result IsPasswordValid(string rawPassword);
 
-    bool VerifyPassword(string rawPassword, string hashedPassword);
+    bool VerifyPassword(string rawPassword, PasswordHash passwordHash);
 }

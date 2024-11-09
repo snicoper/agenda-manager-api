@@ -13,7 +13,7 @@ public abstract class UserFactory
     public static User CreateUser(
         UserId? id = null,
         EmailAddress? email = null,
-        string? passwordHash = null,
+        PasswordHash? passwordHash = null,
         string? firstName = null,
         string? lastName = null,
         bool active = true,
@@ -22,7 +22,7 @@ public abstract class UserFactory
         User user = new(
             id ?? Users.UserAlice.Id,
             email ?? Users.UserAlice.Email,
-            passwordHash ?? BcryptPasswordHasher.HashPassword("Password4!"),
+            passwordHash ?? PasswordHash.FromHashed(BcryptPasswordHasher.HashPassword("Password4!")),
             firstName ?? Users.UserAlice.FirstName,
             lastName ?? Users.UserAlice.LastName,
             active,
@@ -36,7 +36,7 @@ public abstract class UserFactory
         var user = CreateUser(
             id: Users.UserAlice.Id,
             email: Users.UserAlice.Email,
-            passwordHash: Users.UserAlice.RawPassword,
+            passwordHash: PasswordHash.FromHashed(BcryptPasswordHasher.HashPassword(Users.UserAlice.RawPassword)),
             firstName: Users.UserAlice.FirstName,
             lastName: Users.UserAlice.LastName);
 
@@ -48,7 +48,7 @@ public abstract class UserFactory
         var user = CreateUser(
             id: Users.UserBob.Id,
             email: Users.UserBob.Email,
-            passwordHash: Users.UserBob.RawPassword,
+            passwordHash: PasswordHash.FromHashed(BcryptPasswordHasher.HashPassword(Users.UserBob.RawPassword)),
             firstName: Users.UserBob.FirstName,
             lastName: Users.UserBob.LastName);
 
@@ -60,7 +60,7 @@ public abstract class UserFactory
         var user = CreateUser(
             id: Users.UserCarol.Id,
             email: Users.UserCarol.Email,
-            passwordHash: Users.UserCarol.RawPassword,
+            passwordHash: PasswordHash.FromHashed(BcryptPasswordHasher.HashPassword(Users.UserCarol.RawPassword)),
             firstName: Users.UserCarol.FirstName,
             lastName: Users.UserCarol.LastName);
 
@@ -72,7 +72,7 @@ public abstract class UserFactory
         var user = CreateUser(
             id: Users.UserLexi.Id,
             email: Users.UserLexi.Email,
-            passwordHash: Users.UserLexi.RawPassword,
+            passwordHash: PasswordHash.FromHashed(BcryptPasswordHasher.HashPassword(Users.UserLexi.RawPassword)),
             firstName: Users.UserLexi.FirstName,
             lastName: Users.UserLexi.LastName);
 
