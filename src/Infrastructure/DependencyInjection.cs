@@ -4,14 +4,15 @@ using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Users.Interfaces;
-using AgendaManager.Infrastructure.Appointments.Persistence.Interceptors;
 using AgendaManager.Infrastructure.Calendars.Repositories;
 using AgendaManager.Infrastructure.Common.Clock;
 using AgendaManager.Infrastructure.Common.Persistence;
 using AgendaManager.Infrastructure.Common.Persistence.Interceptors;
 using AgendaManager.Infrastructure.Common.Persistence.Seeds;
+using AgendaManager.Infrastructure.Common.Persistence.Services;
 using AgendaManager.Infrastructure.Common.Services.Emails;
 using AgendaManager.Infrastructure.Users.Authentication;
+using AgendaManager.Infrastructure.Users.Persistence.Interceptors;
 using AgendaManager.Infrastructure.Users.Persistence.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
@@ -77,6 +78,7 @@ public static class DependencyInjection
         IConfiguration configuration,
         IWebHostEnvironment environment)
     {
+        services.AddScoped<AuditRecordInterceptorService>();
         services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
         services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
         services.AddScoped<ISaveChangesInterceptor, UserAuditInterceptor>();
