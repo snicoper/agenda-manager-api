@@ -4,7 +4,7 @@ using AgendaManager.Domain.Users.Interfaces;
 
 namespace AgendaManager.Domain.Users.Services;
 
-public class UserAuthenticationService(IPasswordHasher passwordHasher)
+public class AuthenticationService(IPasswordHasher passwordHasher)
 {
     public Result AuthenticateUser(User user, string rawPassword)
     {

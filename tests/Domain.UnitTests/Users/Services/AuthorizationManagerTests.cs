@@ -9,19 +9,19 @@ using NSubstitute.ReturnsExtensions;
 
 namespace AgendaManager.Domain.UnitTests.Users.Services;
 
-public class UserAuthorizationManagerTests
+public class AuthorizationManagerTests
 {
     private readonly IPermissionRepository _permissionRepository;
     private readonly IRoleRepository _roleRepository;
-    private readonly UserAuthorizationManager _sut;
+    private readonly AuthorizationManager _sut;
     private readonly IUserRepository _userRepository;
 
-    public UserAuthorizationManagerTests()
+    public AuthorizationManagerTests()
     {
         _userRepository = Substitute.For<IUserRepository>();
         _roleRepository = Substitute.For<IRoleRepository>();
         _permissionRepository = Substitute.For<IPermissionRepository>();
-        _sut = new UserAuthorizationManager(_userRepository, _roleRepository, _permissionRepository);
+        _sut = new AuthorizationManager(_userRepository, _roleRepository, _permissionRepository);
     }
 
     [Fact]

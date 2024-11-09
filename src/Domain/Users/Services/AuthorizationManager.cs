@@ -5,7 +5,7 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users.Services;
 
-public class UserAuthorizationManager(
+public class AuthorizationManager(
     IUserRepository userRepository,
     IRoleRepository roleRepository,
     IPermissionRepository permissionRepository)

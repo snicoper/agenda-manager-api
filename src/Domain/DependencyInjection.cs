@@ -20,10 +20,9 @@ public static class DependencyInjection
         services.AddScoped<UserManager>();
         services.AddScoped<RoleManager>();
         services.AddScoped<PermissionManager>();
-        services.AddScoped<IUserEmailManager, UserEmailManager>();
-        services.AddScoped<UserEmailManager>();
-        services.AddScoped<UserAuthenticationService>();
-        services.AddScoped<UserAuthorizationManager>();
+        services.AddScoped<IEmailUniquenessChecker, EmailUniquenessChecker>();
+        services.AddScoped<AuthenticationService>();
+        services.AddScoped<AuthorizationManager>();
     }
 
     private static void AddCalendars(this IServiceCollection services)

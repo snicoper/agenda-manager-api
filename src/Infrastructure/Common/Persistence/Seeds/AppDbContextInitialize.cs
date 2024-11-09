@@ -15,7 +15,7 @@ public class AppDbContextInitialize(
     RoleManager roleManager,
     PermissionManager permissionManager,
     IPasswordHasher passwordHasher,
-    UserAuthorizationManager userAuthorizationManager,
+    AuthorizationManager authorizationManager,
     ILogger<AppDbContextInitialize> logger)
 {
     private static List<Role> _roles = [];
@@ -306,21 +306,21 @@ public class AppDbContextInitialize(
         var adminRole = _roles.First(r => r.Name == Roles.Admin);
         foreach (var permission in _permissions)
         {
-            await userAuthorizationManager.AddPermissionToRole(adminRole.Id, permission.Id);
+            await authorizationManager.AddPermissionToRole(adminRole.Id, permission.Id);
         }
 
         // Asignar todos permisos a role Manager.
         var managerRole = _roles.First(r => r.Name == Roles.Manager);
         foreach (var permission in _permissions)
         {
-            await userAuthorizationManager.AddPermissionToRole(managerRole.Id, permission.Id);
+            await authorizationManager.AddPermissionToRole(managerRole.Id, permission.Id);
         }
 
         // Asignar solo permisos de lectura a role Client.
         var clientRole = _roles.First(r => r.Name == Roles.Client);
         foreach (var permission in _permissions.Where(p => p.Name.Contains("read")))
         {
-            await userAuthorizationManager.AddPermissionToRole(clientRole.Id, permission.Id);
+            await authorizationManager.AddPermissionToRole(clientRole.Id, permission.Id);
         }
 
         await context.SaveChangesAsync();
@@ -354,9 +354,9 @@ public class AppDbContextInitialize(
             var managerRole = _roles.First(r => r.Name == Roles.Manager);
             var clientRole = _roles.First(r => r.Name == Roles.Client);
 
-            await userAuthorizationManager.AddRoleToUserAsync(adminResult.Value.Id, adminRole.Id);
-            await userAuthorizationManager.AddRoleToUserAsync(adminResult.Value.Id, managerRole.Id);
-            await userAuthorizationManager.AddRoleToUserAsync(adminResult.Value.Id, clientRole.Id);
+            await authorizationManager.AddRoleToUserAsync(adminResult.Value.Id, adminRole.Id);
+            await authorizationManager.AddRoleToUserAsync(adminResult.Value.Id, managerRole.Id);
+            await authorizationManager.AddRoleToUserAsync(adminResult.Value.Id, clientRole.Id);
         }
 
         // Manager user.
@@ -382,8 +382,8 @@ public class AppDbContextInitialize(
             var managerRole = _roles.First(r => r.Name == Roles.Manager);
             var clientRole = _roles.First(r => r.Name == Roles.Client);
 
-            await userAuthorizationManager.AddRoleToUserAsync(managerResult.Value.Id, managerRole.Id);
-            await userAuthorizationManager.AddRoleToUserAsync(managerResult.Value.Id, clientRole.Id);
+            await authorizationManager.AddRoleToUserAsync(managerResult.Value.Id, managerRole.Id);
+            await authorizationManager.AddRoleToUserAsync(managerResult.Value.Id, clientRole.Id);
         }
 
         // Client user.
@@ -407,7 +407,7 @@ public class AppDbContextInitialize(
             await context.SaveChangesAsync();
 
             var clientRole = _roles.First(r => r.Name == Roles.Client);
-            await userAuthorizationManager.AddRoleToUserAsync(clientResult.Value.Id, clientRole.Id);
+            await authorizationManager.AddRoleToUserAsync(clientResult.Value.Id, clientRole.Id);
         }
 
         // Client user.
@@ -429,7 +429,7 @@ public class AppDbContextInitialize(
         if (!await context.Users.AnyAsync(u => u.Email.Equals(client2Result.Value.Email)))
         {
             var clientRole = _roles.First(r => r.Name == Roles.Client);
-            await userAuthorizationManager.AddRoleToUserAsync(client2Result.Value.Id, clientRole.Id);
+            await authorizationManager.AddRoleToUserAsync(client2Result.Value.Id, clientRole.Id);
         }
 
         await context.SaveChangesAsync();

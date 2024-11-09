@@ -1,13 +1,17 @@
 ﻿using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 using AgendaManager.Domain.Users.Events;
+using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
+using NSubstitute;
 
 namespace AgendaManager.Domain.UnitTests.Users;
 
 public class UserTests
 {
+    private readonly IEmailUniquenessChecker _emailUniquenessChecker = Substitute.For<IEmailUniquenessChecker>();
+
     [Fact]
     public void User_ShouldReturnUser_WhenUserIsCreated()
     {
@@ -166,14 +170,16 @@ public class UserTests
     }
 
     [Fact]
-    public void User_ShouldRaiseEvent_WhenUserEmailIsUpdated()
+    public async Task User_ShouldRaiseEvent_WhenUserEmailIsUpdated()
     {
         // Arrange
         var user = UserFactory.CreateUserCarol();
         var email = EmailAddress.From("new@example.com");
 
+        _emailUniquenessChecker.IsUnique(Arg.Any<EmailAddress>(), Arg.Any<CancellationToken>()).Returns(true);
+
         // Act
-        user.UpdateEmail(email);
+        await user.UpdateEmail(email, _emailUniquenessChecker, CancellationToken.None);
 
         // Assert
         user.DomainEvents.Should().Contain(x => x is UserEmailUpdatedDomainEvent);
@@ -181,13 +187,15 @@ public class UserTests
     }
 
     [Fact]
-    public void User_ShouldNotRaiseEvent_WhenUserEmailIsSame()
+    public async Task User_ShouldNotRaiseEvent_WhenUserEmailIsSame()
     {
         // Arrange
         var user = UserFactory.CreateUserLexi();
 
+        _emailUniquenessChecker.IsUnique(Arg.Any<EmailAddress>(), Arg.Any<CancellationToken>()).Returns(true);
+
         // Act
-        user.UpdateEmail(user.Email);
+        await user.UpdateEmail(user.Email, _emailUniquenessChecker, CancellationToken.None);
 
         // Assert
         user.DomainEvents.Should().NotContain(x => x is UserEmailUpdatedDomainEvent);

@@ -1,8 +1,10 @@
 ﻿using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
+using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.Exceptions;
+using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users;
@@ -66,6 +68,28 @@ public sealed class User : AggregateRoot
         PasswordHash = newPasswordHash;
 
         AddDomainEvent(new UserPasswordUpdatedDomainEvent(Id));
+
+        return Result.Success();
+    }
+
+    public async Task<Result> UpdateEmail(
+        EmailAddress email,
+        IEmailUniquenessChecker emailUniquenessChecker,
+        CancellationToken cancellationToken)
+    {
+        if (Email.Equals(email))
+        {
+            return Result.Success();
+        }
+
+        if (!await emailUniquenessChecker.IsUnique(email, cancellationToken))
+        {
+            return UserErrors.EmailAlreadyExists;
+        }
+
+        Email = email;
+
+        AddDomainEvent(new UserEmailUpdatedDomainEvent(Id));
 
         return Result.Success();
     }
@@ -135,18 +159,6 @@ public sealed class User : AggregateRoot
         AddDomainEvent(new UserRoleRemovedDomainEvent(Id, role.Id));
 
         return Result.Success();
-    }
-
-    internal void UpdateEmail(EmailAddress email)
-    {
-        if (Email.Equals(email))
-        {
-            return;
-        }
-
-        Email = email;
-
-        AddDomainEvent(new UserEmailUpdatedDomainEvent(Id));
     }
 
     private static void GuardAgainstInvalidFirstName(string? firstName)
