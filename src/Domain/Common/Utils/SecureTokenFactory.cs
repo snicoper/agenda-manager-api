@@ -10,9 +10,11 @@ public static class SecureTokenFactory
         using var rng = RandomNumberGenerator.Create();
         rng.GetBytes(randomNumber);
 
+        // We convert to Base64 and replace problematic characters.
         var token = Convert.ToBase64String(randomNumber)
             .Replace("/", "_")
             .Replace("+", "-")
+            .Replace("_", "-")
             .Replace("=", string.Empty);
 
         if (token.Length > tokenLength)
