@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 using AgendaManager.Domain.Users.Events;
+using AgendaManager.Domain.Users.Exceptions;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
 using AgendaManager.TestCommon.Factories;
@@ -140,7 +141,7 @@ public class UserTests
     {
         // Arrange
         var user = UserFactory.CreateUserAlice();
-        var role = RoleFactory.CreateRoleAdmin();
+        var role = RoleFactory.CreateRole();
 
         // Act
         user.AddRole(role);
@@ -157,7 +158,7 @@ public class UserTests
     {
         // Arrange
         var user = UserFactory.CreateUserAlice();
-        var role = RoleFactory.CreateRoleAdmin();
+        var role = RoleFactory.CreateRole();
         user.AddRole(role);
 
         // Act
@@ -200,5 +201,25 @@ public class UserTests
         // Assert
         user.DomainEvents.Should().NotContain(x => x is UserEmailUpdatedDomainEvent);
         user.Email.Should().Be(user.Email);
+    }
+
+    [Fact]
+    public void User_ShouldRaiseException_WhenInvalidFirstNameIsSet()
+    {
+        // Arrange
+        var firstName = new string('*', 257);
+
+        // Assert
+        Assert.Throws<UserDomainException>(() => UserFactory.CreateUser(firstName: firstName));
+    }
+
+    [Fact]
+    public void User_ShouldRaiseException_WhenInvalidLastNameIsSet()
+    {
+        // Arrange
+        var lastName = new string('*', 257);
+
+        // Assert
+        Assert.Throws<UserDomainException>(() => UserFactory.CreateUser(lastName: lastName));
     }
 }

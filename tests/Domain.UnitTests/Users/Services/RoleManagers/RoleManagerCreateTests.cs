@@ -26,7 +26,7 @@ public class RoleManagerCreateTests
     public async Task CreateRoleAsync_Should_ReturnResultSuccess_WhenRoleIsCreated()
     {
         // Arrange
-        var role = RoleFactory.CreateRoleAdmin();
+        var role = RoleFactory.CreateRole();
 
         // Act
         var roleResult = await _sut.CreateRoleAsync(
@@ -50,7 +50,7 @@ public class RoleManagerCreateTests
     public async Task CreateRoleAsync_ShouldReturnResultFailure_WhenNameAlreadyExists()
     {
         // Arrange
-        var role = RoleFactory.CreateRoleAdmin();
+        var role = RoleFactory.CreateRole();
 
         // Act
         _roleRepository.NameExistsAsync(Arg.Any<Role>(), CancellationToken.None).Returns(true);

@@ -11,7 +11,7 @@ public class RoleTests
     public void Role_ShouldReturnRole_WhenCreated()
     {
         // Act
-        var role = RoleFactory.CreateRoleAdmin();
+        var role = RoleFactory.CreateRole();
 
         // Assert
         role.Id.Should().Be(role.Id);
@@ -22,7 +22,7 @@ public class RoleTests
     public void Role_ShouldRaiseEvent_WhenCrated()
     {
         // Arrange
-        var role = RoleFactory.CreateRoleAdmin();
+        var role = RoleFactory.CreateRole();
 
         // Assert
         role.DomainEvents.Should().Contain(x => x is RoleCreatedDomainEvent);
@@ -32,7 +32,7 @@ public class RoleTests
     public void Role_ShouldRaiseEvent_WhenUpdated()
     {
         // Arrange
-        var role = RoleFactory.CreateRoleAdmin();
+        var role = RoleFactory.CreateRole();
         const string newName = "New Name";
         const string newDescription = "New Description";
 
@@ -47,7 +47,7 @@ public class RoleTests
     public void Role_ShouldRaiseEvent_WhenPermissionAdded()
     {
         // Arrange
-        var role = RoleFactory.CreateRoleAdmin();
+        var role = RoleFactory.CreateRole();
         var permission = PermissionFactory.CreatePermissionUsersCreate();
 
         // Act
@@ -63,7 +63,7 @@ public class RoleTests
     public void Role_ShouldRaiseEvent_WhenPermissionRemoved()
     {
         // Arrange
-        var role = RoleFactory.CreateRoleAdmin();
+        var role = RoleFactory.CreateRole();
         var permission = PermissionFactory.CreatePermissionUsersCreate();
         role.AddPermission(permission);
 
@@ -80,7 +80,7 @@ public class RoleTests
     public void Role_ShouldRaiseEvent_WhenEditableStateUpdated()
     {
         // Arrange
-        var role = RoleFactory.CreateRoleAdmin();
+        var role = RoleFactory.CreateRole();
 
         // Act
         role.UpdateEditableState(true);
@@ -93,7 +93,7 @@ public class RoleTests
     public void Role_ShouldChangeData_WhenRoleIsUpdated()
     {
         // Arrange
-        var role = RoleFactory.CreateRoleAdmin();
+        var role = RoleFactory.CreateRole();
         const string newName = "New Name";
         const string newDescription = "New Description";
 
@@ -111,7 +111,7 @@ public class RoleTests
     public void Role_ShouldThrowException_WhenNameIsInvalid(int nameLength)
     {
         // Arrange
-        var role = RoleFactory.CreateRoleAdmin();
+        var role = RoleFactory.CreateRole();
         var invalidName = new string('*', nameLength);
         const string validDescription = "Valid Description";
 
@@ -128,7 +128,7 @@ public class RoleTests
     public void Role_ShouldThrowException_WhenDescriptionIsInvalid(int descriptionLength)
     {
         // Arrange
-        var role = RoleFactory.CreateRoleAdmin();
+        var role = RoleFactory.CreateRole();
         const string validName = "Valid Name";
         var invalidDescription = new string('*', descriptionLength);
 
@@ -143,7 +143,7 @@ public class RoleTests
     public void Role_ShouldEditableStateBeFalse_WhenCreated()
     {
         // Arrange
-        var role = RoleFactory.CreateRoleAdmin();
+        var role = RoleFactory.CreateRole();
 
         // Assert
         role.Editable.Should().BeFalse();
@@ -153,7 +153,7 @@ public class RoleTests
     public void Role_ShouldChangeEditableState_WhenEditableStateIsSetTrue()
     {
         // Arrange
-        var role = RoleFactory.CreateRoleAdmin();
+        var role = RoleFactory.CreateRole();
 
         // Act
         role.UpdateEditableState(true);
@@ -166,7 +166,7 @@ public class RoleTests
     public void Role_ShouldChangeEditableState_WhenEditableStateIsSetFalse()
     {
         // Arrange
-        var role = RoleFactory.CreateRoleAdmin();
+        var role = RoleFactory.CreateRole();
 
         // Act
         role.UpdateEditableState(false);

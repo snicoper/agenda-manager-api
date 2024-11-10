@@ -6,6 +6,13 @@ namespace AgendaManager.TestCommon.Factories;
 
 public abstract class PermissionFactory
 {
+    public static Permission CreatePermission(
+        PermissionId? permissionId = null,
+        string? name = null)
+    {
+        return new Permission(permissionId ?? PermissionId.Create(), name ?? PermissionNames.Users.Create);
+    }
+
     public static Permission CreatePermissionUsersCreate(
         PermissionId? permissionId = null,
         string name = PermissionNames.Users.Create)
