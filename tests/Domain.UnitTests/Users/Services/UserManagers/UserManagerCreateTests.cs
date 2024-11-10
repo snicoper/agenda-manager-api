@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
-using AgendaManager.Domain.Users;
+using AgendaManager.Domain.Users.Aggregates;
 using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.Exceptions;
 using AgendaManager.Domain.Users.Interfaces;

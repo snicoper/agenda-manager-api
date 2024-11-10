@@ -1,13 +1,13 @@
-﻿using AgendaManager.Domain.Calendars;
+﻿using AgendaManager.Domain.Calendars.Aggregates;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.ValueObjects.ColorScheme;
 using AgendaManager.Domain.Resources.Events;
 using AgendaManager.Domain.Resources.ValueObjects;
-using AgendaManager.Domain.Users;
+using AgendaManager.Domain.Users.Aggregates;
 using AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.Domain.Resources;
+namespace AgendaManager.Domain.Resources.Aggregates;
 
 public sealed class Resource : AggregateRoot
 {

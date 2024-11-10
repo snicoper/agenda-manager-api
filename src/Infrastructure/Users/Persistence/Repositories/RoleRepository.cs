@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.Users;
+﻿using AgendaManager.Domain.Users.Aggregates;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
 using AgendaManager.Infrastructure.Common.Persistence;

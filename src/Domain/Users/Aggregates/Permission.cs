@@ -3,7 +3,7 @@ using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.Exceptions;
 using AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.Domain.Users;
+namespace AgendaManager.Domain.Users.Aggregates;
 
 public sealed class Permission : AuditableEntity
 {

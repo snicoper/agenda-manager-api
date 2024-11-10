@@ -1,8 +1,8 @@
-﻿using AgendaManager.Domain.Calendars;
+﻿using AgendaManager.Domain.Calendars.Aggregates;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.ValueObjects.ColorScheme;
-using AgendaManager.Domain.Resources;
+using AgendaManager.Domain.Resources.Aggregates;
 using AgendaManager.Domain.Services.Events;
 using AgendaManager.Domain.Services.ValueObjects;
 

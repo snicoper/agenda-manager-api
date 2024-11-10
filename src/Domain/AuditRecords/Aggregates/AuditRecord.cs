@@ -3,7 +3,7 @@ using AgendaManager.Domain.AuditRecords.Events;
 using AgendaManager.Domain.AuditRecords.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 
-namespace AgendaManager.Domain.AuditRecords;
+namespace AgendaManager.Domain.AuditRecords.Aggregates;
 
 public class AuditRecord : AggregateRoot
 {

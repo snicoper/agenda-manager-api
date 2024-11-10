@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Users.ValueObjects;
+﻿using AgendaManager.Domain.Users.Aggregates;
+using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users.Interfaces;
 

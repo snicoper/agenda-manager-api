@@ -1,8 +1,8 @@
 ﻿using AgendaManager.Application.Common.Interfaces.Clock;
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Models.Users;
-using AgendaManager.Domain.AuditRecords;
-using AgendaManager.Domain.Users;
+using AgendaManager.Domain.AuditRecords.Aggregates;
+using AgendaManager.Domain.Users.Aggregates;
 using AgendaManager.Infrastructure.Common.Persistence;
 using AgendaManager.Infrastructure.Common.Persistence.Services;
 using AgendaManager.TestCommon.Factories;

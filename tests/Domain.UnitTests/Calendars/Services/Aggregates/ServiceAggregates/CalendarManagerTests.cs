@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.Calendars;
+﻿using AgendaManager.Domain.Calendars.Aggregates;
 using AgendaManager.Domain.Calendars.Exxceptions;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.Services;

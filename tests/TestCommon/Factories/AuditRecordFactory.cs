@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.AuditRecords;
+﻿using AgendaManager.Domain.AuditRecords.Aggregates;
 using AgendaManager.Domain.AuditRecords.Enums;
 using AgendaManager.Domain.AuditRecords.ValueObjects;
 

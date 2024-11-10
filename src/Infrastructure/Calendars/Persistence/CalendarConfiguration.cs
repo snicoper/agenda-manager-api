@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.Calendars;
+﻿using AgendaManager.Domain.Calendars.Aggregates;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

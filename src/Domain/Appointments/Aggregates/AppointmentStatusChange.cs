@@ -2,10 +2,9 @@
 using AgendaManager.Domain.Appointments.Events;
 using AgendaManager.Domain.Appointments.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Common.ValueObjects.Period;
 
-namespace AgendaManager.Domain.Appointments;
+namespace AgendaManager.Domain.Appointments.Aggregates;
 
 public class AppointmentStatusChange : AuditableEntity
 {

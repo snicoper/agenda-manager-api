@@ -1,10 +1,9 @@
 ﻿using AgendaManager.Domain.Calendars.Events;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Common.ValueObjects.Period;
 
-namespace AgendaManager.Domain.Calendars;
+namespace AgendaManager.Domain.Calendars.Aggregates;
 
 public class CalendarHoliday : AggregateRoot
 {

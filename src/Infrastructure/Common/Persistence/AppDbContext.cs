@@ -1,13 +1,12 @@
 ﻿using System.Reflection;
 using AgendaManager.Application.Common.Interfaces.Persistence;
-using AgendaManager.Domain.Appointments;
-using AgendaManager.Domain.AuditRecords;
-using AgendaManager.Domain.Calendars;
+using AgendaManager.Domain.Appointments.Aggregates;
+using AgendaManager.Domain.AuditRecords.Aggregates;
+using AgendaManager.Domain.Calendars.Aggregates;
 using AgendaManager.Domain.Common.Interfaces;
-using AgendaManager.Domain.Resources;
-using AgendaManager.Domain.Services;
+using AgendaManager.Domain.Resources.Aggregates;
 using AgendaManager.Domain.Services.Aggregates;
-using AgendaManager.Domain.Users;
+using AgendaManager.Domain.Users.Aggregates;
 using Microsoft.EntityFrameworkCore;
 
 namespace AgendaManager.Infrastructure.Common.Persistence;

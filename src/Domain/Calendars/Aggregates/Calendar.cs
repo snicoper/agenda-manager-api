@@ -3,7 +3,7 @@ using AgendaManager.Domain.Calendars.Exxceptions;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 
-namespace AgendaManager.Domain.Calendars;
+namespace AgendaManager.Domain.Calendars.Aggregates;
 
 public class Calendar : AggregateRoot
 {

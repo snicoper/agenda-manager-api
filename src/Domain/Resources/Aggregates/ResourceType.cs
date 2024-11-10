@@ -1,10 +1,9 @@
 ﻿using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Resources.Events;
 using AgendaManager.Domain.Resources.ValueObjects;
-using AgendaManager.Domain.Services;
 using AgendaManager.Domain.Services.Aggregates;
 
-namespace AgendaManager.Domain.Resources;
+namespace AgendaManager.Domain.Resources.Aggregates;
 
 public class ResourceType : AuditableEntity
 {
