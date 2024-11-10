@@ -3,7 +3,7 @@ using AgendaManager.Domain.Users.Exceptions;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
-namespace AgendaManager.Domain.UnitTests.Users.RoleAggregate;
+namespace AgendaManager.Domain.UnitTests.Users.Aggregates.RoleAggregate;
 
 public class RoleUpdateTests
 {

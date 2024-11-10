@@ -5,7 +5,7 @@ using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 using NSubstitute;
 
-namespace AgendaManager.Domain.UnitTests.Users.UserAggregate;
+namespace AgendaManager.Domain.UnitTests.Users.Aggregates.UserAggregate;
 
 public class UserEmailTests
 {

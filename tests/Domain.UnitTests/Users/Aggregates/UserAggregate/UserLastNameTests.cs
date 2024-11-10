@@ -1,7 +1,7 @@
 ﻿using AgendaManager.Domain.Users.Exceptions;
 using AgendaManager.TestCommon.Factories;
 
-namespace AgendaManager.Domain.UnitTests.Users.UserAggregate;
+namespace AgendaManager.Domain.UnitTests.Users.Aggregates.UserAggregate;
 
 public class UserLastNameTests
 {

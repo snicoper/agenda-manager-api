@@ -2,7 +2,7 @@
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
-namespace AgendaManager.Domain.UnitTests.Users.UserAggregate;
+namespace AgendaManager.Domain.UnitTests.Users.Aggregates.UserAggregate;
 
 public class UserUpdateTests
 {

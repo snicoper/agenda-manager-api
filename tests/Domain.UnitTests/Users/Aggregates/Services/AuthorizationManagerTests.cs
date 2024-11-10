@@ -7,7 +7,7 @@ using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 
-namespace AgendaManager.Domain.UnitTests.Users.Services;
+namespace AgendaManager.Domain.UnitTests.Users.Aggregates.Services;
 
 public class AuthorizationManagerTests
 {

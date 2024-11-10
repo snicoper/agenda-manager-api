@@ -4,7 +4,7 @@ using AgendaManager.Domain.Users.Services;
 using FluentAssertions;
 using NSubstitute;
 
-namespace AgendaManager.Domain.UnitTests.Users.Services;
+namespace AgendaManager.Domain.UnitTests.Users.Aggregates.Services;
 
 public class EmailUniquenessCheckerTests
 {

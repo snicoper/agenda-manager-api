@@ -3,7 +3,7 @@ using AgendaManager.Domain.Users.Exceptions;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
-namespace AgendaManager.Domain.UnitTests.Users.PermissionAggregate;
+namespace AgendaManager.Domain.UnitTests.Users.Aggregates.PermissionAggregate;
 
 public class PermissionCreateTests
 {

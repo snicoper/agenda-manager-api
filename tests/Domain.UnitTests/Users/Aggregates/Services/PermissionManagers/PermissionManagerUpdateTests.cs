@@ -2,7 +2,7 @@
 using AgendaManager.Domain.Users.Services;
 using NSubstitute;
 
-namespace AgendaManager.Domain.UnitTests.Users.Services.PermissionManagers;
+namespace AgendaManager.Domain.UnitTests.Users.Aggregates.Services.PermissionManagers;
 
 public class PermissionManagerUpdateTests
 {

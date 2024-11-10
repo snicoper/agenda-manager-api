@@ -9,7 +9,7 @@ using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 using NSubstitute;
 
-namespace AgendaManager.Domain.UnitTests.Users.Services.PermissionManagers;
+namespace AgendaManager.Domain.UnitTests.Users.Aggregates.Services.PermissionManagers;
 
 public class PermissionManagerCreateTests
 {

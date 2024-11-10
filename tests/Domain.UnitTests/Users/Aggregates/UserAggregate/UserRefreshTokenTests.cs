@@ -1,10 +1,9 @@
 ﻿using AgendaManager.Domain.Common.ValueObjects.Token;
 using AgendaManager.Domain.Users.Events;
-using AgendaManager.Domain.Users.ValueObjects;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
-namespace AgendaManager.Domain.UnitTests.Users.UserAggregate;
+namespace AgendaManager.Domain.UnitTests.Users.Aggregates.UserAggregate;
 
 public class UserRefreshTokenTests
 {

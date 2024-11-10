@@ -5,7 +5,7 @@ using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 using NSubstitute;
 
-namespace AgendaManager.Domain.UnitTests.Users.Services;
+namespace AgendaManager.Domain.UnitTests.Users.Aggregates.Services;
 
 public class AuthenticationServiceTests
 {

@@ -9,7 +9,7 @@ using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 using NSubstitute;
 
-namespace AgendaManager.Domain.UnitTests.Users.Services.RoleManagers;
+namespace AgendaManager.Domain.UnitTests.Users.Aggregates.Services.RoleManagers;
 
 public class RoleManagerCreateTests
 {
