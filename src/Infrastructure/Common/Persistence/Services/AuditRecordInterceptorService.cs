@@ -21,7 +21,7 @@ public class AuditRecordInterceptorService(
     public void RecordAuditEntries<TAggregate>(DbContext? context, string entityId, List<string> auditableProperties)
         where TAggregate : IEntity
     {
-        if (context is null)
+        if (context is null || auditableProperties.Count == 0)
         {
             return;
         }
