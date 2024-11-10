@@ -1,5 +1,5 @@
 ﻿using AgendaManager.Domain.Common.Interfaces;
-using AgendaManager.Domain.Resources.Aggregates;
+using AgendaManager.Domain.Resources.Entities;
 
 namespace AgendaManager.Domain.Resources.Events;
 

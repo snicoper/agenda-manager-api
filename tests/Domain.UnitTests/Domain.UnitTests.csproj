@@ -25,9 +25,4 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="AuditRecords\Aggregates\" />
-    <Folder Include="Calendars\Aggregates\" />
-  </ItemGroup>
-
 </Project>

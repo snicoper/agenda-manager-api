@@ -1,5 +1,5 @@
 ﻿using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Users.Aggregates;
+using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

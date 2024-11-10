@@ -1,5 +1,5 @@
 ﻿using AgendaManager.Domain.Common.Responses;
-using AgendaManager.Domain.Users.Aggregates;
+using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.Exceptions;
 using AgendaManager.Domain.Users.Interfaces;

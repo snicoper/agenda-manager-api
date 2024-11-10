@@ -1,6 +1,4 @@
-﻿using AgendaManager.Domain.Calendars.Aggregates;
-
-namespace AgendaManager.Domain.Calendars.Interfaces;
+﻿namespace AgendaManager.Domain.Calendars.Interfaces;
 
 public interface ICalendarRepository
 {

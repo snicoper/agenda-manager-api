@@ -6,7 +6,7 @@ using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Models.Users;
 using AgendaManager.Domain.Common.Constants;
 using AgendaManager.Domain.Common.ValueObjects.Token;
-using AgendaManager.Domain.Users.Aggregates;
+using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.Extensions.Options;

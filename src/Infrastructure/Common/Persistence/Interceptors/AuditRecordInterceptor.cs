@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Users.Aggregates;
+﻿using AgendaManager.Domain.Users;
+using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Infrastructure.Common.Persistence.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;

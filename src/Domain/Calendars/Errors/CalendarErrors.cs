@@ -1,5 +1,4 @@
-﻿using AgendaManager.Domain.Calendars.Aggregates;
-using AgendaManager.Domain.Common.Responses;
+﻿using AgendaManager.Domain.Common.Responses;
 
 namespace AgendaManager.Domain.Calendars.Errors;
 

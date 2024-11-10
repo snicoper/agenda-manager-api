@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.Appointments.Aggregates;
+﻿using AgendaManager.Domain.Appointments;
 using AgendaManager.Domain.Appointments.ValueObjects;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Services.ValueObjects;

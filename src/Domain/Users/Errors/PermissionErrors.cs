@@ -1,5 +1,5 @@
 ﻿using AgendaManager.Domain.Common.Responses;
-using AgendaManager.Domain.Users.Aggregates;
+using AgendaManager.Domain.Users.Entities;
 
 namespace AgendaManager.Domain.Users.Errors;
 

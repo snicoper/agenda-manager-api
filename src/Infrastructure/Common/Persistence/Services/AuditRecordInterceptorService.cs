@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Application.Common.Interfaces.Clock;
 using AgendaManager.Application.Common.Interfaces.Users;
-using AgendaManager.Domain.AuditRecords.Aggregates;
+using AgendaManager.Domain.AuditRecords;
 using AgendaManager.Domain.AuditRecords.Enums;
 using AgendaManager.Domain.AuditRecords.ValueObjects;
 using AgendaManager.Domain.Common.Interfaces;

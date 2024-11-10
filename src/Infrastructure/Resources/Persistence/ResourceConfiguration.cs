@@ -1,5 +1,5 @@
 ﻿using AgendaManager.Domain.Calendars.ValueObjects;
-using AgendaManager.Domain.Resources.Aggregates;
+using AgendaManager.Domain.Resources;
 using AgendaManager.Domain.Resources.ValueObjects;
 using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;

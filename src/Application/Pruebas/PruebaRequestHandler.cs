@@ -3,7 +3,7 @@ using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 using AgendaManager.Domain.Common.ValueObjects.Token;
-using AgendaManager.Domain.Users.Aggregates;
+using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.Enums;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;

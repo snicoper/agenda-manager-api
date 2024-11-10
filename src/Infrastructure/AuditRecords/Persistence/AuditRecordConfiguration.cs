@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.AuditRecords.Aggregates;
+﻿using AgendaManager.Domain.AuditRecords;
 using AgendaManager.Domain.AuditRecords.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
