@@ -49,6 +49,9 @@ public class AuditRecordInterceptorServiceTests
         var currentDate = DateTimeOffset.UtcNow;
         var user = UserFactory.CreateUserAlice();
         var currentUser = new CurrentUser(user.Id, [], []);
+        var userIdExpected = user.Id.Value.ToString();
+        const string oldValueExpected = "True";
+        const string newValueExpected = "False";
 
         user.LastModifiedBy = "John";
         user.CreatedBy = "John";
@@ -69,6 +72,9 @@ public class AuditRecordInterceptorServiceTests
         // Assert
         var auditRecords = _dbContext.Set<AuditRecord>().ToList();
         auditRecords.Should().HaveCount(1);
+        auditRecords.First().AggregateId.Should().Be(userIdExpected);
+        auditRecords.First().OldValue.Should().Be(oldValueExpected);
+        auditRecords.First().NewValue.Should().Be(newValueExpected);
     }
 
     [Fact]
