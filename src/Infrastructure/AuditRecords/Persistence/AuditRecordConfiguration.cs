@@ -24,7 +24,7 @@ public class AuditRecordConfiguration : IEntityTypeConfiguration<AuditRecord>
             .IsRequired();
 
         builder.Property(cl => cl.AggregateId)
-            .HasMaxLength(16)
+            .HasMaxLength(500)
             .IsRequired();
 
         builder.Property(cl => cl.NamespaceName)

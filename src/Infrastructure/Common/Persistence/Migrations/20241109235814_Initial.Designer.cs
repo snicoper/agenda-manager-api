@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241109222219_Initial")]
+    [Migration("20241109235814_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -123,9 +123,10 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<int>("ActionType")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("AggregateId")
-                        .HasMaxLength(16)
-                        .HasColumnType("uuid");
+                    b.Property<string>("AggregateId")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<string>("AggregateName")
                         .IsRequired()

@@ -13,7 +13,7 @@ public class AuditRecord : AggregateRoot
 
     private AuditRecord(
         AuditRecordId id,
-        Guid aggregateId,
+        string aggregateId,
         string namespaceName,
         string aggregateName,
         string propertyName,
@@ -33,7 +33,7 @@ public class AuditRecord : AggregateRoot
 
     public AuditRecordId Id { get; } = null!;
 
-    public Guid AggregateId { get; private set; }
+    public string AggregateId { get; private set; } = default!;
 
     public string NamespaceName { get; private set; } = default!;
 
@@ -49,7 +49,7 @@ public class AuditRecord : AggregateRoot
 
     public static AuditRecord Create(
         AuditRecordId id,
-        Guid aggregateId,
+        string aggregateId,
         string namespaceName,
         string aggregateName,
         string propertyName,

@@ -24,11 +24,11 @@ internal class PruebaRequestHandler(IUnitOfWork unitOfWork, IUserRepository user
             return UserErrors.UserNotFound;
         }
 
-        user.UpdateActiveState(false);
+        user.UpdateActiveState(!user.Active);
 
         await userManager.UpdateUserAsync(user, "Perico", "Palotes", cancellationToken);
 
-        userRepository.Update(user!);
+        userRepository.Update(user);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;

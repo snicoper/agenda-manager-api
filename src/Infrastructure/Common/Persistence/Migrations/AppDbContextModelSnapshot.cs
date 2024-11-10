@@ -120,9 +120,10 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<int>("ActionType")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("AggregateId")
-                        .HasMaxLength(16)
-                        .HasColumnType("uuid");
+                    b.Property<string>("AggregateId")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<string>("AggregateName")
                         .IsRequired()
