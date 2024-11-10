@@ -19,8 +19,4 @@ public static class UserErrors
     public static Error InvalidFormatPassword => Error.Validation(
         "Password",
         "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit and one special character.");
-
-    public static Error FirstNameExceedsLength => Error.Conflict("First name exceeds length.");
-
-    public static Error LastNameExceedsLength => Error.Conflict("Last name exceeds length.");
 }

@@ -8,10 +8,6 @@ public static class PermissionErrors
 
     public static Error PermissionAlreadyExists => Error.Conflict("Permission already exists.");
 
-    public static Error PermissionNameExceedsLength => Error.Validation(
-        nameof(Permission.Name),
-        "Permission name exceeds length.");
-
     public static Error PermissionNameAlreadyExists => Error.Validation(
         nameof(Permission.Name),
         "Permission name already exists.");
