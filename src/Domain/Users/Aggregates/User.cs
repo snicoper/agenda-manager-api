@@ -134,6 +134,20 @@ public sealed class User : AggregateRoot
         AddDomainEvent(new UserActiveStateUpdatetedDomainEvent(Id, newState));
     }
 
+    public void AddUserToken(UserToken userToken)
+    {
+        _userTokens.Add(userToken);
+
+        AddDomainEvent(new UserTokenAddedDomainEvent(Id, userToken.Id));
+    }
+
+    public void RemoveUserToken(UserToken userToken)
+    {
+        _userTokens.Remove(userToken);
+
+        AddDomainEvent(new UserTokenRemovedDomainEvent(Id, userToken.Id));
+    }
+
     internal void UpdateUser(string? firstName, string? lastName)
     {
         if (FirstName == firstName && LastName == lastName)
