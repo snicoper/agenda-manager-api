@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
+﻿using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -56,7 +57,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                     .IsUnique();
 
                 refreshTokenBuilder.Property(rt => rt.Value)
-                    .HasColumnName("RefreshTokenToken")
+                    .HasColumnName("RefreshToken")
                     .HasMaxLength(200)
                     .IsUnicode(false);
 
@@ -69,16 +70,19 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .UsingEntity(
                 typeBuilder =>
                 {
+                    const string userIdName = nameof(UserId);
+                    const string roleIdName = nameof(RoleId);
+
                     typeBuilder.ToTable("UserRoles");
-                    typeBuilder.Property<UserId>("UserId").HasColumnName("UserId");
-                    typeBuilder.Property<RoleId>("RoleId").HasColumnName("RoleId");
-                    typeBuilder.HasKey("UserId", "RoleId");
+                    typeBuilder.Property<UserId>(userIdName).HasColumnName(userIdName);
+                    typeBuilder.Property<RoleId>(roleIdName).HasColumnName(roleIdName);
+                    typeBuilder.HasKey(userIdName, roleIdName);
 
                     // Campos de auditoría.
-                    typeBuilder.Property<DateTimeOffset>("CreatedAt");
-                    typeBuilder.Property<string>("CreatedBy");
-                    typeBuilder.Property<DateTimeOffset>("LastModifiedAt");
-                    typeBuilder.Property<string>("LastModifiedBy");
+                    typeBuilder.Property<DateTimeOffset>(nameof(AuditableEntity.CreatedAt)).IsRequired();
+                    typeBuilder.Property<string>(nameof(AuditableEntity.CreatedBy)).IsRequired();
+                    typeBuilder.Property<DateTimeOffset>(nameof(AuditableEntity.LastModifiedAt)).IsRequired();
+                    typeBuilder.Property<string>(nameof(AuditableEntity.LastModifiedBy)).IsRequired();
                 });
     }
 }

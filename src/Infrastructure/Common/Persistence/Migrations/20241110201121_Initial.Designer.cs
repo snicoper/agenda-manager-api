@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241109235814_Initial")]
+    [Migration("20241110201121_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -599,12 +599,14 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("RoleId", "PermissionId");
@@ -628,12 +630,14 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("ServiceId", "ResourceTypeId");
@@ -657,12 +661,14 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("UserId", "RoleId");
@@ -812,7 +818,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.ColorScheme", "ColorScheme", b1 =>
+                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.ColorScheme.ColorScheme", "ColorScheme", b1 =>
                         {
                             b1.Property<Guid>("ResourceId")
                                 .HasColumnType("uuid");
@@ -898,7 +904,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.ColorScheme", "ColorScheme", b1 =>
+                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.ColorScheme.ColorScheme", "ColorScheme", b1 =>
                         {
                             b1.Property<Guid>("ServiceId")
                                 .HasColumnType("uuid");
@@ -929,7 +935,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
             modelBuilder.Entity("AgendaManager.Domain.Users.User", b =>
                 {
-                    b.OwnsOne("AgendaManager.Domain.Users.ValueObjects.RefreshToken", "RefreshToken", b1 =>
+                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Token.Token", "RefreshToken", b1 =>
                         {
                             b1.Property<Guid>("UserId")
                                 .HasColumnType("uuid");
@@ -938,16 +944,16 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("RefreshTokenExpires");
 
-                            b1.Property<string>("Token")
+                            b1.Property<string>("Value")
                                 .IsRequired()
                                 .HasMaxLength(200)
                                 .IsUnicode(false)
                                 .HasColumnType("character varying(200)")
-                                .HasColumnName("RefreshTokenToken");
+                                .HasColumnName("RefreshToken");
 
                             b1.HasKey("UserId");
 
-                            b1.HasIndex("Token")
+                            b1.HasIndex("Value")
                                 .IsUnique();
 
                             b1.ToTable("Users");

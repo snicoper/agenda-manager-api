@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Calendars.ValueObjects;
+using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Resources.ValueObjects;
 using AgendaManager.Domain.Services;
 using AgendaManager.Domain.Services.ValueObjects;
@@ -59,16 +60,19 @@ public class ServiceConfiguration : IEntityTypeConfiguration<Service>
             .UsingEntity(
                 typeBuilder =>
                 {
+                    const string serviceIdName = nameof(ServiceId);
+                    const string resourceTypeIdName = nameof(ResourceTypeId);
+
                     typeBuilder.ToTable("ServiceResourceTypes");
-                    typeBuilder.Property<ServiceId>("ServiceId").HasColumnName("ServiceId");
-                    typeBuilder.Property<ResourceTypeId>("ResourceTypeId").HasColumnName("ResourceTypeId");
-                    typeBuilder.HasKey("ServiceId", "ResourceTypeId");
+                    typeBuilder.Property<ServiceId>(serviceIdName).HasColumnName(serviceIdName);
+                    typeBuilder.Property<ResourceTypeId>(resourceTypeIdName).HasColumnName(resourceTypeIdName);
+                    typeBuilder.HasKey(serviceIdName, resourceTypeIdName);
 
                     // Campos de auditoría.
-                    typeBuilder.Property<DateTimeOffset>("CreatedAt");
-                    typeBuilder.Property<string>("CreatedBy");
-                    typeBuilder.Property<DateTimeOffset>("LastModifiedAt");
-                    typeBuilder.Property<string>("LastModifiedBy");
+                    typeBuilder.Property<DateTimeOffset>(nameof(AuditableEntity.CreatedAt)).IsRequired();
+                    typeBuilder.Property<string>(nameof(AuditableEntity.CreatedBy)).IsRequired();
+                    typeBuilder.Property<DateTimeOffset>(nameof(AuditableEntity.LastModifiedAt)).IsRequired();
+                    typeBuilder.Property<string>(nameof(AuditableEntity.LastModifiedBy)).IsRequired();
                 });
     }
 }
