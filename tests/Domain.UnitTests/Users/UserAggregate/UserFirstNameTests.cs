@@ -6,7 +6,7 @@ namespace AgendaManager.Domain.UnitTests.Users.UserAggregate;
 public class UserFirstNameTests
 {
     [Fact]
-    public void User_ShouldRaiseException_WhenInvalidFirstNameIsSet()
+    public void UserFirstName_ShouldRaiseException_WhenInvalidFirstNameIsSet()
     {
         // Arrange
         var firstName = new string('*', 257);

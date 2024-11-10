@@ -7,7 +7,7 @@ namespace AgendaManager.Domain.UnitTests.Users.UserAggregate;
 public class UserRoleTests
 {
     [Fact]
-    public void User_ShouldRaiseEvent_WhenRoleIsAdded()
+    public void UserRole_ShouldRaiseEvent_WhenRoleIsAdded()
     {
         // Arrange
         var user = UserFactory.CreateUserAlice();
@@ -24,7 +24,7 @@ public class UserRoleTests
     }
 
     [Fact]
-    public void User_ShouldRaiseEvent_WhenRoleIsRemoved()
+    public void UserRole_ShouldRaiseEvent_WhenRoleIsRemoved()
     {
         // Arrange
         var user = UserFactory.CreateUserAlice();

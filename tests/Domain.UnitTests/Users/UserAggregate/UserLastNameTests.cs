@@ -6,7 +6,7 @@ namespace AgendaManager.Domain.UnitTests.Users.UserAggregate;
 public class UserLastNameTests
 {
     [Fact]
-    public void User_ShouldRaiseException_WhenInvalidLastNameIsSet()
+    public void UserLastName_ShouldRaiseException_WhenInvalidLastNameIsSet()
     {
         // Arrange
         var lastName = new string('*', 257);

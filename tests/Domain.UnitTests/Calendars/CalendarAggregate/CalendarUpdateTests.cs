@@ -3,7 +3,7 @@ using AgendaManager.Domain.Calendars.Exxceptions;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
-namespace AgendaManager.Domain.UnitTests.Calendars;
+namespace AgendaManager.Domain.UnitTests.Calendars.CalendarAggregate;
 
 public class CalendarUpdateTests
 {

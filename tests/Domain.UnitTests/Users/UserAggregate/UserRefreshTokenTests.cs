@@ -22,7 +22,7 @@ public class UserRefreshTokenTests
     }
 
     [Fact]
-    public void User_ShouldAddRefreshToken_WhenIsUpdate()
+    public void UserRefreshToken_ShouldAddRefreshToken_WhenIsUpdate()
     {
         // Arrange
         var user = UserFactory.CreateUserAlice();

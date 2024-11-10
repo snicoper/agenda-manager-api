@@ -3,12 +3,12 @@ using AgendaManager.Domain.Users.Exceptions;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
-namespace AgendaManager.Domain.UnitTests.Users;
+namespace AgendaManager.Domain.UnitTests.Users.PermissionAggregate;
 
-public class PermissionTests
+public class PermissionCreateTests
 {
     [Fact]
-    public void Permission_ShouldReturnPermission_WhenCreated()
+    public void PermissionCreate_ShouldReturnPermission_WhenCreated()
     {
         // Act
         var permission = PermissionFactory.CreatePermissionUsersCreate();
@@ -19,7 +19,7 @@ public class PermissionTests
     }
 
     [Fact]
-    public void Permission_ShouldRaiseEvent_WhenCreated()
+    public void PermissionCreate_ShouldRaiseEvent_WhenCreated()
     {
         // Arrange
         var permission = PermissionFactory.CreatePermissionUsersCreate();
@@ -31,7 +31,7 @@ public class PermissionTests
     [Theory]
     [InlineData(0)]
     [InlineData(101)]
-    public void User_ShouldRaiseException_WhenInvalidNameIsSet(int nameLength)
+    public void PermissionCreate_ShouldRaiseException_WhenInvalidNameIsSet(int nameLength)
     {
         // Arrange
         var name = new string('*', nameLength);

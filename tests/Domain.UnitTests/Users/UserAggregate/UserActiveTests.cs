@@ -7,7 +7,7 @@ namespace AgendaManager.Domain.UnitTests.Users.UserAggregate;
 public class UserActiveTests
 {
     [Fact]
-    public void User_ShouldActiveTrue_WhenUserIsACreated()
+    public void UserActivate_ShouldActiveTrue_WhenUserIsACreated()
     {
         // Arrange
         var user = UserFactory.CreateUserAlice();
@@ -17,7 +17,7 @@ public class UserActiveTests
     }
 
     [Fact]
-    public void User_ShouldRaiseEvent_WhenUserIsActiveStateIsUpdated()
+    public void UserActivate_ShouldRaiseEvent_WhenUserIsActiveStateIsUpdated()
     {
         // Arrange
         var user = UserFactory.CreateUserAlice();

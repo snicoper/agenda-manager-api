@@ -12,7 +12,7 @@ public class UserEmailTests
     private readonly IEmailUniquenessChecker _emailUniquenessChecker = Substitute.For<IEmailUniquenessChecker>();
 
     [Fact]
-    public void User_ShouldRaiseEvent_WhenEmailIsConfirmed()
+    public void UserEmail_ShouldRaiseEvent_WhenEmailIsConfirmed()
     {
         // Arrange
         var user = UserFactory.CreateUserAlice();
@@ -26,7 +26,7 @@ public class UserEmailTests
     }
 
     [Fact]
-    public async Task User_ShouldRaiseEvent_WhenUserEmailIsUpdated()
+    public async Task UserEmail_ShouldRaiseEvent_WhenUserEmailIsUpdated()
     {
         // Arrange
         var user = UserFactory.CreateUserCarol();
@@ -43,7 +43,7 @@ public class UserEmailTests
     }
 
     [Fact]
-    public async Task User_ShouldNotRaiseEvent_WhenUserEmailIsNotUpdated()
+    public async Task UserEmail_ShouldNotRaiseEvent_WhenUserEmailIsNotUpdated()
     {
         // Arrange
         var user = UserFactory.CreateUserLexi();

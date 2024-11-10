@@ -8,7 +8,7 @@ namespace AgendaManager.Domain.UnitTests.Users.UserAggregate;
 public class UserPasswordTests
 {
     [Fact]
-    public void User_ShouldRaiseEvent_WhenUserPasswordIsUpdate()
+    public void UserPassword_ShouldRaiseEvent_WhenUserPasswordIsUpdate()
     {
         // Arrange
         var user = UserFactory.CreateUserBob();

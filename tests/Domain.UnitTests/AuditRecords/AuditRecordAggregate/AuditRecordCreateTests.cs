@@ -2,9 +2,9 @@
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
-namespace AgendaManager.Domain.UnitTests.AuditRecords;
+namespace AgendaManager.Domain.UnitTests.AuditRecords.AuditRecordAggregate;
 
-public class AuditRecordTests
+public class AuditRecordCreateTests
 {
     [Fact]
     public void AuditRecord_ShouldCreateAuditRecord_WhenCreateWithValidParametersAreProvided()

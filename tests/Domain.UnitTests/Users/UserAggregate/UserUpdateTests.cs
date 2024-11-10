@@ -7,7 +7,7 @@ namespace AgendaManager.Domain.UnitTests.Users.UserAggregate;
 public class UserUpdateTests
 {
     [Fact]
-    public void User_ShouldRaiseEvent_WhenUserIsUpdated()
+    public void UserUpdate_ShouldRaiseEvent_WhenUserIsUpdated()
     {
         // Arrange
         var user = UserFactory.CreateUserAlice();
