@@ -5,6 +5,7 @@ using AgendaManager.Application.Common.Exceptions;
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Models.Users;
 using AgendaManager.Domain.Common.Constants;
+using AgendaManager.Domain.Common.ValueObjects.Token;
 using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
@@ -43,9 +44,9 @@ public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions, IUserRepository 
 
         var jwtSecurityToken = new JwtSecurityTokenHandler().WriteToken(token);
         var refreshTokenLifetime = TimeSpan.FromDays(_jwtOptions.RefreshTokenLifeTimeDays);
-        var refreshToken = RefreshToken.Generate(refreshTokenLifetime);
+        var refreshToken = Token.Generate(refreshTokenLifetime);
 
-        var tokenResponse = new TokenResult(jwtSecurityToken, refreshToken.Token, refreshToken.Expires);
+        var tokenResponse = new TokenResult(jwtSecurityToken, refreshToken.Value, refreshToken.Expires);
 
         return tokenResponse;
     }

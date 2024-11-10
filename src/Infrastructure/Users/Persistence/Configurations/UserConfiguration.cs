@@ -52,10 +52,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             user => user.RefreshToken,
             refreshTokenBuilder =>
             {
-                refreshTokenBuilder.HasIndex(rt => rt.Token)
+                refreshTokenBuilder.HasIndex(rt => rt.Value)
                     .IsUnique();
 
-                refreshTokenBuilder.Property(rt => rt.Token)
+                refreshTokenBuilder.Property(rt => rt.Value)
                     .HasColumnName("RefreshTokenToken")
                     .HasMaxLength(200)
                     .IsUnicode(false);

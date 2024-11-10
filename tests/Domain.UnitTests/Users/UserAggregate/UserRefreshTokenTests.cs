@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Users.Events;
+﻿using AgendaManager.Domain.Common.ValueObjects.Token;
+using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.ValueObjects;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
@@ -12,7 +13,7 @@ public class UserRefreshTokenTests
     {
         // Arrange
         var user = UserFactory.CreateUserCarol();
-        var refreshToken = RefreshToken.Generate(TimeSpan.FromDays(1));
+        var refreshToken = Token.Generate(TimeSpan.FromDays(1));
 
         // Act
         user.UpdateRefreshToken(refreshToken);
@@ -28,7 +29,7 @@ public class UserRefreshTokenTests
         var user = UserFactory.CreateUserAlice();
         var token = Guid.NewGuid().ToString();
         var expires = DateTimeOffset.UtcNow.AddDays(1);
-        var newRefreshToken = RefreshToken.From(token, expires);
+        var newRefreshToken = Token.From(token, expires);
 
         // Act
         user.UpdateRefreshToken(newRefreshToken);

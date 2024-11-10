@@ -1,6 +1,7 @@
 ﻿using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
+using AgendaManager.Domain.Common.ValueObjects.Token;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.Exceptions;
@@ -54,7 +55,7 @@ public sealed class User : AggregateRoot
 
     public bool Active { get; private set; }
 
-    public RefreshToken? RefreshToken { get; private set; }
+    public Token? RefreshToken { get; private set; }
 
     public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
 
@@ -94,14 +95,14 @@ public sealed class User : AggregateRoot
         return Result.Success();
     }
 
-    public void UpdateRefreshToken(RefreshToken refreshToken)
+    public void UpdateRefreshToken(Token token)
     {
-        if (RefreshToken is not null && RefreshToken.Equals(refreshToken))
+        if (RefreshToken is not null && RefreshToken.Equals(token))
         {
             return;
         }
 
-        RefreshToken = refreshToken;
+        RefreshToken = token;
 
         AddDomainEvent(new UserRefreshTokenUpdatedDomainEvent(Id));
     }

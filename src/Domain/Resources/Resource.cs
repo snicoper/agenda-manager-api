@@ -1,7 +1,7 @@
 ﻿using AgendaManager.Domain.Calendars;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Common.ValueObjects;
+using AgendaManager.Domain.Common.ValueObjects.ColorScheme;
 using AgendaManager.Domain.Resources.Events;
 using AgendaManager.Domain.Resources.ValueObjects;
 using AgendaManager.Domain.Users;

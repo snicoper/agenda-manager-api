@@ -63,7 +63,7 @@ public class UserRepository(AppDbContext context) : IUserRepository
         CancellationToken cancellationToken = default)
     {
         return await context.Users.FirstOrDefaultAsync(
-            u => u.RefreshToken != null && u.RefreshToken.Token == refreshToken,
+            u => u.RefreshToken != null && u.RefreshToken.Value == refreshToken,
             cancellationToken);
     }
 

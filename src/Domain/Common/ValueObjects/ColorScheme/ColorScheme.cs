@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Common.Abstractions;
 
-namespace AgendaManager.Domain.Common.ValueObjects;
+namespace AgendaManager.Domain.Common.ValueObjects.ColorScheme;
 
 public class ColorScheme : ValueObject
 {

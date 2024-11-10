@@ -1,9 +1,8 @@
-﻿using AgendaManager.Domain.Users.ValueObjects;
-using FluentAssertions;
+﻿using FluentAssertions;
 
-namespace AgendaManager.Domain.UnitTests.Users.ValueObjects;
+namespace AgendaManager.Domain.UnitTests.Common.ValueObjects.Token;
 
-public class RefreshTokenTests
+public class TokenTests
 {
     private const int TokenLength = 200;
 
@@ -15,10 +14,10 @@ public class RefreshTokenTests
         var expires = DateTimeOffset.UtcNow.AddDays(1);
 
         // Act
-        var refreshToken = RefreshToken.From(token, expires);
+        var refreshToken = Domain.Common.ValueObjects.Token.Token.From(token, expires);
 
         // Assert
-        refreshToken.Token.Should().NotBeNull();
+        refreshToken.Value.Should().NotBeNull();
         refreshToken.Expires.Should().BeAfter(DateTimeOffset.UtcNow);
     }
 
@@ -30,7 +29,7 @@ public class RefreshTokenTests
         var expires = DateTimeOffset.UtcNow.AddDays(1);
 
         // Act
-        var refreshToken = () => RefreshToken.From(token, expires);
+        var refreshToken = () => Domain.Common.ValueObjects.Token.Token.From(token, expires);
 
         // Assert
         refreshToken.Should().Throw<ArgumentException>();
@@ -44,7 +43,7 @@ public class RefreshTokenTests
         var expires = DateTimeOffset.MinValue;
 
         // Act
-        var refreshToken = () => RefreshToken.From(token, expires);
+        var refreshToken = () => Domain.Common.ValueObjects.Token.Token.From(token, expires);
 
         // Assert
         refreshToken.Should().Throw<ArgumentException>();
@@ -58,7 +57,7 @@ public class RefreshTokenTests
         var expires = DateTimeOffset.UtcNow.AddDays(1);
 
         // Act
-        var refreshToken = () => RefreshToken.From(token, expires);
+        var refreshToken = () => Domain.Common.ValueObjects.Token.Token.From(token, expires);
 
         // Assert
         refreshToken.Should().Throw<ArgumentException>();
@@ -71,14 +70,14 @@ public class RefreshTokenTests
         var lifetime = TimeSpan.FromDays(1);
 
         // Act
-        var refreshToken = RefreshToken.Generate(lifetime);
+        var refreshToken = Domain.Common.ValueObjects.Token.Token.Generate(lifetime);
 
         // Assert
         refreshToken.Should().NotBeNull();
-        refreshToken.Token.Should().NotBeNull();
+        refreshToken.Value.Should().NotBeNull();
         refreshToken.Expires.Should().BeAfter(DateTimeOffset.UtcNow);
         refreshToken.Expires.Should().BeBefore(DateTimeOffset.UtcNow.Add(lifetime));
-        refreshToken.Token.Length.Should().BeLessThan(TokenLength);
+        refreshToken.Value.Length.Should().BeLessThan(TokenLength);
     }
 
     [Fact]
@@ -88,7 +87,7 @@ public class RefreshTokenTests
         var lifetime = TimeSpan.FromDays(1);
 
         // Act
-        var refreshToken = RefreshToken.Generate(lifetime);
+        var refreshToken = Domain.Common.ValueObjects.Token.Token.Generate(lifetime);
 
         // Assert
         refreshToken.Should().NotBeNull();
@@ -103,7 +102,7 @@ public class RefreshTokenTests
         var lifetime = TimeSpan.Zero;
 
         // Act
-        var refreshToken = () => RefreshToken.Generate(lifetime);
+        var refreshToken = () => Domain.Common.ValueObjects.Token.Token.Generate(lifetime);
 
         // Assert
         refreshToken.Should().Throw<ArgumentException>();

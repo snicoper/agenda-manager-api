@@ -4,6 +4,7 @@ using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Models.Users;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
+using AgendaManager.Domain.Common.ValueObjects.Token;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.Services;
@@ -34,7 +35,7 @@ internal class LoginCommandHandler(
         }
 
         var tokenResult = await jwtTokenGenerator.GenerateAccessTokenAsync(user.Id, cancellationToken);
-        var refreshToken = Domain.Users.ValueObjects.RefreshToken.From(
+        var refreshToken = Token.From(
             tokenResult.RefreshToken,
             tokenResult.Expires);
 
