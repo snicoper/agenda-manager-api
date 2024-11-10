@@ -11,12 +11,12 @@ using NSubstitute;
 
 namespace AgendaManager.Domain.UnitTests.Users.Services.PermissionManagers;
 
-public class PermissionManagerTests
+public class PermissionManagerCreateTests
 {
     private readonly IPermissionRepository _permissionRepository;
     private readonly PermissionManager _sut;
 
-    public PermissionManagerTests()
+    public PermissionManagerCreateTests()
     {
         _permissionRepository = Substitute.For<IPermissionRepository>();
         _sut = new PermissionManager(_permissionRepository);
