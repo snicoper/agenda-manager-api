@@ -47,7 +47,7 @@ public class Calendar : AggregateRoot
 
     private static void GuardAgainstInvalidName(string name)
     {
-        if (string.IsNullOrEmpty(name) || name.Length > 50)
+        if (string.IsNullOrWhiteSpace(name) || name.Length > 50)
         {
             throw new CalendarDomainException(name);
         }
@@ -55,7 +55,7 @@ public class Calendar : AggregateRoot
 
     private static void GuardAgainstInvalidDescription(string description)
     {
-        if (string.IsNullOrEmpty(description) || description.Length > 500)
+        if (string.IsNullOrWhiteSpace(description) || description.Length > 500)
         {
             throw new CalendarDomainException(description);
         }
