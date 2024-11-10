@@ -2,6 +2,7 @@
 using AgendaManager.Domain.Resources.Events;
 using AgendaManager.Domain.Resources.ValueObjects;
 using AgendaManager.Domain.Services;
+using AgendaManager.Domain.Services.Aggregates;
 
 namespace AgendaManager.Domain.Resources;
 

@@ -5,7 +5,7 @@ using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 using NSubstitute;
 
-namespace AgendaManager.Domain.UnitTests.Users.Aggregates.Services.UserManagers;
+namespace AgendaManager.Domain.UnitTests.Users.Services.UserManagers;
 
 public class UserManagerUpdateTests
 {

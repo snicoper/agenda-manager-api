@@ -1,7 +1,7 @@
 ﻿using AgendaManager.Domain.Users.Services;
 using FluentAssertions;
 
-namespace AgendaManager.Domain.UnitTests.Users.Aggregates.Services;
+namespace AgendaManager.Domain.UnitTests.Users.Services;
 
 public class PasswordPolicyTests
 {

@@ -2,6 +2,7 @@
 using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Resources.ValueObjects;
 using AgendaManager.Domain.Services;
+using AgendaManager.Domain.Services.Aggregates;
 using AgendaManager.Domain.Services.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

@@ -8,7 +8,7 @@ using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 using NSubstitute;
 
-namespace AgendaManager.Domain.UnitTests.Calendars.Services;
+namespace AgendaManager.Domain.UnitTests.Calendars.Services.Aggregates.ServiceAggregates;
 
 public class CalendarManagerTests
 {

@@ -6,6 +6,7 @@ using AgendaManager.Domain.Calendars;
 using AgendaManager.Domain.Common.Interfaces;
 using AgendaManager.Domain.Resources;
 using AgendaManager.Domain.Services;
+using AgendaManager.Domain.Services.Aggregates;
 using AgendaManager.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 

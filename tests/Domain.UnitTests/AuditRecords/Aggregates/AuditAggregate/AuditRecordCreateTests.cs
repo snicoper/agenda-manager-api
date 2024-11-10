@@ -2,7 +2,7 @@
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
-namespace AgendaManager.Domain.UnitTests.AuditRecords.AuditRecordAggregate;
+namespace AgendaManager.Domain.UnitTests.AuditRecords.Aggregates.AuditAggregate;
 
 public class AuditRecordCreateTests
 {

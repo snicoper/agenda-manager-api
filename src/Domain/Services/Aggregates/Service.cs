@@ -6,7 +6,7 @@ using AgendaManager.Domain.Resources;
 using AgendaManager.Domain.Services.Events;
 using AgendaManager.Domain.Services.ValueObjects;
 
-namespace AgendaManager.Domain.Services;
+namespace AgendaManager.Domain.Services.Aggregates;
 
 public class Service : AggregateRoot
 {
