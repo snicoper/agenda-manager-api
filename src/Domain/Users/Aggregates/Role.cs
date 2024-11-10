@@ -9,7 +9,6 @@ namespace AgendaManager.Domain.Users.Aggregates;
 public sealed class Role : AuditableEntity
 {
     private readonly List<Permission> _permissions = [];
-    private readonly List<User> _users = [];
 
     internal Role(RoleId roleId, string name, string description, bool editable = false)
     {
@@ -37,8 +36,6 @@ public sealed class Role : AuditableEntity
     public bool Editable { get; private set; }
 
     public IReadOnlyCollection<Permission> Permissions => _permissions.AsReadOnly();
-
-    public IReadOnlyCollection<User> Users => _users.AsReadOnly();
 
     public void UpdateEditableState(bool editable)
     {

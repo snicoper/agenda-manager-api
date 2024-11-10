@@ -66,7 +66,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             });
 
         builder.HasMany(u => u.Roles)
-            .WithMany(r => r.Users)
+            .WithMany()
             .UsingEntity(
                 typeBuilder =>
                 {

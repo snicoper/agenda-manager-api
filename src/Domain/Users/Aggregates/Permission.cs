@@ -7,8 +7,6 @@ namespace AgendaManager.Domain.Users.Aggregates;
 
 public sealed class Permission : AuditableEntity
 {
-    private readonly List<Role> _roles = [];
-
     internal Permission(PermissionId permissionId, string name)
     {
         GuardAgainstInvalidName(name);
@@ -26,8 +24,6 @@ public sealed class Permission : AuditableEntity
     public PermissionId Id { get; private set; } = null!;
 
     public string Name { get; private set; } = default!;
-
-    public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
 
     private static void GuardAgainstInvalidName(string name)
     {

@@ -18,7 +18,7 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
             .IsUnique();
 
         builder.HasMany(r => r.Permissions)
-            .WithMany(p => p.Roles)
+            .WithMany()
             .UsingEntity(
                 typeBuilder =>
                 {
