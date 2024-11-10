@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Domain.Users;
 using AgendaManager.Infrastructure.Common.Persistence.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace AgendaManager.Infrastructure.Common.Persistence.Interceptors;
@@ -9,17 +10,7 @@ public class AuditRecordInterceptor(AuditRecordInterceptorService auditRecordInt
 {
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
-        // Users.
-        auditRecordInterceptorService.UpdateEntities<User>(
-            context: eventData.Context,
-            entityId: nameof(User.Id),
-            propertyNames: [nameof(User.Active)]);
-
-        // Roles.
-        auditRecordInterceptorService.UpdateEntities<Role>(
-            context: eventData.Context,
-            entityId: nameof(Role.Id),
-            propertyNames: [nameof(Role.Editable)]);
+        RegisterAuditRecordsForAggregates(eventData.Context);
 
         return base.SavingChanges(eventData, result);
     }
@@ -29,18 +20,26 @@ public class AuditRecordInterceptor(AuditRecordInterceptorService auditRecordInt
         InterceptionResult<int> result,
         CancellationToken cancellationToken = default)
     {
-        // Users.
-        auditRecordInterceptorService.UpdateEntities<User>(
-            context: eventData.Context,
-            entityId: nameof(User.Id),
-            propertyNames: [nameof(User.Active)]);
-
-        // Roles.
-        auditRecordInterceptorService.UpdateEntities<Role>(
-            eventData.Context,
-            nameof(Role.Id),
-            [nameof(Role.Editable)]);
+        RegisterAuditRecordsForAggregates(eventData.Context);
 
         return base.SavingChangesAsync(eventData, result, cancellationToken);
+    }
+
+    /// <summary>
+    /// Register audit records for aggregates.
+    /// </summary>
+    private void RegisterAuditRecordsForAggregates(DbContext? context)
+    {
+        // Users.
+        auditRecordInterceptorService.RecordAuditEntries<User>(
+            context: context,
+            entityId: nameof(User.Id),
+            auditableProperties: [nameof(User.Active)]);
+
+        // Roles.
+        auditRecordInterceptorService.RecordAuditEntries<Role>(
+            context: context,
+            entityId: nameof(Role.Id),
+            auditableProperties: [nameof(Role.Editable)]);
     }
 }

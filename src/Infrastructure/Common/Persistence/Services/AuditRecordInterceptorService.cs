@@ -18,7 +18,7 @@ public class AuditRecordInterceptorService(
 {
     private Type? _entityType;
 
-    public void UpdateEntities<TAggregate>(DbContext? context, string entityId, List<string> propertyNames)
+    public void RecordAuditEntries<TAggregate>(DbContext? context, string entityId, List<string> auditableProperties)
         where TAggregate : IEntity
     {
         if (context is null)
@@ -30,37 +30,20 @@ public class AuditRecordInterceptorService(
         {
             _entityType = typeof(TAggregate);
 
-            var auditRecords = new List<AuditRecord>();
-            var auditEntries = context.ChangeTracker.Entries().Where(e => e.Entity is TAggregate);
-
-            foreach (var entry in auditEntries)
-            {
-                if (entry.State is not (EntityState.Added or EntityState.Modified or EntityState.Deleted))
-                {
-                    continue;
-                }
-
-                foreach (var propertyName in propertyNames)
-                {
-                    var originalValue = GetOriginalValue(entry, propertyName);
-                    var currentValue = GetCurrentValue(entry, propertyName);
-                    var actionType = GetActionType(entry.State);
-
-                    if (originalValue == currentValue || actionType == ActionType.None)
+            var auditEntries = context.ChangeTracker.Entries()
+                .Where(
+                    e => e is
                     {
-                        continue;
-                    }
+                        Entity: TAggregate,
+                        State: EntityState.Added or EntityState.Modified or EntityState.Deleted
+                    });
 
-                    var auditRecord = CreateAuditRecord(
-                        aggregateId: GetAggregateIdValue(entry, entityId) ?? string.Empty,
-                        propertyName: propertyName,
-                        originalValue: originalValue,
-                        currentValue: currentValue,
-                        actionType: actionType);
-
-                    auditRecords.Add(auditRecord);
-                }
-            }
+            var auditRecords = auditEntries.SelectMany(
+                    entry => auditableProperties.Select(
+                        propertyName => CreateAuditRecordIfChanged(entry, propertyName, entityId)))
+                .Where(record => record is not null)
+                .Cast<AuditRecord>()
+                .ToList();
 
             if (auditRecords.Count != 0)
             {
@@ -69,7 +52,7 @@ public class AuditRecordInterceptorService(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error updating role audit records.");
+            logger.LogError(ex, "Error auditing {EntityName} with ID {EntityId}", _entityType?.Name, entityId);
         }
     }
 
@@ -108,6 +91,27 @@ public class AuditRecordInterceptorService(
             EntityState.Unchanged => ActionType.None,
             _ => throw new ArgumentOutOfRangeException()
         };
+    }
+
+    private AuditRecord? CreateAuditRecordIfChanged(EntityEntry entry, string propertyName, string entityId)
+    {
+        var originalValue = GetOriginalValue(entry, propertyName);
+        var currentValue = GetCurrentValue(entry, propertyName);
+        var actionType = GetActionType(entry.State);
+
+        if (originalValue == currentValue || actionType == ActionType.None)
+        {
+            return null;
+        }
+
+        var auditRecordResult = CreateAuditRecord(
+            aggregateId: GetAggregateIdValue(entry, entityId) ?? string.Empty,
+            propertyName: propertyName,
+            originalValue: originalValue,
+            currentValue: currentValue,
+            actionType: actionType);
+
+        return auditRecordResult;
     }
 
     private AuditRecord CreateAuditRecord(

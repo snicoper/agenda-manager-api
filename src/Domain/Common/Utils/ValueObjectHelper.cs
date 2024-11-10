@@ -18,7 +18,7 @@ public static class ValueObjectHelper
     public static Guid? GetValueFromValueObject(object valueObject)
     {
         var property = valueObject.GetType().GetProperty("Value", BindingFlags.Public | BindingFlags.Instance);
-        if (property != null && property.PropertyType == typeof(Guid))
+        if (property is not null && property.PropertyType == typeof(Guid))
         {
             return (Guid?)property.GetValue(valueObject);
         }
