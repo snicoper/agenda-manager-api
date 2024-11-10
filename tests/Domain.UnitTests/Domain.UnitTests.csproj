@@ -28,7 +28,6 @@
   <ItemGroup>
     <Folder Include="AuditRecords\Aggregates\" />
     <Folder Include="Calendars\Aggregates\" />
-    <Folder Include="Users\Aggregates\" />
   </ItemGroup>
 
 </Project>

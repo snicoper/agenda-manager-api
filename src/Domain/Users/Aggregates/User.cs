@@ -13,6 +13,7 @@ namespace AgendaManager.Domain.Users.Aggregates;
 public sealed class User : AggregateRoot
 {
     private readonly List<Role> _roles = [];
+    private readonly List<UserToken> _userTokens = [];
 
     internal User(
         UserId userId,
@@ -58,6 +59,8 @@ public sealed class User : AggregateRoot
     public Token? RefreshToken { get; private set; }
 
     public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
+
+    public IReadOnlyCollection<UserToken> Tokens => _userTokens.AsReadOnly();
 
     public Result UpdatePassword(PasswordHash newPasswordHash)
     {

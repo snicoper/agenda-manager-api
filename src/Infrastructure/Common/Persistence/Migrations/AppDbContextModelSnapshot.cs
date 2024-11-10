@@ -582,6 +582,41 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("AgendaManager.Domain.Users.Aggregates.UserToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserTokens", (string)null);
+                });
+
             modelBuilder.Entity("PermissionRole", b =>
                 {
                     b.Property<Guid>("RoleId")
@@ -962,6 +997,45 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Navigation("RefreshToken");
                 });
 
+            modelBuilder.Entity("AgendaManager.Domain.Users.Aggregates.UserToken", b =>
+                {
+                    b.HasOne("AgendaManager.Domain.Users.Aggregates.User", null)
+                        .WithMany("Tokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Token.Token", "Token", b1 =>
+                        {
+                            b1.Property<Guid>("UserTokenId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<DateTimeOffset>("Expires")
+                                .HasColumnType("timestamp with time zone")
+                                .HasColumnName("Expires");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .IsUnicode(false)
+                                .HasColumnType("character varying(200)")
+                                .HasColumnName("Token");
+
+                            b1.HasKey("UserTokenId");
+
+                            b1.HasIndex("Value")
+                                .IsUnique();
+
+                            b1.ToTable("UserTokens");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserTokenId");
+                        });
+
+                    b.Navigation("Token")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("PermissionRole", b =>
                 {
                     b.HasOne("AgendaManager.Domain.Users.Aggregates.Permission", null)
@@ -1015,6 +1089,11 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
             modelBuilder.Entity("AgendaManager.Domain.Resources.Aggregates.ResourceType", b =>
                 {
                     b.Navigation("Resources");
+                });
+
+            modelBuilder.Entity("AgendaManager.Domain.Users.Aggregates.User", b =>
+                {
+                    b.Navigation("Tokens");
                 });
 #pragma warning restore 612, 618
         }

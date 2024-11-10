@@ -57,7 +57,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                     .IsUnique();
 
                 refreshTokenBuilder.Property(rt => rt.Value)
-                    .HasColumnName("RefreshToken")
+                    .HasColumnName(nameof(User.RefreshToken))
                     .HasMaxLength(200)
                     .IsUnicode(false);
 
@@ -84,5 +84,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                     typeBuilder.Property<DateTimeOffset>(nameof(AuditableEntity.LastModifiedAt)).IsRequired();
                     typeBuilder.Property<string>(nameof(AuditableEntity.LastModifiedBy)).IsRequired();
                 });
+
+        builder.HasMany(u => u.Tokens)
+            .WithOne()
+            .HasForeignKey(u => u.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
