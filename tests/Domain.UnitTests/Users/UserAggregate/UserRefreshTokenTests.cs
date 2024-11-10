@@ -1,0 +1,40 @@
+﻿using AgendaManager.Domain.Users.Events;
+using AgendaManager.Domain.Users.ValueObjects;
+using AgendaManager.TestCommon.Factories;
+using FluentAssertions;
+
+namespace AgendaManager.Domain.UnitTests.Users.UserAggregate;
+
+public class UserRefreshTokenTests
+{
+    [Fact]
+    public void UserRefreshToken_ShouldRaiseEvent_WhenUpdateRefreshTokenIsUpdate()
+    {
+        // Arrange
+        var user = UserFactory.CreateUserCarol();
+        var refreshToken = RefreshToken.Generate(TimeSpan.FromDays(1));
+
+        // Act
+        user.UpdateRefreshToken(refreshToken);
+
+        // Assert
+        user.DomainEvents.Should().Contain(x => x is UserRefreshTokenUpdatedDomainEvent);
+    }
+
+    [Fact]
+    public void User_ShouldAddRefreshToken_WhenIsUpdate()
+    {
+        // Arrange
+        var user = UserFactory.CreateUserAlice();
+        var token = Guid.NewGuid().ToString();
+        var expires = DateTimeOffset.UtcNow.AddDays(1);
+        var newRefreshToken = RefreshToken.From(token, expires);
+
+        // Act
+        user.UpdateRefreshToken(newRefreshToken);
+
+        // Assert
+        user.RefreshToken.Should().NotBeNull();
+        user.RefreshToken.Should().Be(newRefreshToken);
+    }
+}
