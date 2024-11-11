@@ -8,6 +8,7 @@ using AgendaManager.Domain.Calendars.Entities;
 using AgendaManager.Domain.Common.Interfaces;
 using AgendaManager.Domain.Resources;
 using AgendaManager.Domain.Resources.Entities;
+using AgendaManager.Domain.ResourceTypes;
 using AgendaManager.Domain.Services;
 using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Entities;

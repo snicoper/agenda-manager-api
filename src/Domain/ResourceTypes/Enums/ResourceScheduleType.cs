@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AgendaManager.Domain.Resources.Enums;
+namespace AgendaManager.Domain.ResourceTypes.Enums;
 
 public enum ResourceScheduleType
 {

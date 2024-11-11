@@ -1,11 +1,14 @@
 ﻿using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Resources;
 using AgendaManager.Domain.Resources.Events;
 using AgendaManager.Domain.Resources.ValueObjects;
+using AgendaManager.Domain.ResourceTypes.Events;
+using AgendaManager.Domain.ResourceTypes.ValueObjects;
 using AgendaManager.Domain.Services;
 
-namespace AgendaManager.Domain.Resources.Entities;
+namespace AgendaManager.Domain.ResourceTypes;
 
-public class ResourceType : AuditableEntity
+public class ResourceType : AggregateRoot
 {
     private readonly List<Resource> _resources = [];
     private readonly List<Service> _services = [];

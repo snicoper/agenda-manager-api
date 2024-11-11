@@ -1,6 +1,7 @@
 ﻿using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Resources;
 using AgendaManager.Domain.Resources.ValueObjects;
+using AgendaManager.Domain.ResourceTypes.ValueObjects;
 using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

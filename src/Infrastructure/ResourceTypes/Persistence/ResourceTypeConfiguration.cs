@@ -1,9 +1,9 @@
-﻿using AgendaManager.Domain.Resources.Entities;
-using AgendaManager.Domain.Resources.ValueObjects;
+﻿using AgendaManager.Domain.ResourceTypes;
+using AgendaManager.Domain.ResourceTypes.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AgendaManager.Infrastructure.Resources.Persistence;
+namespace AgendaManager.Infrastructure.ResourceTypes.Persistence;
 
 public class ResourceTypeConfiguration : IEntityTypeConfiguration<ResourceType>
 {
