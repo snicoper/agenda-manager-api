@@ -21,7 +21,7 @@ public class AuthenticationService(IPasswordHasher passwordHasher)
 
     private static Result Validate(User user)
     {
-        if (!user.Active)
+        if (!user.IsActive)
         {
             return UserErrors.UserIsNotActive;
         }

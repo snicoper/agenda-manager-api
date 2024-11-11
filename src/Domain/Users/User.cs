@@ -16,13 +16,17 @@ public sealed class User : AggregateRoot
     private readonly List<Role> _roles = [];
     private readonly List<UserToken> _userTokens = [];
 
-    internal User(
+    private User()
+    {
+    }
+
+    private User(
         UserId userId,
         EmailAddress email,
         PasswordHash passwordHash,
         string? firstName,
         string? lastName,
-        bool active = true,
+        bool isActive = true,
         bool emailConfirmed = false)
     {
         GuardAgainstInvalidFirstName(firstName);
@@ -33,14 +37,8 @@ public sealed class User : AggregateRoot
         PasswordHash = passwordHash;
         FirstName = firstName;
         LastName = lastName;
-        Active = active;
+        IsActive = isActive;
         IsEmailConfirmed = emailConfirmed;
-
-        AddDomainEvent(new UserCreatedDomainEvent(userId));
-    }
-
-    private User()
-    {
     }
 
     public UserId Id { get; } = null!;
@@ -55,13 +53,36 @@ public sealed class User : AggregateRoot
 
     public string? LastName { get; private set; }
 
-    public bool Active { get; private set; }
+    public bool IsActive { get; private set; }
 
     public Token? RefreshToken { get; private set; }
 
     public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
 
     public IReadOnlyCollection<UserToken> Tokens => _userTokens.AsReadOnly();
+
+    public static User Create(
+        UserId userId,
+        EmailAddress email,
+        PasswordHash passwordHash,
+        string? firstName,
+        string? lastName,
+        bool isActive = true,
+        bool emailConfirmed = false)
+    {
+        User user = new(
+            userId,
+            email,
+            passwordHash,
+            firstName,
+            lastName,
+            isActive,
+            emailConfirmed);
+
+        user.AddDomainEvent(new UserCreatedDomainEvent(userId));
+
+        return user;
+    }
 
     public Result UpdatePassword(PasswordHash newPasswordHash)
     {
@@ -125,12 +146,12 @@ public sealed class User : AggregateRoot
 
     public void UpdateActiveState(bool newState)
     {
-        if (Active == newState)
+        if (IsActive == newState)
         {
             return;
         }
 
-        Active = newState;
+        IsActive = newState;
 
         AddDomainEvent(new UserActiveStateUpdatedDomainEvent(Id, newState));
     }

@@ -45,7 +45,7 @@ public class UserManagerCreateTests
         userResult.Value.Email.Should().Be(user.Email);
         userResult.Value.FirstName.Should().Be(user.FirstName);
         userResult.Value.LastName.Should().Be(user.LastName);
-        userResult.Value.Active.Should().BeTrue();
+        userResult.Value.IsActive.Should().BeTrue();
         userResult.Value.IsEmailConfirmed.Should().BeFalse();
         userResult.Value.DomainEvents.Should().Contain(x => x is UserCreatedDomainEvent);
     }

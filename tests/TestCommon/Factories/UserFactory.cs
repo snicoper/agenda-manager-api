@@ -16,17 +16,17 @@ public abstract class UserFactory
         PasswordHash? passwordHash = null,
         string? firstName = null,
         string? lastName = null,
-        bool active = true,
+        bool isActive = true,
         bool emailConfirmed = false)
     {
-        User user = new(
-            id ?? Users.UserAlice.Id,
-            email ?? Users.UserAlice.Email,
-            passwordHash ?? PasswordHash.FromHashed(BcryptPasswordHasher.HashPassword("Password4!")),
-            firstName ?? Users.UserAlice.FirstName,
-            lastName ?? Users.UserAlice.LastName,
-            active,
-            emailConfirmed);
+        var user = User.Create(
+            userId: id ?? Users.UserAlice.Id,
+            email: email ?? Users.UserAlice.Email,
+            passwordHash: passwordHash ?? PasswordHash.FromHashed(BcryptPasswordHasher.HashPassword("Password4!")),
+            firstName: firstName ?? Users.UserAlice.FirstName,
+            lastName: lastName ?? Users.UserAlice.LastName,
+            isActive: isActive,
+            emailConfirmed: emailConfirmed);
 
         return user;
     }

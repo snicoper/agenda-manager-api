@@ -66,7 +66,7 @@ public class AuditRecordInterceptorServiceTests
         _dbContext.Users.Update(user);
 
         // Act
-        _sut.RecordAuditEntries<User>(_dbContext, nameof(User.Id), [nameof(User.Active)]);
+        _sut.RecordAuditEntries<User>(_dbContext, nameof(User.Id), [nameof(User.IsActive)]);
         await _dbContext.SaveChangesAsync();
 
         // Assert
@@ -99,7 +99,7 @@ public class AuditRecordInterceptorServiceTests
         _dbContext.Users.Update(user);
 
         // Act
-        _sut.RecordAuditEntries<User>(_dbContext, nameof(User.Id), [nameof(User.Active)]);
+        _sut.RecordAuditEntries<User>(_dbContext, nameof(User.Id), [nameof(User.IsActive)]);
         await _dbContext.SaveChangesAsync();
 
         // Assert

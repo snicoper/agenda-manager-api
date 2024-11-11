@@ -13,7 +13,7 @@ public class UserActiveTests
         var user = UserFactory.CreateUserAlice();
 
         // Assert
-        user.Active.Should().BeTrue();
+        user.IsActive.Should().BeTrue();
     }
 
     [Fact]
@@ -27,6 +27,6 @@ public class UserActiveTests
 
         // Assert
         user.DomainEvents.Should().Contain(x => x is UserActiveStateUpdatedDomainEvent);
-        user.Active.Should().BeFalse();
+        user.IsActive.Should().BeFalse();
     }
 }

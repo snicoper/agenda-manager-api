@@ -35,7 +35,7 @@ public class AuditRecordInterceptor(AuditRecordInterceptorService auditRecordInt
         auditRecordInterceptorService.RecordAuditEntries<User>(
             context: context,
             entityId: nameof(User.Id),
-            auditableProperties: [nameof(User.Active)]);
+            auditableProperties: [nameof(User.IsActive)]);
 
         // Roles.
         auditRecordInterceptorService.RecordAuditEntries<Role>(

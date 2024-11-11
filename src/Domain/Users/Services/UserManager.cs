@@ -18,7 +18,7 @@ public class UserManager(IUserRepository userRepository)
         bool emailConfirmed = false,
         CancellationToken cancellationToken = default)
     {
-        User user = new(userId, email, passwordHash, firstName, lastName);
+        var user = User.Create(userId, email, passwordHash, firstName, lastName);
 
         user.UpdateActiveState(active);
 

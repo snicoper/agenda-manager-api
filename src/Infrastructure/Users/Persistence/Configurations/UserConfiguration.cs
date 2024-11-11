@@ -46,7 +46,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.LastName)
             .HasMaxLength(256);
 
-        builder.Property(u => u.Active)
+        builder.Property(u => u.IsActive)
             .IsRequired();
 
         builder.OwnsOne(

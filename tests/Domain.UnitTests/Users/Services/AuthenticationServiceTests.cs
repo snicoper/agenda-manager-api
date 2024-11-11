@@ -65,7 +65,7 @@ public class AuthenticationServiceTests
     public void Authenticate_ShouldReturnResultFailure_WhenUserActiveIsFalse()
     {
         // Arrange
-        var user = UserFactory.CreateUser(emailConfirmed: true, active: false);
+        var user = UserFactory.CreateUser(emailConfirmed: true, isActive: false);
         _passwordHasher.VerifyPassword(Arg.Any<string>(), Arg.Any<PasswordHash>()).Returns(true);
 
         // Act
