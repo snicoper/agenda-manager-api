@@ -157,7 +157,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         column: x => x.CalendarId,
                         principalTable: "Calendars",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

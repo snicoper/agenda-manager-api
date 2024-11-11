@@ -26,9 +26,8 @@ public class CalendarHolidayConfiguration : IEntityTypeConfiguration<CalendarHol
             .IsRequired();
 
         builder.HasOne(ch => ch.Calendar)
-            .WithMany()
-            .HasForeignKey(ch => ch.CalendarId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .WithMany(c => c.Holidays)
+            .HasForeignKey(ch => ch.CalendarId);
 
         builder.OwnsOne(
             calendarHoliday => calendarHoliday.Period,

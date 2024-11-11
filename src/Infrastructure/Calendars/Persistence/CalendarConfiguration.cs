@@ -28,5 +28,10 @@ public class CalendarConfiguration : IEntityTypeConfiguration<Calendar>
             .IsRequired();
 
         builder.Property(c => c.IsActive);
+
+        builder.HasMany(c => c.Holidays)
+            .WithOne(ch => ch.Calendar)
+            .HasForeignKey(c => c.CalendarId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

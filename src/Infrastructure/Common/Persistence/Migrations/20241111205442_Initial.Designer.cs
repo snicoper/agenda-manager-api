@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241111191223_Initial")]
+    [Migration("20241111205442_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -805,9 +805,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
             modelBuilder.Entity("AgendaManager.Domain.Calendars.Entities.CalendarHoliday", b =>
                 {
                     b.HasOne("AgendaManager.Domain.Calendars.Calendar", "Calendar")
-                        .WithMany()
+                        .WithMany("Holidays")
                         .HasForeignKey("CalendarId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Period.Period", "Period", b1 =>
@@ -1090,6 +1090,11 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
             modelBuilder.Entity("AgendaManager.Domain.Appointments.Appointment", b =>
                 {
                     b.Navigation("StatusChanges");
+                });
+
+            modelBuilder.Entity("AgendaManager.Domain.Calendars.Calendar", b =>
+                {
+                    b.Navigation("Holidays");
                 });
 
             modelBuilder.Entity("AgendaManager.Domain.ResourceTypes.ResourceType", b =>

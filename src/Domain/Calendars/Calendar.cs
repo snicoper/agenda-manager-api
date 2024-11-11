@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Calendars.Events;
+﻿using AgendaManager.Domain.Calendars.Entities;
+using AgendaManager.Domain.Calendars.Events;
 using AgendaManager.Domain.Calendars.Exxceptions;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
@@ -7,6 +8,8 @@ namespace AgendaManager.Domain.Calendars;
 
 public class Calendar : AggregateRoot
 {
+    private readonly List<CalendarHoliday> _holidays = [];
+
     private Calendar(CalendarId id, string name, string description, bool isActive)
     {
         ArgumentNullException.ThrowIfNull(name);
@@ -32,6 +35,8 @@ public class Calendar : AggregateRoot
     public string Description { get; private set; } = default!;
 
     public bool IsActive { get; private set; }
+
+    public IReadOnlyCollection<CalendarHoliday> Holidays => _holidays.AsReadOnly();
 
     public void ChangeActiveStatus(bool isActive)
     {
