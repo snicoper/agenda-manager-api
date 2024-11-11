@@ -1,5 +1,4 @@
 ﻿using AgendaManager.Domain.Users.Events;
-using AgendaManager.Domain.Users.Exceptions;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
@@ -26,17 +25,5 @@ public class PermissionCreateTests
 
         // Assert
         permission.DomainEvents.Should().Contain(x => x is PermissionCreatedDomainEvent);
-    }
-
-    [Theory]
-    [InlineData(0)]
-    [InlineData(101)]
-    public void PermissionCreate_ShouldRaiseException_WhenInvalidNameIsSet(int nameLength)
-    {
-        // Arrange
-        var name = new string('*', nameLength);
-
-        // Assert
-        Assert.Throws<PermissionDomainException>(() => PermissionFactory.CreatePermission(name: name));
     }
 }

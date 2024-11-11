@@ -10,6 +10,7 @@ public sealed class Permission : AuditableEntity
     internal Permission(PermissionId permissionId, string name)
     {
         GuardAgainstInvalidName(name);
+        GuardAgainstSuffixInvalidCharacters(name);
 
         Id = permissionId;
         Name = name;
@@ -30,6 +31,18 @@ public sealed class Permission : AuditableEntity
         if (string.IsNullOrEmpty(name) || name.Length > 100)
         {
             throw new PermissionDomainException("Permission name is null or exceeds length of 100 characters.");
+        }
+    }
+
+    private static void GuardAgainstSuffixInvalidCharacters(string name)
+    {
+        if (!name.EndsWith(":create") &&
+            !name.EndsWith(":update") &&
+            !name.EndsWith(":delete") &&
+            !name.EndsWith(":read"))
+        {
+            throw new PermissionDomainException(
+                "Permission name cannot end with ':create', ':update', ':delete', or ':read'.");
         }
     }
 }

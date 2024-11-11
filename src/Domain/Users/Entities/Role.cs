@@ -37,18 +37,6 @@ public sealed class Role : AuditableEntity
 
     public IReadOnlyCollection<Permission> Permissions => _permissions.AsReadOnly();
 
-    public void UpdateEditableState(bool editable)
-    {
-        if (Editable == editable)
-        {
-            return;
-        }
-
-        Editable = editable;
-
-        AddDomainEvent(new RoleEditableStateUpdatedDomainEvent(Id, editable));
-    }
-
     internal void UpdateRole(string name, string description)
     {
         GuardAgainstInvalidName(name);
