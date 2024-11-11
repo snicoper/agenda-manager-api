@@ -132,7 +132,7 @@ public sealed class User : AggregateRoot
 
         Active = newState;
 
-        AddDomainEvent(new UserActiveStateUpdatetedDomainEvent(Id, newState));
+        AddDomainEvent(new UserActiveStateUpdatedDomainEvent(Id, newState));
     }
 
     public void AddUserToken(UserToken userToken)
