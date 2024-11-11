@@ -1,6 +1,6 @@
-namespace AgendaManager.Domain.Common.Constants;
+namespace AgendaManager.Domain.Users.Constants;
 
-public static class PermissionNames
+public static class SystemPermissions
 {
     public static class Appointments
     {

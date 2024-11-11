@@ -19,22 +19,16 @@ public class UserRepository(AppDbContext context) : IUserRepository
         return await context.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
     }
 
-    public async Task<User?> GetByIdWithRolesAsync(
-        UserId userId,
-        CancellationToken cancellationToken = default)
+    public async Task<User?> GetByIdWithRolesAsync(UserId userId, CancellationToken cancellationToken = default)
     {
-        return await context
-            .Users
+        return await context.Users
             .Include(u => u.Roles)
             .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
     }
 
-    public async Task<User?> GetByIdWithRolesAndPermissionsAsync(
-        UserId userId,
-        CancellationToken cancellationToken = default)
+    public async Task<User?> GetByIdWithPermissionsAsync(UserId userId, CancellationToken cancellationToken = default)
     {
-        var user = await context
-            .Users
+        var user = await context.Users
             .Include(u => u.Roles)
             .ThenInclude(r => r.Permissions)
             .FirstOrDefaultAsync(u => u.Id.Equals(userId), cancellationToken);
@@ -42,25 +36,33 @@ public class UserRepository(AppDbContext context) : IUserRepository
         return user;
     }
 
-    public async Task<User?> GetByEmailAsync(
-        EmailAddress email,
+    public async Task<bool> UserHasPermissionAsync(
+        UserId userId,
+        string permissionName,
         CancellationToken cancellationToken = default)
+    {
+        var hasPermission = await context.Users
+            .Where(u => u.Id.Equals(userId))
+            .SelectMany(u => u.Roles)
+            .SelectMany(r => r.Permissions)
+            .AnyAsync(p => p.Name == permissionName, cancellationToken);
+
+        return hasPermission;
+    }
+
+    public async Task<User?> GetByEmailAsync(EmailAddress email, CancellationToken cancellationToken = default)
     {
         return await context.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
     public async Task<bool> EmailExistsAsync(EmailAddress email, CancellationToken cancellationToken = default)
     {
-        var emailExists = await context
-            .Users
-            .AnyAsync(u => u.Email == email, cancellationToken);
+        var emailExists = await context.Users.AnyAsync(u => u.Email == email, cancellationToken);
 
         return emailExists;
     }
 
-    public async Task<User?> GetByRefreshTokenAsync(
-        string refreshToken,
-        CancellationToken cancellationToken = default)
+    public async Task<User?> GetByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
     {
         return await context.Users.FirstOrDefaultAsync(
             u => u.RefreshToken != null && u.RefreshToken.Value == refreshToken,

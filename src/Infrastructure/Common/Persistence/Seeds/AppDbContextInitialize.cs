@@ -1,5 +1,5 @@
-﻿using AgendaManager.Domain.Common.Constants;
-using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
+﻿using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
+using AgendaManager.Domain.Users.Constants;
 using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.Services;
@@ -61,11 +61,18 @@ public class AppDbContextInitialize(
             return;
         }
 
-        var adminRole = await roleManager.CreateRoleAsync(RoleId.Create(), Roles.Admin, "Admin role");
-        var managerRole = await roleManager.CreateRoleAsync(RoleId.Create(), Roles.Manager, "Manager role");
-        var clientRole = await roleManager.CreateRoleAsync(RoleId.Create(), Roles.Client, "Client role");
+        var adminRole = await roleManager.CreateRoleAsync(
+            RoleId.Create(),
+            SystemRoles.Administrator,
+            "Administrator role");
+        var customerRole = await roleManager.CreateRoleAsync(RoleId.Create(), SystemRoles.Customer, "Customer role");
+        var employeeRole = await roleManager.CreateRoleAsync(RoleId.Create(), SystemRoles.Employee, "Employee role");
+        var assignableStaff = await roleManager.CreateRoleAsync(
+            RoleId.Create(),
+            SystemRoles.AssignableStaff,
+            "Assignable staff role");
 
-        _roles = [adminRole.Value!, managerRole.Value!, clientRole.Value!];
+        _roles = [adminRole.Value!, employeeRole.Value!, customerRole.Value!, assignableStaff.Value!];
 
         foreach (var role in _roles.Where(role => context.Roles.All(r => r.Name != role.Name)))
         {
@@ -85,156 +92,156 @@ public class AppDbContextInitialize(
         // Appointment permissions.
         var appointmentReadPermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Appointments.Read);
+            SystemPermissions.Appointments.Read);
         var appointmentCreatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Appointments.Create);
+            SystemPermissions.Appointments.Create);
         var appointmentUpdatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Appointments.Update);
+            SystemPermissions.Appointments.Update);
         var appointmentDeletePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Appointments.Delete);
+            SystemPermissions.Appointments.Delete);
 
         // AppointmentStatus permissions.
         var appointmentStatusReadPermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.AppointmentStatuses.Read);
+            SystemPermissions.AppointmentStatuses.Read);
         var appointmentStatusCreatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.AppointmentStatuses.Create);
+            SystemPermissions.AppointmentStatuses.Create);
         var appointmentStatusUpdatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.AppointmentStatuses.Update);
+            SystemPermissions.AppointmentStatuses.Update);
         var appointmentStatusDeletePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.AppointmentStatuses.Delete);
+            SystemPermissions.AppointmentStatuses.Delete);
 
         // Calendar permissions.
         var calendarReadPermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Calendars.Read);
+            SystemPermissions.Calendars.Read);
         var calendarCreatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Calendars.Create);
+            SystemPermissions.Calendars.Create);
         var calendarUpdatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Calendars.Update);
+            SystemPermissions.Calendars.Update);
         var calendarDeletePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Calendars.Delete);
+            SystemPermissions.Calendars.Delete);
 
         // CalendarHoliday permissions.
         var calendarHolidayReadPermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.CalendarHolidays.Read);
+            SystemPermissions.CalendarHolidays.Read);
         var calendarHolidayCreatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.CalendarHolidays.Create);
+            SystemPermissions.CalendarHolidays.Create);
         var calendarHolidayUpdatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.CalendarHolidays.Update);
+            SystemPermissions.CalendarHolidays.Update);
         var calendarHolidayDeletePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.CalendarHolidays.Delete);
+            SystemPermissions.CalendarHolidays.Delete);
 
         // Resource permissions.
         var resourceReadPermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Resources.Read);
+            SystemPermissions.Resources.Read);
         var resourceCreatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Resources.Create);
+            SystemPermissions.Resources.Create);
         var resourceUpdatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Resources.Update);
+            SystemPermissions.Resources.Update);
         var resourceDeletePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Resources.Delete);
+            SystemPermissions.Resources.Delete);
 
         // ResourceSchedule permissions.
         var resourceScheduleReadPermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.ResourceSchedules.Read);
+            SystemPermissions.ResourceSchedules.Read);
         var resourceScheduleCreatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.ResourceSchedules.Create);
+            SystemPermissions.ResourceSchedules.Create);
         var resourceScheduleUpdatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.ResourceSchedules.Update);
+            SystemPermissions.ResourceSchedules.Update);
         var resourceScheduleDeletePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.ResourceSchedules.Delete);
+            SystemPermissions.ResourceSchedules.Delete);
 
         // ResourceType permissions.
         var resourceTypeReadPermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.ResourceTypes.Read);
+            SystemPermissions.ResourceTypes.Read);
         var resourceTypeCreatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.ResourceTypes.Create);
+            SystemPermissions.ResourceTypes.Create);
         var resourceTypeUpdatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.ResourceTypes.Update);
+            SystemPermissions.ResourceTypes.Update);
         var resourceTypeDeletePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.ResourceTypes.Delete);
+            SystemPermissions.ResourceTypes.Delete);
 
         // Service permissions.
         var serviceReadPermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Services.Read);
+            SystemPermissions.Services.Read);
         var serviceCreatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Services.Create);
+            SystemPermissions.Services.Create);
         var serviceUpdatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Services.Update);
+            SystemPermissions.Services.Update);
         var serviceDeletePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Services.Delete);
+            SystemPermissions.Services.Delete);
 
         // User permissions.
         var userReadPermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Users.Read);
+            SystemPermissions.Users.Read);
         var userCreatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Users.Create);
+            SystemPermissions.Users.Create);
         var userUpdatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Users.Update);
+            SystemPermissions.Users.Update);
         var userDeletePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Users.Delete);
+            SystemPermissions.Users.Delete);
 
         // Role permissions.
         var roleReadPermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Roles.Read);
+            SystemPermissions.Roles.Read);
         var roleCreatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Roles.Create);
+            SystemPermissions.Roles.Create);
         var roleUpdatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Roles.Update);
+            SystemPermissions.Roles.Update);
         var roleDeletePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Roles.Delete);
+            SystemPermissions.Roles.Delete);
 
         // Permission permissions.
         var permissionReadPermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Permissions.Read);
+            SystemPermissions.Permissions.Read);
         var permissionCreatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Permissions.Create);
+            SystemPermissions.Permissions.Create);
         var permissionUpdatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Permissions.Update);
+            SystemPermissions.Permissions.Update);
         var permissionDeletePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            PermissionNames.Permissions.Delete);
+            SystemPermissions.Permissions.Delete);
 
         _permissions =
         [
@@ -302,22 +309,22 @@ public class AppDbContextInitialize(
 
         await context.SaveChangesAsync();
 
-        // Asignar todos los permisos a role Admin.
-        var adminRole = _roles.First(r => r.Name == Roles.Admin);
+        // Asignar todos los permisos a role Administrator.
+        var adminRole = _roles.First(r => r.Name == SystemRoles.Administrator);
         foreach (var permission in _permissions)
         {
             await authorizationManager.AddPermissionToRole(adminRole.Id, permission.Id);
         }
 
-        // Asignar todos permisos a role Manager.
-        var managerRole = _roles.First(r => r.Name == Roles.Manager);
+        // Asignar todos permisos a role Employee.
+        var managerRole = _roles.First(r => r.Name == SystemRoles.Employee);
         foreach (var permission in _permissions)
         {
             await authorizationManager.AddPermissionToRole(managerRole.Id, permission.Id);
         }
 
-        // Asignar solo permisos de lectura a role Client.
-        var clientRole = _roles.First(r => r.Name == Roles.Client);
+        // Asignar solo permisos de lectura a role Customer.
+        var clientRole = _roles.First(r => r.Name == SystemRoles.Customer);
         foreach (var permission in _permissions.Where(p => p.Name.Contains("read")))
         {
             await authorizationManager.AddPermissionToRole(clientRole.Id, permission.Id);
@@ -350,13 +357,13 @@ public class AppDbContextInitialize(
         {
             await context.SaveChangesAsync();
 
-            var adminRole = _roles.First(r => r.Name == Roles.Admin);
-            var managerRole = _roles.First(r => r.Name == Roles.Manager);
-            var clientRole = _roles.First(r => r.Name == Roles.Client);
+            var adminRole = _roles.First(r => r.Name == SystemRoles.Administrator);
+            var employeeRole = _roles.First(r => r.Name == SystemRoles.Employee);
+            var customerRole = _roles.First(r => r.Name == SystemRoles.Customer);
 
             await authorizationManager.AddRoleToUserAsync(adminResult.Value.Id, adminRole.Id);
-            await authorizationManager.AddRoleToUserAsync(adminResult.Value.Id, managerRole.Id);
-            await authorizationManager.AddRoleToUserAsync(adminResult.Value.Id, clientRole.Id);
+            await authorizationManager.AddRoleToUserAsync(adminResult.Value.Id, employeeRole.Id);
+            await authorizationManager.AddRoleToUserAsync(adminResult.Value.Id, customerRole.Id);
         }
 
         // Manager user.
@@ -379,11 +386,11 @@ public class AppDbContextInitialize(
         {
             await context.SaveChangesAsync();
 
-            var managerRole = _roles.First(r => r.Name == Roles.Manager);
-            var clientRole = _roles.First(r => r.Name == Roles.Client);
+            var managerRole = _roles.First(r => r.Name == SystemRoles.Administrator);
+            var customerRole = _roles.First(r => r.Name == SystemRoles.Customer);
 
             await authorizationManager.AddRoleToUserAsync(managerResult.Value.Id, managerRole.Id);
-            await authorizationManager.AddRoleToUserAsync(managerResult.Value.Id, clientRole.Id);
+            await authorizationManager.AddRoleToUserAsync(managerResult.Value.Id, customerRole.Id);
         }
 
         // Client user.
@@ -406,8 +413,8 @@ public class AppDbContextInitialize(
         {
             await context.SaveChangesAsync();
 
-            var clientRole = _roles.First(r => r.Name == Roles.Client);
-            await authorizationManager.AddRoleToUserAsync(clientResult.Value.Id, clientRole.Id);
+            var customerRole = _roles.First(r => r.Name == SystemRoles.Customer);
+            await authorizationManager.AddRoleToUserAsync(clientResult.Value.Id, customerRole.Id);
         }
 
         // Client user.
@@ -428,8 +435,8 @@ public class AppDbContextInitialize(
 
         if (!await context.Users.AnyAsync(u => u.Email.Equals(client2Result.Value.Email)))
         {
-            var clientRole = _roles.First(r => r.Name == Roles.Client);
-            await authorizationManager.AddRoleToUserAsync(client2Result.Value.Id, clientRole.Id);
+            var customerRole = _roles.First(r => r.Name == SystemRoles.Customer);
+            await authorizationManager.AddRoleToUserAsync(client2Result.Value.Id, customerRole.Id);
         }
 
         await context.SaveChangesAsync();

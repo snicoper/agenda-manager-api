@@ -23,7 +23,7 @@ public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions, IUserRepository 
         UserId userId,
         CancellationToken cancellationToken = default)
     {
-        var user = await userRepository.GetByIdWithRolesAndPermissionsAsync(userId, cancellationToken);
+        var user = await userRepository.GetByIdWithPermissionsAsync(userId, cancellationToken);
 
         if (user is null)
         {

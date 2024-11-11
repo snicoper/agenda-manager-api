@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.Common.Constants;
+﻿using AgendaManager.Domain.Users.Constants;
 using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.ValueObjects;
 
@@ -8,7 +8,7 @@ public abstract class RoleFactory
 {
     public static Role CreateRole(
         RoleId? roleId = null,
-        string name = Roles.Admin,
+        string name = SystemRoles.Administrator,
         string description = "Admin role")
     {
         return new Role(roleId ?? RoleId.Create(), name, description);

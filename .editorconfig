@@ -420,3 +420,9 @@ dotnet_diagnostic.SA1642.severity = none
 
 # File should have header.
 dotnet_diagnostic.SA1633.severity = none
+
+####################################
+# Resharper.
+####################################
+
+resharper_inconsistent_naming_highlighting = none

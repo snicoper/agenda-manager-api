@@ -3,8 +3,8 @@ using AgendaManager.Application.Common.Behaviours;
 using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Application.Common.Models.Users;
-using AgendaManager.Domain.Common.Constants;
 using AgendaManager.Domain.Common.Responses;
+using AgendaManager.Domain.Users.Constants;
 using AgendaManager.Domain.Users.ValueObjects;
 using FluentAssertions;
 using NSubstitute;
@@ -40,8 +40,8 @@ public class AuthorizationBehaviourTest
     public async Task Handle_ShouldReturnResultSuccess_WhenUserIsAuthenticated()
     {
         // Arrange
-        List<string> roles = [Roles.Admin, Roles.Manager, Roles.Client];
-        List<string> permissions = [PermissionNames.Users.Delete];
+        List<string> roles = [SystemRoles.Administrator, SystemRoles.Employee, SystemRoles.Customer];
+        List<string> permissions = [SystemPermissions.Users.Delete];
 
         TestAdminRequest request = new();
         _currentUserProvider.IsAuthenticated.Returns(true);
@@ -101,8 +101,8 @@ public class AuthorizationBehaviourTest
     public async Task Handle_ShouldReturnResultFailure_WhenUserIsNotHaveRequiredRoles()
     {
         // Arrange
-        List<string> roles = [Roles.Manager, Roles.Client];
-        List<string> permissions = [PermissionNames.Users.Delete];
+        List<string> roles = [SystemRoles.Employee, SystemRoles.Customer];
+        List<string> permissions = [SystemPermissions.Users.Delete];
 
         TestAdminRequest request = new();
         _currentUserProvider.IsAuthenticated.Returns(true);
@@ -125,8 +125,8 @@ public class AuthorizationBehaviourTest
     public async Task Handle_ShouldReturnResultFailure_WhenUserIsNotHaveRequiredPermissions()
     {
         // Arrange
-        List<string> roles = [Roles.Admin, Roles.Manager, Roles.Client];
-        List<string> permissions = [PermissionNames.Users.Update];
+        List<string> roles = [SystemRoles.Administrator, SystemRoles.Employee, SystemRoles.Customer];
+        List<string> permissions = [SystemPermissions.Users.Update];
 
         TestAdminRequest request = new();
         _currentUserProvider.IsAuthenticated.Returns(true);
@@ -147,6 +147,6 @@ public class AuthorizationBehaviourTest
 
     private record TestRequest : IAppBaseRequest;
 
-    [Authorize(Roles = Roles.Admin, Permissions = PermissionNames.Users.Delete)]
+    [Authorize(Roles = SystemRoles.Administrator, Permissions = SystemPermissions.Users.Delete)]
     private record TestAdminRequest : IAppBaseRequest;
 }
