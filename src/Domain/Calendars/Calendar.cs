@@ -5,11 +5,6 @@ using AgendaManager.Domain.Common.Abstractions;
 
 namespace AgendaManager.Domain.Calendars;
 
-/// <summary>
-/// Representa un calendario que actúa como contenedor lógico para appointments y resources.
-/// Este agregado no mantiene referencias directas a sus entidades relacionadas para
-/// mantener la consistencia y simplicidad del modelo.
-/// </summary>
 public class Calendar : AggregateRoot
 {
     private Calendar(CalendarId id, string name, string description, bool isActive)
@@ -38,7 +33,18 @@ public class Calendar : AggregateRoot
 
     public bool IsActive { get; private set; }
 
-    public static Calendar Create(CalendarId id, string name, string description, bool active = true)
+    public void ChangeActiveStatus(bool isActive)
+    {
+        if (IsActive == isActive)
+        {
+            return;
+        }
+
+        IsActive = isActive;
+        AddDomainEvent(new CalendarActiveStatusChangedDomainEvent(Id, IsActive));
+    }
+
+    internal static Calendar Create(CalendarId id, string name, string description, bool active = true)
     {
         Calendar calendar = new(id, name, description, active);
 
