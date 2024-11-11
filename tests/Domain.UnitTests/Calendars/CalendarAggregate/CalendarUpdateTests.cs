@@ -1,5 +1,5 @@
 ﻿using AgendaManager.Domain.Calendars.Events;
-using AgendaManager.Domain.Calendars.Exxceptions;
+using AgendaManager.Domain.Calendars.Exceptions;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 

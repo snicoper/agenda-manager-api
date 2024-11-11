@@ -1,5 +1,5 @@
 ﻿using AgendaManager.Domain.Calendars;
-using AgendaManager.Domain.Calendars.Exxceptions;
+using AgendaManager.Domain.Calendars.Exceptions;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.Services;
 using AgendaManager.Domain.Calendars.ValueObjects;

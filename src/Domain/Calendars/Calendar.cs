@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Calendars.Entities;
 using AgendaManager.Domain.Calendars.Events;
-using AgendaManager.Domain.Calendars.Exxceptions;
+using AgendaManager.Domain.Calendars.Exceptions;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 
