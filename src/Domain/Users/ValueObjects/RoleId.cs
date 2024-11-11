@@ -6,6 +6,8 @@ public class RoleId : ValueObject
 {
     private RoleId(Guid value)
     {
+        ArgumentNullException.ThrowIfNull(value);
+
         Value = value;
     }
 

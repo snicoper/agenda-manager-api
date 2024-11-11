@@ -6,6 +6,8 @@ public class UserTokenId : ValueObject
 {
     private UserTokenId(Guid value)
     {
+        ArgumentNullException.ThrowIfNull(value);
+
         Value = value;
     }
 

@@ -4,8 +4,10 @@ namespace AgendaManager.Domain.Calendars.ValueObjects;
 
 public class CalendarHolidayId : ValueObject
 {
-    public CalendarHolidayId(Guid value)
+    private CalendarHolidayId(Guid value)
     {
+        ArgumentNullException.ThrowIfNull(value);
+
         Value = value;
     }
 

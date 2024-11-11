@@ -12,6 +12,9 @@ public sealed class Role : AuditableEntity
 
     internal Role(RoleId roleId, string name, string description, bool editable = false)
     {
+        ArgumentNullException.ThrowIfNull(name);
+        ArgumentNullException.ThrowIfNull(description);
+
         GuardAgainstInvalidName(name);
         GuardAgainstInvalidDescription(description);
 

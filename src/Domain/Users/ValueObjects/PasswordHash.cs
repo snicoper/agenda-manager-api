@@ -9,6 +9,8 @@ public class PasswordHash : ValueObject
 {
     private PasswordHash(string hashedValue)
     {
+        ArgumentNullException.ThrowIfNull(hashedValue);
+
         HashedValue = hashedValue;
     }
 

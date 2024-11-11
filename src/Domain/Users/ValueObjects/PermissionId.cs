@@ -6,6 +6,8 @@ public class PermissionId : ValueObject
 {
     private PermissionId(Guid value)
     {
+        ArgumentNullException.ThrowIfNull(value);
+
         Value = value;
     }
 

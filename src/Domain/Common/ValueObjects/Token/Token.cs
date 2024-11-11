@@ -9,6 +9,9 @@ public class Token : ValueObject
 
     private Token(string value, DateTimeOffset expires)
     {
+        ArgumentNullException.ThrowIfNull(value);
+        ArgumentNullException.ThrowIfNull(expires);
+
         Value = value;
         Expires = expires;
     }

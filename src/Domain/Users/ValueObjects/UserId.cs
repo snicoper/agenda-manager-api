@@ -6,6 +6,8 @@ public class UserId : ValueObject
 {
     private UserId(Guid value)
     {
+        ArgumentNullException.ThrowIfNull(value);
+
         Value = value;
     }
 

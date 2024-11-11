@@ -6,6 +6,9 @@ public class Period : ValueObject
 {
     private Period(DateTimeOffset startDate, DateTimeOffset endDate)
     {
+        ArgumentNullException.ThrowIfNull(StartDate);
+        ArgumentNullException.ThrowIfNull(endDate);
+
         StartDate = startDate;
         EndDate = endDate;
 

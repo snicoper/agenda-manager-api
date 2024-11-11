@@ -6,6 +6,8 @@ public class AppointmentId : ValueObject
 {
     private AppointmentId(Guid value)
     {
+        ArgumentNullException.ThrowIfNull(value);
+
         Value = value;
     }
 

@@ -8,6 +8,8 @@ public class ResourceId(Guid value) : ValueObject
 
     public static ResourceId From(Guid value)
     {
+        ArgumentNullException.ThrowIfNull(value);
+
         return new ResourceId(value);
     }
 

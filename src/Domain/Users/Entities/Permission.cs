@@ -9,6 +9,8 @@ public sealed class Permission : AuditableEntity
 {
     internal Permission(PermissionId permissionId, string name)
     {
+        ArgumentNullException.ThrowIfNull(name);
+
         GuardAgainstInvalidName(name);
 
         Id = permissionId;

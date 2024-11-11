@@ -6,6 +6,8 @@ public class ServiceId : ValueObject
 {
     private ServiceId(Guid value)
     {
+        ArgumentNullException.ThrowIfNull(value);
+
         Value = value;
     }
 

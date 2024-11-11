@@ -6,6 +6,9 @@ public class ColorScheme : ValueObject
 {
     private ColorScheme(string textColor, string backgroundColor)
     {
+        ArgumentNullException.ThrowIfNull(textColor);
+        ArgumentNullException.ThrowIfNull(backgroundColor);
+
         TextColor = textColor;
         BackgroundColor = backgroundColor;
     }

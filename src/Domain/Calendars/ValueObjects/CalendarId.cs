@@ -6,6 +6,8 @@ public class CalendarId : ValueObject
 {
     private CalendarId(Guid value)
     {
+        ArgumentNullException.ThrowIfNull(value);
+
         Value = value;
     }
 

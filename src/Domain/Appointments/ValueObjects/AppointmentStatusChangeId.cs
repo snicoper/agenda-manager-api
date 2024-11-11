@@ -4,8 +4,10 @@ namespace AgendaManager.Domain.Appointments.ValueObjects;
 
 public class AppointmentStatusChangeId : ValueObject
 {
-    public AppointmentStatusChangeId(Guid value)
+    private AppointmentStatusChangeId(Guid value)
     {
+        ArgumentNullException.ThrowIfNull(value);
+
         Value = value;
     }
 

@@ -6,6 +6,8 @@ public class AuditRecordId : ValueObject
 {
     private AuditRecordId(Guid value)
     {
+        ArgumentNullException.ThrowIfNull(value);
+
         Value = value;
     }
 

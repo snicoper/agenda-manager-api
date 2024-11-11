@@ -6,6 +6,8 @@ public class ResourceTypeId : ValueObject
 {
     private ResourceTypeId(Guid value)
     {
+        ArgumentNullException.ThrowIfNull(value);
+
         Value = value;
     }
 

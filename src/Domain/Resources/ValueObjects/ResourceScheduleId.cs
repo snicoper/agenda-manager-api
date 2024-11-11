@@ -6,6 +6,8 @@ public class ResourceScheduleId : ValueObject
 {
     private ResourceScheduleId(Guid value)
     {
+        ArgumentNullException.ThrowIfNull(value);
+
         Value = value;
     }
 

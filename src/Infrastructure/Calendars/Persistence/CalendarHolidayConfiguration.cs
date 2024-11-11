@@ -16,7 +16,7 @@ public class CalendarHolidayConfiguration : IEntityTypeConfiguration<CalendarHol
         builder.Property(ch => ch.Id)
             .HasConversion(
                 id => id.Value,
-                value => new CalendarHolidayId(value))
+                value => CalendarHolidayId.From(value))
             .IsRequired();
 
         builder.Property(ch => ch.CalendarId)

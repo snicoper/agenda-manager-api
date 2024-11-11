@@ -7,6 +7,8 @@ public class EmailAddress : ValueObject
 {
     private EmailAddress(string value)
     {
+        ArgumentNullException.ThrowIfNull(value);
+
         Value = value;
 
         if (!IsValid())
