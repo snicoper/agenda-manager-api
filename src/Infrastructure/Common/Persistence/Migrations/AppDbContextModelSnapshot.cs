@@ -22,7 +22,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("AgendaManager.Domain.Appointments.Aggregates.Appointment", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Appointments.Appointment", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -67,7 +67,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.ToTable("Appointments", (string)null);
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Appointments.Aggregates.AppointmentStatusChange", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Appointments.Entities.AppointmentStatusChange", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -112,7 +112,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.ToTable("AppointmentStatusChanges", (string)null);
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.AuditRecords.Aggregates.AuditRecord", b =>
+            modelBuilder.Entity("AgendaManager.Domain.AuditRecords.AuditRecord", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -178,7 +178,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.ToTable("AuditRecords", (string)null);
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Calendars.Aggregates.Calendar", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Calendars.Calendar", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -194,6 +194,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -215,7 +218,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.ToTable("Calendars", (string)null);
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Calendars.Aggregates.CalendarHoliday", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Calendars.Entities.CalendarHoliday", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -261,12 +264,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.ToTable("CalendarHolidays", (string)null);
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Resources.Aggregates.Resource", b =>
+            modelBuilder.Entity("AgendaManager.Domain.ResourceTypes.ResourceType", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("CalendarId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedAt")
@@ -293,27 +293,18 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<Guid>("TypeId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
+                    b.Property<bool>("RequiredRole")
+                        .HasColumnType("boolean");
 
                     b.Property<int>("Version")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CalendarId");
-
-                    b.HasIndex("TypeId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Resources", (string)null);
+                    b.ToTable("ResourceTypes", (string)null);
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Resources.Aggregates.ResourceSchedule", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Resources.Entities.ResourceSchedule", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -366,9 +357,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.ToTable("ResourceSchedules", (string)null);
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Resources.Aggregates.ResourceType", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Resources.Resource", b =>
                 {
                     b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CalendarId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedAt")
@@ -395,18 +389,27 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<bool>("RequiredRole")
-                        .HasColumnType("boolean");
+                    b.Property<Guid>("TypeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Version")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ResourceTypes", (string)null);
+                    b.HasIndex("CalendarId");
+
+                    b.HasIndex("TypeId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Resources", (string)null);
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Services.Aggregates.Service", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Services.Service", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -451,7 +454,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.ToTable("Services", (string)null);
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Users.Aggregates.Permission", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Users.Entities.Permission", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -486,7 +489,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.ToTable("Permissions", (string)null);
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Users.Aggregates.Role", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Users.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -529,60 +532,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.ToTable("Roles", (string)null);
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Users.Aggregates.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("FirstName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<bool>("IsEmailConfirmed")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTimeOffset>("LastModifiedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LastName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Version")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.ToTable("Users", (string)null);
-                });
-
-            modelBuilder.Entity("AgendaManager.Domain.Users.Aggregates.UserToken", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Users.Entities.UserToken", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -615,6 +565,59 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("AgendaManager.Domain.Users.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsEmailConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("PermissionRole", b =>
@@ -710,21 +713,21 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.ToTable("UserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Appointments.Aggregates.Appointment", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Appointments.Appointment", b =>
                 {
-                    b.HasOne("AgendaManager.Domain.Calendars.Aggregates.Calendar", "Calendar")
+                    b.HasOne("AgendaManager.Domain.Calendars.Calendar", "Calendar")
                         .WithMany()
                         .HasForeignKey("CalendarId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("AgendaManager.Domain.Services.Aggregates.Service", "Service")
+                    b.HasOne("AgendaManager.Domain.Services.Service", "Service")
                         .WithMany()
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("AgendaManager.Domain.Users.Aggregates.User", "User")
+                    b.HasOne("AgendaManager.Domain.Users.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -761,9 +764,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Appointments.Aggregates.AppointmentStatusChange", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Appointments.Entities.AppointmentStatusChange", b =>
                 {
-                    b.HasOne("AgendaManager.Domain.Appointments.Aggregates.Appointment", "Appointment")
+                    b.HasOne("AgendaManager.Domain.Appointments.Appointment", "Appointment")
                         .WithMany("StatusChanges")
                         .HasForeignKey("AppointmentId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -796,9 +799,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Calendars.Aggregates.CalendarHoliday", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Calendars.Entities.CalendarHoliday", b =>
                 {
-                    b.HasOne("AgendaManager.Domain.Calendars.Aggregates.Calendar", "Calendar")
+                    b.HasOne("AgendaManager.Domain.Calendars.Calendar", "Calendar")
                         .WithMany()
                         .HasForeignKey("CalendarId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -831,21 +834,64 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Resources.Aggregates.Resource", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Resources.Entities.ResourceSchedule", b =>
                 {
-                    b.HasOne("AgendaManager.Domain.Calendars.Aggregates.Calendar", "Calendar")
+                    b.HasOne("AgendaManager.Domain.Calendars.Calendar", "Calendar")
                         .WithMany()
                         .HasForeignKey("CalendarId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("AgendaManager.Domain.Resources.Aggregates.ResourceType", "Type")
+                    b.HasOne("AgendaManager.Domain.Resources.Resource", "Resource")
+                        .WithMany()
+                        .HasForeignKey("ResourceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Period.Period", "Period", b1 =>
+                        {
+                            b1.Property<Guid>("ResourceScheduleId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<DateTimeOffset>("EndDate")
+                                .HasColumnType("timestamp with time zone")
+                                .HasColumnName("EndDate");
+
+                            b1.Property<DateTimeOffset>("StartDate")
+                                .HasColumnType("timestamp with time zone")
+                                .HasColumnName("StartDate");
+
+                            b1.HasKey("ResourceScheduleId");
+
+                            b1.ToTable("ResourceSchedules");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ResourceScheduleId");
+                        });
+
+                    b.Navigation("Calendar");
+
+                    b.Navigation("Period")
+                        .IsRequired();
+
+                    b.Navigation("Resource");
+                });
+
+            modelBuilder.Entity("AgendaManager.Domain.Resources.Resource", b =>
+                {
+                    b.HasOne("AgendaManager.Domain.Calendars.Calendar", "Calendar")
+                        .WithMany()
+                        .HasForeignKey("CalendarId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AgendaManager.Domain.ResourceTypes.ResourceType", "Type")
                         .WithMany("Resources")
                         .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AgendaManager.Domain.Users.Aggregates.User", "User")
+                    b.HasOne("AgendaManager.Domain.Users.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -885,52 +931,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Resources.Aggregates.ResourceSchedule", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Services.Service", b =>
                 {
-                    b.HasOne("AgendaManager.Domain.Calendars.Aggregates.Calendar", "Calendar")
-                        .WithMany()
-                        .HasForeignKey("CalendarId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("AgendaManager.Domain.Resources.Aggregates.Resource", "Resource")
-                        .WithMany()
-                        .HasForeignKey("ResourceId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Period.Period", "Period", b1 =>
-                        {
-                            b1.Property<Guid>("ResourceScheduleId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<DateTimeOffset>("EndDate")
-                                .HasColumnType("timestamp with time zone")
-                                .HasColumnName("EndDate");
-
-                            b1.Property<DateTimeOffset>("StartDate")
-                                .HasColumnType("timestamp with time zone")
-                                .HasColumnName("StartDate");
-
-                            b1.HasKey("ResourceScheduleId");
-
-                            b1.ToTable("ResourceSchedules");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ResourceScheduleId");
-                        });
-
-                    b.Navigation("Calendar");
-
-                    b.Navigation("Period")
-                        .IsRequired();
-
-                    b.Navigation("Resource");
-                });
-
-            modelBuilder.Entity("AgendaManager.Domain.Services.Aggregates.Service", b =>
-                {
-                    b.HasOne("AgendaManager.Domain.Calendars.Aggregates.Calendar", "Calendar")
+                    b.HasOne("AgendaManager.Domain.Calendars.Calendar", "Calendar")
                         .WithMany()
                         .HasForeignKey("CalendarId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -965,41 +968,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Users.Aggregates.User", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Users.Entities.UserToken", b =>
                 {
-                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Token.Token", "RefreshToken", b1 =>
-                        {
-                            b1.Property<Guid>("UserId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<DateTimeOffset>("Expires")
-                                .HasColumnType("timestamp with time zone")
-                                .HasColumnName("RefreshTokenExpires");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(200)
-                                .IsUnicode(false)
-                                .HasColumnType("character varying(200)")
-                                .HasColumnName("RefreshToken");
-
-                            b1.HasKey("UserId");
-
-                            b1.HasIndex("Value")
-                                .IsUnique();
-
-                            b1.ToTable("Users");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserId");
-                        });
-
-                    b.Navigation("RefreshToken");
-                });
-
-            modelBuilder.Entity("AgendaManager.Domain.Users.Aggregates.UserToken", b =>
-                {
-                    b.HasOne("AgendaManager.Domain.Users.Aggregates.User", null)
+                    b.HasOne("AgendaManager.Domain.Users.User", null)
                         .WithMany("Tokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1036,15 +1007,47 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("AgendaManager.Domain.Users.User", b =>
+                {
+                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Token.Token", "RefreshToken", b1 =>
+                        {
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<DateTimeOffset>("Expires")
+                                .HasColumnType("timestamp with time zone")
+                                .HasColumnName("RefreshTokenExpires");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .IsUnicode(false)
+                                .HasColumnType("character varying(200)")
+                                .HasColumnName("RefreshToken");
+
+                            b1.HasKey("UserId");
+
+                            b1.HasIndex("Value")
+                                .IsUnique();
+
+                            b1.ToTable("Users");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.Navigation("RefreshToken");
+                });
+
             modelBuilder.Entity("PermissionRole", b =>
                 {
-                    b.HasOne("AgendaManager.Domain.Users.Aggregates.Permission", null)
+                    b.HasOne("AgendaManager.Domain.Users.Entities.Permission", null)
                         .WithMany()
                         .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AgendaManager.Domain.Users.Aggregates.Role", null)
+                    b.HasOne("AgendaManager.Domain.Users.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1053,13 +1056,13 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
             modelBuilder.Entity("ResourceTypeService", b =>
                 {
-                    b.HasOne("AgendaManager.Domain.Resources.Aggregates.ResourceType", null)
+                    b.HasOne("AgendaManager.Domain.ResourceTypes.ResourceType", null)
                         .WithMany()
                         .HasForeignKey("ResourceTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AgendaManager.Domain.Services.Aggregates.Service", null)
+                    b.HasOne("AgendaManager.Domain.Services.Service", null)
                         .WithMany()
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1068,30 +1071,30 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
             modelBuilder.Entity("RoleUser", b =>
                 {
-                    b.HasOne("AgendaManager.Domain.Users.Aggregates.Role", null)
+                    b.HasOne("AgendaManager.Domain.Users.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AgendaManager.Domain.Users.Aggregates.User", null)
+                    b.HasOne("AgendaManager.Domain.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Appointments.Aggregates.Appointment", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Appointments.Appointment", b =>
                 {
                     b.Navigation("StatusChanges");
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Resources.Aggregates.ResourceType", b =>
+            modelBuilder.Entity("AgendaManager.Domain.ResourceTypes.ResourceType", b =>
                 {
                     b.Navigation("Resources");
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Users.Aggregates.User", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Users.User", b =>
                 {
                     b.Navigation("Tokens");
                 });
