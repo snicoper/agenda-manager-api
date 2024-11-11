@@ -1,4 +1,6 @@
-﻿using AgendaManager.Domain.AuditRecords.Events;
+﻿using AgendaManager.Domain.AuditRecords.Enums;
+using AgendaManager.Domain.AuditRecords.Events;
+using AgendaManager.Domain.AuditRecords.Exceptions;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
@@ -26,5 +28,27 @@ public class AuditRecordCreateTests
         // Assert
         auditRecord.DomainEvents.Should().NotBeNull();
         auditRecord.DomainEvents.Should().Contain(x => x is AuditRecordCreatedDomainEvent);
+    }
+
+    [Fact]
+    public void AuditRecord_ShouldRaiseException_WhenActionTypeIsInvalid()
+    {
+        // Arrange
+        var result = () => AuditRecordFactory.Create(actionType: (ActionType)100);
+
+        // Assert
+        result.Should().Throw<AuditRecordDomainException>();
+        result.Should().Throw<AuditRecordDomainException>().WithMessage("Invalid action type.");
+    }
+
+    [Fact]
+    public void AuditRecord_ShouldRaiseException_WhenActionTypeIsNone()
+    {
+        // Act
+        var result = () => AuditRecordFactory.Create(actionType: ActionType.None);
+
+        // Assert
+        result.Should().Throw<AuditRecordDomainException>();
+        result.Should().Throw<AuditRecordDomainException>().WithMessage("Action type cannot be None.");
     }
 }

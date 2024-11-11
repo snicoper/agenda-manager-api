@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Domain.AuditRecords.Enums;
 using AgendaManager.Domain.AuditRecords.Events;
+using AgendaManager.Domain.AuditRecords.Exceptions;
 using AgendaManager.Domain.AuditRecords.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 
@@ -21,6 +22,15 @@ public class AuditRecord : AggregateRoot
         string newValue,
         ActionType actionType)
     {
+        ArgumentNullException.ThrowIfNull(aggregateId);
+        ArgumentNullException.ThrowIfNull(namespaceName);
+        ArgumentNullException.ThrowIfNull(aggregateName);
+        ArgumentNullException.ThrowIfNull(propertyName);
+        ArgumentNullException.ThrowIfNull(oldValue);
+        ArgumentNullException.ThrowIfNull(newValue);
+
+        GuardAgainstInvalidActionType(actionType);
+
         Id = id;
         AggregateId = aggregateId;
         NamespaceName = namespaceName;
@@ -70,5 +80,18 @@ public class AuditRecord : AggregateRoot
         auditRecord.AddDomainEvent(new AuditRecordCreatedDomainEvent(id));
 
         return auditRecord;
+    }
+
+    private static void GuardAgainstInvalidActionType(ActionType actionType)
+    {
+        if (!Enum.IsDefined(typeof(ActionType), actionType))
+        {
+            throw new AuditRecordDomainException("Invalid action type.");
+        }
+
+        if (actionType == ActionType.None)
+        {
+            throw new AuditRecordDomainException("Action type cannot be None.");
+        }
     }
 }
