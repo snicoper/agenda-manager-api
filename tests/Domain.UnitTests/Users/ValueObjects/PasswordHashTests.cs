@@ -30,8 +30,12 @@ public class PasswordHashTests
     [InlineData(" ")]
     public void PasswordHash_ShouldReturnThrowException_WhenInvalidPasswordIsProvidedInFromHashed(string hashedPassword)
     {
+        // Act
+        var passwordHash = () => PasswordHash.FromHashed(hashedPassword);
+
         // Assert
-        Assert.Throws<UserDomainException>(() => PasswordHash.FromHashed(hashedPassword));
+        passwordHash.Should().Throw<UserDomainException>();
+        passwordHash.Should().Throw<UserDomainException>().WithMessage("Hashed password cannot be empty.");
     }
 
     [Fact]

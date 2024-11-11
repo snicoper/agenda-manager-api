@@ -20,7 +20,7 @@ public class PasswordHash : ValueObject
     {
         if (string.IsNullOrWhiteSpace(hashedPassword))
         {
-            throw new UserDomainException("Hashed password cannot be empty");
+            throw new UserDomainException("Hashed password cannot be empty.");
         }
 
         return new PasswordHash(hashedPassword);

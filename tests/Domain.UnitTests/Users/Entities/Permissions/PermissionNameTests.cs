@@ -1,30 +1,41 @@
 ﻿using AgendaManager.Domain.Users.Exceptions;
 using AgendaManager.TestCommon.Factories;
+using FluentAssertions;
 
 namespace AgendaManager.Domain.UnitTests.Users.Entities.Permissions;
 
 public class PermissionNameTests
 {
     [Theory]
-    [InlineData("")]
-    [InlineData("   ")]
     [InlineData("invalid name")]
     [InlineData("name:invalid")]
-    public void PermissionName_ShouldThrowException_WhenNameIsInvalid(string invalidName)
+    public void PermissionName_ShouldThrowException_WhenNameSuffixAreInvalid(string invalidName)
     {
+        // Act
+        var permission = () => PermissionFactory.CreatePermission(name: invalidName);
+
         // Arrange
-        Assert.Throws<PermissionDomainException>(() => PermissionFactory.CreatePermission(name: invalidName));
+        permission.Should().Throw<PermissionDomainException>();
+        permission.Should()
+            .Throw<PermissionDomainException>()
+            .WithMessage("Permission name cannot end with ':create', ':update', ':delete', or ':read'.");
     }
 
     [Theory]
     [InlineData(0)]
     [InlineData(101)]
-    public void PermissionName_ShouldRaiseException_WhenInvalidNameIsSet(int nameLength)
+    public void PermissionName_ShouldRaiseException_WhenInvalidName(int nameLength)
     {
         // Arrange
         var name = new string('*', nameLength);
 
+        // Act
+        var permission = () => PermissionFactory.CreatePermission(name: name);
+
         // Assert
-        Assert.Throws<PermissionDomainException>(() => PermissionFactory.CreatePermission(name: name));
+        permission.Should().Throw<PermissionDomainException>();
+        permission.Should()
+            .Throw<PermissionDomainException>()
+            .WithMessage("Permission name is null or exceeds length of 100 characters.");
     }
 }

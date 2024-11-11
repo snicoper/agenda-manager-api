@@ -38,8 +38,13 @@ public class CalendarCreateTests
         // Arrange
         var name = new string('a', nameLength);
 
+        // Act
+        var calendar = () => CalendarFactory.CreateCalendar(name: name);
+
         // Assert
-        Assert.Throws<CalendarDomainException>(() => CalendarFactory.CreateCalendar(name: name));
+        calendar.Should().Throw<CalendarDomainException>();
+        calendar.Should().Throw<CalendarDomainException>()
+            .WithMessage("Name is invalid or exceeds length of 50 characters.");
     }
 
     [Theory]
@@ -50,7 +55,12 @@ public class CalendarCreateTests
         // Arrange
         var description = new string('a', descriptionLength);
 
+        // Act
+        var calendar = () => CalendarFactory.CreateCalendar(description: description);
+
         // Assert
-        Assert.Throws<CalendarDomainException>(() => CalendarFactory.CreateCalendar(description: description));
+        calendar.Should().Throw<CalendarDomainException>();
+        calendar.Should().Throw<CalendarDomainException>()
+            .WithMessage("Description is invalid or exceeds length of 500 characters.");
     }
 }

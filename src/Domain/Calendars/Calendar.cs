@@ -49,7 +49,7 @@ public class Calendar : AggregateRoot
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > 50)
         {
-            throw new CalendarDomainException(name);
+            throw new CalendarDomainException("Name is invalid or exceeds length of 50 characters.");
         }
     }
 
@@ -57,7 +57,7 @@ public class Calendar : AggregateRoot
     {
         if (string.IsNullOrWhiteSpace(description) || description.Length > 500)
         {
-            throw new CalendarDomainException(description);
+            throw new CalendarDomainException("Description is invalid or exceeds length of 500 characters.");
         }
     }
 }

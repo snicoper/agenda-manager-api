@@ -29,7 +29,7 @@ public sealed class Permission : AuditableEntity
 
     private static void GuardAgainstInvalidName(string name)
     {
-        if (string.IsNullOrEmpty(name) || name.Length > 100)
+        if (string.IsNullOrWhiteSpace(name) || name.Length > 100)
         {
             throw new PermissionDomainException("Permission name is null or exceeds length of 100 characters.");
         }

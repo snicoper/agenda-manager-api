@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Domain.Users.Exceptions;
 using AgendaManager.TestCommon.Factories;
+using FluentAssertions;
 
 namespace AgendaManager.Domain.UnitTests.Users.UserAggregate;
 
@@ -11,7 +12,11 @@ public class UserLastNameTests
         // Arrange
         var lastName = new string('*', 257);
 
+        // Act
+        var user = () => UserFactory.CreateUser(lastName: lastName);
+
         // Assert
-        Assert.Throws<UserDomainException>(() => UserFactory.CreateUser(lastName: lastName));
+        user.Should().Throw<UserDomainException>();
+        user.Should().Throw<UserDomainException>().WithMessage("Last name exceeds length of 256 characters.");
     }
 }
