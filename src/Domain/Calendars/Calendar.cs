@@ -49,6 +49,20 @@ public class Calendar : AggregateRoot
         AddDomainEvent(new CalendarActiveStatusChangedDomainEvent(Id, IsActive));
     }
 
+    public void AddHoliday(CalendarHoliday calendarHoliday)
+    {
+        _holidays.Add(calendarHoliday);
+
+        AddDomainEvent(new CalendarHolidayAddedDomainEvent(Id, calendarHoliday.Id));
+    }
+
+    public void RemoveHoliday(CalendarHoliday calendarHoliday)
+    {
+        _holidays.Remove(calendarHoliday);
+
+        AddDomainEvent(new CalendarHolidayRemovedDomainEvent(Id, calendarHoliday.Id));
+    }
+
     internal static Calendar Create(CalendarId id, string name, string description, bool active = true)
     {
         Calendar calendar = new(id, name, description, active);
