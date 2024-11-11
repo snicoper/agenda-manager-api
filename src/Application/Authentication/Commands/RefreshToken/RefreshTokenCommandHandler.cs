@@ -18,7 +18,7 @@ internal class RefreshTokenCommandHandler(
     {
         var user = await userRepository.GetByRefreshTokenAsync(request.RefreshToken, cancellationToken);
 
-        if (user is null || !user.Active || user.RefreshToken is null || user.RefreshToken.IsExpired())
+        if (user is null || !user.Active || user.RefreshToken is null || user.RefreshToken.IsExpired)
         {
             throw new UnauthorizedAccessException();
         }

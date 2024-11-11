@@ -17,6 +17,8 @@ public class Token : ValueObject
 
     public DateTimeOffset Expires { get; }
 
+    public bool IsExpired => DateTimeOffset.UtcNow >= Expires;
+
     public static Token Generate(TimeSpan lifetime)
     {
         var token = SecureTokenFactory.GenerateToken(TokenLength);
@@ -37,9 +39,9 @@ public class Token : ValueObject
         return new Token(token, expires);
     }
 
-    public bool IsExpired()
+    public bool Validate(string token)
     {
-        return DateTimeOffset.UtcNow >= Expires;
+        return !IsExpired && token == Value;
     }
 
     protected override IEnumerable<object> GetEqualityComponents()

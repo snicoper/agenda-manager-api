@@ -7,7 +7,7 @@ public class TokenTests
     private const int TokenLength = 200;
 
     [Fact]
-    public void RefreshToken_ShouldCreateNewRefreshToken_WhenValidRefreshTokenIsValid()
+    public void Token_ShouldCreateNewRefreshToken_WhenValidRefreshTokenIsValid()
     {
         // Arrange
         var token = Guid.NewGuid().ToString();
@@ -22,7 +22,7 @@ public class TokenTests
     }
 
     [Fact]
-    public void RefreshToken_ShouldNotCreateRefreshToken_WhenInvalidTokenIsInvalid()
+    public void Token_ShouldNotCreateRefreshToken_WhenInvalidTokenIsInvalid()
     {
         // Arrange
         var token = new string('a', TokenLength + 1);
@@ -36,7 +36,7 @@ public class TokenTests
     }
 
     [Fact]
-    public void RefreshToken_ShouldNotCreateRefreshToken_WhenExpiredRefreshTokenIsExpired()
+    public void Token_ShouldNotCreateRefreshToken_WhenExpiredRefreshTokenIsExpired()
     {
         // Arrange
         var token = Guid.NewGuid().ToString();
@@ -50,7 +50,7 @@ public class TokenTests
     }
 
     [Fact]
-    public void RefreshToken_ShouldNotCreateRefreshToken_WhenTokenIsEmpty()
+    public void Token_ShouldNotCreateRefreshToken_WhenTokenIsEmpty()
     {
         // Arrange
         var token = string.Empty;
@@ -64,7 +64,7 @@ public class TokenTests
     }
 
     [Fact]
-    public void RefreshToken_ShouldCreateRefreshToken_WhenGenerateMethodIsCalled()
+    public void Token_ShouldCreateRefreshToken_WhenGenerateMethodIsCalled()
     {
         // Arrange
         var lifetime = TimeSpan.FromDays(1);
@@ -81,7 +81,7 @@ public class TokenTests
     }
 
     [Fact]
-    public void RefreshToken_ShouldNotExpireRefreshToken_WhenRefreshTokenIsCreated()
+    public void Token_ShouldNotExpireRefreshToken_WhenRefreshTokenIsCreated()
     {
         // Arrange
         var lifetime = TimeSpan.FromDays(1);
@@ -91,12 +91,12 @@ public class TokenTests
 
         // Assert
         refreshToken.Should().NotBeNull();
-        refreshToken.IsExpired().Should().BeFalse();
+        refreshToken.IsExpired.Should().BeFalse();
         refreshToken.Expires.Should().BeAfter(DateTimeOffset.UtcNow);
     }
 
     [Fact]
-    public void RefreshToken_ShouldNotCreateRefreshToken_WhenLifetimeIsZeroInGenerateMethod()
+    public void Token_ShouldNotCreateRefreshToken_WhenLifetimeIsZeroInGenerateMethod()
     {
         // Arrange
         var lifetime = TimeSpan.Zero;
@@ -106,5 +106,45 @@ public class TokenTests
 
         // Assert
         refreshToken.Should().Throw<ArgumentException>();
+    }
+
+    [Fact]
+    public void Token_ShouldReturnTrue_WhenIsExpiredIsCalled()
+    {
+        // Arrange
+        var token = Domain.Common.ValueObjects.Token.Token.Generate(TimeSpan.FromDays(1));
+
+        // Act
+        var result = token.IsExpired;
+
+        // Assert
+        result.Should().BeFalse();
+    }
+
+    [Fact]
+    public void Token_ShouldReturnTrue_WhenValidateTokenWithTokenIsValid()
+    {
+        // Arrange
+        var token = Domain.Common.ValueObjects.Token.Token.Generate(TimeSpan.FromDays(1));
+
+        // Act
+        var result = token.Validate(token.Value);
+
+        // Assert
+        result.Should().BeTrue();
+    }
+
+    [Fact]
+    public void Token_ShouldReturnFalse_WhenValidateTokenWithTokenIsNotValid()
+    {
+        // Arrange
+        var token = Domain.Common.ValueObjects.Token.Token.Generate(TimeSpan.FromDays(1));
+        const string invalidToken = "invalidToken";
+
+        // Act
+        var result = token.Validate(invalidToken);
+
+        // Assert
+        result.Should().BeFalse();
     }
 }
