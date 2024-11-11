@@ -26,5 +26,7 @@ public class CalendarConfiguration : IEntityTypeConfiguration<Calendar>
         builder.Property(c => c.Description)
             .HasMaxLength(500)
             .IsRequired();
+
+        builder.Property(c => c.IsActive);
     }
 }

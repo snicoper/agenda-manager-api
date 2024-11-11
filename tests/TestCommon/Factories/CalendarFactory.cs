@@ -8,12 +8,14 @@ public abstract class CalendarFactory
     public static Calendar CreateCalendar(
         CalendarId? calendarId = null,
         string? name = null,
-        string? description = null)
+        string? description = null,
+        bool? isActive = null)
     {
-        Calendar calendar = new(
-            calendarId ?? CalendarId.Create(),
-            name ?? "My calendar",
-            description ?? "Description of my calendar");
+        var calendar = Calendar.Create(
+            id: calendarId ?? CalendarId.Create(),
+            name: name ?? "My calendar",
+            description: description ?? "Description of my calendar",
+            active: isActive ?? true);
 
         return calendar;
     }

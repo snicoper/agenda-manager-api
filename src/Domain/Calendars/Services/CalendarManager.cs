@@ -13,7 +13,7 @@ public class CalendarManager(ICalendarRepository calendarRepository)
         string description,
         CancellationToken cancellationToken)
     {
-        Calendar calendar = new(calendarId, name, description);
+        var calendar = Calendar.Create(calendarId, name, description);
         var validationResult = await IsValidAsync(calendar, cancellationToken);
         if (validationResult.IsFailure)
         {

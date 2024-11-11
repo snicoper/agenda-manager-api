@@ -21,6 +21,16 @@ public class CalendarCreateTests
     }
 
     [Fact]
+    public void Calendar_ShouldActiveTrue_WhenCalendarIsCreated()
+    {
+        // Arrange
+        var calendar = CalendarFactory.CreateCalendar();
+
+        // Assert
+        calendar.IsActive.Should().BeTrue();
+    }
+
+    [Fact]
     public void Calendar_ShouldRaiseDomainEvent_WhenCalendarIsCreated()
     {
         // Arrange
