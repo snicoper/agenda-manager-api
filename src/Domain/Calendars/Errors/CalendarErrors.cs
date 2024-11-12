@@ -4,6 +4,8 @@ namespace AgendaManager.Domain.Calendars.Errors;
 
 public static class CalendarErrors
 {
+    public static Error CalendarNotFound => Error.NotFound("Calendar not found.");
+
     public static Error InvalidFormatName =>
         Error.Validation(nameof(Calendar.Name), "Name cannot be empty and must be less than 50 characters.");
 

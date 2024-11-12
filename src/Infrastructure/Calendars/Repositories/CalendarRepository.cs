@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Domain.Calendars;
 using AgendaManager.Domain.Calendars.Interfaces;
+using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,6 +8,13 @@ namespace AgendaManager.Infrastructure.Calendars.Repositories;
 
 public class CalendarRepository(AppDbContext context) : ICalendarRepository
 {
+    public async Task<Calendar?> GetByIdAsync(CalendarId id, CancellationToken cancellationToken = default)
+    {
+        var calendar = await context.Calendars.FirstOrDefaultAsync(c => c.Id.Equals(id), cancellationToken);
+
+        return calendar;
+    }
+
     public async Task AddAsync(Calendar calendar, CancellationToken cancellationToken = default)
     {
         await context.Calendars.AddAsync(calendar, cancellationToken);

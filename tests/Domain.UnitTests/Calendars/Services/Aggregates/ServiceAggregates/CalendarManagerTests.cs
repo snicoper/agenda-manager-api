@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Calendars;
+﻿using AgendaManager.Domain.Appointments.Interfaces;
+using AgendaManager.Domain.Calendars;
 using AgendaManager.Domain.Calendars.Exceptions;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.Services;
@@ -18,7 +19,10 @@ public class CalendarManagerTests
     public CalendarManagerTests()
     {
         _calendarRepository = Substitute.For<ICalendarRepository>();
-        _sut = new CalendarManager(_calendarRepository);
+        var calendarSettingsRepository = Substitute.For<ICalendarSettingsRepository>();
+        var appointmentRepository = Substitute.For<IAppointmentRepository>();
+
+        _sut = new CalendarManager(_calendarRepository, calendarSettingsRepository, appointmentRepository);
     }
 
     [Fact]
