@@ -81,8 +81,6 @@ public sealed class Calendar : AggregateRoot
         }
 
         Settings.Update(ianaTimeZone, holidayCreationStrategy);
-
-        AddDomainEvent(new CalendarSettingsUpdatedDomainEvent(Id, Settings.Id));
     }
 
     internal static Calendar Create(

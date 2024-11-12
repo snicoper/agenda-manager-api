@@ -43,7 +43,7 @@ public sealed class CalendarSettings : AuditableEntity
     {
         CalendarSettings calendarSettings = new(id, calendarId, ianaTimeZone, holidayCreationStrategy);
 
-        calendarSettings.AddDomainEvent(new CalendarSettingsCreatedDomainEvent(calendarSettings));
+        calendarSettings.AddDomainEvent(new CalendarSettingsCreatedDomainEvent(id));
 
         return calendarSettings;
     }
@@ -59,6 +59,8 @@ public sealed class CalendarSettings : AuditableEntity
 
         IanaTimeZone = ianaTimeZone;
         HolidayCreationStrategy = holidayCreationStrategy;
+
+        AddDomainEvent(new CalendarSettingsUpdatedDomainEvent(Id, CalendarId));
     }
 
     internal bool HasChanges(IanaTimeZone ianaTimeZone, HolidayCreationStrategy holidayCreationStrategy)
