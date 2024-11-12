@@ -10,7 +10,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Seeds.Modules;
 
 public static class UserSeed
 {
-    public static async Task SeedAsync(
+    public static async Task InitializeAsync(
         AppDbContext context,
         UserManager userManager,
         IPasswordHasher passwordHasher,

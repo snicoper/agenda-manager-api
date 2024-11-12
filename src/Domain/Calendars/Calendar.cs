@@ -10,7 +10,12 @@ public sealed class Calendar : AggregateRoot
 {
     private readonly List<CalendarHoliday> _holidays = [];
 
-    private Calendar(CalendarId id, string name, string description, bool isActive)
+    private Calendar(
+        CalendarId id,
+        CalendarSettings settings,
+        string name,
+        string description,
+        bool isActive)
     {
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(description);
@@ -19,6 +24,8 @@ public sealed class Calendar : AggregateRoot
         GuardAgainstInvalidDescription(description);
 
         Id = id;
+        Settings = settings;
+        SettingsId = settings.Id;
         Name = name;
         Description = description;
         IsActive = isActive;
@@ -29,6 +36,10 @@ public sealed class Calendar : AggregateRoot
     }
 
     public CalendarId Id { get; } = null!;
+
+    public CalendarSettingsId SettingsId { get; private set; } = null!;
+
+    public CalendarSettings Settings { get; private set; } = null!;
 
     public string Name { get; private set; } = default!;
 
@@ -63,9 +74,14 @@ public sealed class Calendar : AggregateRoot
         AddDomainEvent(new CalendarHolidayRemovedDomainEvent(Id, calendarHoliday.Id));
     }
 
-    internal static Calendar Create(CalendarId id, string name, string description, bool active = true)
+    internal static Calendar Create(
+        CalendarId id,
+        CalendarSettings settings,
+        string name,
+        string description,
+        bool active = true)
     {
-        Calendar calendar = new(id, name, description, active);
+        Calendar calendar = new(id, settings, name, description, active);
 
         calendar.AddDomainEvent(new CalendarCreatedDomainEvent(id));
 

@@ -9,6 +9,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Seeds;
 
 public class AppDbContextInitialize(
     AppDbContext context,
+    IServiceProvider serviceProvider,
     UserManager userManager,
     RoleManager roleManager,
     PermissionManager permissionManager,
@@ -46,8 +47,9 @@ public class AppDbContextInitialize(
 
     private async Task TrySeedAsync()
     {
-        _roles = await RoleSeed.SeedAsync(context, roleManager);
-        await PermissionSeed.SeedAsync(context, permissionManager, authorizationManager, _roles);
-        await UserSeed.SeedAsync(context, userManager, passwordHasher, authorizationManager, _roles);
+        _roles = await RoleSeed.InitializeAsync(context, roleManager);
+        await PermissionSeed.InitializeAsync(context, permissionManager, authorizationManager, _roles);
+        await UserSeed.InitializeAsync(context, userManager, passwordHasher, authorizationManager, _roles);
+        await CalendarSeed.InitializeAsync(context, serviceProvider);
     }
 }

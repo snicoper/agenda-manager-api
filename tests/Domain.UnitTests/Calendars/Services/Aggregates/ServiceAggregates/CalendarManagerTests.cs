@@ -1,5 +1,5 @@
-﻿using AgendaManager.Domain.Appointments.Interfaces;
-using AgendaManager.Domain.Calendars;
+﻿using AgendaManager.Domain.Calendars;
+using AgendaManager.Domain.Calendars.Enums;
 using AgendaManager.Domain.Calendars.Exceptions;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.Services;
@@ -19,10 +19,8 @@ public class CalendarManagerTests
     public CalendarManagerTests()
     {
         _calendarRepository = Substitute.For<ICalendarRepository>();
-        var calendarSettingsRepository = Substitute.For<ICalendarSettingsRepository>();
-        var appointmentRepository = Substitute.For<IAppointmentRepository>();
 
-        _sut = new CalendarManager(_calendarRepository, calendarSettingsRepository, appointmentRepository);
+        _sut = new CalendarManager(_calendarRepository);
     }
 
     [Fact]
@@ -48,8 +46,10 @@ public class CalendarManagerTests
         await Assert.ThrowsAsync<CalendarDomainException>(
             () => _sut.CreateCalendarAsync(
                 calendarId: CalendarId.Create(),
+                timeZone: "Europe/Madrid",
                 name: name,
                 description: "Description of my calendar",
+                HolidayCreationStrategy.CancelOverlapping,
                 cancellationToken: CancellationToken.None));
     }
 
@@ -65,8 +65,10 @@ public class CalendarManagerTests
         await Assert.ThrowsAsync<CalendarDomainException>(
             () => _sut.CreateCalendarAsync(
                 calendarId: CalendarId.Create(),
+                timeZone: "Europe/Madrid",
                 name: "My calendar",
                 description: description,
+                HolidayCreationStrategy.CancelOverlapping,
                 cancellationToken: CancellationToken.None));
     }
 
@@ -122,8 +124,10 @@ public class CalendarManagerTests
 
         var result = await _sut.CreateCalendarAsync(
             calendarId: calendar.Id,
+            timeZone: "Europe/Madrid",
             name: calendar.Name,
             description: calendar.Description,
+            HolidayCreationStrategy.CancelOverlapping,
             cancellationToken: CancellationToken.None);
 
         return result;

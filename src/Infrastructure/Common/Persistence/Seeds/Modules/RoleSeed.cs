@@ -7,7 +7,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Seeds.Modules;
 
 public static class RoleSeed
 {
-    public static async Task<List<Role>> SeedAsync(AppDbContext context, RoleManager roleManager)
+    public static async Task<List<Role>> InitializeAsync(AppDbContext context, RoleManager roleManager)
     {
         if (context.Roles.Any())
         {

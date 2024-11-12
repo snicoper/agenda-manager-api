@@ -11,17 +11,26 @@ public sealed class CalendarSettings : AuditableEntity
     {
     }
 
-    private CalendarSettings(CalendarSettingsId id, string timeZone, HolidayCreationStrategy holidayCreationStrategy)
+    private CalendarSettings(
+        CalendarSettingsId id,
+        CalendarId calendarId,
+        string timeZone,
+        HolidayCreationStrategy holidayCreationStrategy)
     {
         ArgumentNullException.ThrowIfNull(timeZone);
         ArgumentNullException.ThrowIfNull(holidayCreationStrategy);
 
         Id = id;
+        CalendarId = calendarId;
         TimeZone = timeZone;
         HolidayCreationStrategy = holidayCreationStrategy;
     }
 
     public CalendarSettingsId Id { get; } = null!;
+
+    public CalendarId CalendarId { get; private set; } = null!;
+
+    public Calendar Calendar { get; private set; } = null!;
 
     public string TimeZone { get; private set; } = default!;
 
@@ -29,10 +38,11 @@ public sealed class CalendarSettings : AuditableEntity
 
     public static CalendarSettings Create(
         CalendarSettingsId id,
+        CalendarId calendarId,
         string timeZone,
         HolidayCreationStrategy holidayCreationStrategy)
     {
-        CalendarSettings calendarSettings = new(id, timeZone, holidayCreationStrategy);
+        CalendarSettings calendarSettings = new(id, calendarId, timeZone, holidayCreationStrategy);
 
         calendarSettings.AddDomainEvent(new CalendarSettingsCreatedDomainEvent(calendarSettings));
 

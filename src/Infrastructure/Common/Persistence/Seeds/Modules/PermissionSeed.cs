@@ -7,7 +7,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Seeds.Modules;
 
 public static class PermissionSeed
 {
-    public static async Task SeedAsync(
+    public static async Task InitializeAsync(
         AppDbContext context,
         PermissionManager permissionManager,
         AuthorizationManager authorizationManager,
