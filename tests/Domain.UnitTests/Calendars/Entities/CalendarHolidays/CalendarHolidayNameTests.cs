@@ -2,18 +2,19 @@
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
-namespace AgendaManager.Domain.UnitTests.Calendars.CalendarAggregate;
+namespace AgendaManager.Domain.UnitTests.Calendars.Entities.CalendarHolidays;
 
 public class CalendarHolidayNameTests
 {
     [Theory]
     [InlineData(0)]
     [InlineData(51)]
-    public void CalendarHolidayName_ShouldRaiseException_WhenInvalidNameIsSet(int lengthName)
+    public void CalendarHolidayName_ShouldRaiseException_WhenInvalidNameIsSet(int nameLength)
     {
         // Arrange
-        var name = new string('*', lengthName);
+        var name = new string('*', nameLength);
 
+        // Act
         var calendarHoliday = () => CalendarHolidayFactory.CreateCalendarHoliday(name: name);
 
         // Assert

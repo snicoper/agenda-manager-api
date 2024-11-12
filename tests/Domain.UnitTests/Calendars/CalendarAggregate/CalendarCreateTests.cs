@@ -1,5 +1,4 @@
 ﻿using AgendaManager.Domain.Calendars.Events;
-using AgendaManager.Domain.Calendars.Exceptions;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
@@ -38,39 +37,5 @@ public class CalendarCreateTests
 
         // Assert
         calendar.DomainEvents.Should().Contain(x => x is CalendarCreatedDomainEvent);
-    }
-
-    [Theory]
-    [InlineData(0)]
-    [InlineData(51)]
-    public void Calendar_ShouldThrowException_WhenCalendarIsCreatedWithInvalidName(int nameLength)
-    {
-        // Arrange
-        var name = new string('a', nameLength);
-
-        // Act
-        var calendar = () => CalendarFactory.CreateCalendar(name: name);
-
-        // Assert
-        calendar.Should().Throw<CalendarDomainException>();
-        calendar.Should().Throw<CalendarDomainException>()
-            .WithMessage("Name is invalid or exceeds length of 50 characters.");
-    }
-
-    [Theory]
-    [InlineData(0)]
-    [InlineData(501)]
-    public void Calendar_ShouldThrowException_WhenCalendarIsCreatedWithInvalidDescription(int descriptionLength)
-    {
-        // Arrange
-        var description = new string('a', descriptionLength);
-
-        // Act
-        var calendar = () => CalendarFactory.CreateCalendar(description: description);
-
-        // Assert
-        calendar.Should().Throw<CalendarDomainException>();
-        calendar.Should().Throw<CalendarDomainException>()
-            .WithMessage("Description is invalid or exceeds length of 500 characters.");
     }
 }

@@ -2,7 +2,7 @@
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
-namespace AgendaManager.Domain.UnitTests.Calendars.Entities;
+namespace AgendaManager.Domain.UnitTests.Calendars.Entities.CalendarHolidays;
 
 public class CalendarHolidayCreateTests
 {
