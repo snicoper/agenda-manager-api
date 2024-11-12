@@ -15,11 +15,11 @@ public class CalendarHolidayNameTests
         var name = new string('*', nameLength);
 
         // Act
-        var calendarHoliday = () => CalendarHolidayFactory.CreateCalendarHoliday(name: name);
+        var action = () => CalendarHolidayFactory.CreateCalendarHoliday(name: name);
 
         // Assert
-        calendarHoliday.Should().Throw<CalendarHolidayDomainException>();
-        calendarHoliday.Should().Throw<CalendarHolidayDomainException>()
+        action.Should().Throw<CalendarHolidayDomainException>();
+        action.Should().Throw<CalendarHolidayDomainException>()
             .WithMessage("Name is invalid or exceeds length of 50 characters.");
     }
 }

@@ -13,10 +13,10 @@ public class UserFirstNameTests
         var firstName = new string('*', 257);
 
         // Act
-        var user = () => UserFactory.CreateUser(firstName: firstName);
+        var action = () => UserFactory.CreateUser(firstName: firstName);
 
         // Assert
-        user.Should().Throw<UserDomainException>();
-        user.Should().Throw<UserDomainException>().WithMessage("First name exceeds length of 256 characters.");
+        action.Should().Throw<UserDomainException>();
+        action.Should().Throw<UserDomainException>().WithMessage("First name exceeds length of 256 characters.");
     }
 }

@@ -49,9 +49,9 @@ public class RoleUpdateTests
         const string validDescription = "Valid Description";
 
         // Act
-        var act = () => role.Update(invalidName, validDescription);
+        var action = () => role.Update(invalidName, validDescription);
 
         // Assert
-        act.Should().Throw<RoleDomainException>();
+        action.Should().Throw<RoleDomainException>();
     }
 }

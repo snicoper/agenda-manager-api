@@ -12,11 +12,11 @@ public class PermissionNameTests
     public void PermissionName_ShouldThrowException_WhenNameSuffixAreInvalid(string invalidName)
     {
         // Act
-        var permission = () => PermissionFactory.CreatePermission(name: invalidName);
+        var action = () => PermissionFactory.CreatePermission(name: invalidName);
 
         // Arrange
-        permission.Should().Throw<PermissionDomainException>();
-        permission.Should()
+        action.Should().Throw<PermissionDomainException>();
+        action.Should()
             .Throw<PermissionDomainException>()
             .WithMessage("Permission name cannot end with ':create', ':update', ':delete', or ':read'.");
     }
@@ -30,11 +30,11 @@ public class PermissionNameTests
         var name = new string('*', nameLength);
 
         // Act
-        var permission = () => PermissionFactory.CreatePermission(name: name);
+        var action = () => PermissionFactory.CreatePermission(name: name);
 
         // Assert
-        permission.Should().Throw<PermissionDomainException>();
-        permission.Should()
+        action.Should().Throw<PermissionDomainException>();
+        action.Should()
             .Throw<PermissionDomainException>()
             .WithMessage("Permission name is null or exceeds length of 100 characters.");
     }

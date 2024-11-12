@@ -31,11 +31,11 @@ public class PasswordHashTests
     public void PasswordHash_ShouldReturnThrowException_WhenInvalidPasswordIsProvidedInFromHashed(string hashedPassword)
     {
         // Act
-        var passwordHash = () => PasswordHash.FromHashed(hashedPassword);
+        var action = () => PasswordHash.FromHashed(hashedPassword);
 
         // Assert
-        passwordHash.Should().Throw<UserDomainException>();
-        passwordHash.Should().Throw<UserDomainException>().WithMessage("Hashed password cannot be empty.");
+        action.Should().Throw<UserDomainException>();
+        action.Should().Throw<UserDomainException>().WithMessage("Hashed password cannot be empty.");
     }
 
     [Fact]

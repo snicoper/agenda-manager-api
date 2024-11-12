@@ -44,10 +44,10 @@ public class CalendarUpdateTests
         var newName = new string('a', newNameLength);
 
         // Act
-        var act = () => calendar.Update(newName, "New Description");
+        var action = () => calendar.Update(newName, "New Description");
 
         // Assert
-        act.Should().Throw<CalendarDomainException>();
+        action.Should().Throw<CalendarDomainException>();
     }
 
     [Theory]
@@ -60,9 +60,9 @@ public class CalendarUpdateTests
         var newDescription = new string('a', newDescriptionLength);
 
         // Act
-        var act = () => calendar.Update("New Name", newDescription);
+        var action = () => calendar.Update("New Name", newDescription);
 
         // Assert
-        act.Should().Throw<CalendarDomainException>();
+        action.Should().Throw<CalendarDomainException>();
     }
 }

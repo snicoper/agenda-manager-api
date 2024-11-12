@@ -27,10 +27,10 @@ public class EmailAddressTests
     public void EmailAddress_ShouldThrowInvalidEmailException_WhenInvalidEmailIsProvided(string email)
     {
         // Act
-        var act = () => Domain.Common.ValueObjects.EmailAddress.EmailAddress.From(email);
+        var action = () => Domain.Common.ValueObjects.EmailAddress.EmailAddress.From(email);
 
         // Assert
-        act.Should().Throw<InvalidEmailAddressException>();
+        action.Should().Throw<InvalidEmailAddressException>();
     }
 
     [Fact]
@@ -41,9 +41,9 @@ public class EmailAddressTests
         var email = $"{emailName}@test.com";
 
         // Act
-        var act = () => Domain.Common.ValueObjects.EmailAddress.EmailAddress.From(email);
+        var action = () => Domain.Common.ValueObjects.EmailAddress.EmailAddress.From(email);
 
         // Assert
-        act.Should().Throw<InvalidEmailAddressException>();
+        action.Should().Throw<InvalidEmailAddressException>();
     }
 }

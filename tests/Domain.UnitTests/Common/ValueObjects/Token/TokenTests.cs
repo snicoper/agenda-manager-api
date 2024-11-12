@@ -29,10 +29,10 @@ public class TokenTests
         var expires = DateTimeOffset.UtcNow.AddDays(1);
 
         // Act
-        var refreshToken = () => Domain.Common.ValueObjects.Token.Token.From(token, expires);
+        var action = () => Domain.Common.ValueObjects.Token.Token.From(token, expires);
 
         // Assert
-        refreshToken.Should().Throw<ArgumentException>();
+        action.Should().Throw<ArgumentException>();
     }
 
     [Fact]
@@ -43,10 +43,10 @@ public class TokenTests
         var expires = DateTimeOffset.MinValue;
 
         // Act
-        var refreshToken = () => Domain.Common.ValueObjects.Token.Token.From(token, expires);
+        var action = () => Domain.Common.ValueObjects.Token.Token.From(token, expires);
 
         // Assert
-        refreshToken.Should().Throw<ArgumentException>();
+        action.Should().Throw<ArgumentException>();
     }
 
     [Fact]
@@ -57,10 +57,10 @@ public class TokenTests
         var expires = DateTimeOffset.UtcNow.AddDays(1);
 
         // Act
-        var refreshToken = () => Domain.Common.ValueObjects.Token.Token.From(token, expires);
+        var action = () => Domain.Common.ValueObjects.Token.Token.From(token, expires);
 
         // Assert
-        refreshToken.Should().Throw<ArgumentException>();
+        action.Should().Throw<ArgumentException>();
     }
 
     [Fact]
@@ -102,10 +102,10 @@ public class TokenTests
         var lifetime = TimeSpan.Zero;
 
         // Act
-        var refreshToken = () => Domain.Common.ValueObjects.Token.Token.Generate(lifetime);
+        var action = () => Domain.Common.ValueObjects.Token.Token.Generate(lifetime);
 
         // Assert
-        refreshToken.Should().Throw<ArgumentException>();
+        action.Should().Throw<ArgumentException>();
     }
 
     [Fact]

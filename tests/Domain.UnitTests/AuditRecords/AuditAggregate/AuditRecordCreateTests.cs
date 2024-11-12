@@ -34,21 +34,21 @@ public class AuditRecordCreateTests
     public void AuditRecord_ShouldRaiseException_WhenActionTypeIsInvalid()
     {
         // Arrange
-        var result = () => AuditRecordFactory.Create(actionType: (ActionType)100);
+        var action = () => AuditRecordFactory.Create(actionType: (ActionType)100);
 
         // Assert
-        result.Should().Throw<AuditRecordDomainException>();
-        result.Should().Throw<AuditRecordDomainException>().WithMessage("Invalid action type.");
+        action.Should().Throw<AuditRecordDomainException>();
+        action.Should().Throw<AuditRecordDomainException>().WithMessage("Invalid action type.");
     }
 
     [Fact]
     public void AuditRecord_ShouldRaiseException_WhenActionTypeIsNone()
     {
         // Act
-        var result = () => AuditRecordFactory.Create(actionType: ActionType.None);
+        var action = () => AuditRecordFactory.Create(actionType: ActionType.None);
 
         // Assert
-        result.Should().Throw<AuditRecordDomainException>();
-        result.Should().Throw<AuditRecordDomainException>().WithMessage("Action type cannot be None.");
+        action.Should().Throw<AuditRecordDomainException>();
+        action.Should().Throw<AuditRecordDomainException>().WithMessage("Action type cannot be None.");
     }
 }
