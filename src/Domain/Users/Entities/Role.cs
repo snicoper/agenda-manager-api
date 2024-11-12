@@ -40,7 +40,7 @@ public sealed class Role : AuditableEntity
 
     public IReadOnlyCollection<Permission> Permissions => _permissions.AsReadOnly();
 
-    internal void UpdateRole(string name, string description)
+    internal void Update(string name, string description)
     {
         GuardAgainstInvalidName(name);
         GuardAgainstInvalidDescription(description);

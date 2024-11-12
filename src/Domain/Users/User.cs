@@ -170,7 +170,7 @@ public sealed class User : AggregateRoot
         AddDomainEvent(new UserTokenRemovedDomainEvent(Id, userToken.Id));
     }
 
-    internal void UpdateUser(string? firstName, string? lastName)
+    internal void Update(string? firstName, string? lastName)
     {
         if (FirstName == firstName && LastName == lastName)
         {

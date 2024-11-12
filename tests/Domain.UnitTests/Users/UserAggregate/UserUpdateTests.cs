@@ -15,7 +15,7 @@ public class UserUpdateTests
         const string lastName = "newLastName";
 
         // Act
-        user.UpdateUser(firstName, lastName);
+        user.Update(firstName, lastName);
 
         // Assert
         user.DomainEvents.Should().Contain(x => x is UserUpdatedDomainEvent);

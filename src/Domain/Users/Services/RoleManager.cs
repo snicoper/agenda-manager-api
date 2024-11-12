@@ -40,7 +40,7 @@ public class RoleManager(IRoleRepository roleRepository)
             return validationResult;
         }
 
-        role.UpdateRole(name, description);
+        role.Update(name, description);
         roleRepository.Update(role);
 
         return Result.Success();

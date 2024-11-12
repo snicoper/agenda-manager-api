@@ -44,7 +44,7 @@ public class UserManager(IUserRepository userRepository)
         string lastName,
         CancellationToken cancellationToken)
     {
-        user.UpdateUser(firstName, lastName);
+        user.Update(firstName, lastName);
         var validationResult = await IsValidAsync(user, cancellationToken);
 
         if (validationResult.IsFailure)
@@ -52,7 +52,7 @@ public class UserManager(IUserRepository userRepository)
             return validationResult;
         }
 
-        user.UpdateUser(user.FirstName, user.LastName);
+        user.Update(user.FirstName, user.LastName);
         userRepository.Update(user);
 
         return Result.Success();

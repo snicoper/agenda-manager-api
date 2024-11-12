@@ -17,7 +17,7 @@ public class RoleDescriptionTests
         var invalidDescription = new string('*', descriptionLength);
 
         // Act
-        var act = () => role.UpdateRole(validName, invalidDescription);
+        var act = () => role.Update(validName, invalidDescription);
 
         // Assert
         act.Should().Throw<RoleDomainException>();

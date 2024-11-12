@@ -18,8 +18,8 @@ public class CalendarHolidayDescriptionTests
         var calendarHoliday = () => CalendarHolidayFactory.CreateCalendarHoliday(description: description);
 
         // Assert
-        calendarHoliday.Should().Throw<CalendarDomainException>();
-        calendarHoliday.Should().Throw<CalendarDomainException>()
+        calendarHoliday.Should().Throw<CalendarHolidayDomainException>();
+        calendarHoliday.Should().Throw<CalendarHolidayDomainException>()
             .WithMessage("Description is invalid or exceeds length of 500 characters.");
     }
 }

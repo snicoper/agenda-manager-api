@@ -16,7 +16,7 @@ public class RoleUpdateTests
         const string newDescription = "New Description";
 
         // Act
-        role.UpdateRole(newName, newDescription);
+        role.Update(newName, newDescription);
 
         // Assert
         role.DomainEvents.Should().Contain(x => x is RoleCreatedDomainEvent);
@@ -31,7 +31,7 @@ public class RoleUpdateTests
         const string newDescription = "New Description";
 
         // Act
-        role.UpdateRole(newName, newDescription);
+        role.Update(newName, newDescription);
 
         // Assert
         role.Name.Should().Be(newName);
@@ -49,7 +49,7 @@ public class RoleUpdateTests
         const string validDescription = "Valid Description";
 
         // Act
-        var act = () => role.UpdateRole(invalidName, validDescription);
+        var act = () => role.Update(invalidName, validDescription);
 
         // Assert
         act.Should().Throw<RoleDomainException>();
