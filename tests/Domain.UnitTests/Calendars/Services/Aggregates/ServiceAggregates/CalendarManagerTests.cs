@@ -46,7 +46,7 @@ public class CalendarManagerTests
         await Assert.ThrowsAsync<CalendarDomainException>(
             () => _sut.CreateCalendarAsync(
                 calendarId: CalendarId.Create(),
-                timeZone: "Europe/Madrid",
+                ianaTimeZone: IanaTimeZone.FromIana("Europe/Madrid"),
                 name: name,
                 description: "Description of my calendar",
                 HolidayCreationStrategy.CancelOverlapping,
@@ -65,7 +65,7 @@ public class CalendarManagerTests
         await Assert.ThrowsAsync<CalendarDomainException>(
             () => _sut.CreateCalendarAsync(
                 calendarId: CalendarId.Create(),
-                timeZone: "Europe/Madrid",
+                ianaTimeZone: IanaTimeZone.FromIana("Europe/Madrid"),
                 name: "My calendar",
                 description: description,
                 HolidayCreationStrategy.CancelOverlapping,
@@ -124,7 +124,7 @@ public class CalendarManagerTests
 
         var result = await _sut.CreateCalendarAsync(
             calendarId: calendar.Id,
-            timeZone: "Europe/Madrid",
+            ianaTimeZone: IanaTimeZone.FromIana("Europe/Madrid"),
             name: calendar.Name,
             description: calendar.Description,
             HolidayCreationStrategy.CancelOverlapping,

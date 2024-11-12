@@ -30,6 +30,12 @@ public class CalendarSettingsConfiguration : IEntityTypeConfiguration<CalendarSe
             .HasForeignKey<CalendarSettings>(cs => cs.CalendarId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        builder.Property(cs => cs.IanaTimeZone)
+            .HasConversion(
+                ianaTimeZone => ianaTimeZone.Value,
+                value => IanaTimeZone.FromIana(value))
+            .IsRequired();
+
         builder.Property(x => x.HolidayCreationStrategy)
             .IsRequired();
     }

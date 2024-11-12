@@ -1,9 +1,7 @@
 ﻿using AgendaManager.Domain.Calendars.Enums;
 using AgendaManager.Domain.Calendars.Events;
-using AgendaManager.Domain.Calendars.Exceptions;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Common.Utils;
 
 namespace AgendaManager.Domain.Calendars.Entities;
 
@@ -16,16 +14,14 @@ public sealed class CalendarSettings : AuditableEntity
     private CalendarSettings(
         CalendarSettingsId id,
         CalendarId calendarId,
-        string timeZone,
+        IanaTimeZone ianaTimeZone,
         HolidayCreationStrategy holidayCreationStrategy)
     {
         ArgumentNullException.ThrowIfNull(holidayCreationStrategy);
 
-        GuardAgainstInvalidTimeZone(timeZone);
-
         Id = id;
         CalendarId = calendarId;
-        TimeZone = timeZone;
+        IanaTimeZone = ianaTimeZone;
         HolidayCreationStrategy = holidayCreationStrategy;
     }
 
@@ -35,52 +31,38 @@ public sealed class CalendarSettings : AuditableEntity
 
     public Calendar Calendar { get; private set; } = null!;
 
-    public string TimeZone { get; private set; } = default!;
+    public IanaTimeZone IanaTimeZone { get; private set; } = default!;
 
     public HolidayCreationStrategy HolidayCreationStrategy { get; private set; }
 
     internal static CalendarSettings Create(
         CalendarSettingsId id,
         CalendarId calendarId,
-        string timeZone,
+        IanaTimeZone ianaTimeZone,
         HolidayCreationStrategy holidayCreationStrategy)
     {
-        CalendarSettings calendarSettings = new(id, calendarId, timeZone, holidayCreationStrategy);
+        CalendarSettings calendarSettings = new(id, calendarId, ianaTimeZone, holidayCreationStrategy);
 
         calendarSettings.AddDomainEvent(new CalendarSettingsCreatedDomainEvent(calendarSettings));
 
         return calendarSettings;
     }
 
-    internal void Update(string timeZone, HolidayCreationStrategy holidayCreationStrategy)
+    internal void Update(IanaTimeZone ianaTimeZone, HolidayCreationStrategy holidayCreationStrategy)
     {
         ArgumentNullException.ThrowIfNull(holidayCreationStrategy);
 
-        GuardAgainstInvalidTimeZone(timeZone);
-
-        if (!HasChanges(timeZone, holidayCreationStrategy))
+        if (!HasChanges(ianaTimeZone, holidayCreationStrategy))
         {
             return;
         }
 
-        TimeZone = timeZone;
+        IanaTimeZone = ianaTimeZone;
         HolidayCreationStrategy = holidayCreationStrategy;
     }
 
-    internal bool HasChanges(string timeZone, HolidayCreationStrategy holidayCreationStrategy)
+    internal bool HasChanges(IanaTimeZone ianaTimeZone, HolidayCreationStrategy holidayCreationStrategy)
     {
-        return TimeZone != timeZone || HolidayCreationStrategy != holidayCreationStrategy;
-    }
-
-    private static void GuardAgainstInvalidTimeZone(string timeZone)
-    {
-        ArgumentNullException.ThrowIfNull(timeZone);
-
-        var timeZoneInfoResult = TimeZoneUtils.GetTimeZoneInfoFromIana(timeZone);
-
-        if (timeZoneInfoResult.IsFailure)
-        {
-            throw new CalendarSettingsException(timeZoneInfoResult.Error?.FirstError()?.Description!);
-        }
+        return !IanaTimeZone.Equals(ianaTimeZone) || HolidayCreationStrategy != holidayCreationStrategy;
     }
 }

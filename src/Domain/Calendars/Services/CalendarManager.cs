@@ -10,13 +10,13 @@ public class CalendarManager(ICalendarRepository calendarRepository)
 {
     public async Task<Result<Calendar>> CreateCalendarAsync(
         CalendarId calendarId,
-        string timeZone,
+        IanaTimeZone ianaTimeZone,
         string name,
         string description,
         HolidayCreationStrategy holidayCreationStrategy,
         CancellationToken cancellationToken)
     {
-        var calendar = Calendar.Create(calendarId, name, description, timeZone, holidayCreationStrategy);
+        var calendar = Calendar.Create(calendarId, name, description, ianaTimeZone, holidayCreationStrategy);
         var validationResult = await IsValidAsync(calendar, cancellationToken);
         if (validationResult.IsFailure)
         {

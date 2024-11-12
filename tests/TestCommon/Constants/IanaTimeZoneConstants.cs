@@ -1,6 +1,6 @@
 ﻿namespace AgendaManager.TestCommon.Constants;
 
-public static class TimeZoneConstants
+public static class IanaTimeZoneConstants
 {
     public const string EuropeMadrid = "Europe/Madrid";
     public const string AmericaNewYork = "America/New_York";

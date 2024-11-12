@@ -167,7 +167,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     CalendarId = table.Column<Guid>(type: "uuid", nullable: false),
-                    TimeZone = table.Column<string>(type: "text", nullable: false),
+                    IanaTimeZone = table.Column<string>(type: "text", nullable: false),
                     HolidayCreationStrategy = table.Column<int>(type: "integer", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),

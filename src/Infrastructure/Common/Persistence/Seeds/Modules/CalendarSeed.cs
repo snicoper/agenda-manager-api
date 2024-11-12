@@ -18,7 +18,7 @@ public static class CalendarSeed
 
         var calendarResult = await calendarManager.CreateCalendarAsync(
             calendarId: CalendarId.Create(),
-            timeZone: "Europe/Madrid",
+            ianaTimeZone: IanaTimeZone.FromIana("Europe/Madrid"),
             name: "Calendario principal",
             description: "Calendario principal de la aplicación",
             HolidayCreationStrategy.CancelOverlapping,

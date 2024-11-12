@@ -284,14 +284,14 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<int>("HolidayCreationStrategy")
                         .HasColumnType("integer");
 
+                    b.Property<string>("IanaTimeZone")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("TimeZone")
                         .IsRequired()
                         .HasColumnType("text");
 

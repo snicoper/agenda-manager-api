@@ -11,7 +11,7 @@ public abstract class CalendarFactory
         CalendarId? calendarId = null,
         string? name = null,
         string? description = null,
-        string? timeZone = null,
+        IanaTimeZone? timeZone = null,
         HolidayCreationStrategy? holidayCreationStrategy = null,
         bool? isActive = null)
     {
@@ -21,7 +21,7 @@ public abstract class CalendarFactory
             id: calendarId,
             name: name ?? "My calendar",
             description: description ?? "Description of my calendar",
-            timeZone: timeZone ?? TimeZoneConstants.EuropeMadrid,
+            ianaTimeZone: timeZone ?? IanaTimeZone.FromIana(IanaTimeZoneConstants.EuropeMadrid),
             holidayCreationStrategy: holidayCreationStrategy ?? HolidayCreationStrategy.CancelOverlapping,
             active: isActive ?? true);
 

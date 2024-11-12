@@ -15,7 +15,7 @@ public sealed class Calendar : AggregateRoot
         CalendarId id,
         string name,
         string description,
-        string timeZone,
+        IanaTimeZone ianaTimeZone,
         HolidayCreationStrategy holidayCreationStrategy,
         bool isActive)
     {
@@ -27,7 +27,7 @@ public sealed class Calendar : AggregateRoot
 
         Id = id;
         SettingsId = CalendarSettingsId.Create();
-        Settings = CalendarSettings.Create(SettingsId, Id, timeZone, holidayCreationStrategy);
+        Settings = CalendarSettings.Create(SettingsId, Id, ianaTimeZone, holidayCreationStrategy);
         Name = name;
         Description = description;
         IsActive = isActive;
@@ -76,7 +76,7 @@ public sealed class Calendar : AggregateRoot
         AddDomainEvent(new CalendarHolidayRemovedDomainEvent(Id, calendarHoliday.Id));
     }
 
-    public void UpdateSettings(string timezone, HolidayCreationStrategy holidayCreationStrategy)
+    public void UpdateSettings(IanaTimeZone timezone, HolidayCreationStrategy holidayCreationStrategy)
     {
         if (!Settings.HasChanges(timezone, holidayCreationStrategy))
         {
@@ -92,11 +92,11 @@ public sealed class Calendar : AggregateRoot
         CalendarId id,
         string name,
         string description,
-        string timeZone,
+        IanaTimeZone ianaTimeZone,
         HolidayCreationStrategy holidayCreationStrategy,
         bool active = true)
     {
-        Calendar calendar = new(id, name, description, timeZone, holidayCreationStrategy, active);
+        Calendar calendar = new(id, name, description, ianaTimeZone, holidayCreationStrategy, active);
 
         calendar.AddDomainEvent(new CalendarCreatedDomainEvent(id));
 

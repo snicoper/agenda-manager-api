@@ -1,5 +1,5 @@
 ﻿using AgendaManager.Domain.Calendars.Events;
-using AgendaManager.Domain.Calendars.Exceptions;
+using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.TestCommon.Constants;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
@@ -9,34 +9,19 @@ namespace AgendaManager.Domain.UnitTests.Calendars.CalendarAggregate;
 public class CalendarSettingsUpdateSettingsTests
 {
     [Theory]
-    [InlineData(TimeZoneConstants.AmericaNewYork)]
-    [InlineData(TimeZoneConstants.EuropeMadrid)]
-    [InlineData(TimeZoneConstants.UTC)]
+    [InlineData(IanaTimeZoneConstants.AmericaNewYork)]
+    [InlineData(IanaTimeZoneConstants.EuropeMadrid)]
+    [InlineData(IanaTimeZoneConstants.UTC)]
     public void Update_ShouldSuccessfully_WhenUpdateSettings(string newTimeZone)
     {
         // Arrange
         var calendar = CalendarFactory.CreateCalendar();
 
         // Act
-        calendar.UpdateSettings(newTimeZone, calendar.Settings.HolidayCreationStrategy);
+        calendar.UpdateSettings(IanaTimeZone.FromIana(newTimeZone), calendar.Settings.HolidayCreationStrategy);
 
         // Assert
-        calendar.Settings.TimeZone.Should().Be(newTimeZone);
-    }
-
-    [Fact]
-    public void Update_ShouldThrowException_WhenUpdateSettingsWithInvalidTimeZone()
-    {
-        // Arrange
-        var calendar = CalendarFactory.CreateCalendar();
-        const string invalidTimeZone = "InvalidTimeZone";
-
-        // Act
-        var action = () => calendar.UpdateSettings(invalidTimeZone, calendar.Settings.HolidayCreationStrategy);
-
-        // Assert
-        action.Should().Throw<CalendarSettingsException>()
-            .WithMessage("Invalid IANA time zone ID.");
+        calendar.Settings.IanaTimeZone.Value.Should().Be(newTimeZone);
     }
 
     [Fact]
@@ -44,7 +29,7 @@ public class CalendarSettingsUpdateSettingsTests
     {
         // Arrange
         var calendar = CalendarFactory.CreateCalendar();
-        const string newTimeZone = TimeZoneConstants.AmericaNewYork;
+        var newTimeZone = IanaTimeZone.FromIana(IanaTimeZoneConstants.AmericaNewYork);
 
         // Act
         calendar.UpdateSettings(newTimeZone, calendar.Settings.HolidayCreationStrategy);
@@ -60,7 +45,7 @@ public class CalendarSettingsUpdateSettingsTests
         var calendar = CalendarFactory.CreateCalendar();
 
         // Act
-        calendar.UpdateSettings(calendar.Settings.TimeZone, calendar.Settings.HolidayCreationStrategy);
+        calendar.UpdateSettings(calendar.Settings.IanaTimeZone, calendar.Settings.HolidayCreationStrategy);
 
         // Assert
         calendar.DomainEvents.Should().NotContain(x => x is CalendarSettingsUpdatedDomainEvent);
