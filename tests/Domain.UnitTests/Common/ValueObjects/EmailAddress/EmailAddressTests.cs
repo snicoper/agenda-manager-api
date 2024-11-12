@@ -37,7 +37,7 @@ public class EmailAddressTests
     public void EmailAddress_ShouldThrowInvalidEmailException_WhenEmailLengthIsGreaterThan256()
     {
         // Arrange
-        var emailName = new string('a', 248);
+        var emailName = new string('a', 257);
         var email = $"{emailName}@test.com";
 
         // Act

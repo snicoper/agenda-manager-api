@@ -85,8 +85,8 @@ public class IanaTimeZoneTests
     public void IanaTimeZone_ShouldNotBeEqual_WhenDifferentTimeZones()
     {
         // Arrange
-        var timeZone1 = Domain.Calendars.ValueObjects.IanaTimeZone.FromIana("Europe/Madrid");
-        var timeZone2 = Domain.Calendars.ValueObjects.IanaTimeZone.FromIana("Europe/London");
+        var timeZone1 = Domain.Calendars.ValueObjects.IanaTimeZone.FromIana(IanaTimeZoneConstants.EuropeMadrid);
+        var timeZone2 = Domain.Calendars.ValueObjects.IanaTimeZone.FromIana(IanaTimeZoneConstants.EuropeLondon);
 
         // Assert
         timeZone1.Should().NotBe(timeZone2);
@@ -94,18 +94,18 @@ public class IanaTimeZoneTests
     }
 
     [Fact]
-    public void TimeZone_Should_Handle_UTC_Correctly()
+    public void IanaTimeZone_Should_HandleUTCCorrectly()
     {
         // Arrange & Act
-        var timeZone = Domain.Calendars.ValueObjects.IanaTimeZone.FromIana("UTC");
+        var timeZone = Domain.Calendars.ValueObjects.IanaTimeZone.FromIana(IanaTimeZoneConstants.UTC);
 
         // Assert
-        timeZone.Value.Should().Be("UTC");
+        timeZone.Value.Should().Be(IanaTimeZoneConstants.UTC);
         timeZone.Info.BaseUtcOffset.Should().Be(TimeSpan.Zero);
     }
 
     [Fact]
-    public void FromTimeZoneInfo_Should_ConvertWindows_To_Iana_Correctly()
+    public void IanaTimeZone_FromTimeZoneInfo_ShouldConvertWindows_ToIanaCorrectly()
     {
         if (!OperatingSystem.IsWindows())
         {
