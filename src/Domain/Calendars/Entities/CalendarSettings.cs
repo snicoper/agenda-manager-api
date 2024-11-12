@@ -58,13 +58,18 @@ public sealed class CalendarSettings : AuditableEntity
 
         GuardAgainstInvalidTimeZone(timeZone);
 
-        if (TimeZone == timeZone && HolidayCreationStrategy == holidayCreationStrategy)
+        if (!HasChanges(timeZone, holidayCreationStrategy))
         {
             return;
         }
 
         TimeZone = timeZone;
         HolidayCreationStrategy = holidayCreationStrategy;
+    }
+
+    internal bool HasChanges(string timeZone, HolidayCreationStrategy holidayCreationStrategy)
+    {
+        return TimeZone != timeZone || HolidayCreationStrategy != holidayCreationStrategy;
     }
 
     private static void GuardAgainstInvalidTimeZone(string timeZone)

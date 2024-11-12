@@ -78,7 +78,7 @@ public sealed class Calendar : AggregateRoot
 
     public void UpdateSettings(string timezone, HolidayCreationStrategy holidayCreationStrategy)
     {
-        if (Settings.TimeZone == timezone && Settings.HolidayCreationStrategy == holidayCreationStrategy)
+        if (!Settings.HasChanges(timezone, holidayCreationStrategy))
         {
             return;
         }
