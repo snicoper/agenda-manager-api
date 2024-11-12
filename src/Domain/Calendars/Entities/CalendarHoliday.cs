@@ -21,9 +21,6 @@ public sealed class CalendarHoliday : AggregateRoot
         string name,
         string description)
     {
-        ArgumentNullException.ThrowIfNull(name);
-        ArgumentNullException.ThrowIfNull(description);
-
         GuardAgainstInvalidName(name);
         GuardAgainstInvalidDescription(description);
 
@@ -72,9 +69,6 @@ public sealed class CalendarHoliday : AggregateRoot
 
     internal void Update(Period period, WeekDays weekDays, string name, string description)
     {
-        ArgumentNullException.ThrowIfNull(name);
-        ArgumentNullException.ThrowIfNull(description);
-
         GuardAgainstInvalidName(name);
         GuardAgainstInvalidDescription(description);
 
@@ -88,6 +82,8 @@ public sealed class CalendarHoliday : AggregateRoot
 
     private static void GuardAgainstInvalidName(string name)
     {
+        ArgumentNullException.ThrowIfNull(name);
+
         if (string.IsNullOrWhiteSpace(name) || name.Length > 50)
         {
             throw new CalendarHolidayDomainException("Name is invalid or exceeds length of 50 characters.");
@@ -96,6 +92,8 @@ public sealed class CalendarHoliday : AggregateRoot
 
     private static void GuardAgainstInvalidDescription(string description)
     {
+        ArgumentNullException.ThrowIfNull(description);
+
         if (string.IsNullOrWhiteSpace(description) || description.Length > 500)
         {
             throw new CalendarHolidayDomainException("Description is invalid or exceeds length of 500 characters.");

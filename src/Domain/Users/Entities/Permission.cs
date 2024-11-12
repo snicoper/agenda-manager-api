@@ -9,8 +9,6 @@ public sealed class Permission : AuditableEntity
 {
     internal Permission(PermissionId permissionId, string name)
     {
-        ArgumentNullException.ThrowIfNull(name);
-
         GuardAgainstInvalidName(name);
 
         Id = permissionId;
@@ -29,6 +27,8 @@ public sealed class Permission : AuditableEntity
 
     private static void GuardAgainstInvalidName(string name)
     {
+        ArgumentNullException.ThrowIfNull(name);
+
         if (string.IsNullOrWhiteSpace(name) || name.Length > 100)
         {
             throw new PermissionDomainException("Permission name is null or exceeds length of 100 characters.");

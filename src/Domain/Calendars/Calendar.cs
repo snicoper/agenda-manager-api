@@ -19,9 +19,6 @@ public sealed class Calendar : AggregateRoot
         HolidayCreationStrategy holidayCreationStrategy,
         bool isActive)
     {
-        ArgumentNullException.ThrowIfNull(name);
-        ArgumentNullException.ThrowIfNull(description);
-
         GuardAgainstInvalidName(name);
         GuardAgainstInvalidDescription(description);
 
@@ -39,9 +36,9 @@ public sealed class Calendar : AggregateRoot
 
     public CalendarId Id { get; } = null!;
 
-    public CalendarSettingsId SettingsId { get; private set; } = null!;
+    public CalendarSettingsId SettingsId { get; } = null!;
 
-    public CalendarSettings Settings { get; private set; } = null!;
+    public CalendarSettings Settings { get; } = null!;
 
     public string Name { get; private set; } = default!;
 
@@ -124,6 +121,8 @@ public sealed class Calendar : AggregateRoot
 
     private static void GuardAgainstInvalidName(string name)
     {
+        ArgumentNullException.ThrowIfNull(name);
+
         if (string.IsNullOrWhiteSpace(name) || name.Length > 50)
         {
             throw new CalendarDomainException("Name is invalid or exceeds length of 50 characters.");
@@ -132,6 +131,8 @@ public sealed class Calendar : AggregateRoot
 
     private static void GuardAgainstInvalidDescription(string description)
     {
+        ArgumentNullException.ThrowIfNull(description);
+
         if (string.IsNullOrWhiteSpace(description) || description.Length > 500)
         {
             throw new CalendarDomainException("Description is invalid or exceeds length of 500 characters.");

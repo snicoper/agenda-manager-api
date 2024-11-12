@@ -12,9 +12,6 @@ public sealed class Role : AuditableEntity
 
     internal Role(RoleId roleId, string name, string description, bool editable = false)
     {
-        ArgumentNullException.ThrowIfNull(name);
-        ArgumentNullException.ThrowIfNull(description);
-
         GuardAgainstInvalidName(name);
         GuardAgainstInvalidDescription(description);
 
@@ -76,6 +73,8 @@ public sealed class Role : AuditableEntity
 
     private static void GuardAgainstInvalidName(string name)
     {
+        ArgumentNullException.ThrowIfNull(name);
+
         if (string.IsNullOrEmpty(name) || name.Length > 100)
         {
             throw new RoleDomainException("Role name is null or exceeds length of 100 characters.");
@@ -84,6 +83,8 @@ public sealed class Role : AuditableEntity
 
     private static void GuardAgainstInvalidDescription(string description)
     {
+        ArgumentNullException.ThrowIfNull(description);
+
         if (string.IsNullOrEmpty(description) || description.Length > 500)
         {
             throw new RoleDomainException("Role description is null or exceeds length of 100 characters.");

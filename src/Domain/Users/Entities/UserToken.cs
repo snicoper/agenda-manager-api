@@ -17,8 +17,6 @@ public sealed class UserToken : AuditableEntity
 
     private UserToken(UserTokenId id, UserId userId, Token token, UserTokenType type)
     {
-        ArgumentNullException.ThrowIfNull(token);
-
         GuardAgainstInvalidType(type);
 
         Id = id;
