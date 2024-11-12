@@ -1,7 +1,7 @@
 ﻿using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 using AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.TestCommon.Seeds;
+namespace AgendaManager.TestCommon.Constants;
 
 public static class Users
 {

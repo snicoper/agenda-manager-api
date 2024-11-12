@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 using AgendaManager.Application.Common.Models.Users;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users.Errors;
-using AgendaManager.TestCommon.Seeds;
+using AgendaManager.TestCommon.Constants;
 using AgendaManager.WebApi.Controllers.Authentication.Contracts;
 using FluentAssertions;
 

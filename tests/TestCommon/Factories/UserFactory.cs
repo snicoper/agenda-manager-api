@@ -2,7 +2,7 @@
 using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.ValueObjects;
 using AgendaManager.Infrastructure.Users.Authentication;
-using AgendaManager.TestCommon.Seeds;
+using AgendaManager.TestCommon.Constants;
 
 namespace AgendaManager.TestCommon.Factories;
 

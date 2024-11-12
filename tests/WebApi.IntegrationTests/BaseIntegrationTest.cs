@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using AgendaManager.Application.Authentication.Commands.Login;
 using AgendaManager.Application.Common.Models.Users;
 using AgendaManager.Domain.Common.Responses;
+using AgendaManager.TestCommon.Constants;
 
 namespace AgendaManager.WebApi.UnitTests;
 
@@ -13,8 +14,8 @@ public abstract class BaseIntegrationTest(IntegrationTestWebAppFactory factory)
 
     protected async Task<HttpClient> CreateClientWithLoginAsync(string? email = null, string? password = null)
     {
-        email ??= TestCommon.Seeds.Users.UserAlice.Email.Value;
-        password ??= TestCommon.Seeds.Users.UserAlice.RawPassword;
+        email ??= Users.UserAlice.Email.Value;
+        password ??= Users.UserAlice.RawPassword;
 
         var result = await HttpClient.PostAsJsonAsync(Enpoints.Authentication.Login, new LoginCommand(email, password));
         var response = await result.Content.ReadFromJsonAsync<Result<TokenResult>>();

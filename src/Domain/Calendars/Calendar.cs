@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Calendars.Entities;
+using AgendaManager.Domain.Calendars.Enums;
 using AgendaManager.Domain.Calendars.Events;
 using AgendaManager.Domain.Calendars.Exceptions;
 using AgendaManager.Domain.Calendars.ValueObjects;
@@ -12,9 +13,10 @@ public sealed class Calendar : AggregateRoot
 
     private Calendar(
         CalendarId id,
-        CalendarSettings settings,
         string name,
         string description,
+        string timeZone,
+        HolidayCreationStrategy holidayCreationStrategy,
         bool isActive)
     {
         ArgumentNullException.ThrowIfNull(name);
@@ -24,8 +26,8 @@ public sealed class Calendar : AggregateRoot
         GuardAgainstInvalidDescription(description);
 
         Id = id;
-        Settings = settings;
-        SettingsId = settings.Id;
+        SettingsId = CalendarSettingsId.Create();
+        Settings = CalendarSettings.Create(SettingsId, Id, timeZone, holidayCreationStrategy);
         Name = name;
         Description = description;
         IsActive = isActive;
@@ -74,14 +76,27 @@ public sealed class Calendar : AggregateRoot
         AddDomainEvent(new CalendarHolidayRemovedDomainEvent(Id, calendarHoliday.Id));
     }
 
+    public void UpdateSettings(string timezone, HolidayCreationStrategy holidayCreationStrategy)
+    {
+        if (Settings.TimeZone == timezone && Settings.HolidayCreationStrategy == holidayCreationStrategy)
+        {
+            return;
+        }
+
+        Settings.Update(timezone, holidayCreationStrategy);
+
+        AddDomainEvent(new CalendarSettingsUpdatedDomainEvent(Id, Settings.Id));
+    }
+
     internal static Calendar Create(
         CalendarId id,
-        CalendarSettings settings,
         string name,
         string description,
+        string timeZone,
+        HolidayCreationStrategy holidayCreationStrategy,
         bool active = true)
     {
-        Calendar calendar = new(id, settings, name, description, active);
+        Calendar calendar = new(id, name, description, timeZone, holidayCreationStrategy, active);
 
         calendar.AddDomainEvent(new CalendarCreatedDomainEvent(id));
 

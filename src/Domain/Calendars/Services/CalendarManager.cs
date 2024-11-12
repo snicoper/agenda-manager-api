@@ -1,5 +1,4 @@
-﻿using AgendaManager.Domain.Calendars.Entities;
-using AgendaManager.Domain.Calendars.Enums;
+﻿using AgendaManager.Domain.Calendars.Enums;
 using AgendaManager.Domain.Calendars.Errors;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.ValueObjects;
@@ -17,14 +16,7 @@ public class CalendarManager(ICalendarRepository calendarRepository)
         HolidayCreationStrategy holidayCreationStrategy,
         CancellationToken cancellationToken)
     {
-        // Crear los settings de calendar.
-        var settings = CalendarSettings.Create(
-            id: CalendarSettingsId.Create(),
-            calendarId: calendarId,
-            timeZone: timeZone,
-            holidayCreationStrategy: holidayCreationStrategy);
-
-        var calendar = Calendar.Create(calendarId, settings, name, description);
+        var calendar = Calendar.Create(calendarId, name, description, timeZone, holidayCreationStrategy);
         var validationResult = await IsValidAsync(calendar, cancellationToken);
         if (validationResult.IsFailure)
         {

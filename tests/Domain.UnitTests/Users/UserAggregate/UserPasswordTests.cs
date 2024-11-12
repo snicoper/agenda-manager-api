@@ -14,7 +14,7 @@ public class UserPasswordTests
         var user = UserFactory.CreateUserBob();
         var passwordHashed = UserFactory
             .BcryptPasswordHasher
-            .HashPassword(TestCommon.Seeds.Users.UserAlice.RawPassword);
+            .HashPassword(TestCommon.Constants.Users.UserAlice.RawPassword);
         var passwordHash = PasswordHash.FromHashed(passwordHashed);
 
         // Act
