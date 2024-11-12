@@ -2,7 +2,7 @@
 
 namespace AgendaManager.Domain.Common.ValueObjects.ColorScheme;
 
-public class ColorScheme : ValueObject
+public sealed class ColorScheme : ValueObject
 {
     private ColorScheme(string textColor, string backgroundColor)
     {

@@ -39,6 +39,11 @@ public class CalendarManager(ICalendarRepository calendarRepository)
         return Result.Create(calendar);
     }
 
+    private Task<Result> CreateHolidayAsync(Calendar calendar, CancellationToken cancellationToken)
+    {
+        return Task.FromResult(Result.Success());
+    }
+
     private async Task<Result> IsValidAsync(Calendar calendar, CancellationToken cancellationToken)
     {
         if (await NameExistsAsync(calendar, cancellationToken))

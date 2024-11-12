@@ -6,7 +6,7 @@ using AgendaManager.Domain.Common.Abstractions;
 
 namespace AgendaManager.Domain.AuditRecords;
 
-public class AuditRecord : AggregateRoot
+public sealed class AuditRecord : AggregateRoot
 {
     private AuditRecord()
     {

@@ -2,7 +2,7 @@
 
 namespace AgendaManager.Domain.AuditRecords.ValueObjects;
 
-public class AuditRecordId : ValueObject
+public sealed class AuditRecordId : ValueObject
 {
     private AuditRecordId(Guid value)
     {

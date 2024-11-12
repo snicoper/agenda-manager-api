@@ -8,7 +8,7 @@ using AgendaManager.Domain.Services.ValueObjects;
 
 namespace AgendaManager.Domain.Services;
 
-public class Service : AggregateRoot
+public sealed class Service : AggregateRoot
 {
     private readonly List<ResourceType> _resourceTypes = [];
 

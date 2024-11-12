@@ -2,7 +2,7 @@
 
 namespace AgendaManager.Domain.Calendars.ValueObjects;
 
-public class CalendarHolidayId : ValueObject
+public sealed class CalendarHolidayId : ValueObject
 {
     private CalendarHolidayId(Guid value)
     {

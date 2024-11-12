@@ -2,7 +2,7 @@
 
 namespace AgendaManager.Domain.Appointments.ValueObjects;
 
-public class AppointmentId : ValueObject
+public sealed class AppointmentId : ValueObject
 {
     private AppointmentId(Guid value)
     {

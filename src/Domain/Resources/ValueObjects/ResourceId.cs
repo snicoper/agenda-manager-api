@@ -2,7 +2,7 @@
 
 namespace AgendaManager.Domain.Resources.ValueObjects;
 
-public class ResourceId(Guid value) : ValueObject
+public sealed class ResourceId(Guid value) : ValueObject
 {
     public Guid Value { get; } = value;
 

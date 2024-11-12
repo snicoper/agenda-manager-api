@@ -2,7 +2,7 @@
 
 namespace AgendaManager.Domain.Users.ValueObjects;
 
-public class UserTokenId : ValueObject
+public sealed class UserTokenId : ValueObject
 {
     private UserTokenId(Guid value)
     {

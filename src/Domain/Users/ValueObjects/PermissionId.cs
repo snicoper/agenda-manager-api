@@ -2,7 +2,7 @@
 
 namespace AgendaManager.Domain.Users.ValueObjects;
 
-public class PermissionId : ValueObject
+public sealed class PermissionId : ValueObject
 {
     private PermissionId(Guid value)
     {

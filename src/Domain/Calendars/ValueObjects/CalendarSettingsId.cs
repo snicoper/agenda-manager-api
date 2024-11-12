@@ -2,9 +2,9 @@
 
 namespace AgendaManager.Domain.Calendars.ValueObjects;
 
-public sealed class CalendarId : ValueObject
+public class CalendarSettingsId : ValueObject
 {
-    private CalendarId(Guid value)
+    private CalendarSettingsId(Guid value)
     {
         ArgumentNullException.ThrowIfNull(value);
 
@@ -13,14 +13,14 @@ public sealed class CalendarId : ValueObject
 
     public Guid Value { get; }
 
-    public static CalendarId From(Guid value)
+    public static CalendarSettingsId From(Guid value)
     {
-        return new CalendarId(value);
+        return new CalendarSettingsId(value);
     }
 
-    public static CalendarId Create()
+    public static CalendarSettingsId Create()
     {
-        return new CalendarId(Guid.NewGuid());
+        return new CalendarSettingsId(Guid.NewGuid());
     }
 
     protected override IEnumerable<object> GetEqualityComponents()

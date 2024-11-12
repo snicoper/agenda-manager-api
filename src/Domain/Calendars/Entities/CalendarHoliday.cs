@@ -7,7 +7,7 @@ using AgendaManager.Domain.Common.WekDays;
 
 namespace AgendaManager.Domain.Calendars.Entities;
 
-public class CalendarHoliday : AggregateRoot
+public sealed class CalendarHoliday : AggregateRoot
 {
     private CalendarHoliday()
     {

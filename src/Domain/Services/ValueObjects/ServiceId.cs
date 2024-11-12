@@ -2,7 +2,7 @@
 
 namespace AgendaManager.Domain.Services.ValueObjects;
 
-public class ServiceId : ValueObject
+public sealed class ServiceId : ValueObject
 {
     private ServiceId(Guid value)
     {

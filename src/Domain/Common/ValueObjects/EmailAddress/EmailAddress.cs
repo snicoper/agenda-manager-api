@@ -3,7 +3,7 @@ using DomainRegex = AgendaManager.Domain.Common.Utils.DomainRegex;
 
 namespace AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 
-public class EmailAddress : ValueObject
+public sealed class EmailAddress : ValueObject
 {
     private EmailAddress(string value)
     {

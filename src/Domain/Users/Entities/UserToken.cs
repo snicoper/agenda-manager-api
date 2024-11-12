@@ -9,7 +9,7 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users.Entities;
 
-public class UserToken : AuditableEntity
+public sealed class UserToken : AuditableEntity
 {
     private UserToken()
     {

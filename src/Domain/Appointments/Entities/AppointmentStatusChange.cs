@@ -6,7 +6,7 @@ using AgendaManager.Domain.Common.ValueObjects.Period;
 
 namespace AgendaManager.Domain.Appointments.Entities;
 
-public class AppointmentStatusChange : AuditableEntity
+public sealed class AppointmentStatusChange : AuditableEntity
 {
     private AppointmentStatusChange()
     {

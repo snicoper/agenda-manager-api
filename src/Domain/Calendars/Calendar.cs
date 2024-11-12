@@ -6,7 +6,7 @@ using AgendaManager.Domain.Common.Abstractions;
 
 namespace AgendaManager.Domain.Calendars;
 
-public class Calendar : AggregateRoot
+public sealed class Calendar : AggregateRoot
 {
     private readonly List<CalendarHoliday> _holidays = [];
 

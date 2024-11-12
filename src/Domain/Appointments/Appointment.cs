@@ -13,7 +13,7 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Appointments;
 
-public class Appointment : AggregateRoot
+public sealed class Appointment : AggregateRoot
 {
     private readonly List<AppointmentStatusChange> _statusChanges = [];
 

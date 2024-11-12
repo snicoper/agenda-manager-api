@@ -9,7 +9,7 @@ using AgendaManager.Domain.ResourceTypes.Enums;
 
 namespace AgendaManager.Domain.Resources.Entities;
 
-public class ResourceSchedule : AggregateRoot
+public sealed class ResourceSchedule : AggregateRoot
 {
     private ResourceSchedule()
     {

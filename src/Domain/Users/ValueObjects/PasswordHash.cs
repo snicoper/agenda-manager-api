@@ -5,7 +5,7 @@ using AgendaManager.Domain.Users.Interfaces;
 
 namespace AgendaManager.Domain.Users.ValueObjects;
 
-public class PasswordHash : ValueObject
+public sealed class PasswordHash : ValueObject
 {
     private PasswordHash(string hashedValue)
     {
