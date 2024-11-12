@@ -76,14 +76,14 @@ public sealed class Calendar : AggregateRoot
         AddDomainEvent(new CalendarHolidayRemovedDomainEvent(Id, calendarHoliday.Id));
     }
 
-    public void UpdateSettings(IanaTimeZone timezone, HolidayCreationStrategy holidayCreationStrategy)
+    public void UpdateSettings(IanaTimeZone ianaTimeZone, HolidayCreationStrategy holidayCreationStrategy)
     {
-        if (!Settings.HasChanges(timezone, holidayCreationStrategy))
+        if (!Settings.HasChanges(ianaTimeZone, holidayCreationStrategy))
         {
             return;
         }
 
-        Settings.Update(timezone, holidayCreationStrategy);
+        Settings.Update(ianaTimeZone, holidayCreationStrategy);
 
         AddDomainEvent(new CalendarSettingsUpdatedDomainEvent(Id, Settings.Id));
     }

@@ -94,7 +94,7 @@ public class IanaTimeZoneTests
     }
 
     [Fact]
-    public void IanaTimeZone_Should_HandleUTCCorrectly()
+    public void IanaTimeZone_Should_HandleUtcCorrectly()
     {
         // Arrange & Act
         var timeZone = Domain.Calendars.ValueObjects.IanaTimeZone.FromIana(IanaTimeZoneConstants.UTC);
