@@ -11,7 +11,7 @@ public enum WeekDays
     Friday = 1 << 4,
     Saturday = 1 << 5,
     Sunday = 1 << 6,
-    Weekdays = Monday | Tuesday | Wednesday | Thursday | Friday,
-    Weekend = Saturday | Sunday,
-    All = Weekdays | Weekend
+    WorkDays = Monday | Tuesday | Wednesday | Thursday | Friday,
+    WeekendDays = Saturday | Sunday,
+    All = WorkDays | WeekendDays
 }

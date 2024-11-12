@@ -19,7 +19,7 @@ public static class CalendarHolidayFactory
             calendarHolidayId: calendarHolidayId ?? CalendarHolidayId.Create(),
             calendarId: calendarId ?? CalendarId.Create(),
             period: period ?? Period.From(DateTimeOffset.Now, DateTimeOffset.Now.AddDays(1)),
-            weekDays: weekDays ?? WeekDays.Weekdays,
+            weekDays: weekDays ?? WeekDays.WorkDays,
             name: name ?? "Holiday Name",
             description: description ?? "Holiday Description");
 

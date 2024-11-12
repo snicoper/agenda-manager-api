@@ -18,8 +18,8 @@ public static class WeekDaysExtensions
             .Where(
                 d => d != WeekDays.None &&
                      d != WeekDays.All &&
-                     d != WeekDays.Weekend &&
-                     d != WeekDays.Weekdays &&
+                     d != WeekDays.WeekendDays &&
+                     d != WeekDays.WorkDays &&
                      weekDays.HasFlag(d))
             .Select(d => (int)Math.Log2((int)d) + 1)
             .OrderBy(d => d)
