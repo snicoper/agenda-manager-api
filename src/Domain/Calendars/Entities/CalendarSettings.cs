@@ -48,4 +48,22 @@ public sealed class CalendarSettings : AuditableEntity
 
         return calendarSettings;
     }
+
+    public void Update(
+        string timeZone,
+        HolidayCreationStrategy holidayCreationStrategy)
+    {
+        ArgumentNullException.ThrowIfNull(timeZone);
+        ArgumentNullException.ThrowIfNull(holidayCreationStrategy);
+
+        if (TimeZone == timeZone && HolidayCreationStrategy == holidayCreationStrategy)
+        {
+            return;
+        }
+
+        TimeZone = timeZone;
+        HolidayCreationStrategy = holidayCreationStrategy;
+
+        AddDomainEvent(new CalendarSettingsUpdatedDomainEvent(Id, CalendarId));
+    }
 }

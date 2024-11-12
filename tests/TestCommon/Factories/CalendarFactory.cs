@@ -1,6 +1,4 @@
 ﻿using AgendaManager.Domain.Calendars;
-using AgendaManager.Domain.Calendars.Entities;
-using AgendaManager.Domain.Calendars.Enums;
 using AgendaManager.Domain.Calendars.ValueObjects;
 
 namespace AgendaManager.TestCommon.Factories;
@@ -15,12 +13,7 @@ public abstract class CalendarFactory
     {
         calendarId ??= CalendarId.Create();
 
-        var settings = CalendarSettings.Create(
-            id: CalendarSettingsId.Create(),
-            calendarId: calendarId,
-            timeZone: "Europe/Madrid",
-            HolidayCreationStrategy.CancelOverlapping);
-
+        var settings = CalendarSettingsFactory.CreateCalendarSettings(calendarId: calendarId);
         var calendar = Calendar.Create(
             id: calendarId,
             settings: settings,
