@@ -1,8 +1,6 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
+﻿namespace AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.Domain.Users.ValueObjects;
-
-public sealed class UserId : ValueObject
+public sealed record UserId
 {
     private UserId(Guid value)
     {
@@ -21,10 +19,5 @@ public sealed class UserId : ValueObject
     public static UserId Create()
     {
         return new UserId(Guid.NewGuid());
-    }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Value;
     }
 }

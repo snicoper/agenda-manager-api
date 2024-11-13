@@ -1,8 +1,6 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
+﻿namespace AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.Domain.Users.ValueObjects;
-
-public sealed class PermissionId : ValueObject
+public sealed record PermissionId
 {
     private PermissionId(Guid value)
     {
@@ -21,10 +19,5 @@ public sealed class PermissionId : ValueObject
     public static PermissionId Create()
     {
         return new PermissionId(Guid.NewGuid());
-    }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Value;
     }
 }

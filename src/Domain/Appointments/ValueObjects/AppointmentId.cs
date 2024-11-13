@@ -1,8 +1,6 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
+﻿namespace AgendaManager.Domain.Appointments.ValueObjects;
 
-namespace AgendaManager.Domain.Appointments.ValueObjects;
-
-public sealed class AppointmentId : ValueObject
+public sealed record AppointmentId
 {
     private AppointmentId(Guid value)
     {
@@ -21,10 +19,5 @@ public sealed class AppointmentId : ValueObject
     public static AppointmentId Create()
     {
         return new AppointmentId(Guid.NewGuid());
-    }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Value;
     }
 }

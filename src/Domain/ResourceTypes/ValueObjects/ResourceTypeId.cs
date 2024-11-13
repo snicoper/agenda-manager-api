@@ -1,8 +1,6 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
+﻿namespace AgendaManager.Domain.ResourceTypes.ValueObjects;
 
-namespace AgendaManager.Domain.ResourceTypes.ValueObjects;
-
-public sealed class ResourceTypeId : ValueObject
+public sealed record ResourceTypeId
 {
     private ResourceTypeId(Guid value)
     {
@@ -21,10 +19,5 @@ public sealed class ResourceTypeId : ValueObject
     public static ResourceTypeId Create()
     {
         return new ResourceTypeId(Guid.NewGuid());
-    }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Value;
     }
 }

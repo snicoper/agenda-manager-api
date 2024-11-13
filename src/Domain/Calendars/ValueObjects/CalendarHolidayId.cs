@@ -1,8 +1,6 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
+﻿namespace AgendaManager.Domain.Calendars.ValueObjects;
 
-namespace AgendaManager.Domain.Calendars.ValueObjects;
-
-public sealed class CalendarHolidayId : ValueObject
+public sealed record CalendarHolidayId
 {
     private CalendarHolidayId(Guid value)
     {
@@ -21,10 +19,5 @@ public sealed class CalendarHolidayId : ValueObject
     public static CalendarHolidayId Create()
     {
         return new CalendarHolidayId(Guid.NewGuid());
-    }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Value;
     }
 }

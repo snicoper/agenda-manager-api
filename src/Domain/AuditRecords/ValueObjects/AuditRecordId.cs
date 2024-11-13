@@ -1,8 +1,6 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
+﻿namespace AgendaManager.Domain.AuditRecords.ValueObjects;
 
-namespace AgendaManager.Domain.AuditRecords.ValueObjects;
-
-public sealed class AuditRecordId : ValueObject
+public sealed record AuditRecordId
 {
     private AuditRecordId(Guid value)
     {
@@ -21,10 +19,5 @@ public sealed class AuditRecordId : ValueObject
     public static AuditRecordId Create()
     {
         return new AuditRecordId(Guid.NewGuid());
-    }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Value;
     }
 }

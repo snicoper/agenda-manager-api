@@ -1,8 +1,6 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
+﻿namespace AgendaManager.Domain.Services.ValueObjects;
 
-namespace AgendaManager.Domain.Services.ValueObjects;
-
-public sealed class ServiceId : ValueObject
+public sealed record ServiceId
 {
     private ServiceId(Guid value)
     {
@@ -21,10 +19,5 @@ public sealed class ServiceId : ValueObject
     public static ServiceId Create()
     {
         return new ServiceId(Guid.NewGuid());
-    }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Value;
     }
 }

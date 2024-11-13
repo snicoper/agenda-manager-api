@@ -1,8 +1,6 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
+﻿namespace AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.Domain.Users.ValueObjects;
-
-public sealed class RoleId : ValueObject
+public sealed record RoleId
 {
     private RoleId(Guid value)
     {
@@ -21,10 +19,5 @@ public sealed class RoleId : ValueObject
     public static RoleId Create()
     {
         return new RoleId(Guid.NewGuid());
-    }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Value;
     }
 }
