@@ -3,9 +3,9 @@ using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.ValueObjects.Period;
 using AgendaManager.Domain.Common.WekDays;
+using AgendaManager.Domain.Resources.Enums;
 using AgendaManager.Domain.Resources.Events;
 using AgendaManager.Domain.Resources.ValueObjects;
-using AgendaManager.Domain.ResourceTypes.Enums;
 
 namespace AgendaManager.Domain.Resources.Entities;
 

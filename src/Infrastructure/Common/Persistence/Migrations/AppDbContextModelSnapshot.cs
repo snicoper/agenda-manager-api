@@ -320,8 +320,8 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -335,13 +335,15 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<bool>("RequiredRole")
-                        .HasColumnType("boolean");
+                    b.Property<Guid?>("RoleId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Version")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("ResourceTypes", (string)null);
                 });
@@ -885,6 +887,15 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Calendar");
+                });
+
+            modelBuilder.Entity("AgendaManager.Domain.ResourceTypes.ResourceType", b =>
+                {
+                    b.HasOne("AgendaManager.Domain.Users.Entities.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("AgendaManager.Domain.Resources.Entities.ResourceSchedule", b =>
