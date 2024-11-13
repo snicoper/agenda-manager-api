@@ -25,7 +25,7 @@ public class CalendarManagerTests
     }
 
     [Fact]
-    public async Task Calendar_ShouldReturnResultSuccess_WhenValidCalendarIsProvided()
+    public async Task Calendar_ShouldReturnSucceed_WhenValidParametersProvided()
     {
         // Arrange
         var calendarResult = await CreateCalendarAsync();
@@ -38,7 +38,7 @@ public class CalendarManagerTests
     [Theory]
     [InlineData(0)]
     [InlineData(51)]
-    public async Task Calendar_ShouldThrowCalendarDomainException_WhenInvalidNameIsProvided(int characters)
+    public async Task Calendar_ShouldThrowException_WhenNameIsInvalid(int characters)
     {
         // Arrange
         var name = new string('a', characters);
@@ -57,7 +57,7 @@ public class CalendarManagerTests
     [Theory]
     [InlineData(0)]
     [InlineData(501)]
-    public async Task Calendar_ShouldThrowCalendarDomainException_WhenInvalidDescriptionIsProvided(int characters)
+    public async Task Calendar_ShouldThrowException_WhenDescriptionIsInvalid(int characters)
     {
         // Arrange
         var description = new string('a', characters);
@@ -74,7 +74,7 @@ public class CalendarManagerTests
     }
 
     [Fact]
-    public async Task Calendar_ShouldReturnResultSuccess_WhenNameNotAlreadyExists()
+    public async Task Calendar_ShouldReturnSucceed_WhenNameIsUnique()
     {
         // Arrange
         var calendarResult = await CreateCalendarAsync();
@@ -85,7 +85,7 @@ public class CalendarManagerTests
     }
 
     [Fact]
-    public async Task Calendar_ShouldReturnResultFailure_WhenNameAlreadyExists()
+    public async Task Calendar_ShouldReturnSucceed_WhenDescriptionIsUnique()
     {
         // Arrange
         _calendarRepository.NameExistsAsync(Arg.Any<Calendar>(), Arg.Any<CancellationToken>()).Returns(true);
@@ -97,7 +97,7 @@ public class CalendarManagerTests
     }
 
     [Fact]
-    public async Task Calendar_ShouldReturnResultSuccess_WhenDescriptionNotAlreadyExists()
+    public async Task Calendar_ShouldReturnSuccess_WhenDescriptionAlreadyExistsIsFalse()
     {
         // Arrange
         var calendarResult = await CreateCalendarAsync();
@@ -108,7 +108,7 @@ public class CalendarManagerTests
     }
 
     [Fact]
-    public async Task Calendar_ShouldReturnResultFailure_WhenDescriptionAlreadyExists()
+    public async Task Calendar_ShouldReturnFailure_WhenDescriptionAlreadyExists()
     {
         // Arrange
         _calendarRepository.DescriptionExistsAsync(Arg.Any<Calendar>(), Arg.Any<CancellationToken>()).Returns(true);

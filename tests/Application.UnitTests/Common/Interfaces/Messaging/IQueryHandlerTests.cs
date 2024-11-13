@@ -8,7 +8,7 @@ namespace AgendaManager.Application.UnitTests.Common.Interfaces.Messaging;
 public class IQueryHandlerTests
 {
     [Fact]
-    public void IQueryHandler_Should_Be_Implement_Of_IRequestHandler()
+    public void QueryHandler_ShouldImplementInterface_WhenCheckingIRequestHandler()
     {
         // Assert
         typeof(IQueryHandler<IQuery<object>, object>)

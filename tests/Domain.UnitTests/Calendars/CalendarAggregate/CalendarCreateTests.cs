@@ -10,7 +10,7 @@ public class CalendarCreateTests
     private readonly Calendar _calendar = CalendarFactory.CreateCalendar();
 
     [Fact]
-    public void Calendar_ShouldReturnCalendar_WhenCalendarIsCreated()
+    public void Calendar_ShouldBeCreated_WhenValidParametersProvided()
     {
         // Assert
         _calendar.Should().NotBeNull();
@@ -20,14 +20,14 @@ public class CalendarCreateTests
     }
 
     [Fact]
-    public void Calendar_ShouldActiveTrue_WhenCalendarIsCreated()
+    public void Calendar_ShouldBeActive_WhenCreated()
     {
         // Assert
         _calendar.IsActive.Should().BeTrue();
     }
 
     [Fact]
-    public void Calendar_ShouldRaiseDomainEvent_WhenCalendarIsCreated()
+    public void Calendar_ShouldRaiseEvent_WhenCreated()
     {
         // Assert
         _calendar.DomainEvents.Should().Contain(x => x is CalendarCreatedDomainEvent);

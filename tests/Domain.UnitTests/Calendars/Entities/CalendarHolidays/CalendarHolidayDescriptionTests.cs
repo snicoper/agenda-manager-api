@@ -9,7 +9,7 @@ public class CalendarHolidayDescriptionTests
     [Theory]
     [InlineData(0)]
     [InlineData(501)]
-    public void CalendarHolidayDescription_ShouldRaiseException_WhenInvalidDescriptionIsSet(int descriptionLength)
+    public void CalendarHoliday_ShouldThrowException_WhenDescriptionIsInvalid(int descriptionLength)
     {
         // Arrange
         var description = new string('*', descriptionLength);

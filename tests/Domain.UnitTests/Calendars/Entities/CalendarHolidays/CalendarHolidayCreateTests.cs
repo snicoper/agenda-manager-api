@@ -10,14 +10,14 @@ public class CalendarHolidayCreateTests
     private readonly CalendarHoliday _holiday = CalendarHolidayFactory.CreateCalendarHoliday();
 
     [Fact]
-    public void CalendarHolidayCreate_ShouldReturnHoliday()
+    public void CalendarHoliday_ShouldCreate_WhenValidParametersProvided()
     {
         // Assert
         _holiday.Should().NotBeNull();
     }
 
     [Fact]
-    public void CalendarHolidayCreate_ShouldRaiseEvent_WhenHolidayIsCreated()
+    public void CalendarHoliday_ShouldRaiseEvent_WhenValidParametersProvided()
     {
         // Assert
         _holiday.DomainEvents.Should().Contain(x => x is CalendarHolidayCreatedDomainEvent);

@@ -1,6 +1,7 @@
 ﻿using AgendaManager.Domain.Calendars.Enums;
 using AgendaManager.Domain.Calendars.Events;
 using AgendaManager.Domain.Calendars.ValueObjects;
+using AgendaManager.TestCommon.Constants;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
@@ -12,7 +13,7 @@ public class CalendarSettingsUpdateTests
         CalendarSettingsFactory.CreateCalendarSettings();
 
     [Fact]
-    public void Update_ShouldUpdateCalendarSettings()
+    public void Settings_ShouldSucceed_WhenValidUpdatesProvided()
     {
         // Arrange
         var newTimeZone = IanaTimeZone.FromIana("Europe/Warsaw");
@@ -27,10 +28,10 @@ public class CalendarSettingsUpdateTests
     }
 
     [Fact]
-    public void Update_ShouldRaiseEvent_WhenUpdateSettingsWithValidTimeZone()
+    public void Settings_ShouldRaiseEvent_WhenTimeZoneChanged()
     {
         // Arrange
-        var newTimeZone = IanaTimeZone.FromIana("Europe/Warsaw");
+        var newTimeZone = IanaTimeZone.FromIana(IanaTimeZoneConstants.AsiaTokyo);
         const HolidayCreationStrategy newCreateStrategy = HolidayCreationStrategy.AllowOverlapping;
 
         // Act
@@ -41,7 +42,7 @@ public class CalendarSettingsUpdateTests
     }
 
     [Fact]
-    public void Update_ShouldNotRaiseEvent_WhenUpdateSettingsWithSameValues()
+    public void Settings_ShouldNotRaiseEvent_WhenValuesUnchanged()
     {
         // Act
         _settings.Update(_settings.IanaTimeZone, _settings.HolidayCreationStrategy);

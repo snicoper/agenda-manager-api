@@ -8,7 +8,7 @@ namespace AgendaManager.Domain.UnitTests.Calendars.Entities.CalendarSettings;
 public class CalendarSettingsCreateTests
 {
     [Fact]
-    public void Create_ShouldCreateCalendarSettings()
+    public void Settings_ShouldCreate_WhenValidParametersProvided()
     {
         // Arrange && Act
         var calendarId = CalendarId.Create();
@@ -19,7 +19,7 @@ public class CalendarSettingsCreateTests
     }
 
     [Fact]
-    public void Create_ShouldRaiseEvent_WhenCalendarSettingsCreated()
+    public void Settings_ShouldRaiseEvent_WhenValidParametersProvided()
     {
         // Arrange && Act
         var settings = CalendarSettingsFactory.CreateCalendarSettings();

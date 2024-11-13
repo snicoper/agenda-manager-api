@@ -9,7 +9,7 @@ public class CalendarHolidayNameTests
     [Theory]
     [InlineData(0)]
     [InlineData(51)]
-    public void CalendarHolidayName_ShouldRaiseException_WhenInvalidNameIsSet(int nameLength)
+    public void CalendarHoliday_ShouldThrowException_WhenNameIsInvalid(int nameLength)
     {
         // Arrange
         var name = new string('*', nameLength);

@@ -12,7 +12,7 @@ public class CalendarAddHolidayTests
     private readonly CalendarHoliday _holiday = CalendarHolidayFactory.CreateCalendarHoliday();
 
     [Fact]
-    public void AddHoliday_ShouldAddHoliday_WhenHolidayIsAdded()
+    public void AddHoliday_ShouldSucceed_WhenValidHolidayProvided()
     {
         // Act
         _calendar.AddHoliday(_holiday);
@@ -22,7 +22,7 @@ public class CalendarAddHolidayTests
     }
 
     [Fact]
-    public void AddHoliday_ShouldRaiseEvent_WhenHolidayIsAdded()
+    public void AddHoliday_ShouldRaiseEvent_WhenValidHolidayProvided()
     {
         // Act
         _calendar.AddHoliday(_holiday);

@@ -12,7 +12,7 @@ public class CalendarHolidayUpdateTests
     private readonly CalendarHoliday _holiday = CalendarHolidayFactory.CreateCalendarHoliday();
 
     [Fact]
-    public void CalendarHolidayUpdate_ShouldUpdateHoliday()
+    public void CalendarHoliday_ShouldSucceed_WhenValidUpdatesProvided()
     {
         // Arrange
         const string newName = "New Holiday Name";

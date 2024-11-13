@@ -11,7 +11,7 @@ public class CalendarUpdateTests
     private readonly Calendar _calendar = CalendarFactory.CreateCalendar();
 
     [Fact]
-    public void Calendar_ShouldUpdateCalendar_WhenIsValid()
+    public void Calendar_ShouldSucceed_WhenUpdatedWithValidData()
     {
         // Act
         _calendar.Update("New Name", "New Description");
@@ -22,7 +22,7 @@ public class CalendarUpdateTests
     }
 
     [Fact]
-    public void Calendar_ShouldRaiseEvent_WhenIsValid()
+    public void Calendar_ShouldRaiseEvent_WhenUpdatedWithValidData()
     {
         // Act
         _calendar.Update("New Name", "New Description");
@@ -34,7 +34,7 @@ public class CalendarUpdateTests
     [Theory]
     [InlineData(0)]
     [InlineData(51)]
-    public void Calendar_ShouldThrowException_WhenCalendarIsUpdatedWithInvalidName(int newNameLength)
+    public void Calendar_ShouldThrowException_WhenNameIsInvalid(int newNameLength)
     {
         // Arrange
         var newName = new string('a', newNameLength);
@@ -49,7 +49,7 @@ public class CalendarUpdateTests
     [Theory]
     [InlineData(0)]
     [InlineData(501)]
-    public void Calendar_ShouldThrowException_WhenCalendarIsUpdatedWithInvalidDescription(int newDescriptionLength)
+    public void Calendar_ShouldThrowException_WhenDescriptionIsInvalid(int newDescriptionLength)
     {
         // Arrange
         var calendar = CalendarFactory.CreateCalendar();

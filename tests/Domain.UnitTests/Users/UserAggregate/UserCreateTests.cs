@@ -10,14 +10,14 @@ public class UserCreateTests
     private readonly User _user = UserFactory.CreateUser();
 
     [Fact]
-    public void UserCreate_ShouldReturnUser_WhenUserIsCreated()
+    public void User_ShouldNotBeNull_WhenUserIsCreated()
     {
         // Assert
         _user.Should().NotBeNull();
     }
 
     [Fact]
-    public void UserCreate_ShouldRaiseEvent_WhenUserIsCreated()
+    public void CreatingUser_ShouldRaiseUserCreatedEvent_WhenUserIsCreated()
     {
         // Assert
         _user.DomainEvents.Should().Contain(x => x is UserCreatedDomainEvent);

@@ -24,7 +24,7 @@ public class AuthorizationBehaviourTest
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnResultSuccess_WhenNotRequiredRolesOrPermissions()
+    public async Task AuthorizationBehaviour_ShouldReturnSuccess_WhenNotRequiredRolesOrPermissions()
     {
         // Arrange
         TestRequest request = new();
@@ -38,7 +38,7 @@ public class AuthorizationBehaviourTest
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnResultSuccess_WhenUserIsAuthenticated()
+    public async Task AuthorizationBehaviour_ShouldReturnSuccess_WhenUserIsAuthenticated()
     {
         // Arrange
         List<string> roles = [SystemRoles.Administrator, SystemRoles.Employee, SystemRoles.Customer];
@@ -59,7 +59,7 @@ public class AuthorizationBehaviourTest
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnResultUnauthorized_WhenUserIsNotAuthenticated()
+    public async Task AuthorizationBehaviour_ShouldReturnUnauthorized_WhenUserIsNotAuthenticated()
     {
         // Arrange;
         TestAdminRequest request = new();
@@ -78,7 +78,7 @@ public class AuthorizationBehaviourTest
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnResultUnauthorized_WhenCurrentUserIsDefault()
+    public async Task AuthorizationBehaviour_ShouldReturnUnauthorized_WhenUserIsDefault()
     {
         // Arrange;
         TestAdminRequest request = new();
@@ -99,7 +99,7 @@ public class AuthorizationBehaviourTest
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnResultFailure_WhenUserIsNotHaveRequiredRoles()
+    public async Task AuthorizationBehaviour_ShouldReturnFailure_WhenMissingRequiredRoles()
     {
         // Arrange
         List<string> roles = [SystemRoles.Employee, SystemRoles.Customer];
@@ -123,7 +123,7 @@ public class AuthorizationBehaviourTest
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnResultFailure_WhenUserIsNotHaveRequiredPermissions()
+    public async Task AuthorizationBehaviour_ShouldReturnFailure_WhenMissingRequiredPermissions()
     {
         // Arrange
         List<string> roles = [SystemRoles.Administrator, SystemRoles.Employee, SystemRoles.Customer];

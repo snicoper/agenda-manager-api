@@ -5,19 +5,19 @@ using FluentAssertions;
 
 namespace AgendaManager.Domain.UnitTests.Users.UserAggregate;
 
-public class UserActiveTests
+public class UserIsActiveTests
 {
     private readonly User _user = UserFactory.CreateUser();
 
     [Fact]
-    public void UserActivate_ShouldActiveTrue_WhenUserIsACreated()
+    public void UserIsActive_ShouldBeTrue_WhenUserIsCreated()
     {
         // Assert
         _user.IsActive.Should().BeTrue();
     }
 
     [Fact]
-    public void UserActivate_ShouldRaiseEvent_WhenUserIsActiveStateIsUpdated()
+    public void UpdateActiveState_ShouldRaiseEvent_WhenUserIsActiveStateIsUpdated()
     {
         // Act
         _user.UpdateActiveState(false);

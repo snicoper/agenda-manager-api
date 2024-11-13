@@ -11,7 +11,7 @@ public class CalendarSettingsUpdateSettingsTests
     [InlineData(IanaTimeZoneConstants.AmericaNewYork)]
     [InlineData(IanaTimeZoneConstants.EuropeMadrid)]
     [InlineData(IanaTimeZoneConstants.Utc)]
-    public void SettingsUpdate_ShouldSuccessfully_WhenUpdateSettings(string newTimeZone)
+    public void Settings_ShouldUpdateSuccessfully_WhenValidParametersProvided(string newTimeZone)
     {
         // Arrange
         var calendar = CalendarFactory.CreateCalendar();

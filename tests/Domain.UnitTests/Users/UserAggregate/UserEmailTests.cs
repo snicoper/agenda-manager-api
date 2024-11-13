@@ -16,7 +16,7 @@ public class UserEmailTests
     private readonly IEmailUniquenessChecker _emailUniquenessChecker = Substitute.For<IEmailUniquenessChecker>();
 
     [Fact]
-    public void UserEmail_ShouldRaiseEvent_WhenEmailIsConfirmed()
+    public void SetEmailConfirmed_ShouldRaiseUserEmailConfirmedEvent_WhenEmailIsConfirmed()
     {
         // Act
         _user.SetEmailConfirmed();
@@ -27,7 +27,7 @@ public class UserEmailTests
     }
 
     [Fact]
-    public async Task UserEmail_ShouldRaiseEvent_WhenUserEmailIsUpdated()
+    public async Task UpdateEmail_ShouldRaiseUserEmailUpdatedEvent_WhenEmailIsUpdated()
     {
         // Arrange
         var email = UserConstants.UserLexi.Email;
@@ -42,7 +42,7 @@ public class UserEmailTests
     }
 
     [Fact]
-    public async Task UserEmail_ShouldNotRaiseEvent_WhenUserEmailIsNotUpdated()
+    public async Task UpdateEmail_ShouldNotRaiseUserEmailUpdatedEvent_WhenEmailIsNotUpdated()
     {
         // Arrange
         _emailUniquenessChecker.IsUnique(Arg.Any<EmailAddress>(), Arg.Any<CancellationToken>()).Returns(true);

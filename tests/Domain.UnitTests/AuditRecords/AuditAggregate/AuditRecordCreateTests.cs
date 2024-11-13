@@ -12,7 +12,7 @@ public class AuditRecordCreateTests
     private readonly AuditRecord _auditRecord = AuditRecordFactory.Create();
 
     [Fact]
-    public void AuditRecord_ShouldCreateAuditRecord_WhenCreateWithValidParametersAreProvided()
+    public void AuditRecord_ShouldCreate_WhenValidParametersProvided()
     {
         // Assert
         _auditRecord.Should().NotBeNull();
@@ -20,7 +20,7 @@ public class AuditRecordCreateTests
     }
 
     [Fact]
-    public void AuditRecord_ShouldRaiseEvent_WhenCreateWithValidParametersAreProvided()
+    public void AuditRecord_ShouldRaiseEvent_WhenValidParametersProvided()
     {
         // Assert
         _auditRecord.DomainEvents.Should().NotBeNull();
@@ -28,7 +28,7 @@ public class AuditRecordCreateTests
     }
 
     [Fact]
-    public void AuditRecord_ShouldRaiseException_WhenActionTypeIsInvalid()
+    public void AuditRecord_ShouldThrowException_WhenActionTypeInvalid()
     {
         // Arrange
         var action = () => AuditRecordFactory.Create(actionType: (ActionType)100);
@@ -39,7 +39,7 @@ public class AuditRecordCreateTests
     }
 
     [Fact]
-    public void AuditRecord_ShouldRaiseException_WhenActionTypeIsNone()
+    public void AuditRecord_ShouldThrowException_WhenActionTypeIsNone()
     {
         // Act
         var action = () => AuditRecordFactory.Create(actionType: ActionType.None);

@@ -30,7 +30,7 @@ public class CalendarHolidayManagerTests
     }
 
     [Fact]
-    public async Task CreateHolidayAsync_ShouldReturnSuccess_WhenSettingsIsOverlappingAllow()
+    public async Task CreateHoliday_ShouldSucceed_WhenOverlappingIsAllowed()
     {
         // Arrange
         var settingsResult = CalendarSettingsFactory.CreateCalendarSettings(
@@ -62,7 +62,7 @@ public class CalendarHolidayManagerTests
     }
 
     [Fact]
-    public async Task CreateHolidayAsync_ShouldReturnFailure_WhenSettingsIsRejectIfOverlapping()
+    public async Task CreateHoliday_ShouldFail_WhenOverlappingIsRejected()
     {
         // Arrange
         var appointmentResult = AppointmentFactory.Create();
@@ -93,7 +93,7 @@ public class CalendarHolidayManagerTests
     }
 
     [Fact]
-    public async Task CreateHolidayAsync_ShouldReturnFailure_WhenCalendarNotFound()
+    public async Task CreateHoliday_ShouldFail_WhenCalendarNotFound()
     {
         // Arrange
         var settingsResult = CalendarSettingsFactory.CreateCalendarSettings(
@@ -126,7 +126,7 @@ public class CalendarHolidayManagerTests
     }
 
     [Fact]
-    public async Task CreateHolidayAsync_ShouldReturnFailure_WhenCalendarSettingsNotFound()
+    public async Task CreateHoliday_ShouldFail_WhenSettingsNotFound()
     {
         // Arrange
         var errorResultExpected = CalendarSettingsErrors.CalendarSettingsNotFound.FirstError();

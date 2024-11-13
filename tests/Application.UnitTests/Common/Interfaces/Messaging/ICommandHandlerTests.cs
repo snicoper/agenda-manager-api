@@ -9,7 +9,7 @@ namespace AgendaManager.Application.UnitTests.Common.Interfaces.Messaging;
 public class ICommandHandlerTests
 {
     [Fact]
-    public void ICommandHandler_ShouldImplementIRequestHandler_WithResultType()
+    public void CommandHandler_ShouldImplementRequestHandler_WhenUsingBasicResult()
     {
         // Arrange
         var commandHandlerSub = Substitute.For<ICommandHandler<ICommand>>();
@@ -19,7 +19,7 @@ public class ICommandHandlerTests
     }
 
     [Fact]
-    public void ICommandHandlerGeneric_ShouldImplementIRequestHandler_WithResultGenericType()
+    public void CommandHandler_ShouldImplementRequestHandler_WhenUsingGenericResult()
     {
         // Arrange
         var commandHandlerSub = Substitute.For<ICommandHandler<ICommand<string>, string>>();

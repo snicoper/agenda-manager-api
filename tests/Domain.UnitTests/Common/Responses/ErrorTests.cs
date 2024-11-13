@@ -9,7 +9,7 @@ public class ErrorTests
     private const string Description = "Description error";
 
     [Fact]
-    public void Error_ShouldReturnSucceeded_WhenNone()
+    public void Error_ShouldReturnSucceeded_WhenErrorNoneIsProvided()
     {
         // Act
         var error = Error.None();
@@ -21,7 +21,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error_ShouldReturnValidationError_WhenValidation()
+    public void Error_ShouldReturnValidationError_WhenValidationErrorIsProvided()
     {
         // Act
         var error = Error.Validation(Code, Description);
@@ -35,7 +35,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error_ShouldGroupedByCode_WhenValidation()
+    public void Error_ShouldGroupedByCode_WhenValidationsAreProvided()
     {
         // Arrange
         const string code2 = "Code2";
@@ -54,7 +54,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error_ShouldReturnNotFound_WhenNotFound()
+    public void Error_ShouldReturnNotFound_WhenNotFoundIsProvided()
     {
         // Act
         var error = Error.NotFound(Description);
@@ -68,7 +68,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error_ShouldReturnUnauthorized_WhenUnauthorized()
+    public void Error_ShouldReturnUnauthorized_WhenUnauthorizedIsProvided()
     {
         // Act
         var error = Error.Unauthorized();
@@ -82,7 +82,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error_ShouldReturnForbidden_WhenForbidden()
+    public void Error_ShouldReturnForbidden_WhenForbiddenIsProvided()
     {
         // Act
         var error = Error.Forbidden();
@@ -119,7 +119,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error_ShouldSetResultTypeToConflict_WhenConflict()
+    public void Error_ShouldSetResultTypeToConflict_WhenConflictIsProvided()
     {
         // Act
         var error = Error.Conflict();
@@ -130,7 +130,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error_ShouldSetResultTypeToUnexpected_WhenUnexpected()
+    public void Error_ShouldSetResultTypeToUnexpected_WhenUnexpectedIsProvided()
     {
         // Act
         var error = Error.Unexpected();
@@ -144,7 +144,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error_ShouldReturnResult_WhenImplicitCall()
+    public void Error_ShouldReturnResult_WhenImplicitCalled()
     {
         // Arrange
         var error = Error.None();
@@ -170,7 +170,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error_ShouldReturnResultWithResultType_WhenToResultGeneric()
+    public void Error_ShouldReturnResultWithResultType_WhenToResultGenericIsCalled()
     {
         // Arrange
         var error = Error.Unauthorized();

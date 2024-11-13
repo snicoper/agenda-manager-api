@@ -10,7 +10,7 @@ public class CalendarChangeActiveStatusTests
     private readonly Calendar _calendar = CalendarFactory.CreateCalendar();
 
     [Fact]
-    public void ChangeActiveStatus_ShouldChangeActiveStatus_WhenActiveStatusIsChanged()
+    public void ChangeActiveStatus_ShouldSucceed_WhenNewStatusProvided()
     {
         // Arrange
         var newActiveStatus = !_calendar.IsActive;
@@ -23,7 +23,7 @@ public class CalendarChangeActiveStatusTests
     }
 
     [Fact]
-    public void ChangeActiveStatus_ShouldRaiseDomainEvent_WhenActiveStatusIsChanged()
+    public void ChangeActiveStatus_ShouldRaiseEvent_WhenNewStatusProvided()
     {
         // Arrange
         var newActiveStatus = !_calendar.IsActive;

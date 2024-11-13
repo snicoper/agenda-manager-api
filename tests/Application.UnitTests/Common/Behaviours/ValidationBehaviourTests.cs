@@ -24,7 +24,7 @@ public class ValidationBehaviourTests
     }
 
     [Fact]
-    public async Task Handle_ShouldCallNext_WhenValidatorIsNull()
+    public async Task ValidationBehaviour_ShouldCallNext_WhenValidatorIsNull()
     {
         // Arrange
         TestRequest request = new();
@@ -39,7 +39,7 @@ public class ValidationBehaviourTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnResult_WhenValidationSucceeds()
+    public async Task ValidationBehaviour_ShouldReturnSuccess_WhenValidationSucceeds()
     {
         // Arrange
         TestRequest request = new();
@@ -55,7 +55,7 @@ public class ValidationBehaviourTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnErrorResult_WhenValidationFails()
+    public async Task ValidationBehaviour_ShouldReturnFailure_WhenValidationFails()
     {
         // Arrange
         TestRequest request = new();
@@ -68,7 +68,7 @@ public class ValidationBehaviourTests
         var result = await _sut.Handle(request, () => Task.FromResult(Result.Success()), CancellationToken.None);
 
         // Assert
-        result.IsSuccess.Should().BeFalse();
+        result.IsFailure.Should().BeTrue();
         result.Error?.ToDictionary().Should().ContainKey("property");
         result.Error?.ToDictionary()["property"].Should().Contain("Error message");
     }

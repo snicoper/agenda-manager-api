@@ -8,42 +8,42 @@ namespace AgendaManager.Application.UnitTests.Common.Interfaces.Messaging;
 public class ICommandTests
 {
     [Fact]
-    public void ICommand_Should_Be_Implement_Of_IRequest()
+    public void Command_ShouldImplementInterface_WhenCheckingIRequestImplementation()
     {
         // Assert
         typeof(ICommand).Should().Implement<IRequest<Result>>();
     }
 
     [Fact]
-    public void ICommand_Should_Be_Implement_Of_IBaseCommand()
+    public void Command_ShouldImplementInterface_WhenCheckingIBaseCommandImplementation()
     {
         // Assert
         typeof(ICommand).Should().Implement<IBaseCommand>();
     }
 
     [Fact]
-    public void ICommand_Should_Be_Implement_Of_IAppBaseRequest()
+    public void Command_ShouldImplementInterface_WhenCheckingIAppBaseRequestImplementation()
     {
         // Assert
         typeof(ICommand).Should().Implement<IAppBaseRequest>();
     }
 
     [Fact]
-    public void ICommand_Generic_Should_Be_Implement_Of_IRequest()
+    public void GenericCommand_ShouldImplementInterface_WhenCheckingIRequestImplementation()
     {
         // Assert
         typeof(ICommand<object>).Should().Implement<IRequest<Result<object>>>();
     }
 
     [Fact]
-    public void ICommand_Generic_Should_Be_Implement_Of_IBaseCommand()
+    public void GenericCommand_ShouldImplementInterface_WhenCheckingIBaseCommandImplementation()
     {
         // Assert
         typeof(ICommand<object>).Should().Implement<IBaseCommand>();
     }
 
     [Fact]
-    public void ICommand_Generic_Should_Be_Implement_Of_IAppBaseRequest()
+    public void GenericCommand_ShouldImplementInterface_WhenCheckingIAppBaseRequestImplementation()
     {
         // Assert
         typeof(ICommand<object>).Should().Implement<IAppBaseRequest>();

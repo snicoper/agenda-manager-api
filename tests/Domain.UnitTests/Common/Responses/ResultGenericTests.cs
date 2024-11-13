@@ -6,7 +6,7 @@ namespace AgendaManager.Domain.UnitTests.Common.Responses;
 public class ResultGenericTests
 {
     [Fact]
-    public void ResultGeneric_ShouldReturnSuccess_WhenSucceeded()
+    public void ResultGeneric_ShouldReturnSuccess_WhenResultIsSuccess()
     {
         // Act
         var result = Result.Success<string>();
@@ -18,7 +18,7 @@ public class ResultGenericTests
     }
 
     [Fact]
-    public void ResultGeneric_ShouldIsSuccessReturnFalse_WhenFailureIsSet()
+    public void ResultGeneric_ShouldIsSuccessReturnFalse_WhenFailureIsTrue()
     {
         // Arrange
         const ResultType resultType = ResultType.Conflict;
@@ -32,7 +32,7 @@ public class ResultGenericTests
     }
 
     [Fact]
-    public void ResultGeneric_ShouldReturnCreated_WhenCreate()
+    public void ResultGeneric_ShouldReturnCreated_WhenCreatedIsSet()
     {
         // Act
         var result = Result.Create<string>("test");
