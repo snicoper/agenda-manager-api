@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.AuditRecords.Enums;
+﻿using AgendaManager.Domain.AuditRecords;
+using AgendaManager.Domain.AuditRecords.Enums;
 using AgendaManager.Domain.AuditRecords.Events;
 using AgendaManager.Domain.AuditRecords.Exceptions;
 using AgendaManager.TestCommon.Factories;
@@ -8,26 +9,22 @@ namespace AgendaManager.Domain.UnitTests.AuditRecords.AuditAggregate;
 
 public class AuditRecordCreateTests
 {
+    private readonly AuditRecord _auditRecord = AuditRecordFactory.Create();
+
     [Fact]
     public void AuditRecord_ShouldCreateAuditRecord_WhenCreateWithValidParametersAreProvided()
     {
-        // Arrange
-        var auditRecord = AuditRecordFactory.Create();
-
         // Assert
-        auditRecord.Should().NotBeNull();
-        auditRecord.Id.Should().NotBeNull();
+        _auditRecord.Should().NotBeNull();
+        _auditRecord.Id.Should().NotBeNull();
     }
 
     [Fact]
     public void AuditRecord_ShouldRaiseEvent_WhenCreateWithValidParametersAreProvided()
     {
-        // Arrange
-        var auditRecord = AuditRecordFactory.Create();
-
         // Assert
-        auditRecord.DomainEvents.Should().NotBeNull();
-        auditRecord.DomainEvents.Should().Contain(x => x is AuditRecordCreatedDomainEvent);
+        _auditRecord.DomainEvents.Should().NotBeNull();
+        _auditRecord.DomainEvents.Should().Contain(x => x is AuditRecordCreatedDomainEvent);
     }
 
     [Fact]

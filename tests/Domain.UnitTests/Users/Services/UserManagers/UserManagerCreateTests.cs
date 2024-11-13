@@ -14,37 +14,38 @@ namespace AgendaManager.Domain.UnitTests.Users.Services.UserManagers;
 
 public class UserManagerCreateTests
 {
-    private readonly UserManager _sut;
+    private readonly User _user;
+
     private readonly IUserRepository _userRepository;
+    private readonly UserManager _sut;
 
     public UserManagerCreateTests()
     {
         _userRepository = Substitute.For<IUserRepository>();
         _sut = new UserManager(_userRepository);
+
+        _user = UserFactory.CreateUserAlice();
     }
 
     [Fact]
     public async Task CreateUserAsync_ShouldReturnResultSuccess_WhenUserIsCreated()
     {
-        // Arrange
-        var user = UserFactory.CreateUserAlice();
-
         // Act
         var userResult = await _sut.CreateUserAsync(
-            userId: user.Id,
-            email: user.Email,
-            passwordHash: user.PasswordHash,
-            firstName: user.FirstName,
-            lastName: user.LastName);
+            userId: _user.Id,
+            email: _user.Email,
+            passwordHash: _user.PasswordHash,
+            firstName: _user.FirstName,
+            lastName: _user.LastName);
 
         // Assert
         userResult.Should().BeOfType<Result<User>>();
         userResult.IsSuccess.Should().BeTrue();
         userResult.ResultType.Should().Be(ResultType.Created);
-        userResult.Value!.Id.Should().Be(user.Id);
-        userResult.Value.Email.Should().Be(user.Email);
-        userResult.Value.FirstName.Should().Be(user.FirstName);
-        userResult.Value.LastName.Should().Be(user.LastName);
+        userResult.Value!.Id.Should().Be(_user.Id);
+        userResult.Value.Email.Should().Be(_user.Email);
+        userResult.Value.FirstName.Should().Be(_user.FirstName);
+        userResult.Value.LastName.Should().Be(_user.LastName);
         userResult.Value.IsActive.Should().BeTrue();
         userResult.Value.IsEmailConfirmed.Should().BeFalse();
         userResult.Value.DomainEvents.Should().Contain(x => x is UserCreatedDomainEvent);
@@ -54,16 +55,15 @@ public class UserManagerCreateTests
     public async Task CreateUserAsync_ShouldReturnResultFailure_WhenEmailAlreadyExists()
     {
         // Arrange
-        var user = UserFactory.CreateUserAlice();
         _userRepository.EmailExistsAsync(Arg.Any<EmailAddress>(), Arg.Any<CancellationToken>()).Returns(true);
 
         // Act
         var userResult = await _sut.CreateUserAsync(
-            userId: user.Id,
-            email: user.Email,
-            passwordHash: user.PasswordHash,
-            firstName: user.FirstName,
-            lastName: user.LastName);
+            userId: _user.Id,
+            email: _user.Email,
+            passwordHash: _user.PasswordHash,
+            firstName: _user.FirstName,
+            lastName: _user.LastName);
 
         // Assert
         userResult.Should().BeOfType<Result<User>>();

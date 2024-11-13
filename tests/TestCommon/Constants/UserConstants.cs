@@ -3,7 +3,7 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.TestCommon.Constants;
 
-public static class Users
+public static class UserConstants
 {
     public static class UserAlice
     {

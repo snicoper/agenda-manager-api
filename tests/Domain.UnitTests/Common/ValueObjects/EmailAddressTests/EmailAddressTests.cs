@@ -1,7 +1,7 @@
 ﻿using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 using FluentAssertions;
 
-namespace AgendaManager.Domain.UnitTests.Common.ValueObjects.EmailAddress;
+namespace AgendaManager.Domain.UnitTests.Common.ValueObjects.EmailAddressTests;
 
 public class EmailAddressTests
 {
@@ -12,7 +12,7 @@ public class EmailAddressTests
         const string email = "test@test.com";
 
         // Act
-        var emailValueObject = Domain.Common.ValueObjects.EmailAddress.EmailAddress.From(email);
+        var emailValueObject = EmailAddress.From(email);
 
         // Assert
         emailValueObject.Value.Should().Be(email);
@@ -27,7 +27,7 @@ public class EmailAddressTests
     public void EmailAddress_ShouldThrowInvalidEmailException_WhenInvalidEmailIsProvided(string email)
     {
         // Act
-        var action = () => Domain.Common.ValueObjects.EmailAddress.EmailAddress.From(email);
+        var action = () => EmailAddress.From(email);
 
         // Assert
         action.Should().Throw<InvalidEmailAddressException>();
@@ -41,7 +41,7 @@ public class EmailAddressTests
         var email = $"{emailName}@test.com";
 
         // Act
-        var action = () => Domain.Common.ValueObjects.EmailAddress.EmailAddress.From(email);
+        var action = () => EmailAddress.From(email);
 
         // Assert
         action.Should().Throw<InvalidEmailAddressException>();

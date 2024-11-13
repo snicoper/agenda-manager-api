@@ -1,4 +1,6 @@
-﻿using AgendaManager.Domain.Users.Events;
+﻿using AgendaManager.Domain.Users;
+using AgendaManager.Domain.Users.Entities;
+using AgendaManager.Domain.Users.Events;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
@@ -6,37 +8,34 @@ namespace AgendaManager.Domain.UnitTests.Users.UserAggregate;
 
 public class UserRoleTests
 {
+    private readonly User _user = UserFactory.CreateUser();
+    private readonly Role _role = RoleFactory.CreateRole();
+
     [Fact]
     public void UserRole_ShouldRaiseEvent_WhenRoleIsAdded()
     {
-        // Arrange
-        var user = UserFactory.CreateUserAlice();
-        var role = RoleFactory.CreateRole();
-
         // Act
-        user.AddRole(role);
+        _user.AddRole(_role);
 
         // Assert
-        user.DomainEvents.Should().Contain(x => x is UserRoleAddedDomainEvent);
-        user.Roles.Should().Contain(role);
-        user.Roles.Should().HaveCount(1);
-        user.Roles.Should().ContainSingle(x => x.Id == role.Id);
+        _user.DomainEvents.Should().Contain(x => x is UserRoleAddedDomainEvent);
+        _user.Roles.Should().Contain(_role);
+        _user.Roles.Should().HaveCount(1);
+        _user.Roles.Should().ContainSingle(x => x.Id == _role.Id);
     }
 
     [Fact]
     public void UserRole_ShouldRaiseEvent_WhenRoleIsRemoved()
     {
         // Arrange
-        var user = UserFactory.CreateUserAlice();
-        var role = RoleFactory.CreateRole();
-        user.AddRole(role);
+        _user.AddRole(_role);
 
         // Act
-        user.RemoveRole(role);
+        _user.RemoveRole(_role);
 
         // Assert
-        user.DomainEvents.Should().Contain(x => x is UserRoleRemovedDomainEvent);
-        user.Roles.Should().NotContain(role);
-        user.Roles.Should().HaveCount(0);
+        _user.DomainEvents.Should().Contain(x => x is UserRoleRemovedDomainEvent);
+        _user.Roles.Should().NotContain(_role);
+        _user.Roles.Should().HaveCount(0);
     }
 }

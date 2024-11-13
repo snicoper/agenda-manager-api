@@ -13,8 +13,8 @@ namespace AgendaManager.Application.UnitTests.Common.Behaviours;
 public class ValidationBehaviourTests
 {
     private readonly ILogger<Result> _logger;
-    private readonly ValidationBehaviour<IAppBaseRequest, Result> _sut;
     private readonly IValidator<IAppBaseRequest> _validator;
+    private readonly ValidationBehaviour<IAppBaseRequest, Result> _sut;
 
     public ValidationBehaviourTests()
     {

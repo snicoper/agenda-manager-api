@@ -20,11 +20,11 @@ public abstract class UserFactory
         bool emailConfirmed = false)
     {
         var user = User.Create(
-            userId: id ?? Users.UserAlice.Id,
-            email: email ?? Users.UserAlice.Email,
+            userId: id ?? UserConstants.UserAlice.Id,
+            email: email ?? UserConstants.UserAlice.Email,
             passwordHash: passwordHash ?? PasswordHash.FromHashed(BcryptPasswordHasher.HashPassword("Password4!")),
-            firstName: firstName ?? Users.UserAlice.FirstName,
-            lastName: lastName ?? Users.UserAlice.LastName,
+            firstName: firstName ?? UserConstants.UserAlice.FirstName,
+            lastName: lastName ?? UserConstants.UserAlice.LastName,
             isActive: isActive,
             emailConfirmed: emailConfirmed);
 
@@ -34,11 +34,12 @@ public abstract class UserFactory
     public static User CreateUserAlice()
     {
         var user = CreateUser(
-            id: Users.UserAlice.Id,
-            email: Users.UserAlice.Email,
-            passwordHash: PasswordHash.FromHashed(BcryptPasswordHasher.HashPassword(Users.UserAlice.RawPassword)),
-            firstName: Users.UserAlice.FirstName,
-            lastName: Users.UserAlice.LastName);
+            id: UserConstants.UserAlice.Id,
+            email: UserConstants.UserAlice.Email,
+            passwordHash: PasswordHash.FromHashed(
+                BcryptPasswordHasher.HashPassword(UserConstants.UserAlice.RawPassword)),
+            firstName: UserConstants.UserAlice.FirstName,
+            lastName: UserConstants.UserAlice.LastName);
 
         return user;
     }
@@ -46,11 +47,11 @@ public abstract class UserFactory
     public static User CreateUserBob()
     {
         var user = CreateUser(
-            id: Users.UserBob.Id,
-            email: Users.UserBob.Email,
-            passwordHash: PasswordHash.FromHashed(BcryptPasswordHasher.HashPassword(Users.UserBob.RawPassword)),
-            firstName: Users.UserBob.FirstName,
-            lastName: Users.UserBob.LastName);
+            id: UserConstants.UserBob.Id,
+            email: UserConstants.UserBob.Email,
+            passwordHash: PasswordHash.FromHashed(BcryptPasswordHasher.HashPassword(UserConstants.UserBob.RawPassword)),
+            firstName: UserConstants.UserBob.FirstName,
+            lastName: UserConstants.UserBob.LastName);
 
         return user;
     }
@@ -58,11 +59,12 @@ public abstract class UserFactory
     public static User CreateUserCarol()
     {
         var user = CreateUser(
-            id: Users.UserCarol.Id,
-            email: Users.UserCarol.Email,
-            passwordHash: PasswordHash.FromHashed(BcryptPasswordHasher.HashPassword(Users.UserCarol.RawPassword)),
-            firstName: Users.UserCarol.FirstName,
-            lastName: Users.UserCarol.LastName);
+            id: UserConstants.UserCarol.Id,
+            email: UserConstants.UserCarol.Email,
+            passwordHash: PasswordHash.FromHashed(
+                BcryptPasswordHasher.HashPassword(UserConstants.UserCarol.RawPassword)),
+            firstName: UserConstants.UserCarol.FirstName,
+            lastName: UserConstants.UserCarol.LastName);
 
         return user;
     }
@@ -70,11 +72,12 @@ public abstract class UserFactory
     public static User CreateUserLexi()
     {
         var user = CreateUser(
-            id: Users.UserLexi.Id,
-            email: Users.UserLexi.Email,
-            passwordHash: PasswordHash.FromHashed(BcryptPasswordHasher.HashPassword(Users.UserLexi.RawPassword)),
-            firstName: Users.UserLexi.FirstName,
-            lastName: Users.UserLexi.LastName);
+            id: UserConstants.UserLexi.Id,
+            email: UserConstants.UserLexi.Email,
+            passwordHash: PasswordHash.FromHashed(
+                BcryptPasswordHasher.HashPassword(UserConstants.UserLexi.RawPassword)),
+            firstName: UserConstants.UserLexi.FirstName,
+            lastName: UserConstants.UserLexi.LastName);
 
         return user;
     }

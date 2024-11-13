@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Users.Events;
+﻿using AgendaManager.Domain.Users.Entities;
+using AgendaManager.Domain.Users.Events;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
@@ -6,36 +7,36 @@ namespace AgendaManager.Domain.UnitTests.Users.Entities.Roles;
 
 public class RolePermissionTests
 {
+    private readonly Role _role = RoleFactory.CreateRole();
+
     [Fact]
     public void RolePermission_ShouldRaiseEvent_WhenPermissionAdded()
     {
         // Arrange
-        var role = RoleFactory.CreateRole();
         var permission = PermissionFactory.CreatePermissionUsersCreate();
 
         // Act
-        role.AddPermission(permission);
+        _role.AddPermission(permission);
 
         // Assert
-        role.DomainEvents.Should().Contain(x => x is RolePermissionAddedDomainEvent);
-        role.Permissions.Should().Contain(permission);
-        role.Permissions.Should().HaveCount(1);
+        _role.DomainEvents.Should().Contain(x => x is RolePermissionAddedDomainEvent);
+        _role.Permissions.Should().Contain(permission);
+        _role.Permissions.Should().HaveCount(1);
     }
 
     [Fact]
     public void RolePermission_ShouldRaiseEvent_WhenPermissionRemoved()
     {
         // Arrange
-        var role = RoleFactory.CreateRole();
         var permission = PermissionFactory.CreatePermissionUsersCreate();
-        role.AddPermission(permission);
+        _role.AddPermission(permission);
 
         // Act
-        role.RemovePermission(permission);
+        _role.RemovePermission(permission);
 
         // Assert
-        role.DomainEvents.Should().Contain(x => x is RolePermissionRemovedDomainEvent);
-        role.Permissions.Should().NotContain(permission);
-        role.Permissions.Should().HaveCount(0);
+        _role.DomainEvents.Should().Contain(x => x is RolePermissionRemovedDomainEvent);
+        _role.Permissions.Should().NotContain(permission);
+        _role.Permissions.Should().HaveCount(0);
     }
 }

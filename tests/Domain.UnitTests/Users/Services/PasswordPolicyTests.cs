@@ -1,19 +1,18 @@
 ﻿using AgendaManager.Domain.Users.Services;
+using AgendaManager.TestCommon.Constants;
 using FluentAssertions;
 
 namespace AgendaManager.Domain.UnitTests.Users.Services;
 
 public class PasswordPolicyTests
 {
+    private readonly PasswordPolicy _passwordPolicy = new();
+
     [Fact]
     public void PasswordPolicy_ValidatePasswordShouldReturnSuccess_WhenPasswordIsValid()
     {
-        // Arrange
-        const string rawPassword = "Password123!";
-        var passwordPolicy = new PasswordPolicy();
-
         // Act
-        var result = passwordPolicy.ValidatePassword(rawPassword);
+        var result = _passwordPolicy.ValidatePassword(UserConstants.UserBob.RawPassword);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -30,11 +29,8 @@ public class PasswordPolicyTests
     [InlineData("Ps1!")] // Password with less than 8 characters.
     public void PasswordPolicy_ValidatePasswordShouldReturnFailure_WhenPasswordIsNotValid(string rawPassword)
     {
-        // Arrange
-        var passwordPolicy = new PasswordPolicy();
-
         // Act
-        var result = passwordPolicy.ValidatePassword(rawPassword);
+        var result = _passwordPolicy.ValidatePassword(rawPassword);
 
         // Assert
         result.IsSuccess.Should().BeFalse();

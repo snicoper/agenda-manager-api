@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Calendars.Events;
+﻿using AgendaManager.Domain.Calendars.Entities;
+using AgendaManager.Domain.Calendars.Events;
 using AgendaManager.Domain.Common.ValueObjects.Period;
 using AgendaManager.Domain.Common.WekDays;
 using AgendaManager.TestCommon.Factories;
@@ -8,11 +9,12 @@ namespace AgendaManager.Domain.UnitTests.Calendars.Entities.CalendarHolidays;
 
 public class CalendarHolidayUpdateTests
 {
+    private readonly CalendarHoliday _holiday = CalendarHolidayFactory.CreateCalendarHoliday();
+
     [Fact]
     public void CalendarHolidayUpdate_ShouldUpdateHoliday()
     {
         // Arrange
-        var holiday = CalendarHolidayFactory.CreateCalendarHoliday();
         const string newName = "New Holiday Name";
         const string newDescription = "New Holiday Description";
         var newDate = new DateTime(2023, 1, 1);
@@ -20,20 +22,19 @@ public class CalendarHolidayUpdateTests
         const WeekDays newWeekDays = WeekDays.Friday;
 
         // Act
-        holiday.Update(newPeriod, newWeekDays, newName, newDescription);
+        _holiday.Update(newPeriod, newWeekDays, newName, newDescription);
 
         // Assert
-        holiday.Period.Should().Be(newPeriod);
-        holiday.AvailableDays.Should().Be(newWeekDays);
-        holiday.Name.Should().Be(newName);
-        holiday.Description.Should().Be(newDescription);
+        _holiday.Period.Should().Be(newPeriod);
+        _holiday.AvailableDays.Should().Be(newWeekDays);
+        _holiday.Name.Should().Be(newName);
+        _holiday.Description.Should().Be(newDescription);
     }
 
     [Fact]
     public void CalendarHolidayUpdate_ShouldRaiseDomainEvent_WhenHolidayIsUpdated()
     {
         // Arrange
-        var holiday = CalendarHolidayFactory.CreateCalendarHoliday();
         const string newName = "New Holiday Name";
         const string newDescription = "New Holiday Description";
         var newDate = new DateTime(2023, 1, 1);
@@ -41,9 +42,9 @@ public class CalendarHolidayUpdateTests
         const WeekDays newWeekDays = WeekDays.Friday;
 
         // Act
-        holiday.Update(newPeriod, newWeekDays, newName, newDescription);
+        _holiday.Update(newPeriod, newWeekDays, newName, newDescription);
 
         // Assert
-        holiday.DomainEvents.Should().Contain(x => x is CalendarHolidayUpdatedDomainEvent);
+        _holiday.DomainEvents.Should().Contain(x => x is CalendarHolidayUpdatedDomainEvent);
     }
 }

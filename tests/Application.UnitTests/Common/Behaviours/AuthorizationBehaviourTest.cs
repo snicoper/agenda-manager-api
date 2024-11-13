@@ -19,6 +19,7 @@ public class AuthorizationBehaviourTest
     public AuthorizationBehaviourTest()
     {
         _currentUserProvider = Substitute.For<ICurrentUserProvider>();
+
         _sut = new AuthorizationBehaviour<IAppBaseRequest, Result>(_currentUserProvider);
     }
 

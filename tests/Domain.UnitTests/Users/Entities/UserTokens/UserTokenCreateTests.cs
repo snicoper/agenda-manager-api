@@ -9,24 +9,20 @@ namespace AgendaManager.Domain.UnitTests.Users.Entities.UserTokens;
 
 public class UserTokenCreateTests
 {
+    private readonly UserToken _userToken = UserTokenFactory.CreateUserToken();
+
     [Fact]
     public void UserTokenCreate_ShouldReturnUserToken_WhenUserTokenIsCreated()
     {
-        // Act
-        var userToken = UserTokenFactory.CreateUserToken();
-
         // Assert
-        userToken.Should().NotBeNull();
+        _userToken.Should().NotBeNull();
     }
 
     [Fact]
     public void UserTokenCreate_ShouldRaiseEvent_WhenUserTokenIsCreated()
     {
-        // Act
-        var userToken = UserTokenFactory.CreateUserToken();
-
         // Assert
-        userToken.DomainEvents.Should().Contain(x => x is UserTokenCreatedDomainEvent);
+        _userToken.DomainEvents.Should().Contain(x => x is UserTokenCreatedDomainEvent);
     }
 
     [Fact]

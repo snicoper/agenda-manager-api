@@ -1,6 +1,7 @@
 ﻿using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.Services;
+using AgendaManager.TestCommon.Constants;
 using FluentAssertions;
 using NSubstitute;
 
@@ -20,11 +21,10 @@ public class EmailUniquenessCheckerTests
     public async Task EmailUniquenessChecker_IsUnique_ShouldReturnSuccess_WhenEmailIsNotInUse()
     {
         // Arrange
-        var email = EmailAddress.From("email@email.com");
         _userRepository.EmailExistsAsync(Arg.Any<EmailAddress>(), Arg.Any<CancellationToken>()).Returns(false);
 
         // Act
-        var result = await _sut.IsUnique(email);
+        var result = await _sut.IsUnique(UserConstants.UserBob.Email);
 
         // Assert
         result.Should().BeTrue();
@@ -34,11 +34,10 @@ public class EmailUniquenessCheckerTests
     public async Task EmailUniquenessChecker_IsUnique_ShouldReturnFailure_WhenEmailIsInUse()
     {
         // Arrange
-        var email = EmailAddress.From("email@email.com");
         _userRepository.EmailExistsAsync(Arg.Any<EmailAddress>(), Arg.Any<CancellationToken>()).Returns(true);
 
         // Act
-        var result = await _sut.IsUnique(email);
+        var result = await _sut.IsUnique(UserConstants.UserBob.Email);
 
         // Assert
         result.Should().BeFalse();

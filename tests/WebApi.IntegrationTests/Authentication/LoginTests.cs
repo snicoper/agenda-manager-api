@@ -17,8 +17,8 @@ public class LoginTests(IntegrationTestWebAppFactory factory)
     {
         // Arrange
         var request = new LoginRequest(
-            Users.UserAlice.Email.Value,
-            Users.UserAlice.RawPassword);
+            UserConstants.UserAlice.Email.Value,
+            UserConstants.UserAlice.RawPassword);
 
         // Act
         var response = await HttpClient.PostAsJsonAsync(Enpoints.Authentication.Login, request);
@@ -38,7 +38,7 @@ public class LoginTests(IntegrationTestWebAppFactory factory)
         // Arrange
         var request = new LoginRequest(
             "lexi@example.com",
-            Users.UserAlice.RawPassword);
+            UserConstants.UserAlice.RawPassword);
 
         // Act
         var response = await HttpClient.PostAsJsonAsync(Enpoints.Authentication.Login, request);
@@ -55,7 +55,7 @@ public class LoginTests(IntegrationTestWebAppFactory factory)
         // Arrange
         var request = new LoginRequest(
             "lexi@example.com",
-            Users.UserAlice.RawPassword);
+            UserConstants.UserAlice.RawPassword);
 
         // Act
         var response = await HttpClient.PostAsJsonAsync(Enpoints.Authentication.Login, request);
@@ -72,7 +72,7 @@ public class LoginTests(IntegrationTestWebAppFactory factory)
         // Arrange
         var request = new LoginRequest(
             "invalid_email",
-            Users.UserAlice.RawPassword);
+            UserConstants.UserAlice.RawPassword);
 
         // Act
         var response = await HttpClient.PostAsJsonAsync(Enpoints.Authentication.Login, request);
@@ -85,7 +85,7 @@ public class LoginTests(IntegrationTestWebAppFactory factory)
     public async Task Login_ShouldReturnValidationError_WithEmptyEmail()
     {
         // Arrange
-        var request = new LoginRequest(string.Empty, Users.UserAlice.RawPassword);
+        var request = new LoginRequest(string.Empty, UserConstants.UserAlice.RawPassword);
 
         // Act
         var response = await HttpClient.PostAsJsonAsync(Enpoints.Authentication.Login, request);
@@ -98,7 +98,7 @@ public class LoginTests(IntegrationTestWebAppFactory factory)
     public async Task Login_ShouldReturnValidationError_WithEmptyPassword()
     {
         // Arrange
-        var request = new LoginRequest(Users.UserAlice.Email.Value, string.Empty);
+        var request = new LoginRequest(UserConstants.UserAlice.Email.Value, string.Empty);
 
         // Act
         var response = await HttpClient.PostAsJsonAsync(Enpoints.Authentication.Login, request);
@@ -111,7 +111,7 @@ public class LoginTests(IntegrationTestWebAppFactory factory)
     public async Task Login_ShouldReturnConflict_WithInvalidEmailCredentials()
     {
         // Arrange
-        var request = new LoginRequest("test@example.com", Users.UserAlice.RawPassword);
+        var request = new LoginRequest("test@example.com", UserConstants.UserAlice.RawPassword);
 
         // Act
         var response = await HttpClient.PostAsJsonAsync(Enpoints.Authentication.Login, request);
@@ -124,7 +124,7 @@ public class LoginTests(IntegrationTestWebAppFactory factory)
     public async Task Login_ShouldReturnConflict_WithInvalidPasswordCredentials()
     {
         // Arrange
-        var request = new LoginRequest(Users.UserAlice.Email.Value, "invalid_password");
+        var request = new LoginRequest(UserConstants.UserAlice.Email.Value, "invalid_password");
 
         // Act
         var response = await HttpClient.PostAsJsonAsync(Enpoints.Authentication.Login, request);

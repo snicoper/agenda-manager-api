@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Calendars.Events;
+﻿using AgendaManager.Domain.Calendars.Entities;
+using AgendaManager.Domain.Calendars.Events;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
@@ -6,23 +7,19 @@ namespace AgendaManager.Domain.UnitTests.Calendars.Entities.CalendarHolidays;
 
 public class CalendarHolidayCreateTests
 {
+    private readonly CalendarHoliday _holiday = CalendarHolidayFactory.CreateCalendarHoliday();
+
     [Fact]
     public void CalendarHolidayCreate_ShouldReturnHoliday()
     {
-        // Arrange
-        var holiday = CalendarHolidayFactory.CreateCalendarHoliday();
-
         // Assert
-        holiday.Should().NotBeNull();
+        _holiday.Should().NotBeNull();
     }
 
     [Fact]
     public void CalendarHolidayCreate_ShouldRaiseEvent_WhenHolidayIsCreated()
     {
-        // Arrange
-        var holiday = CalendarHolidayFactory.CreateCalendarHoliday();
-
         // Assert
-        holiday.DomainEvents.Should().Contain(x => x is CalendarHolidayCreatedDomainEvent);
+        _holiday.DomainEvents.Should().Contain(x => x is CalendarHolidayCreatedDomainEvent);
     }
 }

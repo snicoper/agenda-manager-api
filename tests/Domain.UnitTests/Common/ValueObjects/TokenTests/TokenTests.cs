@@ -1,6 +1,7 @@
-﻿using FluentAssertions;
+﻿using AgendaManager.Domain.Common.ValueObjects.Token;
+using FluentAssertions;
 
-namespace AgendaManager.Domain.UnitTests.Common.ValueObjects.Token;
+namespace AgendaManager.Domain.UnitTests.Common.ValueObjects.TokenTests;
 
 public class TokenTests
 {
@@ -14,7 +15,7 @@ public class TokenTests
         var expires = DateTimeOffset.UtcNow.AddDays(1);
 
         // Act
-        var refreshToken = Domain.Common.ValueObjects.Token.Token.From(token, expires);
+        var refreshToken = Token.From(token, expires);
 
         // Assert
         refreshToken.Value.Should().NotBeNull();
@@ -29,7 +30,7 @@ public class TokenTests
         var expires = DateTimeOffset.UtcNow.AddDays(1);
 
         // Act
-        var action = () => Domain.Common.ValueObjects.Token.Token.From(token, expires);
+        var action = () => Token.From(token, expires);
 
         // Assert
         action.Should().Throw<ArgumentException>();
@@ -43,7 +44,7 @@ public class TokenTests
         var expires = DateTimeOffset.MinValue;
 
         // Act
-        var action = () => Domain.Common.ValueObjects.Token.Token.From(token, expires);
+        var action = () => Token.From(token, expires);
 
         // Assert
         action.Should().Throw<ArgumentException>();
@@ -57,7 +58,7 @@ public class TokenTests
         var expires = DateTimeOffset.UtcNow.AddDays(1);
 
         // Act
-        var action = () => Domain.Common.ValueObjects.Token.Token.From(token, expires);
+        var action = () => Token.From(token, expires);
 
         // Assert
         action.Should().Throw<ArgumentException>();
@@ -70,7 +71,7 @@ public class TokenTests
         var lifetime = TimeSpan.FromDays(1);
 
         // Act
-        var refreshToken = Domain.Common.ValueObjects.Token.Token.Generate(lifetime);
+        var refreshToken = Token.Generate(lifetime);
 
         // Assert
         refreshToken.Should().NotBeNull();
@@ -87,7 +88,7 @@ public class TokenTests
         var lifetime = TimeSpan.FromDays(1);
 
         // Act
-        var refreshToken = Domain.Common.ValueObjects.Token.Token.Generate(lifetime);
+        var refreshToken = Token.Generate(lifetime);
 
         // Assert
         refreshToken.Should().NotBeNull();
@@ -102,7 +103,7 @@ public class TokenTests
         var lifetime = TimeSpan.Zero;
 
         // Act
-        var action = () => Domain.Common.ValueObjects.Token.Token.Generate(lifetime);
+        var action = () => Token.Generate(lifetime);
 
         // Assert
         action.Should().Throw<ArgumentException>();
@@ -112,7 +113,7 @@ public class TokenTests
     public void Token_ShouldReturnTrue_WhenIsExpiredIsCalled()
     {
         // Arrange
-        var token = Domain.Common.ValueObjects.Token.Token.Generate(TimeSpan.FromDays(1));
+        var token = Token.Generate(TimeSpan.FromDays(1));
 
         // Act
         var result = token.IsExpired;
@@ -125,7 +126,7 @@ public class TokenTests
     public void Token_ShouldReturnTrue_WhenValidateTokenWithTokenIsValid()
     {
         // Arrange
-        var token = Domain.Common.ValueObjects.Token.Token.Generate(TimeSpan.FromDays(1));
+        var token = Token.Generate(TimeSpan.FromDays(1));
 
         // Act
         var result = token.Validate(token.Value);
@@ -138,7 +139,7 @@ public class TokenTests
     public void Token_ShouldReturnFalse_WhenValidateTokenWithTokenIsNotValid()
     {
         // Arrange
-        var token = Domain.Common.ValueObjects.Token.Token.Generate(TimeSpan.FromDays(1));
+        var token = Token.Generate(TimeSpan.FromDays(1));
         const string invalidToken = "invalidToken";
 
         // Act

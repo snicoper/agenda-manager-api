@@ -1,20 +1,21 @@
 ﻿using AgendaManager.Domain.Calendars.Exceptions;
+using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.TestCommon.Constants;
 using FluentAssertions;
 
-namespace AgendaManager.Domain.UnitTests.Common.ValueObjects.IanaTimeZone;
+namespace AgendaManager.Domain.UnitTests.Common.ValueObjects.IanaTimeZoneTests;
 
 public class IanaTimeZoneTests
 {
     [Theory]
-    [InlineData(IanaTimeZoneConstants.UTC)]
+    [InlineData(IanaTimeZoneConstants.Utc)]
     [InlineData(IanaTimeZoneConstants.AsiaTokyo)]
     [InlineData(IanaTimeZoneConstants.EuropeMadrid)]
     [InlineData(IanaTimeZoneConstants.AmericaNewYork)]
     public void IanaTimeZone_FromIana_ShouldCreate_WhenValidTimeZone(string validIanaId)
     {
         // Act
-        var timeZone = Domain.Calendars.ValueObjects.IanaTimeZone.FromIana(validIanaId);
+        var timeZone = IanaTimeZone.FromIana(validIanaId);
 
         // Assert
         timeZone.Value.Should().Be(validIanaId);
@@ -25,7 +26,7 @@ public class IanaTimeZoneTests
     public void IanaTimeZone_FromIana_ShouldThrowException_WhenValueIsNull()
     {
         // Act
-        var action = () => Domain.Calendars.ValueObjects.IanaTimeZone.FromIana(null!);
+        var action = () => IanaTimeZone.FromIana(null!);
 
         // Assert
         action.Should().Throw<ArgumentNullException>();
@@ -38,7 +39,7 @@ public class IanaTimeZoneTests
     public void IanaTimeZone_FromIana_ShouldThrowException_WhenValueIsInvalid(string invalidTimeZone)
     {
         // Act
-        var action = () => Domain.Calendars.ValueObjects.IanaTimeZone.FromIana(invalidTimeZone);
+        var action = () => IanaTimeZone.FromIana(invalidTimeZone);
 
         // Assert
         action.Should().Throw<CalendarSettingsException>();
@@ -48,7 +49,7 @@ public class IanaTimeZoneTests
     public void IanaTimeZone_FromTimeZoneInfo_ShouldThrowException_WhenValueIsNull()
     {
         // Act
-        var action = () => Domain.Calendars.ValueObjects.IanaTimeZone.FromTimeZoneInfo(null!);
+        var action = () => IanaTimeZone.FromTimeZoneInfo(null!);
 
         // Assert
         action.Should().Throw<ArgumentNullException>();
@@ -62,7 +63,7 @@ public class IanaTimeZoneTests
             OperatingSystem.IsWindows() ? IanaTimeZoneConstants.ValidWindows : IanaTimeZoneConstants.EuropeMadrid);
 
         // Act
-        var timeZone = Domain.Calendars.ValueObjects.IanaTimeZone.FromTimeZoneInfo(timeZoneInfo);
+        var timeZone = IanaTimeZone.FromTimeZoneInfo(timeZoneInfo);
 
         // Assert
         timeZone.Should().NotBeNull();
@@ -73,8 +74,8 @@ public class IanaTimeZoneTests
     public void IanaTimeZone_ShouldBeEqual_WhenEqualTimeZones()
     {
         // Arrange
-        var timeZone1 = Domain.Calendars.ValueObjects.IanaTimeZone.FromIana(IanaTimeZoneConstants.EuropeMadrid);
-        var timeZone2 = Domain.Calendars.ValueObjects.IanaTimeZone.FromIana(IanaTimeZoneConstants.EuropeMadrid);
+        var timeZone1 = IanaTimeZone.FromIana(IanaTimeZoneConstants.EuropeMadrid);
+        var timeZone2 = IanaTimeZone.FromIana(IanaTimeZoneConstants.EuropeMadrid);
 
         // Assert
         timeZone1.Should().Be(timeZone2);
@@ -85,8 +86,8 @@ public class IanaTimeZoneTests
     public void IanaTimeZone_ShouldNotBeEqual_WhenDifferentTimeZones()
     {
         // Arrange
-        var timeZone1 = Domain.Calendars.ValueObjects.IanaTimeZone.FromIana(IanaTimeZoneConstants.EuropeMadrid);
-        var timeZone2 = Domain.Calendars.ValueObjects.IanaTimeZone.FromIana(IanaTimeZoneConstants.EuropeLondon);
+        var timeZone1 = IanaTimeZone.FromIana(IanaTimeZoneConstants.EuropeMadrid);
+        var timeZone2 = IanaTimeZone.FromIana(IanaTimeZoneConstants.EuropeLondon);
 
         // Assert
         timeZone1.Should().NotBe(timeZone2);
@@ -97,10 +98,10 @@ public class IanaTimeZoneTests
     public void IanaTimeZone_Should_HandleUtcCorrectly()
     {
         // Arrange & Act
-        var timeZone = Domain.Calendars.ValueObjects.IanaTimeZone.FromIana(IanaTimeZoneConstants.UTC);
+        var timeZone = IanaTimeZone.FromIana(IanaTimeZoneConstants.Utc);
 
         // Assert
-        timeZone.Value.Should().Be(IanaTimeZoneConstants.UTC);
+        timeZone.Value.Should().Be(IanaTimeZoneConstants.Utc);
         timeZone.Info.BaseUtcOffset.Should().Be(TimeSpan.Zero);
     }
 
@@ -116,7 +117,7 @@ public class IanaTimeZoneTests
         var windowsTimeZone = TimeZoneInfo.FindSystemTimeZoneById(IanaTimeZoneConstants.ValidWindows);
 
         // Act
-        var timeZone = Domain.Calendars.ValueObjects.IanaTimeZone.FromTimeZoneInfo(windowsTimeZone);
+        var timeZone = IanaTimeZone.FromTimeZoneInfo(windowsTimeZone);
 
         // Assert
         timeZone.Should().NotBeNull();

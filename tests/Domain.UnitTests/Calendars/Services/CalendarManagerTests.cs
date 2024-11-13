@@ -5,6 +5,7 @@ using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.Services;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
+using AgendaManager.TestCommon.Constants;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 using NSubstitute;
@@ -46,7 +47,7 @@ public class CalendarManagerTests
         await Assert.ThrowsAsync<CalendarDomainException>(
             () => _sut.CreateCalendarAsync(
                 calendarId: CalendarId.Create(),
-                ianaTimeZone: IanaTimeZone.FromIana("Europe/Madrid"),
+                ianaTimeZone: IanaTimeZone.FromIana(IanaTimeZoneConstants.EuropeMadrid),
                 name: name,
                 description: "Description of my calendar",
                 HolidayCreationStrategy.CancelOverlapping,
@@ -65,7 +66,7 @@ public class CalendarManagerTests
         await Assert.ThrowsAsync<CalendarDomainException>(
             () => _sut.CreateCalendarAsync(
                 calendarId: CalendarId.Create(),
-                ianaTimeZone: IanaTimeZone.FromIana("Europe/Madrid"),
+                ianaTimeZone: IanaTimeZone.FromIana(IanaTimeZoneConstants.EuropeMadrid),
                 name: "My calendar",
                 description: description,
                 HolidayCreationStrategy.CancelOverlapping,
@@ -124,7 +125,7 @@ public class CalendarManagerTests
 
         var result = await _sut.CreateCalendarAsync(
             calendarId: calendar.Id,
-            ianaTimeZone: IanaTimeZone.FromIana("Europe/Madrid"),
+            ianaTimeZone: IanaTimeZone.FromIana(IanaTimeZoneConstants.EuropeMadrid),
             name: calendar.Name,
             description: calendar.Description,
             HolidayCreationStrategy.CancelOverlapping,

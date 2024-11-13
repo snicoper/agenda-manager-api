@@ -14,8 +14,8 @@ public abstract class BaseIntegrationTest(IntegrationTestWebAppFactory factory)
 
     protected async Task<HttpClient> CreateClientWithLoginAsync(string? email = null, string? password = null)
     {
-        email ??= Users.UserAlice.Email.Value;
-        password ??= Users.UserAlice.RawPassword;
+        email ??= UserConstants.UserAlice.Email.Value;
+        password ??= UserConstants.UserAlice.RawPassword;
 
         var result = await HttpClient.PostAsJsonAsync(Enpoints.Authentication.Login, new LoginCommand(email, password));
         var response = await result.Content.ReadFromJsonAsync<Result<TokenResult>>();

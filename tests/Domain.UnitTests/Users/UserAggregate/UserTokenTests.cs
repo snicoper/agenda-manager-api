@@ -1,4 +1,6 @@
-﻿using AgendaManager.Domain.Users.Events;
+﻿using AgendaManager.Domain.Users;
+using AgendaManager.Domain.Users.Entities;
+using AgendaManager.Domain.Users.Events;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
@@ -6,61 +8,52 @@ namespace AgendaManager.Domain.UnitTests.Users.UserAggregate;
 
 public class UserTokenTests
 {
+    private readonly User _user = UserFactory.CreateUser();
+    private readonly UserToken _userToken = UserTokenFactory.CreateUserToken();
+
     [Fact]
     public void UserToken_ShouldAdded_WhenUserTokenIsAddedToUser()
     {
-        // Arrange
-        var user = UserFactory.CreateUserAlice();
-        var userToken = UserTokenFactory.CreateUserToken();
-
         // Act
-        user.AddUserToken(userToken);
+        _user.AddUserToken(_userToken);
 
         // Assert
-        user.Tokens.Should().Contain(userToken);
+        _user.Tokens.Should().Contain(_userToken);
     }
 
     [Fact]
     public void UserToken_ShouldRemoved_WhenUserTokenIsRemovedFromUser()
     {
         // Arrange
-        var user = UserFactory.CreateUserAlice();
-        var userToken = UserTokenFactory.CreateUserToken();
-        user.AddUserToken(userToken);
+        _user.AddUserToken(_userToken);
 
         // Act
-        user.RemoveUserToken(userToken);
+        _user.RemoveUserToken(_userToken);
 
         // Assert
-        user.Tokens.Should().NotContain(userToken);
+        _user.Tokens.Should().NotContain(_userToken);
     }
 
     [Fact]
     public void UserToken_ShouldRaiseEvent_WhenUserTokenIsAddedToUser()
     {
-        // Arrange
-        var user = UserFactory.CreateUserAlice();
-        var userToken = UserTokenFactory.CreateUserToken();
-
         // Act
-        user.AddUserToken(userToken);
+        _user.AddUserToken(_userToken);
 
         // Assert
-        user.DomainEvents.Should().Contain(x => x is UserTokenAddedDomainEvent);
+        _user.DomainEvents.Should().Contain(x => x is UserTokenAddedDomainEvent);
     }
 
     [Fact]
     public void UserToken_ShouldRaiseEvent_WhenUserTokenIsRemovedFromUser()
     {
         // Arrange
-        var user = UserFactory.CreateUserAlice();
-        var userToken = UserTokenFactory.CreateUserToken();
-        user.AddUserToken(userToken);
+        _user.AddUserToken(_userToken);
 
         // Act
-        user.RemoveUserToken(userToken);
+        _user.RemoveUserToken(_userToken);
 
         // Assert
-        user.DomainEvents.Should().Contain(x => x is UserTokenRemovedDomainEvent);
+        _user.DomainEvents.Should().Contain(x => x is UserTokenRemovedDomainEvent);
     }
 }

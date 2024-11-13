@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Users.Events;
+﻿using AgendaManager.Domain.Users.Entities;
+using AgendaManager.Domain.Users.Events;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
@@ -6,24 +7,20 @@ namespace AgendaManager.Domain.UnitTests.Users.Entities.Roles;
 
 public class RoleCreateTests
 {
+    private readonly Role _role = RoleFactory.CreateRole();
+
     [Fact]
     public void RoleCreate_ShouldReturnRole_WhenCreated()
     {
-        // Act
-        var role = RoleFactory.CreateRole();
-
         // Assert
-        role.Id.Should().Be(role.Id);
-        role.Name.Should().Be(role.Name);
+        _role.Id.Should().Be(_role.Id);
+        _role.Name.Should().Be(_role.Name);
     }
 
     [Fact]
     public void RoleCreate_ShouldRaiseEvent_WhenCrated()
     {
-        // Arrange
-        var role = RoleFactory.CreateRole();
-
         // Assert
-        role.DomainEvents.Should().Contain(x => x is RoleCreatedDomainEvent);
+        _role.DomainEvents.Should().Contain(x => x is RoleCreatedDomainEvent);
     }
 }

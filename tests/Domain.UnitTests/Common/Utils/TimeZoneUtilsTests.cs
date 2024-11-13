@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Common.Utils;
+using AgendaManager.TestCommon.Constants;
 using FluentAssertions;
 
 namespace AgendaManager.Domain.UnitTests.Common.Utils;
@@ -6,9 +7,9 @@ namespace AgendaManager.Domain.UnitTests.Common.Utils;
 public class TimeZoneUtilsTests
 {
     [Theory]
-    [InlineData("Europe/Madrid")]
-    [InlineData("America/New_York")]
-    [InlineData("UTC")]
+    [InlineData(IanaTimeZoneConstants.EuropeMadrid)]
+    [InlineData(IanaTimeZoneConstants.AmericaNewYork)]
+    [InlineData(IanaTimeZoneConstants.Utc)]
     public void GetTimeZoneInfoFromIana_ShouldWork_WithValidIds(string ianaId)
     {
         // Act
@@ -20,8 +21,8 @@ public class TimeZoneUtilsTests
     }
 
     [Theory]
-    [InlineData("Invalid/TimeZone")]
-    [InlineData("NotATimeZone")]
+    [InlineData(IanaTimeZoneConstants.InvalidTimeZone)]
+    [InlineData(IanaTimeZoneConstants.NotATimeZone)]
     public void GetTimeZoneInfoFromIana_ShouldFail_WithInvalidIds(string invalidId)
     {
         // Act
@@ -37,7 +38,7 @@ public class TimeZoneUtilsTests
     {
         // Arrange
         TimeZoneUtils.ClearCache();
-        const string ianaId = "Europe/Madrid";
+        const string ianaId = IanaTimeZoneConstants.EuropeMadrid;
 
         // Act
         var result1 = TimeZoneUtils.GetTimeZoneInfoFromIana(ianaId);

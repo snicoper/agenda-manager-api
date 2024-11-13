@@ -2,7 +2,7 @@
 
 namespace AgendaManager.TestCommon.Constants;
 
-public static class Resources
+public static class ResourceConstants
 {
     public static readonly ResourceId Id = ResourceId.Create();
 }

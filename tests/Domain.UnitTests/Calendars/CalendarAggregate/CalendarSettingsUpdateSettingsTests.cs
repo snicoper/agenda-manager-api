@@ -10,7 +10,7 @@ public class CalendarSettingsUpdateSettingsTests
     [Theory]
     [InlineData(IanaTimeZoneConstants.AmericaNewYork)]
     [InlineData(IanaTimeZoneConstants.EuropeMadrid)]
-    [InlineData(IanaTimeZoneConstants.UTC)]
+    [InlineData(IanaTimeZoneConstants.Utc)]
     public void SettingsUpdate_ShouldSuccessfully_WhenUpdateSettings(string newTimeZone)
     {
         // Arrange

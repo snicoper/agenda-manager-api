@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Users.Events;
+﻿using AgendaManager.Domain.Users.Entities;
+using AgendaManager.Domain.Users.Events;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
@@ -6,15 +7,16 @@ namespace AgendaManager.Domain.UnitTests.Users.Entities.UserTokens;
 
 public class UserTokenConsume
 {
+    private readonly UserToken _userToken = UserTokenFactory.CreateUserToken();
+
     [Fact]
     public void UserToken_ShouldReturnSuccess_WhenTokenInvalid()
     {
         // Arrange
-        var userToken = UserTokenFactory.CreateUserToken();
-        var token = userToken.Token.Value;
+        var token = _userToken.Token.Value;
 
         // Act
-        var result = userToken.Consume(token);
+        var result = _userToken.Consume(token);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -24,11 +26,10 @@ public class UserTokenConsume
     public void UserToken_ShouldReturnFailureInvalidToken_WhenTokenIsInvalid()
     {
         // Arrange
-        var userToken = UserTokenFactory.CreateUserToken();
         const string token = "Invalid token";
 
         // Act
-        var result = userToken.Consume(token);
+        var result = _userToken.Consume(token);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -39,13 +40,12 @@ public class UserTokenConsume
     public void UserToken_ShouldRaiseEvent_WhenUserTokenIsConsumed()
     {
         // Arrange
-        var userToken = UserTokenFactory.CreateUserToken();
-        var token = userToken.Token.Value;
+        var token = _userToken.Token.Value;
 
         // Act
-        userToken.Consume(token);
+        _userToken.Consume(token);
 
         // Assert
-        userToken.DomainEvents.Should().Contain(x => x is UserTokenConsumedDomainEvent);
+        _userToken.DomainEvents.Should().Contain(x => x is UserTokenConsumedDomainEvent);
     }
 }

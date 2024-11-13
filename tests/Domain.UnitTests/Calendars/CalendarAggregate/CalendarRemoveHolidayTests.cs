@@ -1,4 +1,6 @@
-﻿using AgendaManager.Domain.Calendars.Events;
+﻿using AgendaManager.Domain.Calendars;
+using AgendaManager.Domain.Calendars.Entities;
+using AgendaManager.Domain.Calendars.Events;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
@@ -6,32 +8,27 @@ namespace AgendaManager.Domain.UnitTests.Calendars.CalendarAggregate;
 
 public class CalendarRemoveHolidayTests
 {
+    private readonly Calendar _calendar = CalendarFactory.CreateCalendar();
+    private readonly CalendarHoliday _holiday = CalendarHolidayFactory.CreateCalendarHoliday();
+
     [Fact]
     public void RemoveHoliday_ShouldRemoveHoliday_WhenHolidayIsRemoved()
     {
-        // Arrange
-        var calendar = CalendarFactory.CreateCalendar();
-        var holiday = CalendarHolidayFactory.CreateCalendarHoliday();
-
         // Act
-        calendar.AddHoliday(holiday);
-        calendar.RemoveHoliday(holiday);
+        _calendar.AddHoliday(_holiday);
+        _calendar.RemoveHoliday(_holiday);
 
         // Assert
-        calendar.Holidays.Should().NotContain(holiday);
+        _calendar.Holidays.Should().NotContain(_holiday);
     }
 
     [Fact]
     public void RemoveHoliday_ShouldRaiseEvent_WhenHolidayIsRemoved()
     {
-        // Arrange
-        var calendar = CalendarFactory.CreateCalendar();
-        var holiday = CalendarHolidayFactory.CreateCalendarHoliday();
-
         // Act
-        calendar.RemoveHoliday(holiday);
+        _calendar.RemoveHoliday(_holiday);
 
         // Assert
-        calendar.DomainEvents.Should().Contain(x => x is CalendarHolidayRemovedDomainEvent);
+        _calendar.DomainEvents.Should().Contain(x => x is CalendarHolidayRemovedDomainEvent);
     }
 }

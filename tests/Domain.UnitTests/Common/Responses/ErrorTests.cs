@@ -203,7 +203,7 @@ public class ErrorTests
     }
 
     [Fact]
-    public void Error__ShouldHasErrorsReturnTrue_WhenCodeContainsErrors()
+    public void Error_ShouldHasErrorsReturnTrue_WhenCodeContainsErrors()
     {
         // Act
         var error = Error.Forbidden();

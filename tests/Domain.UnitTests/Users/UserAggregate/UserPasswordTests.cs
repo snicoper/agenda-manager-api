@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.ValueObjects;
+using AgendaManager.TestCommon.Constants;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
@@ -14,7 +15,7 @@ public class UserPasswordTests
         var user = UserFactory.CreateUserBob();
         var passwordHashed = UserFactory
             .BcryptPasswordHasher
-            .HashPassword(TestCommon.Constants.Users.UserAlice.RawPassword);
+            .HashPassword(UserConstants.UserAlice.RawPassword);
         var passwordHash = PasswordHash.FromHashed(passwordHashed);
 
         // Act
