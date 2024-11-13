@@ -15,7 +15,7 @@ public class CalendarHolidayManager(
     ICalendarSettingsRepository calendarSettingsRepository,
     IAppointmentRepository appointmentRepository)
 {
-    private async Task<Result<CalendarHoliday>> CreateHolidayAsync(
+    public async Task<Result<CalendarHoliday>> CreateHolidayAsync(
         CalendarId calendarId,
         Period period,
         WeekDays weekDays,
@@ -40,8 +40,12 @@ public class CalendarHolidayManager(
                 case HolidayCreationStrategy.RejectIfOverlapping:
                     return CalendarHolidayErrors.CreateOverlappingReject;
                 case HolidayCreationStrategy.CancelOverlapping:
-                    // TODO: Implement this strategy
-                    // Marcar los appointments como cancelados.
+                    // TODO: Implement this strategy when Appointment domain is developed
+                    // Unit tests for CancelOverlapping strategy are required.
+                    // See: CalendarHolidayManagerTests
+                    // Will require:
+                    // - Appointment cancellation logic
+                    // - Notification system for affected users
                     break;
                 case HolidayCreationStrategy.AllowOverlapping:
                     // Continuar con la creación del holiday.

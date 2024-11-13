@@ -14,6 +14,9 @@ namespace AgendaManager.WebApi.Controllers.Authentication;
 [Route("api/v{version:apiVersion}/authentication")]
 public class AuthController : ApiControllerBase
 {
+    /// <summary>
+    /// Authenticates the user.
+    /// </summary>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpPost("login")]
@@ -25,6 +28,9 @@ public class AuthController : ApiControllerBase
         return result.ToActionResult();
     }
 
+    /// <summary>
+    /// Refreshes the user's token.
+    /// </summary>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpPost("refresh-token")]
