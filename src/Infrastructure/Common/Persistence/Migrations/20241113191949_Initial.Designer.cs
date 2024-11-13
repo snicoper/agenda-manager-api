@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241113174138_Initial")]
+    [Migration("20241113191949_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -323,8 +323,8 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -345,6 +345,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.HasIndex("RoleId");
 
@@ -896,7 +899,8 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 {
                     b.HasOne("AgendaManager.Domain.Users.Entities.Role", "Role")
                         .WithMany()
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Role");
                 });

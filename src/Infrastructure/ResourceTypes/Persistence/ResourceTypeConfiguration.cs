@@ -14,6 +14,9 @@ public class ResourceTypeConfiguration : IEntityTypeConfiguration<ResourceType>
 
         builder.HasKey(rt => rt.Id);
 
+        builder.HasIndex(rt => rt.Name)
+            .IsUnique();
+
         builder.Property(rt => rt.Id)
             .HasConversion(
                 id => id.Value,
@@ -23,14 +26,21 @@ public class ResourceTypeConfiguration : IEntityTypeConfiguration<ResourceType>
         builder.Property(rt => rt.RoleId)
             .HasConversion(
                 id => id != null ? id.Value : (Guid?)null,
-                value => value != null ? RoleId.From((Guid)value) : null);
+                value => value != null ? RoleId.From((Guid)value) : null)
+            .IsRequired(false);
+
+        builder.HasOne(rt => rt.Role)
+            .WithMany()
+            .HasForeignKey(rt => rt.RoleId)
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired(false);
 
         builder.Property(rt => rt.Name)
             .HasMaxLength(50)
             .IsRequired();
 
         builder.Property(rt => rt.Description)
-            .HasMaxLength(100)
+            .HasMaxLength(500)
             .IsRequired();
 
         builder.HasMany(rt => rt.Resources)

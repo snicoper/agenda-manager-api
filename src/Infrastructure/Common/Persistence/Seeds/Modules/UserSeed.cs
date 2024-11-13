@@ -17,6 +17,16 @@ public static class UserSeed
         AuthorizationManager authorizationManager,
         List<Role> roles)
     {
+        if (context.Users.Any())
+        {
+            return;
+        }
+
+        if (roles.Count == 0)
+        {
+            throw new Exception("Roles not found for create new users.");
+        }
+
         var passwordHash = passwordHasher.HashPassword("Password4!");
 
         // Admin user.

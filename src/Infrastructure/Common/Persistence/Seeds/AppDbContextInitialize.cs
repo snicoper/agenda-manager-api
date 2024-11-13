@@ -47,9 +47,14 @@ public class AppDbContextInitialize(
 
     private async Task TrySeedAsync()
     {
-        _roles = await RoleSeed.InitializeAsync(context, roleManager);
+        var rolesResult = await RoleSeed.InitializeAsync(context, roleManager);
+
+        // Asegurarse de que los roles se hayan inicializado correctamente en segundas iteraciones.
+        _roles = rolesResult.Count > 0 ? rolesResult : await context.Roles.ToListAsync();
+
         await PermissionSeed.InitializeAsync(context, permissionManager, authorizationManager, _roles);
         await UserSeed.InitializeAsync(context, userManager, passwordHasher, authorizationManager, _roles);
         await CalendarSeed.InitializeAsync(context, serviceProvider);
+        await ResourceTypeSeed.InitializeAsync(context, _roles);
     }
 }

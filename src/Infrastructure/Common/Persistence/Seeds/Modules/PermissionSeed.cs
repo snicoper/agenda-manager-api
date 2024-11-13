@@ -18,6 +18,11 @@ public static class PermissionSeed
             return;
         }
 
+        if (roles.Count == 0)
+        {
+            throw new Exception("Roles not found for create new permissions type");
+        }
+
         // Appointment permissions.
         var appointmentReadPermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),

@@ -202,7 +202,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     RoleId = table.Column<Guid>(type: "uuid", nullable: true),
                     Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: false),
@@ -216,7 +216,8 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         name: "FK_ResourceTypes_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -551,6 +552,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 name: "IX_ResourceSchedules_ResourceId",
                 table: "ResourceSchedules",
                 column: "ResourceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ResourceTypes_Name",
+                table: "ResourceTypes",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ResourceTypes_RoleId",

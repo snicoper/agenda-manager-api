@@ -39,7 +39,7 @@ public sealed class ResourceType : AggregateRoot
 
     public IReadOnlyList<Service> Services => _services.AsReadOnly();
 
-    public static ResourceType Create(ResourceTypeId id, string name, string description, RoleId? roleId)
+    public static ResourceType Create(ResourceTypeId id, string name, string description, RoleId? roleId = null)
     {
         ResourceType resourceType = new(id, name, description, roleId);
 
