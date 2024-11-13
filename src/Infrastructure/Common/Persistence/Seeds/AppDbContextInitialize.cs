@@ -1,6 +1,4 @@
 ﻿using AgendaManager.Domain.Users.Entities;
-using AgendaManager.Domain.Users.Interfaces;
-using AgendaManager.Domain.Users.Services;
 using AgendaManager.Infrastructure.Common.Persistence.Seeds.Modules;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -10,11 +8,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Seeds;
 public class AppDbContextInitialize(
     AppDbContext context,
     IServiceProvider serviceProvider,
-    UserManager userManager,
-    RoleManager roleManager,
-    PermissionManager permissionManager,
-    IPasswordHasher passwordHasher,
-    AuthorizationManager authorizationManager,
     ILogger<AppDbContextInitialize> logger)
 {
     private static List<Role> _roles = [];
@@ -47,14 +40,14 @@ public class AppDbContextInitialize(
 
     private async Task TrySeedAsync()
     {
-        var rolesResult = await RoleSeed.InitializeAsync(context, roleManager);
+        var rolesResult = await RoleSeed.InitializeAsync(context, serviceProvider);
 
         // Asegurarse de que los roles se hayan inicializado correctamente en segundas iteraciones.
         _roles = rolesResult.Count > 0 ? rolesResult : await context.Roles.ToListAsync();
 
-        await PermissionSeed.InitializeAsync(context, permissionManager, authorizationManager, _roles);
-        await UserSeed.InitializeAsync(context, userManager, passwordHasher, authorizationManager, _roles);
+        await PermissionSeed.InitializeAsync(context, serviceProvider, _roles);
+        await UserSeed.InitializeAsync(context, serviceProvider, _roles);
         await CalendarSeed.InitializeAsync(context, serviceProvider);
-        await ResourceTypeSeed.InitializeAsync(context, _roles);
+        await ResourceTypeSeed.InitializeAsync(context, _roles, serviceProvider);
     }
 }

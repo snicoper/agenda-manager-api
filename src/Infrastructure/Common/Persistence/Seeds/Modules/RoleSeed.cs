@@ -2,17 +2,20 @@
 using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.Services;
 using AgendaManager.Domain.Users.ValueObjects;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AgendaManager.Infrastructure.Common.Persistence.Seeds.Modules;
 
 public static class RoleSeed
 {
-    public static async Task<List<Role>> InitializeAsync(AppDbContext context, RoleManager roleManager)
+    public static async Task<List<Role>> InitializeAsync(AppDbContext context, IServiceProvider serviceProvider)
     {
         if (context.Roles.Any())
         {
             return [];
         }
+
+        var roleManager = serviceProvider.GetRequiredService<RoleManager>();
 
         var adminRole = await roleManager.CreateRoleAsync(
             RoleId.Create(),

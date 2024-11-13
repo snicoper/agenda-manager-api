@@ -15,6 +15,13 @@ public class RoleRepository(AppDbContext context) : IRoleRepository
         return role;
     }
 
+    public Task<bool> ExistsByIdAsync(RoleId roleId, CancellationToken cancellationToken)
+    {
+        var exists = context.Roles.AnyAsync(r => r.Id.Equals(roleId), cancellationToken);
+
+        return exists;
+    }
+
     public async Task<Role?> GetByIdWithPermissionsAsync(RoleId roleId, CancellationToken cancellationToken = default)
     {
         var role = await context.Roles

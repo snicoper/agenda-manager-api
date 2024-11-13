@@ -3,6 +3,7 @@ using AgendaManager.Application.Common.Interfaces.Clock;
 using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Domain.Calendars.Interfaces;
+using AgendaManager.Domain.ResourceTypes.Interfaces;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Infrastructure.Calendars.Repositories;
 using AgendaManager.Infrastructure.Common.Clock;
@@ -11,6 +12,7 @@ using AgendaManager.Infrastructure.Common.Persistence.Interceptors;
 using AgendaManager.Infrastructure.Common.Persistence.Seeds;
 using AgendaManager.Infrastructure.Common.Persistence.Services;
 using AgendaManager.Infrastructure.Common.Services.Emails;
+using AgendaManager.Infrastructure.ResourceTypes.Repositories;
 using AgendaManager.Infrastructure.Users.Authentication;
 using AgendaManager.Infrastructure.Users.Persistence.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -71,6 +73,9 @@ public static class DependencyInjection
 
         // Calendars.
         services.AddScoped<ICalendarRepository, CalendarRepository>();
+
+        // ResourceTypes.
+        services.AddScoped<IResourceTypeRepository, ResourceTypeRepository>();
     }
 
     private static void AddDatabase(

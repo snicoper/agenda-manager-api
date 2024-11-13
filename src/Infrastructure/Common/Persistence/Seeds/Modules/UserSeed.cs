@@ -5,17 +5,13 @@ using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.Services;
 using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AgendaManager.Infrastructure.Common.Persistence.Seeds.Modules;
 
 public static class UserSeed
 {
-    public static async Task InitializeAsync(
-        AppDbContext context,
-        UserManager userManager,
-        IPasswordHasher passwordHasher,
-        AuthorizationManager authorizationManager,
-        List<Role> roles)
+    public static async Task InitializeAsync(AppDbContext context, IServiceProvider serviceProvider, List<Role> roles)
     {
         if (context.Users.Any())
         {
@@ -26,6 +22,10 @@ public static class UserSeed
         {
             throw new Exception("Roles not found for create new users.");
         }
+
+        var userManager = serviceProvider.GetRequiredService<UserManager>();
+        var passwordHasher = serviceProvider.GetRequiredService<IPasswordHasher>();
+        var authorizationManager = serviceProvider.GetRequiredService<AuthorizationManager>();
 
         var passwordHash = passwordHasher.HashPassword("Password4!");
 

@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Calendars.Services;
+using AgendaManager.Domain.ResourceTypes.Services;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,7 @@ public static class DependencyInjection
     {
         services.AddUsers();
         services.AddCalendars();
+        services.AddResourceTypes();
 
         return services;
     }
@@ -28,5 +30,10 @@ public static class DependencyInjection
     private static void AddCalendars(this IServiceCollection services)
     {
         services.AddScoped<CalendarManager>();
+    }
+
+    private static void AddResourceTypes(this IServiceCollection services)
+    {
+        services.AddScoped<ResourceTypeManager>();
     }
 }

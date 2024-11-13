@@ -2,16 +2,13 @@
 using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.Services;
 using AgendaManager.Domain.Users.ValueObjects;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AgendaManager.Infrastructure.Common.Persistence.Seeds.Modules;
 
 public static class PermissionSeed
 {
-    public static async Task InitializeAsync(
-        AppDbContext context,
-        PermissionManager permissionManager,
-        AuthorizationManager authorizationManager,
-        List<Role> roles)
+    public static async Task InitializeAsync(AppDbContext context, IServiceProvider serviceProvider, List<Role> roles)
     {
         if (context.Permissions.Any())
         {
@@ -22,6 +19,9 @@ public static class PermissionSeed
         {
             throw new Exception("Roles not found for create new permissions type");
         }
+
+        var permissionManager = serviceProvider.GetRequiredService<PermissionManager>();
+        var authorizationManager = serviceProvider.GetRequiredService<AuthorizationManager>();
 
         // Appointment permissions.
         var appointmentReadPermission = await permissionManager.CreatePermissionAsync(

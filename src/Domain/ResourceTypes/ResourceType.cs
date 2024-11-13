@@ -1,6 +1,7 @@
 ﻿using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Resources;
 using AgendaManager.Domain.ResourceTypes.Events;
+using AgendaManager.Domain.ResourceTypes.Exceptions;
 using AgendaManager.Domain.ResourceTypes.ValueObjects;
 using AgendaManager.Domain.Services;
 using AgendaManager.Domain.Users.Entities;
@@ -19,6 +20,9 @@ public sealed class ResourceType : AggregateRoot
 
     private ResourceType(ResourceTypeId id, string name, string description, RoleId? roleId)
     {
+        GuardAgainstInvalidName(name);
+        GuardAgainstInvalidDescription(description);
+
         Id = id;
         RoleId = roleId;
         Name = name;
@@ -39,12 +43,48 @@ public sealed class ResourceType : AggregateRoot
 
     public IReadOnlyList<Service> Services => _services.AsReadOnly();
 
-    public static ResourceType Create(ResourceTypeId id, string name, string description, RoleId? roleId = null)
+    internal static ResourceType Create(ResourceTypeId id, string name, string description, RoleId? roleId = null)
     {
         ResourceType resourceType = new(id, name, description, roleId);
 
         resourceType.AddDomainEvent(new ResourceTypeCreatedDomainEvent(resourceType));
 
         return resourceType;
+    }
+
+    internal void Update(string name, string description)
+    {
+        GuardAgainstInvalidName(name);
+        GuardAgainstInvalidDescription(description);
+
+        if (Name == name && Description == description)
+        {
+            return;
+        }
+
+        Name = name;
+        Description = description;
+
+        AddDomainEvent(new ResourceTypeUpdatedDomainEvent(Id));
+    }
+
+    private static void GuardAgainstInvalidName(string name)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+
+        if (string.IsNullOrWhiteSpace(name) || name.Length > 50)
+        {
+            throw new ResourceTypeDomainException("Name is empty or exceeds length of 50 characters.");
+        }
+    }
+
+    private static void GuardAgainstInvalidDescription(string description)
+    {
+        ArgumentNullException.ThrowIfNull(description);
+
+        if (string.IsNullOrWhiteSpace(description) || description.Length > 500)
+        {
+            throw new ResourceTypeDomainException("Description is invalid or exceeds length of 50 characters.");
+        }
     }
 }
