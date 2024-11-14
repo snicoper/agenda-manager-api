@@ -7,7 +7,7 @@ using AgendaManager.Domain.Resources.ValueObjects;
 using AgendaManager.Domain.ResourceTypes.ValueObjects;
 using AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.Domain.Resources.Managers;
+namespace AgendaManager.Domain.Resources.Services;
 
 public class ResourceManager(IResourceRepository resourceRepository)
 {

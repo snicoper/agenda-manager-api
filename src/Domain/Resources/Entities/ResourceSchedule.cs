@@ -51,6 +51,5 @@ public sealed class ResourceSchedule : AggregateRoot
 
     internal void Update()
     {
-        throw new NotImplementedException();
     }
 }
