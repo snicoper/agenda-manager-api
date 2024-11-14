@@ -1,6 +1,5 @@
 using System.Globalization;
 using System.Text;
-using AgendaManager.Domain.Common.Constants;
 using DomainRegex = AgendaManager.Domain.Common.Utils.DomainRegex;
 
 namespace AgendaManager.Domain.Common.Extensions;
@@ -9,14 +8,14 @@ public static class StringExtensions
 {
     public static string ToLowerFirstLetter(this string value)
     {
-        var result = string.IsNullOrEmpty(value) ? value : $"{value[..1].ToLower()}{value[1..]}";
+        var result = string.IsNullOrWhiteSpace(value) ? value : $"{value[..1].ToLower()}{value[1..]}";
 
         return result;
     }
 
     public static string ToUpperFirstLetter(this string value)
     {
-        var result = string.IsNullOrEmpty(value) ? value : $"{value[..1].ToUpper()}{value[1..]}";
+        var result = string.IsNullOrWhiteSpace(value) ? value : $"{value[..1].ToUpper()}{value[1..]}";
 
         return result;
     }
@@ -27,7 +26,7 @@ public static class StringExtensions
             .Select(part => part.ToUpperFirstLetter())
             .ToList();
 
-        var result = string.IsNullOrEmpty(value) ? value : string.Join(" ", parts);
+        var result = string.IsNullOrWhiteSpace(value) ? value : string.Join(" ", parts);
 
         return result;
     }

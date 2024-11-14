@@ -31,6 +31,7 @@ public sealed class EmailAddress : ValueObject
 
     private bool IsValid()
     {
-        return !(string.IsNullOrEmpty(Value) || Value.Length > 256 || DomainRegex.ValidEmail().IsMatch(Value) is false);
+        return !(string.IsNullOrWhiteSpace(Value) || Value.Length > 256 ||
+                 DomainRegex.ValidEmail().IsMatch(Value) is false);
     }
 }

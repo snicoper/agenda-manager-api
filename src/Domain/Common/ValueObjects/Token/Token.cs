@@ -55,7 +55,7 @@ public sealed class Token : ValueObject
 
     private static void GuardAgainstToken(string token)
     {
-        if (string.IsNullOrEmpty(token) || token.Length > TokenLength)
+        if (string.IsNullOrWhiteSpace(token) || token.Length > TokenLength)
         {
             throw new ArgumentException(
                 $"Value cannot be null, whitespace or greater than {TokenLength} characters.",

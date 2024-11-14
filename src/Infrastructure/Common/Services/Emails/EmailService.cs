@@ -94,12 +94,12 @@ public class EmailService : IEmailService
             throw new EmailSenderException("The value cannot be an empty string. (Parameter 'To')");
         }
 
-        if (string.IsNullOrEmpty(Subject))
+        if (string.IsNullOrWhiteSpace(Subject))
         {
             throw new EmailSenderException("The value cannot be an empty string. (Parameter 'Subject')");
         }
 
-        if (string.IsNullOrEmpty(Body))
+        if (string.IsNullOrWhiteSpace(Body))
         {
             throw new EmailSenderException("The value cannot be an empty string. (Parameter 'Body')");
         }
