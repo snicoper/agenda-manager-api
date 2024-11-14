@@ -59,8 +59,6 @@ public sealed class CalendarSettings : AuditableEntity
 
         IanaTimeZone = ianaTimeZone;
         HolidayCreationStrategy = holidayCreationStrategy;
-
-        AddDomainEvent(new CalendarSettingsUpdatedDomainEvent(Id, CalendarId));
     }
 
     internal bool HasChanges(IanaTimeZone ianaTimeZone, HolidayCreationStrategy holidayCreationStrategy)
