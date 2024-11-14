@@ -65,7 +65,8 @@ public class ResourceScheduleConfiguration : IEntityTypeConfiguration<ResourceSc
             .IsRequired();
 
         builder.Property(rs => rs.Description)
-            .HasMaxLength(500)
-            .IsRequired();
+            .HasMaxLength(500);
+
+        builder.Property(rs => rs.IsActive);
     }
 }

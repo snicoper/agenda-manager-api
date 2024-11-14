@@ -3,6 +3,8 @@ using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects.ColorScheme;
+using AgendaManager.Domain.Common.ValueObjects.Period;
+using AgendaManager.Domain.Common.WekDays;
 using AgendaManager.Domain.Resources.Entities;
 using AgendaManager.Domain.Resources.Errors;
 using AgendaManager.Domain.Resources.Events;
@@ -114,7 +116,12 @@ public sealed class Resource : AggregateRoot
         AddDomainEvent(new ResourceDeactivatedDomainEvent(Id));
     }
 
-    public Result UpdateSchedule(ResourceScheduleId scheduleId)
+    public Result UpdateSchedule(
+        ResourceScheduleId scheduleId,
+        Period period,
+        string name,
+        string? description,
+        WeekDays availableDays)
     {
         var schedule = _schedules.FirstOrDefault(r => r.Id == scheduleId);
 
@@ -123,10 +130,44 @@ public sealed class Resource : AggregateRoot
             return ResourceScheduleErrors.NotFound;
         }
 
-        // TODO: Update schedule
-        schedule.Update();
+        if (schedule.Update(period, name, description, availableDays))
+        {
+            AddDomainEvent(new ResourceScheduleUpdatedDomainEvent(Id, scheduleId));
+        }
 
-        AddDomainEvent(new ResourceScheduleUpdatedDomainEvent(Id, scheduleId));
+        return Result.Success();
+    }
+
+    public Result ActiveSchedule(ResourceScheduleId scheduleId)
+    {
+        var schedule = _schedules.FirstOrDefault(r => r.Id == scheduleId);
+
+        if (schedule is null)
+        {
+            return ResourceScheduleErrors.NotFound;
+        }
+
+        if (schedule.Activate())
+        {
+            AddDomainEvent(new ResourceScheduleActivatedDomainEvent(scheduleId));
+        }
+
+        return Result.Success();
+    }
+
+    public Result DeactivateSchedule(ResourceScheduleId scheduleId)
+    {
+        var schedule = _schedules.FirstOrDefault(r => r.Id == scheduleId);
+
+        if (schedule is null)
+        {
+            return ResourceScheduleErrors.NotFound;
+        }
+
+        if (schedule.Deactivate())
+        {
+            AddDomainEvent(new ResourceScheduleDeactivatedDomainEvent(scheduleId));
+        }
 
         return Result.Success();
     }
