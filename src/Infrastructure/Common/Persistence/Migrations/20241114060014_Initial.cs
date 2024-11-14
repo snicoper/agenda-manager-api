@@ -354,6 +354,8 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     TextColor = table.Column<string>(type: "character varying(6)", maxLength: 6, nullable: false),
                     BackgroundColor = table.Column<string>(type: "character varying(6)", maxLength: 6, nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
+                    DeactivationReason = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: false),

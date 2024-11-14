@@ -48,4 +48,9 @@ public sealed class ResourceSchedule : AggregateRoot
 
         return resourceSchedule;
     }
+
+    internal void Update()
+    {
+        throw new NotImplementedException();
+    }
 }

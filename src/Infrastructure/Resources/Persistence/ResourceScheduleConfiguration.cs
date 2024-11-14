@@ -27,7 +27,7 @@ public class ResourceScheduleConfiguration : IEntityTypeConfiguration<ResourceSc
             .IsRequired();
 
         builder.HasOne(rs => rs.Resource)
-            .WithMany()
+            .WithMany(r => r.Schedules)
             .HasForeignKey(rs => rs.ResourceId)
             .OnDelete(DeleteBehavior.Restrict);
 

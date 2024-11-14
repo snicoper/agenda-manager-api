@@ -16,8 +16,8 @@ public enum AppointmentStatus
     [Display(Name = "Cancelled")]
     Cancelled = 5,
 
-    [Display(Name = "PendingReschedule")]
-    PendingReschedule = 6,
+    [Display(Name = "RequiresRescheduling")]
+    RequiresRescheduling = 6,
 
     [Display(Name = "InProgress")]
     InProgress = 7,

@@ -76,5 +76,15 @@ public class ResourceConfiguration : IEntityTypeConfiguration<Resource>
                     .HasMaxLength(6)
                     .IsRequired();
             });
+
+        builder.Property(r => r.IsActive);
+
+        builder.Property(r => r.DeactivationReason)
+            .HasMaxLength(256);
+
+        builder.HasMany(r => r.Schedules)
+            .WithOne(s => s.Resource)
+            .HasForeignKey(s => s.ResourceId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

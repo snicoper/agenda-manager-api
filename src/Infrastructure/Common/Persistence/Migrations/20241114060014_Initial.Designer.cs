@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241113191949_Initial")]
+    [Migration("20241114060014_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -422,10 +422,17 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("DeactivationReason")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -914,7 +921,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired();
 
                     b.HasOne("AgendaManager.Domain.Resources.Resource", "Resource")
-                        .WithMany()
+                        .WithMany("Schedules")
                         .HasForeignKey("ResourceId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1171,6 +1178,11 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
             modelBuilder.Entity("AgendaManager.Domain.ResourceTypes.ResourceType", b =>
                 {
                     b.Navigation("Resources");
+                });
+
+            modelBuilder.Entity("AgendaManager.Domain.Resources.Resource", b =>
+                {
+                    b.Navigation("Schedules");
                 });
 
             modelBuilder.Entity("AgendaManager.Domain.Users.User", b =>
