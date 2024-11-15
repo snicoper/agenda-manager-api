@@ -87,6 +87,24 @@ public sealed class ResourceSchedule : AggregateRoot
         return resourceSchedule;
     }
 
+    internal bool Update(Period period, string name, string? description, WeekDays availableDays)
+    {
+        if (!HasChanges(period, name, description, availableDays))
+        {
+            return false;
+        }
+
+        GuardAgainstInvalidName(name);
+        GuardAgainstInvalidDescription(description);
+
+        Period = period;
+        Name = name;
+        Description = description;
+        AvailableDays = availableDays;
+
+        return true;
+    }
+
     internal bool Activate()
     {
         if (IsActive)
@@ -107,24 +125,6 @@ public sealed class ResourceSchedule : AggregateRoot
         }
 
         IsActive = false;
-
-        return true;
-    }
-
-    internal bool Update(Period period, string name, string? description, WeekDays availableDays)
-    {
-        if (!HasChanges(period, name, description, availableDays))
-        {
-            return false;
-        }
-
-        GuardAgainstInvalidName(name);
-        GuardAgainstInvalidDescription(description);
-
-        Period = period;
-        Name = name;
-        Description = description;
-        AvailableDays = availableDays;
 
         return true;
     }
