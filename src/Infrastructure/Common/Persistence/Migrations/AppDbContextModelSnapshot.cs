@@ -370,7 +370,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
@@ -795,13 +794,13 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                             b1.Property<Guid>("AppointmentId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<DateTimeOffset>("EndDate")
+                            b1.Property<DateTimeOffset>("End")
                                 .HasColumnType("timestamp with time zone")
-                                .HasColumnName("EndDate");
+                                .HasColumnName("End");
 
-                            b1.Property<DateTimeOffset>("StartDate")
+                            b1.Property<DateTimeOffset>("Start")
                                 .HasColumnType("timestamp with time zone")
-                                .HasColumnName("StartDate");
+                                .HasColumnName("Start");
 
                             b1.HasKey("AppointmentId");
 
@@ -834,13 +833,13 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                             b1.Property<Guid>("AppointmentStatusChangeId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<DateTimeOffset>("EndDate")
+                            b1.Property<DateTimeOffset>("End")
                                 .HasColumnType("timestamp with time zone")
-                                .HasColumnName("EndDate");
+                                .HasColumnName("End");
 
-                            b1.Property<DateTimeOffset>("StartDate")
+                            b1.Property<DateTimeOffset>("Start")
                                 .HasColumnType("timestamp with time zone")
-                                .HasColumnName("StartDate");
+                                .HasColumnName("Start");
 
                             b1.HasKey("AppointmentStatusChangeId");
 
@@ -869,13 +868,13 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                             b1.Property<Guid>("CalendarHolidayId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<DateTimeOffset>("EndDate")
+                            b1.Property<DateTimeOffset>("End")
                                 .HasColumnType("timestamp with time zone")
-                                .HasColumnName("EndDate");
+                                .HasColumnName("End");
 
-                            b1.Property<DateTimeOffset>("StartDate")
+                            b1.Property<DateTimeOffset>("Start")
                                 .HasColumnType("timestamp with time zone")
-                                .HasColumnName("StartDate");
+                                .HasColumnName("Start");
 
                             b1.HasKey("CalendarHolidayId");
 
@@ -931,13 +930,13 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                             b1.Property<Guid>("ResourceScheduleId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<DateTimeOffset>("EndDate")
+                            b1.Property<DateTimeOffset>("End")
                                 .HasColumnType("timestamp with time zone")
-                                .HasColumnName("EndDate");
+                                .HasColumnName("End");
 
-                            b1.Property<DateTimeOffset>("StartDate")
+                            b1.Property<DateTimeOffset>("Start")
                                 .HasColumnType("timestamp with time zone")
-                                .HasColumnName("StartDate");
+                                .HasColumnName("Start");
 
                             b1.HasKey("ResourceScheduleId");
 

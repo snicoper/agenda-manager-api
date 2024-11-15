@@ -4,23 +4,23 @@ namespace AgendaManager.Domain.Common.ValueObjects.Period;
 
 public sealed class Period : ValueObject
 {
-    private Period(DateTimeOffset startDate, DateTimeOffset endDate)
+    private Period(DateTimeOffset start, DateTimeOffset end)
     {
-        ArgumentNullException.ThrowIfNull(StartDate);
-        ArgumentNullException.ThrowIfNull(endDate);
+        ArgumentNullException.ThrowIfNull(Start);
+        ArgumentNullException.ThrowIfNull(end);
 
-        StartDate = startDate;
-        EndDate = endDate;
+        Start = start;
+        End = end;
 
-        if (StartDate > EndDate)
+        if (Start > End)
         {
             throw new InvalidPeriodException("End date must be greater than or equal to start date");
         }
     }
 
-    public DateTimeOffset StartDate { get; }
+    public DateTimeOffset Start { get; }
 
-    public DateTimeOffset EndDate { get; }
+    public DateTimeOffset End { get; }
 
     public static Period From(DateTimeOffset start, DateTimeOffset end)
     {
@@ -29,32 +29,27 @@ public sealed class Period : ValueObject
 
     public bool Overlaps(Period other)
     {
-        return StartDate <= other.EndDate && EndDate >= other.StartDate;
+        return Start <= other.End && End >= other.Start;
     }
 
     public bool IsDateInRange(DateTimeOffset date)
     {
-        return date >= StartDate && date <= EndDate;
+        return date >= Start && date <= End;
     }
 
     public bool IsPeriodInRange(Period period)
     {
-        return period.StartDate >= StartDate && period.EndDate <= EndDate;
-    }
-
-    public bool IsValid()
-    {
-        return EndDate >= StartDate;
+        return period.Start >= Start && period.End <= End;
     }
 
     public int DurationInDays()
     {
-        return (EndDate - StartDate).Days + 1;
+        return (End - Start).Days + 1;
     }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
-        yield return StartDate;
-        yield return EndDate;
+        yield return Start;
+        yield return End;
     }
 }

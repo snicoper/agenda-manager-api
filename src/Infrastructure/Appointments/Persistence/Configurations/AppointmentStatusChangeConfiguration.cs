@@ -36,11 +36,11 @@ public class AppointmentStatusChangeConfiguration : IEntityTypeConfiguration<App
             appointment => appointment.Period,
             appointmentBuilder =>
             {
-                appointmentBuilder.Property(p => p.StartDate)
-                    .HasColumnName("StartDate");
+                appointmentBuilder.Property(p => p.Start)
+                    .HasColumnName("Start");
 
-                appointmentBuilder.Property(p => p.EndDate)
-                    .HasColumnName("EndDate");
+                appointmentBuilder.Property(p => p.End)
+                    .HasColumnName("End");
             });
 
         builder.Property(asc => asc.Status)

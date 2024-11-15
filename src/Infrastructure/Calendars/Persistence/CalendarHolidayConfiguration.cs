@@ -33,11 +33,11 @@ public class CalendarHolidayConfiguration : IEntityTypeConfiguration<CalendarHol
             calendarHoliday => calendarHoliday.Period,
             calendarHolidayBuilder =>
             {
-                calendarHolidayBuilder.Property(p => p.StartDate)
-                    .HasColumnName("StartDate");
+                calendarHolidayBuilder.Property(p => p.Start)
+                    .HasColumnName("Start");
 
-                calendarHolidayBuilder.Property(p => p.EndDate)
-                    .HasColumnName("EndDate");
+                calendarHolidayBuilder.Property(p => p.End)
+                    .HasColumnName("End");
             });
 
         builder.Property(ch => ch.AvailableDays)

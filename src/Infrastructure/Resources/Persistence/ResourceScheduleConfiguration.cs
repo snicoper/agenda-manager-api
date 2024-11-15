@@ -46,11 +46,11 @@ public class ResourceScheduleConfiguration : IEntityTypeConfiguration<ResourceSc
             rs => rs.Period,
             resourceScheduleBuilder =>
             {
-                resourceScheduleBuilder.Property(p => p.StartDate)
-                    .HasColumnName("StartDate");
+                resourceScheduleBuilder.Property(p => p.Start)
+                    .HasColumnName("Start");
 
-                resourceScheduleBuilder.Property(p => p.EndDate)
-                    .HasColumnName("EndDate");
+                resourceScheduleBuilder.Property(p => p.End)
+                    .HasColumnName("End");
             });
 
         builder.Property(rs => rs.Type)

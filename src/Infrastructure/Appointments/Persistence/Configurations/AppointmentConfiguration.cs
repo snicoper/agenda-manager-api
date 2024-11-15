@@ -68,11 +68,11 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
             a => a.Period,
             appointmentBuilder =>
             {
-                appointmentBuilder.Property(p => p.StartDate)
-                    .HasColumnName("StartDate");
+                appointmentBuilder.Property(p => p.Start)
+                    .HasColumnName("Start");
 
-                appointmentBuilder.Property(p => p.EndDate)
-                    .HasColumnName("EndDate");
+                appointmentBuilder.Property(p => p.End)
+                    .HasColumnName("End");
             });
 
         builder.Property(a => a.Status)

@@ -10,9 +10,6 @@ using Microsoft.Extensions.Logging;
 
 namespace AgendaManager.Application.Users.EventHandlers;
 
-/// <summary>
-/// Registra un registro de auditoría cuando se actualiza el estado activo de un usuario.
-/// </summary>
 public class UserActiveStateUpdatedDomainEventHandler(
     ILogger<BaseEventHandler<UserActiveStateUpdatedDomainEvent>> logger,
     IAuditRecordRepository auditRecordRepository,
@@ -31,8 +28,8 @@ public class UserActiveStateUpdatedDomainEventHandler(
             namespaceName: domain.Namespace!,
             aggregateName: domain.Name,
             propertyName: nameof(User.IsActive),
-            oldValue: notification.State.ToString(),
-            newValue: (!notification.State).ToString(),
+            oldValue: (!notification.State).ToString(),
+            newValue: notification.State.ToString(),
             actionType: ActionType.Update);
 
         await auditRecordRepository.AddAsync(auditRecord, cancellationToken);
