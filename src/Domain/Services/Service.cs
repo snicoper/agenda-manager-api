@@ -53,7 +53,21 @@ public sealed class Service : AggregateRoot
 
     public IReadOnlyList<ResourceType> ResourceTypes => _resourceTypes.AsReadOnly();
 
-    public static Service Create(
+    public void AddResourceType(ResourceType resourceType)
+    {
+        _resourceTypes.Add(resourceType);
+
+        AddDomainEvent(new ResourceTypeAddedToServiceDomainEvent(Id, resourceType.Id));
+    }
+
+    public void RemoveResourceType(ResourceType resourceType)
+    {
+        _resourceTypes.Remove(resourceType);
+
+        AddDomainEvent(new ResourceTypeRemovedFromServiceDomainEvent(Id, resourceType.Id));
+    }
+
+    internal static Service Create(
         ServiceId serviceId,
         CalendarId calendarId,
         TimeSpan duration,
@@ -73,7 +87,7 @@ public sealed class Service : AggregateRoot
         return service;
     }
 
-    public bool Update(
+    internal bool Update(
         TimeSpan duration,
         string name,
         string description,
@@ -96,20 +110,6 @@ public sealed class Service : AggregateRoot
         AddDomainEvent(new ServiceUpdatedDomainEvent(Id));
 
         return true;
-    }
-
-    public void AddResourceType(ResourceType resourceType)
-    {
-        _resourceTypes.Add(resourceType);
-
-        AddDomainEvent(new ResourceTypeAddedToServiceDomainEvent(Id, resourceType.Id));
-    }
-
-    public void RemoveResourceType(ResourceType resourceType)
-    {
-        _resourceTypes.Remove(resourceType);
-
-        AddDomainEvent(new ResourceTypeRemovedFromServiceDomainEvent(Id, resourceType.Id));
     }
 
     private static void GuardAgainstInvalidDuration(TimeSpan duration)

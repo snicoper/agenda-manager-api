@@ -2,7 +2,7 @@
 
 namespace AgendaManager.Domain.Common.ValueObjects.Period;
 
-public sealed class Period : ValueObject
+public sealed record Period : ValueObject
 {
     private Period(DateTimeOffset start, DateTimeOffset end)
     {

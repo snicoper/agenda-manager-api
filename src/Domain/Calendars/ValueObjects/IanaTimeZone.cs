@@ -4,7 +4,7 @@ using AgendaManager.Domain.Common.Utils;
 
 namespace AgendaManager.Domain.Calendars.ValueObjects;
 
-public sealed class IanaTimeZone : ValueObject
+public sealed record IanaTimeZone : ValueObject
 {
     private IanaTimeZone(string value)
     {

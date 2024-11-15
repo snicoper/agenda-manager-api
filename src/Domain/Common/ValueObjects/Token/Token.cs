@@ -3,7 +3,7 @@ using AgendaManager.Domain.Common.Utils;
 
 namespace AgendaManager.Domain.Common.ValueObjects.Token;
 
-public sealed class Token : ValueObject
+public sealed record Token : ValueObject
 {
     private const int TokenLength = 200;
 
