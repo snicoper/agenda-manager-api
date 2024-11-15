@@ -8,5 +8,7 @@ public interface IServiceRepository
 
     Task<bool> NameExistsAsync(string name, CancellationToken cancellationToken = default);
 
+    Task AddAsync(Service service, CancellationToken cancellationToken = default);
+
     void Delete(Service service);
 }

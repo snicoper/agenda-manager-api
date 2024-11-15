@@ -38,6 +38,8 @@ public class ServiceManager(
 
         var service = Service.Create(serviceId, calendarId, duration, name, description, colorScheme, isActive);
 
+        await serviceRepository.AddAsync(service, cancellationToken);
+
         return Result.Create(service);
     }
 
@@ -63,7 +65,7 @@ public class ServiceManager(
 
         service.Update(duration, name, description, colorScheme);
 
-        return Result.Create(service);
+        return Result.Success(service);
     }
 
     public async Task<Result> DeleteServiceAsync(ServiceId serviceId, CancellationToken cancellationToken = default)

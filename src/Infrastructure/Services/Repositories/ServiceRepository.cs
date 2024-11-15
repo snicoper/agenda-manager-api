@@ -22,6 +22,11 @@ public class ServiceRepository(AppDbContext context) : IServiceRepository
         return exists;
     }
 
+    public async Task AddAsync(Service service, CancellationToken cancellationToken = default)
+    {
+        await context.Services.AddAsync(service, cancellationToken);
+    }
+
     public void Delete(Service service)
     {
         context.Services.Remove(service);
