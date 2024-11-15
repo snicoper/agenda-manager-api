@@ -19,6 +19,7 @@ using AgendaManager.Infrastructure.Common.Persistence.Seeds;
 using AgendaManager.Infrastructure.Common.Services.Emails;
 using AgendaManager.Infrastructure.Resources.Repositories;
 using AgendaManager.Infrastructure.ResourceTypes.Repositories;
+using AgendaManager.Infrastructure.Services.Repositories;
 using AgendaManager.Infrastructure.Users.Authentication;
 using AgendaManager.Infrastructure.Users.Persistence.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -90,7 +91,7 @@ public static class DependencyInjection
         services.AddScoped<IResourceRepository, ResourceRepository>();
 
         // Services.
-        services.AddScoped<IServiceRepository, IServiceRepository>();
+        services.AddScoped<IServiceRepository, ServiceRepository>();
 
         // Appointments.
         services.AddScoped<IAppointmentRepository, AppointmentRepository>();

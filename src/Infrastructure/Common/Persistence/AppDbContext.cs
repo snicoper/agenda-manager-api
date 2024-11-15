@@ -37,13 +37,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
 
     public DbSet<ResourceType> ResourceTypes => Set<ResourceType>();
 
-    public DbSet<Permission> Permissions => Set<Permission>();
-
-    public DbSet<Role> Roles => Set<Role>();
-
     public DbSet<Service> Services => Set<Service>();
 
     public DbSet<User> Users => Set<User>();
+
+    public DbSet<Role> Roles => Set<Role>();
+
+    public DbSet<Permission> Permissions => Set<Permission>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

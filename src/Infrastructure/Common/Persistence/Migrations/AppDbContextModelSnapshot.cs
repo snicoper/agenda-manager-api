@@ -488,6 +488,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<TimeSpan>("Duration")
                         .HasColumnType("interval");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
 

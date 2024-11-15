@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241115081116_Initial")]
+    [Migration("20241115183559_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -490,6 +490,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
                     b.Property<TimeSpan>("Duration")
                         .HasColumnType("interval");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
