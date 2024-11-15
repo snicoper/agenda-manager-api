@@ -49,5 +49,6 @@ public class AppDbContextInitialize(
         await UserSeed.InitializeAsync(context, serviceProvider, _roles);
         await CalendarSeed.InitializeAsync(context, serviceProvider);
         await ResourceTypeSeed.InitializeAsync(context, _roles, serviceProvider);
+        await ResourceSeed.InitializeAsync(context, serviceProvider);
     }
 }

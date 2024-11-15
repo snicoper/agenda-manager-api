@@ -4,6 +4,7 @@ using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Domain.AuditRecords.Interfaces;
 using AgendaManager.Domain.Calendars.Interfaces;
+using AgendaManager.Domain.Resources.Interfaces;
 using AgendaManager.Domain.ResourceTypes.Interfaces;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Infrastructure.AuditRecords.Repositories;
@@ -13,6 +14,7 @@ using AgendaManager.Infrastructure.Common.Persistence;
 using AgendaManager.Infrastructure.Common.Persistence.Interceptors;
 using AgendaManager.Infrastructure.Common.Persistence.Seeds;
 using AgendaManager.Infrastructure.Common.Services.Emails;
+using AgendaManager.Infrastructure.Resources.Repositories;
 using AgendaManager.Infrastructure.ResourceTypes.Repositories;
 using AgendaManager.Infrastructure.Users.Authentication;
 using AgendaManager.Infrastructure.Users.Persistence.Repositories;
@@ -80,6 +82,9 @@ public static class DependencyInjection
 
         // ResourceTypes.
         services.AddScoped<IResourceTypeRepository, ResourceTypeRepository>();
+
+        // Resources.
+        services.AddScoped<IResourceRepository, ResourceRepository>();
     }
 
     private static void AddDatabase(

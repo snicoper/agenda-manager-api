@@ -980,14 +980,14 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
                             b1.Property<string>("BackgroundColor")
                                 .IsRequired()
-                                .HasMaxLength(6)
-                                .HasColumnType("character varying(6)")
+                                .HasMaxLength(7)
+                                .HasColumnType("character varying(7)")
                                 .HasColumnName("BackgroundColor");
 
                             b1.Property<string>("TextColor")
                                 .IsRequired()
-                                .HasMaxLength(6)
-                                .HasColumnType("character varying(6)")
+                                .HasMaxLength(7)
+                                .HasColumnType("character varying(7)")
                                 .HasColumnName("TextColor");
 
                             b1.HasKey("ResourceId");
