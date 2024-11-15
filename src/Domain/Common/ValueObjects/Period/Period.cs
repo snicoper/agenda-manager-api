@@ -9,13 +9,13 @@ public sealed class Period : ValueObject
         ArgumentNullException.ThrowIfNull(Start);
         ArgumentNullException.ThrowIfNull(end);
 
-        Start = start;
-        End = end;
-
         if (Start > End)
         {
-            throw new InvalidPeriodException("End date must be greater than or equal to start date");
+            throw new InvalidPeriodException($"{nameof(start)} cannot be greater than {nameof(end)}");
         }
+
+        Start = start;
+        End = end;
     }
 
     public DateTimeOffset Start { get; }
