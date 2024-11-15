@@ -15,14 +15,11 @@ public class CalendarRepository(AppDbContext context) : ICalendarRepository
         return calendar;
     }
 
-    public async Task AddAsync(Calendar calendar, CancellationToken cancellationToken = default)
+    public Task<bool> CalendarIdExistsAsync(CalendarId calendarId, CancellationToken cancellationToken = default)
     {
-        await context.Calendars.AddAsync(calendar, cancellationToken);
-    }
+        var exists = context.Calendars.AnyAsync(c => c.Id.Equals(calendarId), cancellationToken);
 
-    public void Update(Calendar calendar)
-    {
-        context.Calendars.Update(calendar);
+        return exists;
     }
 
     public async Task<bool> NameExistsAsync(Calendar calendar, CancellationToken cancellationToken = default)
@@ -40,5 +37,15 @@ public class CalendarRepository(AppDbContext context) : ICalendarRepository
             .AnyAsync(c => c.Description.Equals(calendar.Description) && c.Id != calendar.Id, cancellationToken);
 
         return descriptionIsUnique;
+    }
+
+    public async Task AddAsync(Calendar calendar, CancellationToken cancellationToken = default)
+    {
+        await context.Calendars.AddAsync(calendar, cancellationToken);
+    }
+
+    public void Update(Calendar calendar)
+    {
+        context.Calendars.Update(calendar);
     }
 }

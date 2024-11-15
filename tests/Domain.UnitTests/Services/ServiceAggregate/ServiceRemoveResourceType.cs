@@ -1,7 +1,7 @@
 ﻿using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
-namespace AgendaManager.Domain.UnitTests.Users.ServiceAggregate;
+namespace AgendaManager.Domain.UnitTests.Services.ServiceAggregate;
 
 public class ServiceRemoveResourceType
 {
