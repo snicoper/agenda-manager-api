@@ -1,9 +1,8 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
-using DomainRegex = AgendaManager.Domain.Common.Utils.DomainRegex;
+﻿using DomainRegex = AgendaManager.Domain.Common.Utils.DomainRegex;
 
 namespace AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 
-public sealed record EmailAddress : ValueObject
+public sealed record EmailAddress
 {
     private EmailAddress(string value)
     {
@@ -22,11 +21,6 @@ public sealed record EmailAddress : ValueObject
     public static EmailAddress From(string value)
     {
         return new EmailAddress(value);
-    }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Value;
     }
 
     private bool IsValid()

@@ -2,6 +2,7 @@
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.ValueObjects.ColorScheme;
+using AgendaManager.Domain.Common.ValueObjects.Duration;
 using AgendaManager.Domain.ResourceTypes;
 using AgendaManager.Domain.Services.Events;
 using AgendaManager.Domain.Services.Exceptions;
@@ -20,7 +21,7 @@ public sealed class Service : AggregateRoot
     private Service(
         ServiceId serviceId,
         CalendarId calendarId,
-        TimeSpan duration,
+        Duration duration,
         string name,
         string description,
         ColorScheme colorScheme,
@@ -41,7 +42,7 @@ public sealed class Service : AggregateRoot
 
     public Calendar Calendar { get; private set; } = null!;
 
-    public TimeSpan Duration { get; private set; } = TimeSpan.Zero;
+    public Duration Duration { get; private set; } = null!;
 
     public string Name { get; private set; } = null!;
 
@@ -70,13 +71,12 @@ public sealed class Service : AggregateRoot
     internal static Service Create(
         ServiceId serviceId,
         CalendarId calendarId,
-        TimeSpan duration,
+        Duration duration,
         string name,
         string description,
         ColorScheme colorScheme,
         bool isActive = true)
     {
-        GuardAgainstInvalidDuration(duration);
         GuardAgainstInvalidName(name);
         GuardAgainstInvalidDescription(description);
 
@@ -88,12 +88,11 @@ public sealed class Service : AggregateRoot
     }
 
     internal bool Update(
-        TimeSpan duration,
+        Duration duration,
         string name,
         string description,
         ColorScheme colorScheme)
     {
-        GuardAgainstInvalidDuration(duration);
         GuardAgainstInvalidName(name);
         GuardAgainstInvalidDescription(description);
 
@@ -110,16 +109,6 @@ public sealed class Service : AggregateRoot
         AddDomainEvent(new ServiceUpdatedDomainEvent(Id));
 
         return true;
-    }
-
-    private static void GuardAgainstInvalidDuration(TimeSpan duration)
-    {
-        ArgumentNullException.ThrowIfNull(duration);
-
-        if (duration <= TimeSpan.Zero)
-        {
-            throw new ServiceDomainException("Service duration must be greater than zero.");
-        }
     }
 
     private static void GuardAgainstInvalidName(string name)
@@ -142,7 +131,7 @@ public sealed class Service : AggregateRoot
         }
     }
 
-    private bool HasChanges(TimeSpan duration, string name, string description, ColorScheme colorScheme)
+    private bool HasChanges(Duration duration, string name, string description, ColorScheme colorScheme)
     {
         return !(Duration == duration
                  && Name == name

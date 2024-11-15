@@ -27,17 +27,6 @@ public class ServiceCreateTests
         service.DomainEvents.Should().Contain(x => x is ServiceCreatedDomainEvent);
     }
 
-    [Fact]
-    public void Create_ShouldRaiseException_WhenServiceIsProvidedWithInvalidDuration()
-    {
-        // Act
-        var action = () => ServiceFactory.CreateService(timeSpan: TimeSpan.Zero);
-
-        // Assert
-        action.Should().Throw<ServiceDomainException>()
-            .WithMessage("Service duration must be greater than zero.");
-    }
-
     [Theory]
     [InlineData(0)]
     [InlineData(51)]

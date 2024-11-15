@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.ValueObjects.Duration;
 using AgendaManager.Domain.ResourceTypes.ValueObjects;
 using AgendaManager.Domain.Services;
 using AgendaManager.Domain.Services.ValueObjects;
@@ -34,6 +35,9 @@ public class ServiceConfiguration : IEntityTypeConfiguration<Service>
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.Property(s => s.Duration)
+            .HasConversion(
+                duration => duration.Value,
+                value => Duration.From(value))
             .IsRequired();
 
         builder.Property(s => s.Name)

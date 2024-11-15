@@ -1,9 +1,8 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Common.Utils;
+﻿using AgendaManager.Domain.Common.Utils;
 
 namespace AgendaManager.Domain.Common.ValueObjects.Token;
 
-public sealed record Token : ValueObject
+public sealed record Token
 {
     private const int TokenLength = 200;
 
@@ -45,12 +44,6 @@ public sealed record Token : ValueObject
     public bool Validate(string token)
     {
         return !IsExpired && token == Value;
-    }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Value;
-        yield return Expires;
     }
 
     private static void GuardAgainstToken(string token)

@@ -1,10 +1,9 @@
 ﻿using AgendaManager.Domain.Calendars.Exceptions;
-using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.Utils;
 
 namespace AgendaManager.Domain.Calendars.ValueObjects;
 
-public sealed record IanaTimeZone : ValueObject
+public sealed record IanaTimeZone
 {
     private IanaTimeZone(string value)
     {
@@ -39,11 +38,6 @@ public sealed record IanaTimeZone : ValueObject
         }
 
         return new IanaTimeZone(ianaIdResult.Value!);
-    }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Value;
     }
 
     private void GuardAgainstInvalidTimeZone(string value)

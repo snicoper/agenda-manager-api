@@ -1,8 +1,6 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
+﻿namespace AgendaManager.Domain.Common.ValueObjects.Period;
 
-namespace AgendaManager.Domain.Common.ValueObjects.Period;
-
-public sealed record Period : ValueObject
+public sealed record Period
 {
     private Period(DateTimeOffset start, DateTimeOffset end)
     {
@@ -45,11 +43,5 @@ public sealed record Period : ValueObject
     public int DurationInDays()
     {
         return (End - Start).Days + 1;
-    }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Start;
-        yield return End;
     }
 }

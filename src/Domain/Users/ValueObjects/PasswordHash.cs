@@ -1,11 +1,10 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Common.Responses;
+﻿using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users.Exceptions;
 using AgendaManager.Domain.Users.Interfaces;
 
 namespace AgendaManager.Domain.Users.ValueObjects;
 
-public sealed record PasswordHash : ValueObject
+public sealed record PasswordHash
 {
     private PasswordHash(string hashedValue)
     {
@@ -47,10 +46,5 @@ public sealed record PasswordHash : ValueObject
     public bool Verify(string rawPassword, IPasswordHasher passwordHasher)
     {
         return passwordHasher.VerifyPassword(rawPassword, this);
-    }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return HashedValue;
     }
 }

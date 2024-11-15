@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Common.ValueObjects.ColorScheme;
+using AgendaManager.Domain.Common.ValueObjects.Duration;
 using AgendaManager.Domain.Services.Events;
 using AgendaManager.Domain.Services.Exceptions;
 using AgendaManager.TestCommon.Factories;
@@ -16,7 +17,7 @@ public class ServiceUpdateTests
 
         // Act
         var isUpdated = service.Update(
-            duration: TimeSpan.FromMinutes(30),
+            duration: Duration.From(TimeSpan.FromMinutes(30)),
             name: "New name",
             description: "New description",
             colorScheme: ColorScheme.From("#FF0000", "#00FF00"));
@@ -35,7 +36,7 @@ public class ServiceUpdateTests
 
         // Act
         service.Update(
-            duration: TimeSpan.FromMinutes(30),
+            duration: Duration.From(TimeSpan.FromMinutes(30)),
             name: "New name",
             description: "New description",
             colorScheme: ColorScheme.From("#FF0000", "#00FF00"));
@@ -62,23 +63,6 @@ public class ServiceUpdateTests
         service.DomainEvents.Should().NotContain(x => x is ServiceUpdatedDomainEvent);
     }
 
-    [Fact]
-    public void Update_ShouldThrowException_WhenServiceIsProvidedWithInvalidDuration()
-    {
-        // Arrange
-        var service = ServiceFactory.CreateService();
-
-        // Act
-        var action = () => service.Update(
-            duration: TimeSpan.FromMinutes(-1),
-            name: "New name",
-            description: "New description",
-            colorScheme: ColorScheme.From("#FF0000", "#00FF00"));
-
-        // Assert
-        action.Should().Throw<ServiceDomainException>();
-    }
-
     [Theory]
     [InlineData("")]
     [InlineData(" ")]
@@ -89,7 +73,7 @@ public class ServiceUpdateTests
 
         // Act
         var action = () => service.Update(
-            duration: TimeSpan.FromMinutes(1),
+            duration: Duration.From(TimeSpan.FromMinutes(1)),
             name: newName,
             description: "New description",
             colorScheme: ColorScheme.From("#FF0000", "#00FF00"));
@@ -108,7 +92,7 @@ public class ServiceUpdateTests
 
         // Act
         var action = () => service.Update(
-            duration: TimeSpan.FromMinutes(1),
+            duration: Duration.From(TimeSpan.FromMinutes(1)),
             name: "New name",
             description: newDescription,
             colorScheme: ColorScheme.From("#FF0000", "#00FF00"));
