@@ -14,7 +14,6 @@ internal class PruebaRequestHandler(IUnitOfWork unitOfWork, IUserRepository user
     public async Task<Result<Unit>> Handle(PruebaRequest request, CancellationToken cancellationToken)
     {
         var email = EmailAddress.From("alice@example.com");
-
         var user = await userRepository.GetByEmailAsync(email, cancellationToken);
 
         if (user is null)

@@ -30,7 +30,7 @@ public class UserActiveStateUpdatedDomainEventHandler(
             propertyName: nameof(User.IsActive),
             oldValue: (!notification.State).ToString(),
             newValue: notification.State.ToString(),
-            actionType: ActionType.Update);
+            actionType: AuditRecordActionType.Update);
 
         await auditRecordRepository.AddAsync(auditRecord, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);

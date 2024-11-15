@@ -20,7 +20,7 @@ public sealed class AuditRecord : AggregateRoot
         string propertyName,
         string oldValue,
         string newValue,
-        ActionType actionType)
+        AuditRecordActionType actionType)
     {
         ArgumentNullException.ThrowIfNull(aggregateId);
         ArgumentNullException.ThrowIfNull(namespaceName);
@@ -55,7 +55,7 @@ public sealed class AuditRecord : AggregateRoot
 
     public string NewValue { get; private set; } = default!;
 
-    public ActionType ActionType { get; set; }
+    public AuditRecordActionType ActionType { get; set; }
 
     public static AuditRecord Create(
         AuditRecordId id,
@@ -65,7 +65,7 @@ public sealed class AuditRecord : AggregateRoot
         string propertyName,
         string oldValue,
         string newValue,
-        ActionType actionType)
+        AuditRecordActionType actionType)
     {
         AuditRecord auditRecord = new(
             id,
@@ -82,14 +82,14 @@ public sealed class AuditRecord : AggregateRoot
         return auditRecord;
     }
 
-    private static void GuardAgainstInvalidActionType(ActionType actionType)
+    private static void GuardAgainstInvalidActionType(AuditRecordActionType actionType)
     {
-        if (!Enum.IsDefined(typeof(ActionType), actionType))
+        if (!Enum.IsDefined(typeof(AuditRecordActionType), actionType))
         {
             throw new AuditRecordDomainException("Invalid action type.");
         }
 
-        if (actionType == ActionType.None)
+        if (actionType == AuditRecordActionType.None)
         {
             throw new AuditRecordDomainException("Action type cannot be None.");
         }

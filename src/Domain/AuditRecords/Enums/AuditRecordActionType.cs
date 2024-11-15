@@ -1,6 +1,6 @@
 ﻿namespace AgendaManager.Domain.AuditRecords.Enums;
 
-public enum ActionType
+public enum AuditRecordActionType
 {
     None = 0,
     Create = 1,

@@ -31,7 +31,7 @@ public class AuditRecordCreateTests
     public void AuditRecord_ShouldThrowException_WhenActionTypeInvalid()
     {
         // Arrange
-        var action = () => AuditRecordFactory.Create(actionType: (ActionType)100);
+        var action = () => AuditRecordFactory.Create(actionType: (AuditRecordActionType)100);
 
         // Assert
         action.Should().Throw<AuditRecordDomainException>();
@@ -42,7 +42,7 @@ public class AuditRecordCreateTests
     public void AuditRecord_ShouldThrowException_WhenActionTypeIsNone()
     {
         // Act
-        var action = () => AuditRecordFactory.Create(actionType: ActionType.None);
+        var action = () => AuditRecordFactory.Create(actionType: AuditRecordActionType.None);
 
         // Assert
         action.Should().Throw<AuditRecordDomainException>();

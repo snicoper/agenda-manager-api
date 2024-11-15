@@ -14,7 +14,7 @@ public abstract class AuditRecordFactory
         string? propertyName = null,
         string? oldValue = null,
         string? newValue = null,
-        ActionType? actionType = null)
+        AuditRecordActionType? actionType = null)
     {
         var auditRecord = AuditRecord.Create(
             id: auditRecordId ?? AuditRecordId.Create(),
@@ -24,7 +24,7 @@ public abstract class AuditRecordFactory
             propertyName: propertyName ?? "Test Property Name",
             oldValue: oldValue ?? "Test Old Value",
             newValue: newValue ?? "Test New Value",
-            actionType: actionType ?? ActionType.Create);
+            actionType: actionType ?? AuditRecordActionType.Create);
 
         return auditRecord;
     }
