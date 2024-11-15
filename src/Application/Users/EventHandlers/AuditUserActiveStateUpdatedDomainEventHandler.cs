@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AgendaManager.Application.Users.EventHandlers;
 
-public class UserActiveStateUpdatedDomainEventHandler(
+public class AuditUserActiveStateUpdatedDomainEventHandler(
     ILogger<BaseEventHandler<UserActiveStateUpdatedDomainEvent>> logger,
     IAuditRecordRepository auditRecordRepository,
     IUnitOfWork unitOfWork)
