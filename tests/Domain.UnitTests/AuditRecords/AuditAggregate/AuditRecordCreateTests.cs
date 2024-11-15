@@ -35,7 +35,8 @@ public class AuditRecordCreateTests
 
         // Assert
         action.Should().Throw<AuditRecordDomainException>();
-        action.Should().Throw<AuditRecordDomainException>().WithMessage("Invalid action type.");
+        action.Should().Throw<AuditRecordDomainException>()
+            .WithMessage("Invalid action type.");
     }
 
     [Fact]
@@ -46,6 +47,7 @@ public class AuditRecordCreateTests
 
         // Assert
         action.Should().Throw<AuditRecordDomainException>();
-        action.Should().Throw<AuditRecordDomainException>().WithMessage("Action type cannot be None.");
+        action.Should().Throw<AuditRecordDomainException>()
+            .WithMessage("Action type cannot be None.");
     }
 }
