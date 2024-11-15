@@ -2,11 +2,14 @@
 using AgendaManager.Application.Common.Interfaces.Clock;
 using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Application.Common.Interfaces.Users;
+using AgendaManager.Domain.Appointments.Interfaces;
 using AgendaManager.Domain.AuditRecords.Interfaces;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Resources.Interfaces;
 using AgendaManager.Domain.ResourceTypes.Interfaces;
+using AgendaManager.Domain.Services.Interfaces;
 using AgendaManager.Domain.Users.Interfaces;
+using AgendaManager.Infrastructure.Appointments.Persistence.Repositories;
 using AgendaManager.Infrastructure.AuditRecords.Repositories;
 using AgendaManager.Infrastructure.Calendars.Repositories;
 using AgendaManager.Infrastructure.Common.Clock;
@@ -85,6 +88,13 @@ public static class DependencyInjection
 
         // Resources.
         services.AddScoped<IResourceRepository, ResourceRepository>();
+
+        // Services.
+        services.AddScoped<IServiceRepository, IServiceRepository>();
+
+        // Appointments.
+        services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+        services.AddScoped<IAppointmentStatusChangeRepository, AppointmentStatusChangeRepository>();
     }
 
     private static void AddDatabase(

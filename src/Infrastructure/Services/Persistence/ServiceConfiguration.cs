@@ -1,6 +1,5 @@
 ﻿using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Resources.ValueObjects;
 using AgendaManager.Domain.ResourceTypes.ValueObjects;
 using AgendaManager.Domain.Services;
 using AgendaManager.Domain.Services.ValueObjects;
@@ -55,6 +54,8 @@ public class ServiceConfiguration : IEntityTypeConfiguration<Service>
                 serviceBuilder.Property(p => p.BackgroundColor)
                     .HasColumnName("BackgroundColor");
             });
+
+        builder.Property(s => s.IsActive);
 
         builder.HasMany(s => s.ResourceTypes)
             .WithMany(rt => rt.Services)
