@@ -10,14 +10,14 @@ using Microsoft.Extensions.Logging;
 
 namespace AgendaManager.Application.Users.EventHandlers;
 
-public class AuditUserActiveStateUpdatedDomainEventHandler(
-    ILogger<BaseEventHandler<UserActiveStateUpdatedDomainEvent>> logger,
+public class AuditUserDeactivatedDomainEventHandler(
+    ILogger<BaseEventHandler<UserDeactivatedDomainEvent>> logger,
     IAuditRecordRepository auditRecordRepository,
     IUnitOfWork unitOfWork)
-    : BaseEventHandler<UserActiveStateUpdatedDomainEvent>(logger)
+    : BaseEventHandler<UserDeactivatedDomainEvent>(logger)
 {
     protected override async Task HandleEvent(
-        UserActiveStateUpdatedDomainEvent notification,
+        UserDeactivatedDomainEvent notification,
         CancellationToken cancellationToken)
     {
         var domain = typeof(User);
@@ -28,8 +28,8 @@ public class AuditUserActiveStateUpdatedDomainEventHandler(
             namespaceName: domain.Namespace!,
             aggregateName: domain.Name,
             propertyName: nameof(User.IsActive),
-            oldValue: (!notification.State).ToString(),
-            newValue: notification.State.ToString(),
+            oldValue: true.ToString(),
+            newValue: false.ToString(),
             actionType: AuditRecordActionType.Update);
 
         await auditRecordRepository.AddAsync(auditRecord, cancellationToken);

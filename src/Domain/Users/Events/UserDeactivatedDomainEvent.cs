@@ -3,4 +3,4 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users.Events;
 
-public record UserActiveStateUpdatedDomainEvent(UserId UserId, bool State) : IDomainEvent;
+public record UserDeactivatedDomainEvent(UserId UserId) : IDomainEvent;

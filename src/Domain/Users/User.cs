@@ -61,29 +61,6 @@ public sealed class User : AggregateRoot
 
     public IReadOnlyCollection<UserToken> Tokens => _userTokens.AsReadOnly();
 
-    public static User Create(
-        UserId userId,
-        EmailAddress email,
-        PasswordHash passwordHash,
-        string? firstName,
-        string? lastName,
-        bool isActive = true,
-        bool emailConfirmed = false)
-    {
-        User user = new(
-            userId,
-            email,
-            passwordHash,
-            firstName,
-            lastName,
-            isActive,
-            emailConfirmed);
-
-        user.AddDomainEvent(new UserCreatedDomainEvent(userId));
-
-        return user;
-    }
-
     public Result UpdatePassword(PasswordHash newPasswordHash)
     {
         if (PasswordHash.Equals(newPasswordHash))
@@ -144,16 +121,27 @@ public sealed class User : AggregateRoot
         AddDomainEvent(new UserEmailConfirmedDomainEvent(Id));
     }
 
-    public void UpdateActiveState(bool newState)
+    public void Activate()
     {
-        if (IsActive == newState)
+        if (IsActive)
         {
             return;
         }
 
-        IsActive = newState;
+        IsActive = true;
+        AddDomainEvent(new UserActivatedDomainEvent(Id));
+    }
 
-        AddDomainEvent(new UserActiveStateUpdatedDomainEvent(Id, newState));
+    public void Deactivate()
+    {
+        if (!IsActive)
+        {
+            return;
+        }
+
+        IsActive = false;
+
+        AddDomainEvent(new UserDeactivatedDomainEvent(Id));
     }
 
     public void AddUserToken(UserToken userToken)
@@ -168,6 +156,29 @@ public sealed class User : AggregateRoot
         _userTokens.Remove(userToken);
 
         AddDomainEvent(new UserTokenRemovedDomainEvent(Id, userToken.Id));
+    }
+
+    internal static User Create(
+        UserId userId,
+        EmailAddress email,
+        PasswordHash passwordHash,
+        string? firstName,
+        string? lastName,
+        bool isActive = true,
+        bool emailConfirmed = false)
+    {
+        User user = new(
+            userId,
+            email,
+            passwordHash,
+            firstName,
+            lastName,
+            isActive,
+            emailConfirmed);
+
+        user.AddDomainEvent(new UserCreatedDomainEvent(userId));
+
+        return user;
     }
 
     internal void Update(string? firstName, string? lastName)

@@ -21,7 +21,7 @@ internal class PruebaRequestHandler(IUnitOfWork unitOfWork, IUserRepository user
             return UserErrors.UserNotFound;
         }
 
-        user.UpdateActiveState(false);
+        user.Activate();
 
         userRepository.Update(user);
         await unitOfWork.SaveChangesAsync(cancellationToken);
