@@ -10,7 +10,6 @@ public static class ServiceErrors
         nameof(Service.Name),
         "A service with the same name already exists.");
 
-    public static Error DescriptionAlreadyExists => Error.Validation(
-        nameof(Service.Name),
-        "A service with the same description already exists.");
+    public static Error HasAssociatedAppointments => Error.Conflict(
+        "The service has associated appointments and it is not possible to delete it");
 }

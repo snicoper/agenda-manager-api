@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Calendars.Errors;
+﻿using AgendaManager.Domain.Appointments.Interfaces;
+using AgendaManager.Domain.Calendars.Errors;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
@@ -12,7 +13,8 @@ namespace AgendaManager.Domain.Services.Services;
 
 public class ServiceManager(
     IServiceRepository serviceRepository,
-    ICalendarRepository calendarRepository)
+    ICalendarRepository calendarRepository,
+    IAppointmentRepository appointmentRepository)
 {
     public async Task<Result<Service>> CreateServiceAsync(
         ServiceId serviceId,
@@ -72,6 +74,16 @@ public class ServiceManager(
         {
             return ServiceErrors.NotFound;
         }
+
+        // No se puede eliminar un servicio que tenga citas asociadas a él.
+        var appointments = appointmentRepository.GetAllByServiceId(serviceId, cancellationToken);
+
+        if (appointments.Count != 0)
+        {
+            return ServiceErrors.HasAssociatedAppointments;
+        }
+
+        serviceRepository.Delete(service);
 
         return Result.Success();
     }

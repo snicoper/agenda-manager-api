@@ -1,6 +1,8 @@
-﻿using AgendaManager.Domain.Appointments.Interfaces;
+﻿using AgendaManager.Domain.Appointments;
+using AgendaManager.Domain.Appointments.Interfaces;
+using AgendaManager.Domain.Appointments.ValueObjects;
 using AgendaManager.Domain.Calendars.Interfaces;
-using AgendaManager.Domain.Common.Responses;
+using AgendaManager.Domain.Common.ValueObjects.Period;
 using AgendaManager.Domain.Services;
 using AgendaManager.Domain.Services.Errors;
 using AgendaManager.Domain.Services.Interfaces;
@@ -12,44 +14,46 @@ using NSubstitute;
 
 namespace AgendaManager.Domain.UnitTests.Services.Services.ServiceManagers;
 
-public class ServiceManagerUpdateTests
+public class ServiceManagerDeleteTests
 {
     private readonly IServiceRepository _serviceRepository;
+    private readonly IAppointmentRepository _appointmentRepository;
     private readonly ServiceManager _sut;
 
-    public ServiceManagerUpdateTests()
+    public ServiceManagerDeleteTests()
     {
         _serviceRepository = Substitute.For<IServiceRepository>();
+        _appointmentRepository = Substitute.For<IAppointmentRepository>();
         var calendarRepository = Substitute.For<ICalendarRepository>();
-        var appointmentRepository = Substitute.For<IAppointmentRepository>();
 
-        _sut = new ServiceManager(_serviceRepository, calendarRepository, appointmentRepository);
+        _sut = new ServiceManager(_serviceRepository, calendarRepository, _appointmentRepository);
     }
 
     [Fact]
-    public async Task Update_ShouldUpdated_WhenValidDataIsPassed()
+    public async Task ServiceManager_DeleteSucceeds_WhenServiceIsDeleted()
     {
         // Arrange
+        var appointments = new List<Appointment>();
         var service = ServiceFactory.CreateService();
         SetupServiceIdExistsServiceRepository(service);
-        SetupNameExistsServiceRepository(false);
+        SetupGetAllByServiceIdAppointmentRepository(appointments);
 
         // Act
-        var result = await GetUpdatedServiceAsync(service);
+        var result = await _sut.DeleteServiceAsync(service.Id);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
-    public async Task Update_ShouldFail_WhenServiceIdDoesNotExist()
+    public async Task ServiceManager_DeleteFails_WhenServiceNotExists()
     {
         // Arrange
         var service = ServiceFactory.CreateService();
         SetupServiceIdExistsServiceRepository(null);
 
         // Act
-        var result = await GetUpdatedServiceAsync(service);
+        var result = await _sut.DeleteServiceAsync(service.Id);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -57,31 +61,23 @@ public class ServiceManagerUpdateTests
     }
 
     [Fact]
-    public async Task Update_ShouldFail_WhenNameAlreadyExists()
+    public async Task ServiceManager_DeleteFails_WhenHaveAppointmentsAssociated()
     {
         // Arrange
+        var appointment = Appointment.Create(
+            AppointmentId.Create(),
+            Period.From(DateTimeOffset.Now, DateTimeOffset.Now.AddHours(1)));
+
         var service = ServiceFactory.CreateService();
         SetupServiceIdExistsServiceRepository(service);
-        SetupNameExistsServiceRepository(true);
+        SetupGetAllByServiceIdAppointmentRepository([appointment]);
 
         // Act
-        var result = await GetUpdatedServiceAsync(service);
+        var result = await _sut.DeleteServiceAsync(service.Id);
 
         // Assert
         result.IsFailure.Should().BeTrue();
-        result.Error?.FirstError().Should().Be(ServiceErrors.NameAlreadyExists.FirstError());
-    }
-
-    private async Task<Result<Service>> GetUpdatedServiceAsync(Service service)
-    {
-        var result = await _sut.UpdateServiceAsync(
-            serviceId: service.Id,
-            duration: service.Duration,
-            name: service.Name,
-            description: service.Description,
-            colorScheme: service.ColorScheme);
-
-        return result;
+        result.Error?.FirstError().Should().Be(ServiceErrors.HasAssociatedAppointments.FirstError());
     }
 
     private void SetupServiceIdExistsServiceRepository(Service? returnValue)
@@ -90,9 +86,9 @@ public class ServiceManagerUpdateTests
             .Returns(returnValue);
     }
 
-    private void SetupNameExistsServiceRepository(bool returnValue)
+    private void SetupGetAllByServiceIdAppointmentRepository(List<Appointment> returnValue)
     {
-        _serviceRepository.NameExistsAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
+        _appointmentRepository.GetAllByServiceId(Arg.Any<ServiceId>(), Arg.Any<CancellationToken>())
             .Returns(returnValue);
     }
 }

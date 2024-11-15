@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Calendars.Errors;
+﻿using AgendaManager.Domain.Appointments.Interfaces;
+using AgendaManager.Domain.Calendars.Errors;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Services.Errors;
@@ -20,8 +21,9 @@ public class ServiceManagerCreateTests
     {
         _serviceRepository = Substitute.For<IServiceRepository>();
         _calendarRepository = Substitute.For<ICalendarRepository>();
+        var appointmentRepository = Substitute.For<IAppointmentRepository>();
 
-        _sut = new ServiceManager(_serviceRepository, _calendarRepository);
+        _sut = new ServiceManager(_serviceRepository, _calendarRepository, appointmentRepository);
     }
 
     [Fact]

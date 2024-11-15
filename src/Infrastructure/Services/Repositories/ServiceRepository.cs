@@ -21,4 +21,9 @@ public class ServiceRepository(AppDbContext context) : IServiceRepository
 
         return exists;
     }
+
+    public void Delete(Service service)
+    {
+        context.Services.Remove(service);
+    }
 }
