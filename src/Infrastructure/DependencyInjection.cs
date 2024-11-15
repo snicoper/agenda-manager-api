@@ -2,15 +2,16 @@
 using AgendaManager.Application.Common.Interfaces.Clock;
 using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Application.Common.Interfaces.Users;
+using AgendaManager.Domain.AuditRecords.Interfaces;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.ResourceTypes.Interfaces;
 using AgendaManager.Domain.Users.Interfaces;
+using AgendaManager.Infrastructure.AuditRecords.Repositories;
 using AgendaManager.Infrastructure.Calendars.Repositories;
 using AgendaManager.Infrastructure.Common.Clock;
 using AgendaManager.Infrastructure.Common.Persistence;
 using AgendaManager.Infrastructure.Common.Persistence.Interceptors;
 using AgendaManager.Infrastructure.Common.Persistence.Seeds;
-using AgendaManager.Infrastructure.Common.Persistence.Services;
 using AgendaManager.Infrastructure.Common.Services.Emails;
 using AgendaManager.Infrastructure.ResourceTypes.Repositories;
 using AgendaManager.Infrastructure.Users.Authentication;
@@ -64,6 +65,9 @@ public static class DependencyInjection
         services.AddSingleton(TimeProvider.System);
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 
+        // AuditRecords.
+        services.AddScoped<IAuditRecordRepository, AuditRecordRepository>();
+
         // Repositories.
         // Users.
         services.AddScoped<IUserRepository, UserRepository>();
@@ -83,11 +87,8 @@ public static class DependencyInjection
         IConfiguration configuration,
         IWebHostEnvironment environment)
     {
-        services.AddScoped<AuditRecordInterceptorService>();
         services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
         services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
-        services.AddScoped<ISaveChangesInterceptor, AuditRecordInterceptor>();
-
         services.AddDbContext<AppDbContext>(
             (provider, options) =>
             {

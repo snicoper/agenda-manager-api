@@ -2,4 +2,5 @@
 
 public interface IAuditRecordRepository
 {
+    Task AddAsync(AuditRecord auditRecord, CancellationToken cancellationToken = default);
 }
