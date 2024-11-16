@@ -47,15 +47,27 @@ public sealed class Calendar : AggregateRoot
 
     public IReadOnlyCollection<CalendarHoliday> Holidays => _holidays.AsReadOnly();
 
-    public void ChangeActiveStatus(bool isActive)
+    public void Activate()
     {
-        if (IsActive == isActive)
+        if (IsActive)
         {
             return;
         }
 
-        IsActive = isActive;
-        AddDomainEvent(new CalendarActiveStatusChangedDomainEvent(Id, IsActive));
+        IsActive = true;
+
+        AddDomainEvent(new CalendarActivatedDomainEvent(Id));
+    }
+
+    public void Deactivate()
+    {
+        if (!IsActive)
+        {
+            return;
+        }
+
+        IsActive = false;
+        AddDomainEvent(new CalendarDeactivatedDomainEvent(Id));
     }
 
     public void AddHoliday(CalendarHoliday calendarHoliday)
