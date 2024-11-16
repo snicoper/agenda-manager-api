@@ -14,14 +14,14 @@ public enum AppointmentStatus
     Waiting = 3,
 
     [Display(Name = "Cancelled")]
-    Cancelled = 5,
+    Cancelled = 4,
 
     [Display(Name = "RequiresRescheduling")]
-    RequiresRescheduling = 6,
+    RequiresRescheduling = 5,
 
     [Display(Name = "InProgress")]
-    InProgress = 7,
+    InProgress = 6,
 
     [Display(Name = "Completed")]
-    Completed = 8
+    Completed = 7
 }
