@@ -5,6 +5,7 @@ using AgendaManager.Domain.Appointments.ValueObjects;
 using AgendaManager.Domain.Calendars;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.ValueObjects.Duration;
 using AgendaManager.Domain.Common.ValueObjects.Period;
 using AgendaManager.Domain.Services;
 using AgendaManager.Domain.Services.ValueObjects;
@@ -43,9 +44,11 @@ public sealed class Appointment : AggregateRoot
 
     public Period Period { get; private set; } = null!;
 
+    public Duration Duration { get; private set; } = null!;
+
     public AppointmentStatus Status { get; private set; } = AppointmentStatus.Pending;
 
-    public IReadOnlyCollection<AppointmentStatusChange> StatusChanges => _statusChanges.AsReadOnly();
+    public IReadOnlyList<AppointmentStatusChange> StatusChanges => _statusChanges.AsReadOnly();
 
     public static Appointment Create(AppointmentId id, Period period)
     {

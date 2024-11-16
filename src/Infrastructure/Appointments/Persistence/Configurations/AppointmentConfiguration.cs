@@ -1,6 +1,7 @@
 ﻿using AgendaManager.Domain.Appointments;
 using AgendaManager.Domain.Appointments.ValueObjects;
 using AgendaManager.Domain.Calendars.ValueObjects;
+using AgendaManager.Domain.Common.ValueObjects.Duration;
 using AgendaManager.Domain.Services.ValueObjects;
 using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -74,6 +75,12 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
                 appointmentBuilder.Property(p => p.End)
                     .HasColumnName("End");
             });
+
+        builder.Property(a => a.Duration)
+            .HasConversion(
+                duration => duration.Value,
+                value => Duration.From(value))
+            .IsRequired();
 
         builder.Property(a => a.Status)
             .IsRequired();
