@@ -40,6 +40,8 @@ public sealed class CalendarSettings : AuditableEntity
 
     public AppointmentOverlappingStrategy AppointmentOverlappingStrategy { get; private set; }
 
+    public AppointmentCreationStrategy AppointmentCreationStrategy { get; private set; }
+
     internal static CalendarSettings Create(
         CalendarSettingsId id,
         CalendarId calendarId,
