@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241116134146_Initial")]
+    [Migration("20241116193431_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -261,7 +261,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CalendarId");
+                    b.HasIndex("CalendarId", "Category");
 
                     b.ToTable("CalendarConfigurations", (string)null);
                 });

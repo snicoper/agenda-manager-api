@@ -62,8 +62,8 @@ public static class ConfigurationSeed
 
             CalendarConfigurationOption.Create(
                 optionId: CalandarConfigurationOptionId.Create(),
-                category: CalendarConfigurationKeys.CustomValues.IanaTimeZone,
-                key: CalendarConfigurationKeys.CustomValues.Key,
+                category: CalendarConfigurationKeys.TimeZone.IanaTimeZone,
+                key: CalendarConfigurationKeys.TimeZone.Key,
                 description: "Time zone",
                 defaultValue: true)
         ];

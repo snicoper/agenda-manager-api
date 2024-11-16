@@ -536,9 +536,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 columns: new[] { "AggregateName", "AggregateId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CalendarConfigurations_CalendarId",
+                name: "IX_CalendarConfigurations_CalendarId_Category",
                 table: "CalendarConfigurations",
-                column: "CalendarId");
+                columns: new[] { "CalendarId", "Category" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CalendarHolidays_CalendarId",

@@ -258,7 +258,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CalendarId");
+                    b.HasIndex("CalendarId", "Category");
 
                     b.ToTable("CalendarConfigurations", (string)null);
                 });

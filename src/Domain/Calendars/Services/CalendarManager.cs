@@ -60,7 +60,7 @@ public class CalendarManager(
         var options = await calendarConfigurationOptionRepository.GetAllAsync(cancellationToken);
 
         var configurations = options
-            .Where(cco => cco.DefaultValue && cco.Key != CalendarConfigurationKeys.CustomValues.Key)
+            .Where(cco => cco.DefaultValue && cco.Key != CalendarConfigurationKeys.TimeZone.Key)
             .Select(
                 cco => CalendarConfiguration.Create(
                     id: CalendarConfigurationId.Create(),
@@ -76,7 +76,7 @@ public class CalendarManager(
         var ianaTimeZoneOption = CalendarConfiguration.Create(
             id: CalendarConfigurationId.Create(),
             calendarId: calendarId,
-            category: CalendarConfigurationKeys.CustomValues.IanaTimeZone,
+            category: CalendarConfigurationKeys.TimeZone.IanaTimeZone,
             selectedKey: ianaTimeZone.Value);
 
         calendar.AddConfiguration(ianaTimeZoneOption);

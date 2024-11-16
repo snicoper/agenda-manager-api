@@ -3,28 +3,28 @@
 public static class CalendarConfigurationKeys
 {
     /// <summary>
-    /// Estrategia al crear un día festivo de un calendario.
+    /// Strategy for creating a holiday in the calendar.
     /// </summary>
     public static class HolidayCreateStrategy
     {
         public const string Key = nameof(HolidayCreateStrategy);
 
         /// <summary>
-        /// Rechazar si se solapa con citas ya creadas.
+        /// Reject if overlapping with existing appointments.
         /// </summary>
         public const string RejectIfOverlapping = nameof(RejectIfOverlapping);
 
         public const string RejectIfOverlappingDescription = "Reject if overlapping";
 
         /// <summary>
-        /// Cambiar estado de la cita a reprogramar si se solapa con citas ya creadas.
+        /// Change the status of overlapping appointments to reschedule.
         /// </summary>
         public const string CancelOverlapping = nameof(CancelOverlapping);
 
         public const string CancelOverlappingDescription = "Cancel overlapping";
 
         /// <summary>
-        /// Permitir solapamiento si se solapa con citas ya creadas.
+        /// Allow overlapping with existing appointments.
         /// </summary>
         public const string AllowOverlapping = nameof(AllowOverlapping);
 
@@ -32,22 +32,22 @@ public static class CalendarConfigurationKeys
     }
 
     /// <summary>
-    /// Indica que estado debe tener una cita cuando es creada.
+    /// Determines the status an appointment should have when created.
     /// </summary>
     public static class AppointmentCreationStrategy
     {
         public const string Key = nameof(AppointmentCreationStrategy);
 
         /// <summary>
-        /// Las citas al ser creadas, deben tener el estado "Accepted".
+        /// Appointments are created with the "Accepted" status by default.
         /// </summary>
         public const string Direct = nameof(Direct);
 
         public const string DirectDescription = "Direct";
 
         /// <summary>
-        /// Las citas al ser creadas, deben tener un estado "Pending",
-        /// hasta que el customer acepte la cita.
+        /// Appointments are created with a "Pending" status
+        /// until the customer confirms the appointment.
         /// </summary>
         public const string RequireConfirmation = nameof(RequireConfirmation);
 
@@ -55,21 +55,21 @@ public static class CalendarConfigurationKeys
     }
 
     /// <summary>
-    /// Comportamiento al crear una cita respecto a solapamiento con citas ya creadas.
+    /// Behavior when creating an appointment regarding overlapping with existing ones.
     /// </summary>
     public static class AppointmentOverlappingStrategy
     {
         public const string Key = nameof(AppointmentOverlappingStrategy);
 
         /// <summary>
-        /// No permitir solapamiento con citas ya creadas.
+        /// Do not allow overlapping with existing appointments.
         /// </summary>
         public const string RejectIfOverlapping = nameof(RejectIfOverlapping);
 
         public const string RejectIfOverlappingDescription = "Reject if overlapping";
 
         /// <summary>
-        /// Permitir solapamiento con citas ya creadas.
+        /// Allow overlapping with existing appointments.
         /// </summary>
         public const string AllowOverlapping = nameof(AllowOverlapping);
 
@@ -77,19 +77,20 @@ public static class CalendarConfigurationKeys
     }
 
     /// <summary>
-    /// Valores custom de las configuraciones de un calendario.
-    /// Solo tienen una única opción.
+    /// Configuration for time zones.
     /// </summary>
-    public static class CustomValues
+    public static class TimeZone
     {
         /// <summary>
-        /// Los campos con valores custom como strings, el Key debe tener un valor "UnitValue".
+        /// For custom fields like strings, the Key must be "UnitValue".
         /// </summary>
         public const string Key = "UnitValue";
 
         /// <summary>
-        /// String que representa el valor de la zona horaria en formato IANA.
+        /// String representing the time zone value in IANA format.
         /// </summary>
         public const string IanaTimeZone = nameof(IanaTimeZone);
+
+        public const string IanaTimeZoneDescription = "Time zone";
     }
 }

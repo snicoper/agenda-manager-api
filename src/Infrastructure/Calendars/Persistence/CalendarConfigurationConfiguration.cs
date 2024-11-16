@@ -13,6 +13,8 @@ public class
 
         builder.HasKey(cc => cc.Id);
 
+        builder.HasIndex(cc => new { cc.CalendarId, cc.Category });
+
         builder.Property(cc => cc.Id)
             .HasConversion(
                 id => id.Value,
