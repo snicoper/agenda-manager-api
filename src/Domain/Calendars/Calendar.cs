@@ -10,6 +10,7 @@ namespace AgendaManager.Domain.Calendars;
 public sealed class Calendar : AggregateRoot
 {
     private readonly List<CalendarHoliday> _holidays = [];
+    private readonly List<CalendarConfiguration> _configurations = [];
 
     private Calendar(
         CalendarId id,
@@ -46,6 +47,8 @@ public sealed class Calendar : AggregateRoot
     public bool IsActive { get; private set; }
 
     public IReadOnlyCollection<CalendarHoliday> Holidays => _holidays.AsReadOnly();
+
+    public IReadOnlyCollection<CalendarConfiguration> Configurations => _configurations.AsReadOnly();
 
     public void Activate()
     {

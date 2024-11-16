@@ -31,6 +31,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
 
     public DbSet<CalendarSettings> CalendarSettings => Set<CalendarSettings>();
 
+    public DbSet<CalendarConfigurationOption> Configurations => Set<CalendarConfigurationOption>();
+
+    public DbSet<CalendarConfiguration> CalendarConfigurations => Set<CalendarConfiguration>();
+
     public DbSet<Resource> Resources => Set<Resource>();
 
     public DbSet<ResourceSchedule> ResourceSchedules => Set<ResourceSchedule>();

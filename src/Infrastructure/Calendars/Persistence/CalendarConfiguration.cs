@@ -45,5 +45,10 @@ public class CalendarConfiguration : IEntityTypeConfiguration<Calendar>
             .WithOne(ch => ch.Calendar)
             .HasForeignKey(c => c.CalendarId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(c => c.Configurations)
+            .WithOne(ch => ch.Calendar)
+            .HasForeignKey(c => c.CalendarId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

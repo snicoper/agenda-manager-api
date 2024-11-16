@@ -50,5 +50,6 @@ public class AppDbContextInitialize(
         await CalendarSeed.InitializeAsync(context, serviceProvider);
         await ResourceTypeSeed.InitializeAsync(context, _roles, serviceProvider);
         await ResourceSeed.InitializeAsync(context, serviceProvider);
+        await ConfigurationSeed.InitializeAsync(context);
     }
 }

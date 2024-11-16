@@ -10,12 +10,12 @@ public sealed class CalendarConfiguration : AuditableEntity
     }
 
     private CalendarConfiguration(
-        CalendarConfigurationId calendarConfigurationId,
+        CalendarConfigurationId id,
         CalendarId calendarId,
         string category,
         string selectedKey)
     {
-        Id = calendarConfigurationId;
+        Id = id;
         CalendarId = calendarId;
         Category = category;
         SelectedKey = selectedKey;
@@ -25,19 +25,19 @@ public sealed class CalendarConfiguration : AuditableEntity
 
     public CalendarId CalendarId { get; private set; } = null!;
 
-    public Calendar Settings { get; private set; } = null!;
+    public Calendar Calendar { get; private set; } = null!;
 
     public string Category { get; private set; } = default!;
 
     public string SelectedKey { get; private set; } = default!;
 
     public static CalendarConfiguration Create(
-        CalendarConfigurationId calendarConfigurationId,
+        CalendarConfigurationId id,
         CalendarId calendarId,
         string category,
         string selectedKey)
     {
-        CalendarConfiguration calendarConfiguration = new(calendarConfigurationId, calendarId, category, selectedKey);
+        CalendarConfiguration calendarConfiguration = new(id, calendarId, category, selectedKey);
 
         return calendarConfiguration;
     }
