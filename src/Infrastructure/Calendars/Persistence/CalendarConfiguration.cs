@@ -19,12 +19,6 @@ public class CalendarConfiguration : IEntityTypeConfiguration<Calendar>
                 value => CalendarId.From(value))
             .IsRequired();
 
-        builder.Property(c => c.SettingsId)
-            .HasConversion(
-                id => id.Value,
-                value => CalendarSettingsId.From(value))
-            .IsRequired();
-
         builder.Property(c => c.Name)
             .HasMaxLength(50)
             .IsRequired();

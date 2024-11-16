@@ -213,9 +213,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<Guid>("SettingsId")
-                        .HasColumnType("uuid");
-
                     b.Property<int>("Version")
                         .HasColumnType("integer");
 

@@ -40,6 +40,9 @@ public class AppDbContextInitialize(
 
     private async Task TrySeedAsync()
     {
+        // Seeds requeridos par el sistema.
+        await ConfigurationSeed.InitializeAsync(context);
+
         var rolesResult = await RoleSeed.InitializeAsync(context, serviceProvider);
 
         // Asegurarse de que los roles se hayan inicializado correctamente en segundas iteraciones.
@@ -50,6 +53,5 @@ public class AppDbContextInitialize(
         await CalendarSeed.InitializeAsync(context, serviceProvider);
         await ResourceTypeSeed.InitializeAsync(context, _roles, serviceProvider);
         await ResourceSeed.InitializeAsync(context, serviceProvider);
-        await ConfigurationSeed.InitializeAsync(context);
     }
 }

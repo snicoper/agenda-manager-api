@@ -1,11 +1,15 @@
-﻿using AgendaManager.Domain.Calendars.Errors;
+﻿using AgendaManager.Domain.Calendars.Constants;
+using AgendaManager.Domain.Calendars.Entities;
+using AgendaManager.Domain.Calendars.Errors;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
 
 namespace AgendaManager.Domain.Calendars.Services;
 
-public class CalendarManager(ICalendarRepository calendarRepository)
+public class CalendarManager(
+    ICalendarRepository calendarRepository,
+    ICalendarConfigurationOptionRepository calendarConfigurationOptionRepository)
 {
     public async Task<Result<Calendar>> CreateCalendarAsync(
         CalendarId calendarId,
@@ -16,10 +20,17 @@ public class CalendarManager(ICalendarRepository calendarRepository)
     {
         var calendar = Calendar.Create(calendarId, name, description);
         var validationResult = await IsValidAsync(calendar, cancellationToken);
+
         if (validationResult.IsFailure)
         {
             return validationResult.MapToValue<Calendar>();
         }
+
+        calendar = await AddDefaultConfigurationsAsync(
+            calendar: calendar,
+            calendarId: calendarId,
+            ianaTimeZone: ianaTimeZone,
+            cancellationToken: cancellationToken);
 
         await calendarRepository.AddAsync(calendar, cancellationToken);
 
@@ -38,6 +49,39 @@ public class CalendarManager(ICalendarRepository calendarRepository)
         calendarRepository.Update(calendar);
 
         return Result.Create(calendar);
+    }
+
+    private async Task<Calendar> AddDefaultConfigurationsAsync(
+        Calendar calendar,
+        CalendarId calendarId,
+        IanaTimeZone ianaTimeZone,
+        CancellationToken cancellationToken)
+    {
+        var options = await calendarConfigurationOptionRepository.GetAllAsync(cancellationToken);
+
+        var configurations = options
+            .Where(cco => cco.DefaultValue && cco.Key != CalendarConfigurationKeys.CustomValues.Key)
+            .Select(
+                cco => CalendarConfiguration.Create(
+                    id: CalendarConfigurationId.Create(),
+                    calendarId: calendarId,
+                    category: cco.Category,
+                    selectedKey: cco.Key));
+
+        foreach (var configuration in configurations)
+        {
+            calendar.AddConfiguration(configuration);
+        }
+
+        var ianaTimeZoneOption = CalendarConfiguration.Create(
+            id: CalendarConfigurationId.Create(),
+            calendarId: calendarId,
+            category: CalendarConfigurationKeys.CustomValues.IanaTimeZone,
+            selectedKey: ianaTimeZone.Value);
+
+        calendar.AddConfiguration(ianaTimeZoneOption);
+
+        return calendar;
     }
 
     private async Task<Result> IsValidAsync(Calendar calendar, CancellationToken cancellationToken)

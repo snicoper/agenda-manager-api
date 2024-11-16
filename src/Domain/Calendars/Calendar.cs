@@ -21,7 +21,6 @@ public sealed class Calendar : AggregateRoot
         GuardAgainstInvalidDescription(description);
 
         Id = id;
-        SettingsId = CalendarSettingsId.Create();
         Name = name;
         Description = description;
         IsActive = isActive;
@@ -32,8 +31,6 @@ public sealed class Calendar : AggregateRoot
     }
 
     public CalendarId Id { get; } = null!;
-
-    public CalendarSettingsId SettingsId { get; } = null!;
 
     public string Name { get; private set; } = default!;
 
@@ -66,6 +63,16 @@ public sealed class Calendar : AggregateRoot
 
         IsActive = false;
         AddDomainEvent(new CalendarDeactivatedDomainEvent(Id));
+    }
+
+    public void AddConfiguration(CalendarConfiguration calendarConfiguration)
+    {
+        _configurations.Add(calendarConfiguration);
+    }
+
+    public void RemoveConfiguration(CalendarConfiguration calendarConfiguration)
+    {
+        _configurations.Remove(calendarConfiguration);
     }
 
     public void AddHoliday(CalendarHoliday calendarHoliday)
