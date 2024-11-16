@@ -84,14 +84,14 @@ public sealed class Calendar : AggregateRoot
         AddDomainEvent(new CalendarHolidayRemovedDomainEvent(Id, calendarHoliday.Id));
     }
 
-    public void UpdateSettings(CalendarSettingsConfiguration configuration)
+    public void UpdateSettings(CalendarSettingsConfiguration settings)
     {
-        if (!Settings.HasChanges(configuration))
+        if (!Settings.HasChanges(settings))
         {
             return;
         }
 
-        Settings.Update(configuration);
+        Settings.Update(settings);
 
         AddDomainEvent(new CalendarSettingsUpdatedDomainEvent(SettingsId, Id));
     }

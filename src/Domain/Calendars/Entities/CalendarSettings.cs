@@ -59,25 +59,25 @@ public sealed class CalendarSettings : AuditableEntity
         return calendarSettings;
     }
 
-    internal void Update(CalendarSettingsConfiguration configuration)
+    internal void Update(CalendarSettingsConfiguration settings)
     {
-        ArgumentNullException.ThrowIfNull(configuration.HolidayStrategy);
-        ArgumentNullException.ThrowIfNull(configuration.AppointmentStrategy);
+        ArgumentNullException.ThrowIfNull(settings.HolidayStrategy);
+        ArgumentNullException.ThrowIfNull(settings.AppointmentStrategy);
 
-        if (!HasChanges(configuration))
+        if (!HasChanges(settings))
         {
             return;
         }
 
-        IanaTimeZone = configuration.IanaTimeZone;
-        HolidayStrategy = configuration.HolidayStrategy;
-        AppointmentStrategy = configuration.AppointmentStrategy;
+        IanaTimeZone = settings.IanaTimeZone;
+        HolidayStrategy = settings.HolidayStrategy;
+        AppointmentStrategy = settings.AppointmentStrategy;
     }
 
-    internal bool HasChanges(CalendarSettingsConfiguration configuration)
+    internal bool HasChanges(CalendarSettingsConfiguration settings)
     {
-        return !(IanaTimeZone.Equals(configuration.IanaTimeZone)
-                 && HolidayStrategy == configuration.HolidayStrategy
-                 && AppointmentStrategy == configuration.AppointmentStrategy);
+        return !(IanaTimeZone.Equals(settings.IanaTimeZone)
+                 && HolidayStrategy == settings.HolidayStrategy
+                 && AppointmentStrategy == settings.AppointmentStrategy);
     }
 }
