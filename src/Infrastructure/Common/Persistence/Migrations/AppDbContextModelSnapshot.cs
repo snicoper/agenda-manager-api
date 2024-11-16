@@ -274,7 +274,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("AppointmentStrategy")
+                    b.Property<int>("AppointmentOverlappingStrategy")
                         .HasColumnType("integer");
 
                     b.Property<Guid>("CalendarId")
@@ -308,6 +308,8 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
                     b.HasIndex("CalendarId")
                         .IsUnique();
+
+                    b.HasIndex("Id", "CalendarId");
 
                     b.ToTable("CalendarSettings", (string)null);
                 });

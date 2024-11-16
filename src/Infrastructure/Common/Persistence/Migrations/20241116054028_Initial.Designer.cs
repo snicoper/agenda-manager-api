@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241116022324_Initial")]
+    [Migration("20241116054028_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -277,7 +277,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("AppointmentStrategy")
+                    b.Property<int>("AppointmentOverlappingStrategy")
                         .HasColumnType("integer");
 
                     b.Property<Guid>("CalendarId")
@@ -311,6 +311,8 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
                     b.HasIndex("CalendarId")
                         .IsUnique();
+
+                    b.HasIndex("Id", "CalendarId");
 
                     b.ToTable("CalendarSettings", (string)null);
                 });
