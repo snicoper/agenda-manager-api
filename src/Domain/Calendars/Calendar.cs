@@ -68,11 +68,15 @@ public sealed class Calendar : AggregateRoot
     public void AddConfiguration(CalendarConfiguration calendarConfiguration)
     {
         _configurations.Add(calendarConfiguration);
+
+        AddDomainEvent(new CalendarConfigurationAddedDomainEvent(Id, calendarConfiguration.Id));
     }
 
     public void RemoveConfiguration(CalendarConfiguration calendarConfiguration)
     {
         _configurations.Remove(calendarConfiguration);
+
+        AddDomainEvent(new CalendarConfigurationRemovedDomainEvent(Id, calendarConfiguration.Id));
     }
 
     public void AddHoliday(CalendarHoliday calendarHoliday)
