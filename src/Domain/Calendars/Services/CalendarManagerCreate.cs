@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Calendars.Enums;
+﻿using AgendaManager.Domain.Calendars.Entities;
+using AgendaManager.Domain.Calendars.Enums;
 using AgendaManager.Domain.Calendars.Errors;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.ValueObjects;
@@ -6,17 +7,23 @@ using AgendaManager.Domain.Common.Responses;
 
 namespace AgendaManager.Domain.Calendars.Services;
 
-public class CalendarManager(ICalendarRepository calendarRepository)
+public class CalendarManagerCreate(ICalendarRepository calendarRepository)
 {
     public async Task<Result<Calendar>> CreateCalendarAsync(
         CalendarId calendarId,
         IanaTimeZone ianaTimeZone,
         string name,
         string description,
-        HolidayCreationStrategy holidayCreationStrategy,
         CancellationToken cancellationToken)
     {
-        var calendar = Calendar.Create(calendarId, name, description, ianaTimeZone, holidayCreationStrategy);
+        var settings = CalendarSettings.Create(
+            CalendarSettingsId.Create(),
+            calendarId,
+            ianaTimeZone,
+            HolidayStrategy.RejectIfOverlapping,
+            AppointmentStrategy.RejectIfOverlapping);
+
+        var calendar = Calendar.Create(calendarId, name, description, settings);
         var validationResult = await IsValidAsync(calendar, cancellationToken);
         if (validationResult.IsFailure)
         {

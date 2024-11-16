@@ -15,14 +15,16 @@ public sealed class CalendarSettings : AuditableEntity
         CalendarSettingsId id,
         CalendarId calendarId,
         IanaTimeZone ianaTimeZone,
-        HolidayCreationStrategy holidayCreationStrategy)
+        HolidayStrategy holidayStrategy,
+        AppointmentStrategy appointmentStrategy)
     {
-        ArgumentNullException.ThrowIfNull(holidayCreationStrategy);
+        ArgumentNullException.ThrowIfNull(holidayStrategy);
 
         Id = id;
         CalendarId = calendarId;
         IanaTimeZone = ianaTimeZone;
-        HolidayCreationStrategy = holidayCreationStrategy;
+        HolidayStrategy = holidayStrategy;
+        AppointmentStrategy = appointmentStrategy;
     }
 
     public CalendarSettingsId Id { get; } = null!;
@@ -33,36 +35,53 @@ public sealed class CalendarSettings : AuditableEntity
 
     public IanaTimeZone IanaTimeZone { get; private set; } = default!;
 
-    public HolidayCreationStrategy HolidayCreationStrategy { get; private set; }
+    public HolidayStrategy HolidayStrategy { get; private set; }
+
+    public AppointmentStrategy AppointmentStrategy { get; }
 
     internal static CalendarSettings Create(
         CalendarSettingsId id,
         CalendarId calendarId,
         IanaTimeZone ianaTimeZone,
-        HolidayCreationStrategy holidayCreationStrategy)
+        HolidayStrategy holidayStrategy,
+        AppointmentStrategy appointmentStrategy)
     {
-        CalendarSettings calendarSettings = new(id, calendarId, ianaTimeZone, holidayCreationStrategy);
+        CalendarSettings calendarSettings = new(
+            id,
+            calendarId,
+            ianaTimeZone,
+            holidayStrategy,
+            appointmentStrategy);
 
         calendarSettings.AddDomainEvent(new CalendarSettingsCreatedDomainEvent(id));
 
         return calendarSettings;
     }
 
-    internal void Update(IanaTimeZone ianaTimeZone, HolidayCreationStrategy holidayCreationStrategy)
+    internal void Update(
+        IanaTimeZone ianaTimeZone,
+        HolidayStrategy holidayStrategy,
+        AppointmentStrategy appointmentStrategy)
     {
-        ArgumentNullException.ThrowIfNull(holidayCreationStrategy);
+        ArgumentNullException.ThrowIfNull(holidayStrategy);
+        ArgumentNullException.ThrowIfNull(appointmentStrategy);
 
-        if (!HasChanges(ianaTimeZone, holidayCreationStrategy))
+        if (!HasChanges(ianaTimeZone, holidayStrategy, appointmentStrategy))
         {
             return;
         }
 
         IanaTimeZone = ianaTimeZone;
-        HolidayCreationStrategy = holidayCreationStrategy;
+        HolidayStrategy = holidayStrategy;
     }
 
-    internal bool HasChanges(IanaTimeZone ianaTimeZone, HolidayCreationStrategy holidayCreationStrategy)
+    internal bool HasChanges(
+        IanaTimeZone ianaTimeZone,
+        HolidayStrategy holidayStrategy,
+        AppointmentStrategy appointmentStrategy)
     {
-        return !IanaTimeZone.Equals(ianaTimeZone) || HolidayCreationStrategy != holidayCreationStrategy;
+        return !(IanaTimeZone.Equals(ianaTimeZone)
+                 && HolidayStrategy == holidayStrategy
+                 && AppointmentStrategy == appointmentStrategy);
     }
 }

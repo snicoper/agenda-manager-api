@@ -1,5 +1,4 @@
-﻿using AgendaManager.Domain.Calendars.Enums;
-using AgendaManager.Domain.Calendars.Services;
+﻿using AgendaManager.Domain.Calendars.Services;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,14 +13,13 @@ public static class CalendarSeed
             return;
         }
 
-        var calendarManager = serviceProvider.GetRequiredService<CalendarManager>();
+        var calendarManager = serviceProvider.GetRequiredService<CalendarManagerCreate>();
 
         var calendarResult = await calendarManager.CreateCalendarAsync(
             calendarId: CalendarId.Create(),
             ianaTimeZone: IanaTimeZone.FromIana("Europe/Madrid"),
             name: "Calendario principal",
             description: "Calendario principal de la aplicación",
-            HolidayCreationStrategy.CancelOverlapping,
             cancellationToken: CancellationToken.None);
 
         if (calendarResult.IsFailure || calendarResult.Value == null)

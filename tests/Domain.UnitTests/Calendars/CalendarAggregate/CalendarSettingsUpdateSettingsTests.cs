@@ -18,7 +18,10 @@ public class CalendarSettingsUpdateSettingsTests
         var calendar = CalendarFactory.CreateCalendar();
 
         // Act
-        calendar.UpdateSettings(IanaTimeZone.FromIana(newTimeZone), calendar.Settings.HolidayCreationStrategy);
+        calendar.UpdateSettings(
+            IanaTimeZone.FromIana(newTimeZone),
+            calendar.Settings.HolidayStrategy,
+            calendar.Settings.AppointmentStrategy);
 
         // Assert
         calendar.Settings.IanaTimeZone.Value.Should().Be(newTimeZone);
@@ -33,7 +36,8 @@ public class CalendarSettingsUpdateSettingsTests
         // Act
         calendar.UpdateSettings(
             IanaTimeZone.FromIana(IanaTimeZoneConstants.AmericaNewYork),
-            calendar.Settings.HolidayCreationStrategy);
+            calendar.Settings.HolidayStrategy,
+            calendar.Settings.AppointmentStrategy);
 
         // Assert
         calendar.DomainEvents.Should().Contain(x => x is CalendarSettingsUpdatedDomainEvent);
@@ -46,7 +50,10 @@ public class CalendarSettingsUpdateSettingsTests
         var calendar = CalendarFactory.CreateCalendar();
 
         // Act
-        calendar.UpdateSettings(calendar.Settings.IanaTimeZone, calendar.Settings.HolidayCreationStrategy);
+        calendar.UpdateSettings(
+            calendar.Settings.IanaTimeZone,
+            calendar.Settings.HolidayStrategy,
+            calendar.Settings.AppointmentStrategy);
 
         // Assert
         calendar.DomainEvents.Should().NotContain(x => x is CalendarSettingsUpdatedDomainEvent);

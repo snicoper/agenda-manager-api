@@ -16,13 +16,14 @@ public class CalendarSettingsUpdateTests
     {
         // Arrange
         var newTimeZone = IanaTimeZone.FromIana(IanaTimeZoneConstants.AsiaTokyo);
-        const HolidayCreationStrategy newCreateStrategy = HolidayCreationStrategy.AllowOverlapping;
+        const HolidayStrategy newCreateStrategy = HolidayStrategy.AllowOverlapping;
+        const AppointmentStrategy newAppointmentStrategy = AppointmentStrategy.AllowOverlapping;
 
         // Act
-        _settings.Update(newTimeZone, newCreateStrategy);
+        _settings.Update(newTimeZone, newCreateStrategy, newAppointmentStrategy);
 
         // Assert
         _settings.IanaTimeZone.Should().Be(newTimeZone);
-        _settings.HolidayCreationStrategy.Should().Be(newCreateStrategy);
+        _settings.HolidayStrategy.Should().Be(newCreateStrategy);
     }
 }

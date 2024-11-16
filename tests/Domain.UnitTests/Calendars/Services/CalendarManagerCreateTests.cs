@@ -1,5 +1,4 @@
 ﻿using AgendaManager.Domain.Calendars;
-using AgendaManager.Domain.Calendars.Enums;
 using AgendaManager.Domain.Calendars.Exceptions;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.Services;
@@ -12,16 +11,16 @@ using NSubstitute;
 
 namespace AgendaManager.Domain.UnitTests.Calendars.Services;
 
-public class CalendarManagerTests
+public class CalendarManagerCreateTests
 {
-    private readonly CalendarManager _sut;
+    private readonly CalendarManagerCreate _sut;
     private readonly ICalendarRepository _calendarRepository;
 
-    public CalendarManagerTests()
+    public CalendarManagerCreateTests()
     {
         _calendarRepository = Substitute.For<ICalendarRepository>();
 
-        _sut = new CalendarManager(_calendarRepository);
+        _sut = new CalendarManagerCreate(_calendarRepository);
     }
 
     [Fact]
@@ -50,7 +49,6 @@ public class CalendarManagerTests
                 ianaTimeZone: IanaTimeZone.FromIana(IanaTimeZoneConstants.EuropeMadrid),
                 name: name,
                 description: "Description of my calendar",
-                HolidayCreationStrategy.CancelOverlapping,
                 cancellationToken: CancellationToken.None));
     }
 
@@ -69,7 +67,6 @@ public class CalendarManagerTests
                 ianaTimeZone: IanaTimeZone.FromIana(IanaTimeZoneConstants.EuropeMadrid),
                 name: "My calendar",
                 description: description,
-                HolidayCreationStrategy.CancelOverlapping,
                 cancellationToken: CancellationToken.None));
     }
 
@@ -128,7 +125,6 @@ public class CalendarManagerTests
             ianaTimeZone: IanaTimeZone.FromIana(IanaTimeZoneConstants.EuropeMadrid),
             name: calendar.Name,
             description: calendar.Description,
-            HolidayCreationStrategy.CancelOverlapping,
             cancellationToken: CancellationToken.None);
 
         return result;

@@ -15,8 +15,7 @@ public sealed class Calendar : AggregateRoot
         CalendarId id,
         string name,
         string description,
-        IanaTimeZone ianaTimeZone,
-        HolidayCreationStrategy holidayCreationStrategy,
+        CalendarSettings calendarSettings,
         bool isActive)
     {
         GuardAgainstInvalidName(name);
@@ -24,7 +23,7 @@ public sealed class Calendar : AggregateRoot
 
         Id = id;
         SettingsId = CalendarSettingsId.Create();
-        Settings = CalendarSettings.Create(SettingsId, Id, ianaTimeZone, holidayCreationStrategy);
+        Settings = calendarSettings;
         Name = name;
         Description = description;
         IsActive = isActive;
@@ -73,14 +72,17 @@ public sealed class Calendar : AggregateRoot
         AddDomainEvent(new CalendarHolidayRemovedDomainEvent(Id, calendarHoliday.Id));
     }
 
-    public void UpdateSettings(IanaTimeZone ianaTimeZone, HolidayCreationStrategy holidayCreationStrategy)
+    public void UpdateSettings(
+        IanaTimeZone ianaTimeZone,
+        HolidayStrategy holidayStrategy,
+        AppointmentStrategy appointmentStrategy)
     {
-        if (!Settings.HasChanges(ianaTimeZone, holidayCreationStrategy))
+        if (!Settings.HasChanges(ianaTimeZone, holidayStrategy, appointmentStrategy))
         {
             return;
         }
 
-        Settings.Update(ianaTimeZone, holidayCreationStrategy);
+        Settings.Update(ianaTimeZone, holidayStrategy, appointmentStrategy);
 
         AddDomainEvent(new CalendarSettingsUpdatedDomainEvent(SettingsId, Id));
     }
@@ -89,11 +91,10 @@ public sealed class Calendar : AggregateRoot
         CalendarId id,
         string name,
         string description,
-        IanaTimeZone ianaTimeZone,
-        HolidayCreationStrategy holidayCreationStrategy,
+        CalendarSettings calendarSettings,
         bool active = true)
     {
-        Calendar calendar = new(id, name, description, ianaTimeZone, holidayCreationStrategy, active);
+        Calendar calendar = new(id, name, description, calendarSettings, active);
 
         calendar.AddDomainEvent(new CalendarCreatedDomainEvent(id));
 

@@ -1,5 +1,4 @@
 ﻿using AgendaManager.Domain.Appointments.Interfaces;
-using AgendaManager.Domain.Calendars.Enums;
 using AgendaManager.Domain.Calendars.Errors;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.Services;
@@ -33,9 +32,7 @@ public class CalendarHolidayManagerTests
     public async Task CreateHoliday_ShouldSucceed_WhenOverlappingIsAllowed()
     {
         // Arrange
-        var settingsResult = CalendarSettingsFactory.CreateCalendarSettings(
-            holidayCreationStrategy: HolidayCreationStrategy.AllowOverlapping);
-
+        var settingsResult = CalendarSettingsFactory.CreateCalendarSettings();
         var calendarResult = CalendarFactory.CreateCalendar();
 
         _calendarSettingsRepository.GetSettingsByCalendarIdAsync(Arg.Any<CalendarId>(), Arg.Any<CancellationToken>())
@@ -66,8 +63,7 @@ public class CalendarHolidayManagerTests
     {
         // Arrange
         var appointmentResult = AppointmentFactory.Create();
-        var settingsResult = CalendarSettingsFactory.CreateCalendarSettings(
-            holidayCreationStrategy: HolidayCreationStrategy.RejectIfOverlapping);
+        var settingsResult = CalendarSettingsFactory.CreateCalendarSettings();
 
         var errorResultExpected = CalendarHolidayErrors.CreateOverlappingReject.FirstError();
 
@@ -96,8 +92,7 @@ public class CalendarHolidayManagerTests
     public async Task CreateHoliday_ShouldFail_WhenCalendarNotFound()
     {
         // Arrange
-        var settingsResult = CalendarSettingsFactory.CreateCalendarSettings(
-            holidayCreationStrategy: HolidayCreationStrategy.AllowOverlapping);
+        var settingsResult = CalendarSettingsFactory.CreateCalendarSettings();
 
         var errorResultExpected = CalendarErrors.CalendarNotFound.FirstError();
 
