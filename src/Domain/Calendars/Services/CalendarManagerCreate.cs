@@ -63,9 +63,9 @@ public class CalendarManagerCreate(
         IanaTimeZone ianaTimeZone,
         CancellationToken cancellationToken)
     {
-        var options = await calendarConfigurationOptionRepository.GetAllAsync(cancellationToken);
+        var configurationOptions = await calendarConfigurationOptionRepository.GetAllAsync(cancellationToken);
 
-        var configurations = options
+        var configurations = configurationOptions
             .Where(cco => cco.DefaultValue && cco.Key != CalendarConfigurationKeys.TimeZone.Key)
             .Select(
                 cco => CalendarConfiguration.Create(
@@ -77,7 +77,7 @@ public class CalendarManagerCreate(
 
         if (configurations.Count == 0)
         {
-            return CalendarErrors.NoDefaultConfigurationsFound;
+            return CalendarConfigurationOptionErrors.NoDefaultConfigurationsFound;
         }
 
         foreach (var configuration in configurations)

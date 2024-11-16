@@ -30,7 +30,7 @@ public class CalendarManagerCreateTests
     {
         // Arrange
         SetupNameExistsInCalendarRepositoryAsync(false);
-        SetupGetAllInCalendarConfigurationOptionRepository();
+        SetupGetAllInCalendarConfigurationOptionRepository(false);
 
         // Act
         var calendarResult = await CreateCalendarAsync();
@@ -66,7 +66,8 @@ public class CalendarManagerCreateTests
 
         // Assert
         calendarResult.IsFailure.Should().BeTrue();
-        calendarResult.Error?.FirstError().Should().Be(CalendarErrors.NoDefaultConfigurationsFound.FirstError());
+        calendarResult.Error?.FirstError().Should()
+            .Be(CalendarConfigurationOptionErrors.NoDefaultConfigurationsFound.FirstError());
     }
 
     private async Task<Result<Calendar>> CreateCalendarAsync()
@@ -89,7 +90,7 @@ public class CalendarManagerCreateTests
             .Returns(returnValue);
     }
 
-    private void SetupGetAllInCalendarConfigurationOptionRepository(bool returnEmpty = false)
+    private void SetupGetAllInCalendarConfigurationOptionRepository(bool returnEmpty)
     {
         var returnValue = returnEmpty
             ? []
