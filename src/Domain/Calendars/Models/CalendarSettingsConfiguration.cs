@@ -6,4 +6,4 @@ namespace AgendaManager.Domain.Calendars.Models;
 public record CalendarSettingsConfiguration(
     IanaTimeZone IanaTimeZone,
     HolidayStrategy HolidayStrategy,
-    AppointmentStrategy AppointmentStrategy);
+    AppointmentOverlappingStrategy AppointmentOverlappingStrategy);

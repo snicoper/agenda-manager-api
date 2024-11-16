@@ -2,7 +2,7 @@
 
 namespace AgendaManager.Domain.Calendars.Enums;
 
-public enum AppointmentStrategy
+public enum AppointmentOverlappingStrategy
 {
     [Display(Name = "Reject if overlapping")]
     RejectIfOverlapping = 1,

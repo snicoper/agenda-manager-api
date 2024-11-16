@@ -12,14 +12,14 @@ public abstract class CalendarSettingsFactory
         CalendarId? calendarId = null,
         IanaTimeZone? timeZone = null,
         HolidayStrategy? holidayStrategy = null,
-        AppointmentStrategy? appointmentStrategy = null)
+        AppointmentOverlappingStrategy? appointmentStrategy = null)
     {
         var settings = CalendarSettings.Create(
             id: calendarSettingsId ?? CalendarSettingsId.Create(),
             calendarId: calendarId ?? CalendarId.Create(),
             ianaTimeZone: timeZone ?? IanaTimeZone.FromIana(IanaTimeZoneConstants.EuropeMadrid),
             holidayStrategy ?? HolidayStrategy.RejectIfOverlapping,
-            appointmentStrategy ?? AppointmentStrategy.RejectIfOverlapping);
+            appointmentStrategy ?? AppointmentOverlappingStrategy.RejectIfOverlapping);
 
         return settings;
     }

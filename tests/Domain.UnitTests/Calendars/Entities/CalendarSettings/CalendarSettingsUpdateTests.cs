@@ -18,7 +18,7 @@ public class CalendarSettingsUpdateTests
         var configuration = CalendarSettingsConfigurationFactory.CreateConfiguration(
             IanaTimeZone.FromIana(IanaTimeZoneConstants.AsiaTokyo),
             HolidayStrategy.AllowOverlapping,
-            AppointmentStrategy.AllowOverlapping);
+            AppointmentOverlappingStrategy.AllowOverlapping);
 
         // Act
         _settings.Update(configuration);
@@ -26,6 +26,6 @@ public class CalendarSettingsUpdateTests
         // Assert
         _settings.IanaTimeZone.Should().Be(configuration.IanaTimeZone);
         _settings.HolidayStrategy.Should().Be(configuration.HolidayStrategy);
-        _settings.AppointmentStrategy.Should().Be(configuration.AppointmentStrategy);
+        _settings.AppointmentOverlappingStrategy.Should().Be(configuration.AppointmentOverlappingStrategy);
     }
 }

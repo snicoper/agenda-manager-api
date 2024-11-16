@@ -21,7 +21,7 @@ public class CalendarManager(ICalendarRepository calendarRepository)
             calendarId,
             ianaTimeZone,
             HolidayStrategy.RejectIfOverlapping,
-            AppointmentStrategy.RejectIfOverlapping);
+            AppointmentOverlappingStrategy.RejectIfOverlapping);
 
         var calendar = Calendar.Create(calendarId, name, description, settings);
         var validationResult = await IsValidAsync(calendar, cancellationToken);

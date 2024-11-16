@@ -10,12 +10,12 @@ public static class CalendarSettingsConfigurationFactory
     public static CalendarSettingsConfiguration CreateConfiguration(
         IanaTimeZone? ianaTimeZone = null,
         HolidayStrategy? holidayStrategy = null,
-        AppointmentStrategy? appointmentStrategy = null)
+        AppointmentOverlappingStrategy? appointmentStrategy = null)
     {
         CalendarSettingsConfiguration configuration = new(
             IanaTimeZone: ianaTimeZone ?? IanaTimeZone.FromIana(IanaTimeZoneConstants.AmericaNewYork),
             HolidayStrategy: holidayStrategy ?? HolidayStrategy.RejectIfOverlapping,
-            AppointmentStrategy: appointmentStrategy ?? AppointmentStrategy.RejectIfOverlapping);
+            AppointmentOverlappingStrategy: appointmentStrategy ?? AppointmentOverlappingStrategy.RejectIfOverlapping);
 
         return configuration;
     }
