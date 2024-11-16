@@ -2,7 +2,7 @@
 
 namespace AgendaManager.Domain.Calendars.Errors;
 
-public class CalendarConfigurationErrors
+public static class CalendarConfigurationErrors
 {
     public static Error KeyNotFound => Error.Unexpected("Key not found");
 }

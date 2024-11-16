@@ -31,14 +31,6 @@ public class CalendarRepository(AppDbContext context) : ICalendarRepository
         return nameIsUnique;
     }
 
-    public async Task<bool> DescriptionExistsAsync(Calendar calendar, CancellationToken cancellationToken = default)
-    {
-        var descriptionIsUnique = await context.Calendars
-            .AnyAsync(c => c.Description.Equals(calendar.Description) && c.Id != calendar.Id, cancellationToken);
-
-        return descriptionIsUnique;
-    }
-
     public async Task AddAsync(Calendar calendar, CancellationToken cancellationToken = default)
     {
         await context.Calendars.AddAsync(calendar, cancellationToken);

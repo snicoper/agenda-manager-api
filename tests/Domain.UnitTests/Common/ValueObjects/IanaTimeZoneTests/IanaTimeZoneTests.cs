@@ -1,5 +1,4 @@
-﻿using AgendaManager.Domain.Calendars.Exceptions;
-using AgendaManager.Domain.Calendars.ValueObjects;
+﻿using AgendaManager.Domain.Common.ValueObjects.IanaTimeZone;
 using AgendaManager.TestCommon.Constants;
 using FluentAssertions;
 
@@ -42,7 +41,7 @@ public class IanaTimeZoneTests
         var action = () => IanaTimeZone.FromIana(invalidTimeZone);
 
         // Assert
-        action.Should().Throw<CalendarSettingsException>();
+        action.Should().Throw<IanaTimeZoneDomainException>();
     }
 
     [Fact]

@@ -4,10 +4,11 @@ using AgendaManager.Domain.Calendars.Errors;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
+using AgendaManager.Domain.Common.ValueObjects.IanaTimeZone;
 
 namespace AgendaManager.Domain.Calendars.Services;
 
-public class CalendarManager(
+public class CalendarManagerCreate(
     ICalendarRepository calendarRepository,
     ICalendarConfigurationOptionRepository calendarConfigurationOptionRepository)
 {
@@ -26,13 +27,18 @@ public class CalendarManager(
             return validationResult.MapToValue<Calendar>();
         }
 
-        calendar = await AddDefaultConfigurationsAsync(
+        var calendarResult = await AddDefaultConfigurationsAsync(
             calendar: calendar,
             calendarId: calendarId,
             ianaTimeZone: ianaTimeZone,
             cancellationToken: cancellationToken);
 
-        await calendarRepository.AddAsync(calendar, cancellationToken);
+        if (calendarResult.IsFailure)
+        {
+            return calendarResult;
+        }
+
+        await calendarRepository.AddAsync(calendarResult.Value!, cancellationToken);
 
         return Result.Create(calendar);
     }
@@ -48,10 +54,10 @@ public class CalendarManager(
         calendar.Update(calendar.Name, calendar.Description);
         calendarRepository.Update(calendar);
 
-        return Result.Create(calendar);
+        return Result.Success(calendar);
     }
 
-    private async Task<Calendar> AddDefaultConfigurationsAsync(
+    private async Task<Result<Calendar>> AddDefaultConfigurationsAsync(
         Calendar calendar,
         CalendarId calendarId,
         IanaTimeZone ianaTimeZone,
@@ -66,7 +72,13 @@ public class CalendarManager(
                     id: CalendarConfigurationId.Create(),
                     calendarId: calendarId,
                     category: cco.Category,
-                    selectedKey: cco.Key));
+                    selectedKey: cco.Key))
+            .ToList();
+
+        if (configurations.Count == 0)
+        {
+            return CalendarErrors.NoDefaultConfigurationsFound;
+        }
 
         foreach (var configuration in configurations)
         {
@@ -81,7 +93,7 @@ public class CalendarManager(
 
         calendar.AddConfiguration(ianaTimeZoneOption);
 
-        return calendar;
+        return Result.Success(calendar);
     }
 
     private async Task<Result> IsValidAsync(Calendar calendar, CancellationToken cancellationToken)
@@ -89,11 +101,6 @@ public class CalendarManager(
         if (await NameExistsAsync(calendar, cancellationToken))
         {
             return CalendarErrors.NameAlreadyExists;
-        }
-
-        if (await DescriptionExistsAsync(calendar, cancellationToken))
-        {
-            return CalendarErrors.DescriptionAlreadyExists;
         }
 
         return Result.Success();
@@ -104,12 +111,5 @@ public class CalendarManager(
         var nameIsUnique = await calendarRepository.NameExistsAsync(calendar, cancellationToken);
 
         return nameIsUnique;
-    }
-
-    private async Task<bool> DescriptionExistsAsync(Calendar calendar, CancellationToken cancellationToken)
-    {
-        var descriptionIsUnique = await calendarRepository.DescriptionExistsAsync(calendar, cancellationToken);
-
-        return descriptionIsUnique;
     }
 }

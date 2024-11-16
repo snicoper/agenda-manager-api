@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Domain.Calendars.Services;
 using AgendaManager.Domain.Calendars.ValueObjects;
+using AgendaManager.Domain.Common.ValueObjects.IanaTimeZone;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AgendaManager.Infrastructure.Common.Persistence.Seeds.Modules;
@@ -13,7 +14,7 @@ public static class CalendarSeed
             return;
         }
 
-        var calendarManager = serviceProvider.GetRequiredService<CalendarManager>();
+        var calendarManager = serviceProvider.GetRequiredService<CalendarManagerCreate>();
 
         var calendarResult = await calendarManager.CreateCalendarAsync(
             calendarId: CalendarId.Create(),

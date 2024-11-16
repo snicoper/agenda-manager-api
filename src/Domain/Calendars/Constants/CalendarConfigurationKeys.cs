@@ -8,6 +8,7 @@ public static class CalendarConfigurationKeys
     public static class HolidayCreateStrategy
     {
         public const string Key = nameof(HolidayCreateStrategy);
+        public const string DefaultValue = nameof(RejectIfOverlapping);
 
         /// <summary>
         /// Reject if overlapping with existing appointments.
@@ -37,6 +38,7 @@ public static class CalendarConfigurationKeys
     public static class AppointmentCreationStrategy
     {
         public const string Key = nameof(AppointmentCreationStrategy);
+        public const string DefaultValue = nameof(Direct);
 
         /// <summary>
         /// Appointments are created with the "Accepted" status by default.
@@ -60,6 +62,7 @@ public static class CalendarConfigurationKeys
     public static class AppointmentOverlappingStrategy
     {
         public const string Key = nameof(AppointmentOverlappingStrategy);
+        public const string DefaultValue = nameof(RejectIfOverlapping);
 
         /// <summary>
         /// Do not allow overlapping with existing appointments.
@@ -85,6 +88,8 @@ public static class CalendarConfigurationKeys
         /// For custom fields like strings, the Key must be "UnitValue".
         /// </summary>
         public const string Key = "UnitValue";
+
+        public const string DefaultValue = "Europe/Madrid";
 
         /// <summary>
         /// String representing the time zone value in IANA format.

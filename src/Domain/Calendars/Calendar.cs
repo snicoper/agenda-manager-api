@@ -84,7 +84,11 @@ public sealed class Calendar : AggregateRoot
             throw new CalendarConfigurationOptionDomainException("Invalid calendar configuration option.");
         }
 
-        calendarConfiguration.Update(category, selectedKey);
+        if (calendarConfiguration.Update(category, selectedKey))
+        {
+            calendarConfiguration.AddDomainEvent(
+                new CalendarConfigurationUpdatedDomainEvent(Id, calendarConfiguration.Id));
+        }
     }
 
     public void AddHoliday(CalendarHoliday calendarHoliday)
