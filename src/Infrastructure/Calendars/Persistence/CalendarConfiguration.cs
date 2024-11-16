@@ -1,5 +1,4 @@
 ﻿using AgendaManager.Domain.Calendars;
-using AgendaManager.Domain.Calendars.Entities;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -25,11 +24,6 @@ public class CalendarConfiguration : IEntityTypeConfiguration<Calendar>
                 id => id.Value,
                 value => CalendarSettingsId.From(value))
             .IsRequired();
-
-        builder.HasOne(c => c.Settings)
-            .WithOne(cs => cs.Calendar)
-            .HasForeignKey<CalendarSettings>(cs => cs.CalendarId)
-            .OnDelete(DeleteBehavior.Cascade);
 
         builder.Property(c => c.Name)
             .HasMaxLength(50)

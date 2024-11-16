@@ -25,15 +25,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
 
     public DbSet<Calendar> Calendars => Set<Calendar>();
 
-    public DbSet<AuditRecord> ChangeLogs => Set<AuditRecord>();
-
     public DbSet<CalendarHoliday> CalendarHolidays => Set<CalendarHoliday>();
 
-    public DbSet<CalendarSettings> CalendarSettings => Set<CalendarSettings>();
-
-    public DbSet<CalendarConfigurationOption> Configurations => Set<CalendarConfigurationOption>();
+    public DbSet<CalendarConfigurationOption> CalendarConfigurationOptions => Set<CalendarConfigurationOption>();
 
     public DbSet<CalendarConfiguration> CalendarConfigurations => Set<CalendarConfiguration>();
+
+    public DbSet<AuditRecord> ChangeLogs => Set<AuditRecord>();
 
     public DbSet<Resource> Resources => Set<Resource>();
 

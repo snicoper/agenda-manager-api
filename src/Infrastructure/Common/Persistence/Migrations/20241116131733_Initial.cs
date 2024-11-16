@@ -188,33 +188,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CalendarSettings",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CalendarId = table.Column<Guid>(type: "uuid", nullable: false),
-                    IanaTimeZone = table.Column<string>(type: "text", nullable: false),
-                    HolidayCreateStrategy = table.Column<int>(type: "integer", nullable: false),
-                    AppointmentOverlappingStrategy = table.Column<int>(type: "integer", nullable: false),
-                    AppointmentCreationStrategy = table.Column<int>(type: "integer", nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: false),
-                    LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    Version = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CalendarSettings", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CalendarSettings_Calendars_CalendarId",
-                        column: x => x.CalendarId,
-                        principalTable: "Calendars",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Services",
                 columns: table => new
                 {
@@ -574,17 +547,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 column: "CalendarId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CalendarSettings_CalendarId",
-                table: "CalendarSettings",
-                column: "CalendarId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CalendarSettings_Id_CalendarId",
-                table: "CalendarSettings",
-                columns: new[] { "Id", "CalendarId" });
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Permissions_Name",
                 table: "Permissions",
                 column: "Name",
@@ -693,9 +655,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "CalendarHolidays");
-
-            migrationBuilder.DropTable(
-                name: "CalendarSettings");
 
             migrationBuilder.DropTable(
                 name: "ResourceSchedules");

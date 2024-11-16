@@ -1,7 +1,6 @@
 ﻿using AgendaManager.Domain.Calendars.Entities;
 using AgendaManager.Domain.Calendars.Events;
 using AgendaManager.Domain.Calendars.Exceptions;
-using AgendaManager.Domain.Calendars.Models;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 
@@ -16,7 +15,6 @@ public sealed class Calendar : AggregateRoot
         CalendarId id,
         string name,
         string description,
-        CalendarSettings calendarSettings,
         bool isActive)
     {
         GuardAgainstInvalidName(name);
@@ -24,7 +22,6 @@ public sealed class Calendar : AggregateRoot
 
         Id = id;
         SettingsId = CalendarSettingsId.Create();
-        Settings = calendarSettings;
         Name = name;
         Description = description;
         IsActive = isActive;
@@ -37,8 +34,6 @@ public sealed class Calendar : AggregateRoot
     public CalendarId Id { get; } = null!;
 
     public CalendarSettingsId SettingsId { get; } = null!;
-
-    public CalendarSettings Settings { get; } = null!;
 
     public string Name { get; private set; } = default!;
 
@@ -87,26 +82,13 @@ public sealed class Calendar : AggregateRoot
         AddDomainEvent(new CalendarHolidayRemovedDomainEvent(Id, calendarHoliday.Id));
     }
 
-    public void UpdateSettings(CalendarSettingsConfiguration settings)
-    {
-        if (!Settings.HasChanges(settings))
-        {
-            return;
-        }
-
-        Settings.Update(settings);
-
-        AddDomainEvent(new CalendarSettingsUpdatedDomainEvent(SettingsId, Id));
-    }
-
     internal static Calendar Create(
         CalendarId id,
         string name,
         string description,
-        CalendarSettings calendarSettings,
         bool active = true)
     {
-        Calendar calendar = new(id, name, description, calendarSettings, active);
+        Calendar calendar = new(id, name, description, active);
 
         calendar.AddDomainEvent(new CalendarCreatedDomainEvent(id));
 

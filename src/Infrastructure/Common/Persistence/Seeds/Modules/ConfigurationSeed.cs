@@ -7,7 +7,7 @@ public static class ConfigurationSeed
 {
     public static async Task InitializeAsync(AppDbContext context)
     {
-        if (context.Configurations.Any())
+        if (context.CalendarConfigurationOptions.Any())
         {
             return;
         }
@@ -60,7 +60,7 @@ public static class ConfigurationSeed
                 defaultValue: true)
         ];
 
-        context.Configurations.AddRange(configurations);
+        context.CalendarConfigurationOptions.AddRange(configurations);
         await context.SaveChangesAsync();
     }
 }
