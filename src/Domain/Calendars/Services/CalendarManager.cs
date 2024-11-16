@@ -8,7 +8,7 @@ using AgendaManager.Domain.Common.ValueObjects.IanaTimeZone;
 
 namespace AgendaManager.Domain.Calendars.Services;
 
-public class CalendarManagerCreate(
+public class CalendarManager(
     ICalendarRepository calendarRepository,
     ICalendarConfigurationOptionRepository calendarConfigurationOptionRepository)
 {
@@ -46,6 +46,7 @@ public class CalendarManagerCreate(
     public async Task<Result<Calendar>> UpdateCalendarAsync(Calendar calendar, CancellationToken cancellationToken)
     {
         var validationResult = await IsValidAsync(calendar, cancellationToken);
+
         if (validationResult.IsFailure)
         {
             validationResult.MapToValue<Calendar>();
@@ -65,8 +66,9 @@ public class CalendarManagerCreate(
     {
         var configurationOptions = await calendarConfigurationOptionRepository.GetAllAsync(cancellationToken);
 
+        // Skip `UnitValue`s.
         var configurations = configurationOptions
-            .Where(cco => cco.DefaultValue && cco.Key != CalendarConfigurationKeys.TimeZone.Key)
+            .Where(cco => cco.DefaultValue && cco.Key != "UnitValue")
             .Select(
                 cco => CalendarConfiguration.Create(
                     id: CalendarConfigurationId.Create(),

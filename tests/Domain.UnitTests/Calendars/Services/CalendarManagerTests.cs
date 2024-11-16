@@ -11,18 +11,18 @@ using NSubstitute;
 
 namespace AgendaManager.Domain.UnitTests.Calendars.Services;
 
-public class CalendarManagerCreateTests
+public class CalendarManagerTests
 {
-    private readonly CalendarManagerCreate _sut;
+    private readonly CalendarManager _sut;
     private readonly ICalendarRepository _calendarRepository;
     private readonly ICalendarConfigurationOptionRepository _calendarConfigurationOptionRepository;
 
-    public CalendarManagerCreateTests()
+    public CalendarManagerTests()
     {
         _calendarRepository = Substitute.For<ICalendarRepository>();
         _calendarConfigurationOptionRepository = Substitute.For<ICalendarConfigurationOptionRepository>();
 
-        _sut = new CalendarManagerCreate(_calendarRepository, _calendarConfigurationOptionRepository);
+        _sut = new CalendarManager(_calendarRepository, _calendarConfigurationOptionRepository);
     }
 
     [Fact]
