@@ -13,7 +13,7 @@ public static class CalendarSeed
             return;
         }
 
-        var calendarManager = serviceProvider.GetRequiredService<CalendarManagerCreate>();
+        var calendarManager = serviceProvider.GetRequiredService<CalendarManager>();
 
         var calendarResult = await calendarManager.CreateCalendarAsync(
             calendarId: CalendarId.Create(),

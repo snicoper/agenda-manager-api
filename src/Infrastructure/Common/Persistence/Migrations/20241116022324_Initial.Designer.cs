@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241115200116_Initial")]
+    [Migration("20241116022324_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -39,6 +39,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<TimeSpan>("Duration")
+                        .HasColumnType("interval");
 
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -274,6 +277,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
+                    b.Property<int>("AppointmentStrategy")
+                        .HasColumnType("integer");
+
                     b.Property<Guid>("CalendarId")
                         .HasColumnType("uuid");
 
@@ -284,7 +290,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("HolidayCreationStrategy")
+                    b.Property<int>("HolidayStrategy")
                         .HasColumnType("integer");
 
                     b.Property<string>("IanaTimeZone")

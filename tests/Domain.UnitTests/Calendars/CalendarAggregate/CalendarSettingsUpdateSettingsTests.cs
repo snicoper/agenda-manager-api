@@ -16,12 +16,11 @@ public class CalendarSettingsUpdateSettingsTests
     {
         // Arrange
         var calendar = CalendarFactory.CreateCalendar();
+        var configuration = CalendarSettingsConfigurationFactory.CreateConfiguration(
+            ianaTimeZone: IanaTimeZone.FromIana(newTimeZone));
 
         // Act
-        calendar.UpdateSettings(
-            IanaTimeZone.FromIana(newTimeZone),
-            calendar.Settings.HolidayStrategy,
-            calendar.Settings.AppointmentStrategy);
+        calendar.UpdateSettings(configuration);
 
         // Assert
         calendar.Settings.IanaTimeZone.Value.Should().Be(newTimeZone);
@@ -32,12 +31,10 @@ public class CalendarSettingsUpdateSettingsTests
     {
         // Arrange
         var calendar = CalendarFactory.CreateCalendar();
+        var configuration = CalendarSettingsConfigurationFactory.CreateConfiguration();
 
         // Act
-        calendar.UpdateSettings(
-            IanaTimeZone.FromIana(IanaTimeZoneConstants.AmericaNewYork),
-            calendar.Settings.HolidayStrategy,
-            calendar.Settings.AppointmentStrategy);
+        calendar.UpdateSettings(configuration);
 
         // Assert
         calendar.DomainEvents.Should().Contain(x => x is CalendarSettingsUpdatedDomainEvent);
@@ -48,12 +45,13 @@ public class CalendarSettingsUpdateSettingsTests
     {
         // Arrange
         var calendar = CalendarFactory.CreateCalendar();
+        var configuration = CalendarSettingsConfigurationFactory.CreateConfiguration(
+            ianaTimeZone: calendar.Settings.IanaTimeZone,
+            holidayStrategy: calendar.Settings.HolidayStrategy,
+            appointmentStrategy: calendar.Settings.AppointmentStrategy);
 
         // Act
-        calendar.UpdateSettings(
-            calendar.Settings.IanaTimeZone,
-            calendar.Settings.HolidayStrategy,
-            calendar.Settings.AppointmentStrategy);
+        calendar.UpdateSettings(configuration);
 
         // Assert
         calendar.DomainEvents.Should().NotContain(x => x is CalendarSettingsUpdatedDomainEvent);

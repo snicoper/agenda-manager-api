@@ -1,8 +1,6 @@
 ﻿using AgendaManager.Domain.Calendars;
 using AgendaManager.Domain.Calendars.Entities;
-using AgendaManager.Domain.Calendars.Enums;
 using AgendaManager.Domain.Calendars.ValueObjects;
-using AgendaManager.TestCommon.Constants;
 
 namespace AgendaManager.TestCommon.Factories;
 
@@ -12,18 +10,11 @@ public abstract class CalendarFactory
         CalendarId? calendarId = null,
         string? name = null,
         string? description = null,
-        IanaTimeZone? timeZone = null,
-        HolidayStrategy? holidayCreationStrategy = null,
         bool? isActive = null,
         CalendarSettings? settings = null)
     {
         calendarId ??= CalendarId.Create();
-
-        settings ??= CalendarSettingsFactory.CreateCalendarSettings(
-            calendarId: calendarId,
-            timeZone: timeZone ?? IanaTimeZone.FromIana(IanaTimeZoneConstants.EuropeMadrid),
-            holidayStrategy: holidayCreationStrategy ?? HolidayStrategy.RejectIfOverlapping,
-            appointmentStrategy: AppointmentStrategy.RejectIfOverlapping);
+        settings ??= CalendarSettingsFactory.CreateCalendarSettings();
 
         var calendar = Calendar.Create(
             id: calendarId,

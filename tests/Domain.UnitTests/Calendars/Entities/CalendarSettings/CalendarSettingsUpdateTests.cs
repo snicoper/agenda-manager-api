@@ -15,15 +15,17 @@ public class CalendarSettingsUpdateTests
     public void Settings_ShouldSucceed_WhenValidUpdatesProvided()
     {
         // Arrange
-        var newTimeZone = IanaTimeZone.FromIana(IanaTimeZoneConstants.AsiaTokyo);
-        const HolidayStrategy newCreateStrategy = HolidayStrategy.AllowOverlapping;
-        const AppointmentStrategy newAppointmentStrategy = AppointmentStrategy.AllowOverlapping;
+        var configuration = CalendarSettingsConfigurationFactory.CreateConfiguration(
+            IanaTimeZone.FromIana(IanaTimeZoneConstants.AsiaTokyo),
+            HolidayStrategy.AllowOverlapping,
+            AppointmentStrategy.AllowOverlapping);
 
         // Act
-        _settings.Update(newTimeZone, newCreateStrategy, newAppointmentStrategy);
+        _settings.Update(configuration);
 
         // Assert
-        _settings.IanaTimeZone.Should().Be(newTimeZone);
-        _settings.HolidayStrategy.Should().Be(newCreateStrategy);
+        _settings.IanaTimeZone.Should().Be(configuration.IanaTimeZone);
+        _settings.HolidayStrategy.Should().Be(configuration.HolidayStrategy);
+        _settings.AppointmentStrategy.Should().Be(configuration.AppointmentStrategy);
     }
 }

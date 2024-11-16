@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Domain.Calendars.Enums;
 using AgendaManager.Domain.Calendars.Events;
+using AgendaManager.Domain.Calendars.Models;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 
@@ -37,7 +38,7 @@ public sealed class CalendarSettings : AuditableEntity
 
     public HolidayStrategy HolidayStrategy { get; private set; }
 
-    public AppointmentStrategy AppointmentStrategy { get; }
+    public AppointmentStrategy AppointmentStrategy { get; private set; }
 
     internal static CalendarSettings Create(
         CalendarSettingsId id,
@@ -58,30 +59,25 @@ public sealed class CalendarSettings : AuditableEntity
         return calendarSettings;
     }
 
-    internal void Update(
-        IanaTimeZone ianaTimeZone,
-        HolidayStrategy holidayStrategy,
-        AppointmentStrategy appointmentStrategy)
+    internal void Update(CalendarSettingsConfiguration configuration)
     {
-        ArgumentNullException.ThrowIfNull(holidayStrategy);
-        ArgumentNullException.ThrowIfNull(appointmentStrategy);
+        ArgumentNullException.ThrowIfNull(configuration.HolidayStrategy);
+        ArgumentNullException.ThrowIfNull(configuration.AppointmentStrategy);
 
-        if (!HasChanges(ianaTimeZone, holidayStrategy, appointmentStrategy))
+        if (!HasChanges(configuration))
         {
             return;
         }
 
-        IanaTimeZone = ianaTimeZone;
-        HolidayStrategy = holidayStrategy;
+        IanaTimeZone = configuration.IanaTimeZone;
+        HolidayStrategy = configuration.HolidayStrategy;
+        AppointmentStrategy = configuration.AppointmentStrategy;
     }
 
-    internal bool HasChanges(
-        IanaTimeZone ianaTimeZone,
-        HolidayStrategy holidayStrategy,
-        AppointmentStrategy appointmentStrategy)
+    internal bool HasChanges(CalendarSettingsConfiguration configuration)
     {
-        return !(IanaTimeZone.Equals(ianaTimeZone)
-                 && HolidayStrategy == holidayStrategy
-                 && AppointmentStrategy == appointmentStrategy);
+        return !(IanaTimeZone.Equals(configuration.IanaTimeZone)
+                 && HolidayStrategy == configuration.HolidayStrategy
+                 && AppointmentStrategy == configuration.AppointmentStrategy);
     }
 }

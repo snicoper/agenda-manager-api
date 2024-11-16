@@ -1,7 +1,7 @@
 ﻿using AgendaManager.Domain.Calendars.Entities;
-using AgendaManager.Domain.Calendars.Enums;
 using AgendaManager.Domain.Calendars.Events;
 using AgendaManager.Domain.Calendars.Exceptions;
+using AgendaManager.Domain.Calendars.Models;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 
@@ -72,17 +72,14 @@ public sealed class Calendar : AggregateRoot
         AddDomainEvent(new CalendarHolidayRemovedDomainEvent(Id, calendarHoliday.Id));
     }
 
-    public void UpdateSettings(
-        IanaTimeZone ianaTimeZone,
-        HolidayStrategy holidayStrategy,
-        AppointmentStrategy appointmentStrategy)
+    public void UpdateSettings(CalendarSettingsConfiguration configuration)
     {
-        if (!Settings.HasChanges(ianaTimeZone, holidayStrategy, appointmentStrategy))
+        if (!Settings.HasChanges(configuration))
         {
             return;
         }
 
-        Settings.Update(ianaTimeZone, holidayStrategy, appointmentStrategy);
+        Settings.Update(configuration);
 
         AddDomainEvent(new CalendarSettingsUpdatedDomainEvent(SettingsId, Id));
     }

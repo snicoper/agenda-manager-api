@@ -33,7 +33,7 @@ public static class DependencyInjection
 
     private static void AddCalendarsDomain(this IServiceCollection services)
     {
-        services.AddScoped<CalendarManagerCreate>();
+        services.AddScoped<CalendarManager>();
     }
 
     private static void AddResourceTypesDomain(this IServiceCollection services)

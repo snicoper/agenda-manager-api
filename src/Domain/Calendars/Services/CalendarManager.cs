@@ -7,7 +7,7 @@ using AgendaManager.Domain.Common.Responses;
 
 namespace AgendaManager.Domain.Calendars.Services;
 
-public class CalendarManagerCreate(ICalendarRepository calendarRepository)
+public class CalendarManager(ICalendarRepository calendarRepository)
 {
     public async Task<Result<Calendar>> CreateCalendarAsync(
         CalendarId calendarId,
