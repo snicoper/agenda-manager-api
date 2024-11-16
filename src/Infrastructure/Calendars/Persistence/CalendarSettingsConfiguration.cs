@@ -38,7 +38,7 @@ public class CalendarSettingsConfiguration : IEntityTypeConfiguration<CalendarSe
                 value => IanaTimeZone.FromIana(value))
             .IsRequired();
 
-        builder.Property(x => x.HolidayStrategy)
+        builder.Property(x => x.HolidayCreateStrategy)
             .IsRequired();
     }
 }

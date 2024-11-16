@@ -1,6 +1,6 @@
 ﻿namespace AgendaManager.Domain.Calendars.Enums;
 
-public enum HolidayStrategy
+public enum HolidayCreateStrategy
 {
     RejectIfOverlapping = 1,
     CancelOverlapping = 2,

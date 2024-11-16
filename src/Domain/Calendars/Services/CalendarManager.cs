@@ -20,7 +20,7 @@ public class CalendarManager(ICalendarRepository calendarRepository)
             CalendarSettingsId.Create(),
             calendarId,
             ianaTimeZone,
-            HolidayStrategy.RejectIfOverlapping,
+            HolidayCreateStrategy.RejectIfOverlapping,
             AppointmentOverlappingStrategy.RejectIfOverlapping);
 
         var calendar = Calendar.Create(calendarId, name, description, settings);

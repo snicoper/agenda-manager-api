@@ -35,11 +35,11 @@ public class CalendarHolidayManager(
 
         if (overlappingAppointments.Count != 0)
         {
-            switch (settings.HolidayStrategy)
+            switch (settings.HolidayCreateStrategy)
             {
-                case HolidayStrategy.RejectIfOverlapping:
+                case HolidayCreateStrategy.RejectIfOverlapping:
                     return CalendarHolidayErrors.CreateOverlappingReject;
-                case HolidayStrategy.CancelOverlapping:
+                case HolidayCreateStrategy.CancelOverlapping:
                     // TODO: Implement this strategy when Appointment domain is developed
                     // Unit tests for CancelOverlapping strategy are required.
                     // See: CalendarHolidayManagerTests
@@ -47,7 +47,7 @@ public class CalendarHolidayManager(
                     // - Appointment cancellation logic
                     // - Notification system for affected users
                     break;
-                case HolidayStrategy.AllowOverlapping:
+                case HolidayCreateStrategy.AllowOverlapping:
                     // Continuar con la creación del holiday.
                     break;
                 default:

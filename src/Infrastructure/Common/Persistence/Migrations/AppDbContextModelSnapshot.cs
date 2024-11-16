@@ -287,7 +287,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("HolidayStrategy")
+                    b.Property<int>("HolidayCreateStrategy")
                         .HasColumnType("integer");
 
                     b.Property<string>("IanaTimeZone")

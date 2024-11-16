@@ -16,15 +16,15 @@ public sealed class CalendarSettings : AuditableEntity
         CalendarSettingsId id,
         CalendarId calendarId,
         IanaTimeZone ianaTimeZone,
-        HolidayStrategy holidayStrategy,
+        HolidayCreateStrategy holidayCreateStrategy,
         AppointmentOverlappingStrategy appointmentOverlappingStrategy)
     {
-        ArgumentNullException.ThrowIfNull(holidayStrategy);
+        ArgumentNullException.ThrowIfNull(holidayCreateStrategy);
 
         Id = id;
         CalendarId = calendarId;
         IanaTimeZone = ianaTimeZone;
-        HolidayStrategy = holidayStrategy;
+        HolidayCreateStrategy = holidayCreateStrategy;
         AppointmentOverlappingStrategy = appointmentOverlappingStrategy;
     }
 
@@ -36,7 +36,7 @@ public sealed class CalendarSettings : AuditableEntity
 
     public IanaTimeZone IanaTimeZone { get; private set; } = default!;
 
-    public HolidayStrategy HolidayStrategy { get; private set; }
+    public HolidayCreateStrategy HolidayCreateStrategy { get; private set; }
 
     public AppointmentOverlappingStrategy AppointmentOverlappingStrategy { get; private set; }
 
@@ -44,14 +44,14 @@ public sealed class CalendarSettings : AuditableEntity
         CalendarSettingsId id,
         CalendarId calendarId,
         IanaTimeZone ianaTimeZone,
-        HolidayStrategy holidayStrategy,
+        HolidayCreateStrategy holidayCreateStrategy,
         AppointmentOverlappingStrategy appointmentOverlappingStrategy)
     {
         CalendarSettings calendarSettings = new(
             id,
             calendarId,
             ianaTimeZone,
-            holidayStrategy,
+            holidayCreateStrategy,
             appointmentOverlappingStrategy);
 
         calendarSettings.AddDomainEvent(new CalendarSettingsCreatedDomainEvent(id));
@@ -61,7 +61,7 @@ public sealed class CalendarSettings : AuditableEntity
 
     internal void Update(CalendarSettingsConfiguration settings)
     {
-        ArgumentNullException.ThrowIfNull(settings.HolidayStrategy);
+        ArgumentNullException.ThrowIfNull(settings.HolidayCreateStrategy);
         ArgumentNullException.ThrowIfNull(settings.AppointmentOverlappingStrategy);
 
         if (!HasChanges(settings))
@@ -70,14 +70,14 @@ public sealed class CalendarSettings : AuditableEntity
         }
 
         IanaTimeZone = settings.IanaTimeZone;
-        HolidayStrategy = settings.HolidayStrategy;
+        HolidayCreateStrategy = settings.HolidayCreateStrategy;
         AppointmentOverlappingStrategy = settings.AppointmentOverlappingStrategy;
     }
 
     internal bool HasChanges(CalendarSettingsConfiguration settings)
     {
         return !(IanaTimeZone.Equals(settings.IanaTimeZone)
-                 && HolidayStrategy == settings.HolidayStrategy
+                 && HolidayCreateStrategy == settings.HolidayCreateStrategy
                  && AppointmentOverlappingStrategy == settings.AppointmentOverlappingStrategy);
     }
 }

@@ -47,8 +47,8 @@ public class CalendarSettingsUpdateSettingsTests
         var calendar = CalendarFactory.CreateCalendar();
         var configuration = CalendarSettingsConfigurationFactory.CreateConfiguration(
             ianaTimeZone: calendar.Settings.IanaTimeZone,
-            holidayStrategy: calendar.Settings.HolidayStrategy,
-            appointmentStrategy: calendar.Settings.AppointmentOverlappingStrategy);
+            holidayCreateStrategy: calendar.Settings.HolidayCreateStrategy,
+            appointmentOverlappingStrategy: calendar.Settings.AppointmentOverlappingStrategy);
 
         // Act
         calendar.UpdateSettings(configuration);

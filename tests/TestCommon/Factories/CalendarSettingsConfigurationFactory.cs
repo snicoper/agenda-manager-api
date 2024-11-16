@@ -9,13 +9,13 @@ public static class CalendarSettingsConfigurationFactory
 {
     public static CalendarSettingsConfiguration CreateConfiguration(
         IanaTimeZone? ianaTimeZone = null,
-        HolidayStrategy? holidayStrategy = null,
-        AppointmentOverlappingStrategy? appointmentStrategy = null)
+        HolidayCreateStrategy? holidayCreateStrategy = null,
+        AppointmentOverlappingStrategy? appointmentOverlappingStrategy = null)
     {
         CalendarSettingsConfiguration configuration = new(
             IanaTimeZone: ianaTimeZone ?? IanaTimeZone.FromIana(IanaTimeZoneConstants.AmericaNewYork),
-            HolidayStrategy: holidayStrategy ?? HolidayStrategy.RejectIfOverlapping,
-            AppointmentOverlappingStrategy: appointmentStrategy ?? AppointmentOverlappingStrategy.RejectIfOverlapping);
+            HolidayCreateStrategy: holidayCreateStrategy ?? HolidayCreateStrategy.RejectIfOverlapping,
+            AppointmentOverlappingStrategy: appointmentOverlappingStrategy ?? AppointmentOverlappingStrategy.RejectIfOverlapping);
 
         return configuration;
     }
