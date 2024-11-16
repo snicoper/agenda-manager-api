@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Calendars.Entities;
+﻿using AgendaManager.Domain.Calendars.Constants;
+using AgendaManager.Domain.Calendars.Entities;
 using AgendaManager.Domain.Calendars.ValueObjects;
 
 namespace AgendaManager.Infrastructure.Common.Persistence.Seeds.Modules;
@@ -16,46 +17,53 @@ public static class ConfigurationSeed
         [
             CalendarConfigurationOption.Create(
                 optionId: CalandarConfigurationOptionId.Create(),
-                category: "HolidayCreateStrategy",
-                key: "RejectIfOverlapping",
-                description: "Reject if overlapping",
+                category: CalendarConfigurationKeys.HolidayCreateStrategy.Key,
+                key: CalendarConfigurationKeys.HolidayCreateStrategy.RejectIfOverlapping,
+                description: CalendarConfigurationKeys.HolidayCreateStrategy.RejectIfOverlappingDescription,
                 defaultValue: true),
+
             CalendarConfigurationOption.Create(
                 optionId: CalandarConfigurationOptionId.Create(),
-                category: "HolidayCreateStrategy",
-                key: "CancelOverlapping",
-                description: "Cancel overlapping"),
+                category: CalendarConfigurationKeys.HolidayCreateStrategy.Key,
+                key: CalendarConfigurationKeys.HolidayCreateStrategy.CancelOverlapping,
+                description: CalendarConfigurationKeys.HolidayCreateStrategy.CancelOverlappingDescription),
+
             CalendarConfigurationOption.Create(
                 optionId: CalandarConfigurationOptionId.Create(),
-                category: "HolidayCreateStrategy",
-                key: "AllowOverlapping",
-                description: "Allow overlapping"),
+                category: CalendarConfigurationKeys.HolidayCreateStrategy.Key,
+                key: CalendarConfigurationKeys.HolidayCreateStrategy.AllowOverlapping,
+                description: CalendarConfigurationKeys.HolidayCreateStrategy.AllowOverlappingDescription),
+
             CalendarConfigurationOption.Create(
                 optionId: CalandarConfigurationOptionId.Create(),
-                category: "AppointmentOverlappingStrategy",
-                key: "RejectIfOverlapping",
-                description: "Reject if overlapping",
+                category: CalendarConfigurationKeys.AppointmentOverlappingStrategy.Key,
+                key: CalendarConfigurationKeys.AppointmentOverlappingStrategy.RejectIfOverlapping,
+                description: CalendarConfigurationKeys.AppointmentOverlappingStrategy.RejectIfOverlappingDescription,
                 defaultValue: true),
+
             CalendarConfigurationOption.Create(
                 optionId: CalandarConfigurationOptionId.Create(),
-                category: "AppointmentOverlappingStrategy",
-                key: "AllowOverlapping",
-                description: "Allow overlapping"),
+                category: CalendarConfigurationKeys.AppointmentOverlappingStrategy.Key,
+                key: CalendarConfigurationKeys.AppointmentOverlappingStrategy.AllowOverlapping,
+                description: CalendarConfigurationKeys.AppointmentOverlappingStrategy.AllowOverlappingDescription),
+
             CalendarConfigurationOption.Create(
                 optionId: CalandarConfigurationOptionId.Create(),
-                category: "AppointmentCreationStrategy",
-                key: "Direct",
-                description: "Direct",
+                category: CalendarConfigurationKeys.AppointmentCreationStrategy.Key,
+                key: CalendarConfigurationKeys.AppointmentCreationStrategy.Direct,
+                description: CalendarConfigurationKeys.AppointmentCreationStrategy.DirectDescription,
                 defaultValue: true),
+
             CalendarConfigurationOption.Create(
                 optionId: CalandarConfigurationOptionId.Create(),
-                category: "AppointmentCreationStrategy",
-                key: "RequireConfirmation",
-                description: "RequireConfiguration"),
+                category: CalendarConfigurationKeys.AppointmentCreationStrategy.Key,
+                key: CalendarConfigurationKeys.AppointmentCreationStrategy.RequireConfirmation,
+                description: CalendarConfigurationKeys.AppointmentCreationStrategy.RequireConfirmationDescription),
+
             CalendarConfigurationOption.Create(
                 optionId: CalandarConfigurationOptionId.Create(),
-                category: "IanaTimeZone",
-                key: "Value",
+                category: CalendarConfigurationKeys.CustomValues.IanaTimeZone,
+                key: CalendarConfigurationKeys.CustomValues.Key,
                 description: "Time zone",
                 defaultValue: true)
         ];

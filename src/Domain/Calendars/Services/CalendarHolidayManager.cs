@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Appointments.Interfaces;
+﻿using AgendaManager.Domain.Appointments;
+using AgendaManager.Domain.Appointments.Interfaces;
 using AgendaManager.Domain.Calendars.Constants;
 using AgendaManager.Domain.Calendars.Entities;
 using AgendaManager.Domain.Calendars.Errors;
@@ -23,19 +24,21 @@ public class CalendarHolidayManager(
         string description,
         CancellationToken cancellationToken)
     {
-        var holidayCreateStrategy =
-            await calendarConfigurationRepository.GetBySelectedKeyAsync(
-                calendarId,
-                CalendarConfigurationKeys.HolidayCreateStrategy.Key,
-                cancellationToken);
+        var holidayCreateStrategy = await calendarConfigurationRepository
+            .GetBySelectedKeyAsync(
+                calendarId: calendarId,
+                selectedKey: CalendarConfigurationKeys.HolidayCreateStrategy.Key,
+                cancellationToken: cancellationToken);
 
         if (holidayCreateStrategy is null)
         {
             return CalendarConfigurationErrors.KeyNotFound;
         }
 
-        var overlappingAppointments = await appointmentRepository
-            .GetOverlappingAppointmentsAsync(calendarId, period, cancellationToken);
+        var overlappingAppointments = await appointmentRepository.GetOverlappingAppointmentsAsync(
+            calendarId: calendarId,
+            period: period,
+            cancellationToken: cancellationToken);
 
         if (overlappingAppointments.Count != 0)
         {
@@ -44,12 +47,7 @@ public class CalendarHolidayManager(
                 case CalendarConfigurationKeys.HolidayCreateStrategy.RejectIfOverlapping:
                     return CalendarHolidayErrors.CreateOverlappingReject;
                 case CalendarConfigurationKeys.HolidayCreateStrategy.CancelOverlapping:
-                    // TODO: Implement this strategy when Appointment domain is developed
-                    // Unit tests for CancelOverlapping strategy are required.
-                    // See: CalendarHolidayManagerTests
-                    // Will require:
-                    // - Appointment cancellation logic
-                    // - Notification system for affected users
+                    await CancelOverlappingAppointmentsAsync(overlappingAppointments, cancellationToken);
                     break;
                 case CalendarConfigurationKeys.HolidayCreateStrategy.AllowOverlapping:
                     // Continuar con la creación del holiday.
@@ -78,5 +76,17 @@ public class CalendarHolidayManager(
         calendarRepository.Update(calendar);
 
         return Result.Success(holiday);
+    }
+
+    private Task CancelOverlappingAppointmentsAsync(
+        List<Appointment> overlappingAppointments,
+        CancellationToken cancellationToken)
+    {
+        foreach (var appointment in overlappingAppointments)
+        {
+            // TODO: Establecer como RequiresRescheduling.
+        }
+
+        return Task.CompletedTask;
     }
 }
