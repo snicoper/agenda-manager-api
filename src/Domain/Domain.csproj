@@ -16,4 +16,8 @@
     <InternalsVisibleTo Include="AgendaManager.TestCommon"/>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Calendars\Models\"/>
+  </ItemGroup>
+
 </Project>

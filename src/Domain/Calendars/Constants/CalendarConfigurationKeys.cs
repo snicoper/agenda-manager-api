@@ -7,6 +7,8 @@ public static class CalendarConfigurationKeys
     /// </summary>
     public static class HolidayCreateStrategy
     {
+        public const string Key = nameof(HolidayCreateStrategy);
+
         /// <summary>
         /// Rechazar si se solapa con citas ya creadas.
         /// </summary>
@@ -28,6 +30,8 @@ public static class CalendarConfigurationKeys
     /// </summary>
     public static class AppointmentCreationStrategy
     {
+        public const string Key = nameof(AppointmentCreationStrategy);
+
         /// <summary>
         /// Las citas al ser creadas, deben tener el estado "Accepted".
         /// </summary>
@@ -45,6 +49,8 @@ public static class CalendarConfigurationKeys
     /// </summary>
     public static class AppointmentOverlappingStrategy
     {
+        public const string Key = nameof(AppointmentOverlappingStrategy);
+
         /// <summary>
         /// No permitir solapamiento con citas ya creadas.
         /// </summary>

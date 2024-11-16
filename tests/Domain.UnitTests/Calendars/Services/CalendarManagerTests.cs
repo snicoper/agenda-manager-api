@@ -15,12 +15,14 @@ public class CalendarManagerTests
 {
     private readonly CalendarManager _sut;
     private readonly ICalendarRepository _calendarRepository;
+    private readonly ICalendarConfigurationOptionRepository _calendarConfigurationOptionRepository;
 
     public CalendarManagerTests()
     {
         _calendarRepository = Substitute.For<ICalendarRepository>();
+        _calendarConfigurationOptionRepository = Substitute.For<ICalendarConfigurationOptionRepository>();
 
-        _sut = new CalendarManager(_calendarRepository);
+        _sut = new CalendarManager(_calendarRepository, _calendarConfigurationOptionRepository);
     }
 
     [Fact]

@@ -31,14 +31,20 @@ public sealed class CalendarConfiguration : AuditableEntity
 
     public string SelectedKey { get; private set; } = default!;
 
-    public static CalendarConfiguration Create(
+    internal static CalendarConfiguration Create(
         CalendarConfigurationId id,
         CalendarId calendarId,
         string category,
         string selectedKey)
     {
-        CalendarConfiguration calendarConfiguration = new(id, calendarId, category, selectedKey);
+        CalendarConfiguration configuration = new(id, calendarId, category, selectedKey);
 
-        return calendarConfiguration;
+        return configuration;
+    }
+
+    internal void Update(string category, string selectedKey)
+    {
+        Category = category;
+        SelectedKey = selectedKey;
     }
 }
