@@ -93,7 +93,7 @@ public sealed class Appointment : AggregateRoot
 
     internal Result Update(Period period, List<Resource> resources)
     {
-        var validation = ValidateForUpdate(period, resources);
+        var validation = ValidateForUpdate(resources);
 
         if (validation.IsFailure)
         {
@@ -129,7 +129,7 @@ public sealed class Appointment : AggregateRoot
         return equals;
     }
 
-    private Result ValidateForUpdate(Period period, List<Resource> resources)
+    private Result ValidateForUpdate(List<Resource> resources)
     {
         if (Status is not (AppointmentStatus.Pending or AppointmentStatus.Accepted))
         {
