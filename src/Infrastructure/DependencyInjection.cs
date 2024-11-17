@@ -83,7 +83,6 @@ public static class DependencyInjection
 
         // Calendars.
         services.AddScoped<ICalendarRepository, CalendarRepository>();
-        services.AddScoped<ICalendarConfigurationOptionRepository, CalendarConfigurationOptionRepository>();
         services.AddScoped<ICalendarConfigurationRepository, CalendarConfigurationRepository>();
 
         // ResourceTypes.

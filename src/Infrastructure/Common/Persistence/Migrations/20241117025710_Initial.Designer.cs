@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241116193431_Initial")]
+    [Migration("20241117025710_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -264,51 +264,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.HasIndex("CalendarId", "Category");
 
                     b.ToTable("CalendarConfigurations", (string)null);
-                });
-
-            modelBuilder.Entity("AgendaManager.Domain.Calendars.Entities.CalendarConfigurationOption", b =>
-                {
-                    b.Property<Guid>("OptionId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("DefaultValue")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTimeOffset>("LastModifiedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Version")
-                        .HasColumnType("integer");
-
-                    b.HasKey("OptionId");
-
-                    b.ToTable("CalendarConfigurationOptions", (string)null);
                 });
 
             modelBuilder.Entity("AgendaManager.Domain.Calendars.Entities.CalendarHoliday", b =>

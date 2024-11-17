@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Appointments;
 using AgendaManager.Domain.Appointments.Interfaces;
-using AgendaManager.Domain.Calendars.Constants;
+using AgendaManager.Domain.Calendars.Configurations;
 using AgendaManager.Domain.Calendars.Entities;
 using AgendaManager.Domain.Calendars.Errors;
 using AgendaManager.Domain.Calendars.Interfaces;
@@ -27,7 +27,7 @@ public class CalendarHolidayManager(
         var holidayCreateStrategy = await calendarConfigurationRepository
             .GetBySelectedKeyAsync(
                 calendarId: calendarId,
-                selectedKey: CalendarConfigurationKeys.HolidayCreateStrategy.Key,
+                selectedKey: CalendarConfigurationKeys.Holidays.CreateStrategy,
                 cancellationToken: cancellationToken);
 
         if (holidayCreateStrategy is null)
@@ -44,12 +44,12 @@ public class CalendarHolidayManager(
         {
             switch (holidayCreateStrategy.SelectedKey)
             {
-                case CalendarConfigurationKeys.HolidayCreateStrategy.RejectIfOverlapping:
+                case CalendarConfigurationKeys.Holidays.CreationOptions.RejectIfOverlapping:
                     return CalendarHolidayErrors.CreateOverlappingReject;
-                case CalendarConfigurationKeys.HolidayCreateStrategy.CancelOverlapping:
+                case CalendarConfigurationKeys.Holidays.CreationOptions.CancelOverlapping:
                     await CancelOverlappingAppointmentsAsync(overlappingAppointments, cancellationToken);
                     break;
-                case CalendarConfigurationKeys.HolidayCreateStrategy.AllowOverlapping:
+                case CalendarConfigurationKeys.Holidays.CreationOptions.AllowOverlapping:
                     // Continuar con la creación del holiday.
                     break;
                 default:

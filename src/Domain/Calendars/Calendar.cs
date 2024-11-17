@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Calendars.Entities;
+﻿using AgendaManager.Domain.Calendars.Configurations;
+using AgendaManager.Domain.Calendars.Entities;
 using AgendaManager.Domain.Calendars.Events;
 using AgendaManager.Domain.Calendars.Exceptions;
 using AgendaManager.Domain.Calendars.ValueObjects;
@@ -37,6 +38,26 @@ public sealed class Calendar : AggregateRoot
     public IReadOnlyCollection<CalendarHoliday> Holidays => _holidays.AsReadOnly();
 
     public IReadOnlyCollection<CalendarConfiguration> Configurations => _configurations.AsReadOnly();
+
+    public string GetConfigurationValue(string category)
+    {
+        var config = _configurations.FirstOrDefault(c => c.Category == category)
+                     ?? throw new CalendarDomainException($"Configuration not found: {category}");
+
+        return config.SelectedKey;
+    }
+
+    public bool AllowsOverlapping()
+    {
+        return GetConfigurationValue(CalendarConfigurationKeys.Appointments.OverlappingStrategy) ==
+               CalendarConfigurationKeys.Appointments.OverlappingOptions.AllowOverlapping;
+    }
+
+    public bool RequiresConfirmation()
+    {
+        return GetConfigurationValue(CalendarConfigurationKeys.Appointments.CreationStrategy) ==
+               CalendarConfigurationKeys.Appointments.CreationOptions.RequireConfirmation;
+    }
 
     public void Activate()
     {
@@ -81,7 +102,7 @@ public sealed class Calendar : AggregateRoot
 
         if (calendarConfiguration is null)
         {
-            throw new CalendarConfigurationOptionDomainException("Invalid calendar configuration option.");
+            throw new CalendarConfigurationDomainException("Invalid calendar configuration option.");
         }
 
         if (calendarConfiguration.Update(category, selectedKey))

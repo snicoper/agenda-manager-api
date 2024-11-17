@@ -35,26 +35,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CalendarConfigurationOptions",
-                columns: table => new
-                {
-                    OptionId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Category = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Key = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    DefaultValue = table.Column<bool>(type: "boolean", nullable: false),
-                    Description = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: false),
-                    LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    Version = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CalendarConfigurationOptions", x => x.OptionId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Calendars",
                 columns: table => new
                 {
@@ -645,9 +625,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "AuditRecords");
-
-            migrationBuilder.DropTable(
-                name: "CalendarConfigurationOptions");
 
             migrationBuilder.DropTable(
                 name: "CalendarConfigurations");

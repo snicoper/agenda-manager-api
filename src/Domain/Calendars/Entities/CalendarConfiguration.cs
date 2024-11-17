@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Calendars.Exceptions;
+﻿using AgendaManager.Domain.Calendars.Configurations;
+using AgendaManager.Domain.Calendars.Exceptions;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 
@@ -40,10 +41,9 @@ public sealed class CalendarConfiguration : AuditableEntity
     {
         GuardAgainstInvalidCategory(category);
         GuardAgainstInvalidSelectedKey(selectedKey);
+        GuardAgainstInvalidConfiguration(category, selectedKey);
 
-        CalendarConfiguration configuration = new(id, calendarId, category, selectedKey);
-
-        return configuration;
+        return new CalendarConfiguration(id, calendarId, category, selectedKey);
     }
 
     internal bool Update(string category, string selectedKey)
@@ -55,11 +55,26 @@ public sealed class CalendarConfiguration : AuditableEntity
 
         GuardAgainstInvalidCategory(category);
         GuardAgainstInvalidSelectedKey(selectedKey);
+        GuardAgainstInvalidConfiguration(category, selectedKey);
 
         Category = category;
         SelectedKey = selectedKey;
 
         return true;
+    }
+
+    internal bool IsUnitValueConfiguration()
+    {
+        return CalendarConfigurationKeys.Metadata.Options[Category].IsUnitValue;
+    }
+
+    private static void GuardAgainstInvalidConfiguration(string category, string selectedKey)
+    {
+        if (!CalendarConfigurationKeys.Metadata.IsValidConfiguration(category, selectedKey))
+        {
+            throw new CalendarConfigurationDomainException(
+                $"Invalid configuration combination: {category} - {selectedKey}");
+        }
     }
 
     private static void GuardAgainstInvalidCategory(string category)

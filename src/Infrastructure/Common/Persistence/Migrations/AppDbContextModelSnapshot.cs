@@ -263,51 +263,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.ToTable("CalendarConfigurations", (string)null);
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Calendars.Entities.CalendarConfigurationOption", b =>
-                {
-                    b.Property<Guid>("OptionId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("DefaultValue")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTimeOffset>("LastModifiedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Version")
-                        .HasColumnType("integer");
-
-                    b.HasKey("OptionId");
-
-                    b.ToTable("CalendarConfigurationOptions", (string)null);
-                });
-
             modelBuilder.Entity("AgendaManager.Domain.Calendars.Entities.CalendarHoliday", b =>
                 {
                     b.Property<Guid>("Id")

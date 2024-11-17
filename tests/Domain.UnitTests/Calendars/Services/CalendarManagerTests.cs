@@ -15,14 +15,12 @@ public class CalendarManagerTests
 {
     private readonly CalendarManager _sut;
     private readonly ICalendarRepository _calendarRepository;
-    private readonly ICalendarConfigurationOptionRepository _calendarConfigurationOptionRepository;
 
     public CalendarManagerTests()
     {
         _calendarRepository = Substitute.For<ICalendarRepository>();
-        _calendarConfigurationOptionRepository = Substitute.For<ICalendarConfigurationOptionRepository>();
 
-        _sut = new CalendarManager(_calendarRepository, _calendarConfigurationOptionRepository);
+        _sut = new CalendarManager(_calendarRepository);
     }
 
     [Fact]
@@ -30,7 +28,6 @@ public class CalendarManagerTests
     {
         // Arrange
         SetupNameExistsInCalendarRepositoryAsync(false);
-        SetupGetAllInCalendarConfigurationOptionRepository(false);
 
         // Act
         var calendarResult = await CreateCalendarAsync();
@@ -54,22 +51,6 @@ public class CalendarManagerTests
         calendarResult.Error?.FirstError().Should().Be(CalendarErrors.NameAlreadyExists.FirstError());
     }
 
-    [Fact]
-    public async Task Calendar_ShouldFail_WhenNoDefaultConfigurationsFound()
-    {
-        // Arrange
-        SetupNameExistsInCalendarRepositoryAsync(false);
-        SetupGetAllInCalendarConfigurationOptionRepository(true);
-
-        // Act
-        var calendarResult = await CreateCalendarAsync();
-
-        // Assert
-        calendarResult.IsFailure.Should().BeTrue();
-        calendarResult.Error?.FirstError().Should()
-            .Be(CalendarConfigurationOptionErrors.NoDefaultConfigurationsFound.FirstError());
-    }
-
     private async Task<Result<Calendar>> CreateCalendarAsync()
     {
         var calendar = CalendarFactory.CreateCalendar();
@@ -87,16 +68,6 @@ public class CalendarManagerTests
     private void SetupNameExistsInCalendarRepositoryAsync(bool returnValue)
     {
         _calendarRepository.NameExistsAsync(Arg.Any<Calendar>(), Arg.Any<CancellationToken>())
-            .Returns(returnValue);
-    }
-
-    private void SetupGetAllInCalendarConfigurationOptionRepository(bool returnEmpty)
-    {
-        var returnValue = returnEmpty
-            ? []
-            : CalendarConfigurationOptionFactory.GetAll();
-
-        _calendarConfigurationOptionRepository.GetAllAsync(Arg.Any<CancellationToken>())
             .Returns(returnValue);
     }
 }
