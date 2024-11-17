@@ -38,7 +38,6 @@ public static class CalendarConfigurationKeys
         public const string Key = "UnitValue";
     }
 
-    // Metadata que reemplaza la información de CalendarConfigurationOptions.
     public static class Metadata
     {
         public static readonly IReadOnlyDictionary<string, ConfigurationOption> Options =
