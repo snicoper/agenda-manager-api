@@ -4,7 +4,7 @@ public sealed record Duration
 {
     private Duration(TimeSpan value)
     {
-        GuardAgainstDurationException(value);
+        GuardAgainstInvalidDuration(value);
 
         Value = value;
     }
@@ -16,7 +16,7 @@ public sealed record Duration
         return new Duration(duration);
     }
 
-    private static void GuardAgainstDurationException(TimeSpan duration)
+    private static void GuardAgainstInvalidDuration(TimeSpan duration)
     {
         ArgumentNullException.ThrowIfNull(duration);
 

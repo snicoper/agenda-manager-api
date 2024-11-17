@@ -48,9 +48,6 @@ public class AppointmentStatusChangeConfiguration : IEntityTypeConfiguration<App
 
         builder.Property(adc => adc.IsCurrentStatus);
 
-        builder.Property(asc => asc.Duration)
-            .IsRequired();
-
         builder.Property(asc => asc.Description)
             .HasMaxLength(200);
     }

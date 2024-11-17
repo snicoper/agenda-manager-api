@@ -307,12 +307,11 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ServiceId = table.Column<Guid>(type: "uuid", nullable: false),
                     CalendarId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ServiceId = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     Start = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     End = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    Duration = table.Column<TimeSpan>(type: "interval", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
@@ -424,7 +423,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     End = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     IsCurrentStatus = table.Column<bool>(type: "boolean", nullable: false),
-                    Duration = table.Column<TimeSpan>(type: "interval", nullable: false),
                     Description = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
@@ -441,6 +439,34 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         principalTable: "Appointments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AppointmentResources",
+                columns: table => new
+                {
+                    AppointmentId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ResourceId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
+                    LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppointmentResources", x => new { x.AppointmentId, x.ResourceId });
+                    table.ForeignKey(
+                        name: "FK_AppointmentResources_Appointments_AppointmentId",
+                        column: x => x.AppointmentId,
+                        principalTable: "Appointments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AppointmentResources_Resources_ResourceId",
+                        column: x => x.ResourceId,
+                        principalTable: "Resources",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -479,6 +505,11 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppointmentResources_ResourceId",
+                table: "AppointmentResources",
+                column: "ResourceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_CalendarId",
@@ -620,6 +651,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AppointmentResources");
+
             migrationBuilder.DropTable(
                 name: "AppointmentStatusChanges");
 

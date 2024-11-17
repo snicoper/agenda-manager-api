@@ -1,7 +1,8 @@
 ﻿using AgendaManager.Domain.Appointments;
 using AgendaManager.Domain.Appointments.ValueObjects;
 using AgendaManager.Domain.Calendars.ValueObjects;
-using AgendaManager.Domain.Common.ValueObjects.Duration;
+using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Resources.ValueObjects;
 using AgendaManager.Domain.Services.ValueObjects;
 using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -25,18 +26,6 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
             .IsRequired();
 
         builder
-            .Property(a => a.ServiceId)
-            .HasConversion(
-                serviceId => serviceId.Value,
-                value => ServiceId.From(value))
-            .IsRequired();
-
-        builder.HasOne(a => a.Service)
-            .WithMany()
-            .HasForeignKey(a => a.ServiceId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder
             .Property(a => a.CalendarId)
             .HasConversion(
                 calendarId => calendarId.Value,
@@ -46,6 +35,18 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
         builder.HasOne(a => a.Calendar)
             .WithMany()
             .HasForeignKey(a => a.CalendarId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder
+            .Property(a => a.ServiceId)
+            .HasConversion(
+                serviceId => serviceId.Value,
+                value => ServiceId.From(value))
+            .IsRequired();
+
+        builder.HasOne(a => a.Service)
+            .WithMany()
+            .HasForeignKey(a => a.ServiceId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder
@@ -76,13 +77,32 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
                     .HasColumnName("End");
             });
 
-        builder.Property(a => a.Duration)
-            .HasConversion(
-                duration => duration.Value,
-                value => Duration.From(value))
-            .IsRequired();
-
         builder.Property(a => a.Status)
             .IsRequired();
+
+        builder.HasMany(a => a.StatusChanges)
+            .WithOne(asc => asc.Appointment)
+            .HasForeignKey(asc => asc.AppointmentId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(u => u.Resources)
+            .WithMany()
+            .UsingEntity(
+                typeBuilder =>
+                {
+                    const string appointmentIdName = nameof(AppointmentId);
+                    const string resourceIdName = nameof(ResourceId);
+
+                    typeBuilder.ToTable("AppointmentResources");
+                    typeBuilder.Property<AppointmentId>(appointmentIdName).HasColumnName(appointmentIdName);
+                    typeBuilder.Property<ResourceId>(resourceIdName).HasColumnName(resourceIdName);
+                    typeBuilder.HasKey(appointmentIdName, resourceIdName);
+
+                    // Campos de auditoría.
+                    typeBuilder.Property<DateTimeOffset>(nameof(AuditableEntity.CreatedAt)).IsRequired();
+                    typeBuilder.Property<string>(nameof(AuditableEntity.CreatedBy)).IsRequired();
+                    typeBuilder.Property<DateTimeOffset>(nameof(AuditableEntity.LastModifiedAt)).IsRequired();
+                    typeBuilder.Property<string>(nameof(AuditableEntity.LastModifiedBy)).IsRequired();
+                });
     }
 }

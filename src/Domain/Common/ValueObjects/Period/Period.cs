@@ -4,7 +4,7 @@ public sealed record Period
 {
     private Period(DateTimeOffset start, DateTimeOffset end)
     {
-        ArgumentNullException.ThrowIfNull(Start);
+        ArgumentNullException.ThrowIfNull(start);
         ArgumentNullException.ThrowIfNull(end);
 
         if (Start > End)
@@ -19,6 +19,8 @@ public sealed record Period
     public DateTimeOffset Start { get; }
 
     public DateTimeOffset End { get; }
+
+    public TimeSpan Duration => End - Start;
 
     public static Period From(DateTimeOffset start, DateTimeOffset end)
     {

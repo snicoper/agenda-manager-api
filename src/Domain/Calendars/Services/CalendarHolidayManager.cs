@@ -85,6 +85,7 @@ public class CalendarHolidayManager(
         foreach (var appointment in overlappingAppointments)
         {
             // TODO: Establecer como RequiresRescheduling.
+            // TODO: Omitir algún estado?
         }
 
         return Task.CompletedTask;

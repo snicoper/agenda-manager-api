@@ -29,8 +29,6 @@ public sealed class AppointmentStatusChange : AuditableEntity
 
     public bool IsCurrentStatus { get; private set; } = true;
 
-    public TimeSpan Duration { get; private set; } = TimeSpan.Zero;
-
     public string? Description { get; private set; }
 
     public static AppointmentStatusChange Create(AppointmentStatusChangeId appointmentStatusChangeId)

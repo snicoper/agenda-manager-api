@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241117025710_Initial")]
+    [Migration("20241117224359_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -39,9 +39,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<TimeSpan>("Duration")
-                        .HasColumnType("interval");
 
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -91,9 +88,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<string>("Description")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
-
-                    b.Property<TimeSpan>("Duration")
-                        .HasColumnType("interval");
 
                     b.Property<bool>("IsCurrentStatus")
                         .HasColumnType("boolean");
@@ -684,6 +678,37 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("AppointmentResource", b =>
+                {
+                    b.Property<Guid>("AppointmentId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("AppointmentId");
+
+                    b.Property<Guid>("ResourceId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("ResourceId");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("AppointmentId", "ResourceId");
+
+                    b.HasIndex("ResourceId");
+
+                    b.ToTable("AppointmentResources", (string)null);
+                });
+
             modelBuilder.Entity("PermissionRole", b =>
                 {
                     b.Property<Guid>("RoleId")
@@ -1122,6 +1147,21 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         });
 
                     b.Navigation("RefreshToken");
+                });
+
+            modelBuilder.Entity("AppointmentResource", b =>
+                {
+                    b.HasOne("AgendaManager.Domain.Appointments.Appointment", null)
+                        .WithMany()
+                        .HasForeignKey("AppointmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AgendaManager.Domain.Resources.Resource", null)
+                        .WithMany()
+                        .HasForeignKey("ResourceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PermissionRole", b =>

@@ -1,6 +1,5 @@
 ﻿using AgendaManager.Domain.Appointments;
 using AgendaManager.Domain.Appointments.Interfaces;
-using AgendaManager.Domain.Appointments.ValueObjects;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Common.ValueObjects.Period;
 using AgendaManager.Domain.Services;
@@ -64,9 +63,10 @@ public class ServiceManagerDeleteTests
     public async Task ServiceManager_DeleteFails_WhenHaveAppointmentsAssociated()
     {
         // Arrange
-        var appointment = Appointment.Create(
-            AppointmentId.Create(),
-            Period.From(DateTimeOffset.Now, DateTimeOffset.Now.AddHours(1)));
+        var appointment = AppointmentFactory.Create(
+            period: Period.From(
+                DateTimeOffset.Now,
+                DateTimeOffset.Now.AddHours(1)));
 
         var service = ServiceFactory.CreateService();
         SetupServiceIdExistsServiceRepository(service);
