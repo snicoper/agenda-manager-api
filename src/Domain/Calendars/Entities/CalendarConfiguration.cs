@@ -68,15 +68,6 @@ public sealed class CalendarConfiguration : AuditableEntity
         return CalendarConfigurationKeys.Metadata.Options[Category].IsUnitValue;
     }
 
-    private static void GuardAgainstInvalidConfiguration(string category, string selectedKey)
-    {
-        if (!CalendarConfigurationKeys.Metadata.IsValidConfiguration(category, selectedKey))
-        {
-            throw new CalendarConfigurationDomainException(
-                $"Invalid configuration combination: {category} - {selectedKey}");
-        }
-    }
-
     private static void GuardAgainstInvalidCategory(string category)
     {
         ArgumentNullException.ThrowIfNull(category);
@@ -94,6 +85,15 @@ public sealed class CalendarConfiguration : AuditableEntity
         if (string.IsNullOrWhiteSpace(selectedKey) || selectedKey.Length > 100)
         {
             throw new CalendarConfigurationDomainException("The selected key must be between 0 and 100 characters.");
+        }
+    }
+
+    private static void GuardAgainstInvalidConfiguration(string category, string selectedKey)
+    {
+        if (!CalendarConfigurationKeys.Metadata.IsValidConfiguration(category, selectedKey))
+        {
+            throw new CalendarConfigurationDomainException(
+                $"Invalid configuration combination: {category} - {selectedKey}");
         }
     }
 

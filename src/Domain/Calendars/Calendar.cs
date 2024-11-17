@@ -107,8 +107,7 @@ public sealed class Calendar : AggregateRoot
 
         if (calendarConfiguration.Update(category, selectedKey))
         {
-            calendarConfiguration.AddDomainEvent(
-                new CalendarConfigurationUpdatedDomainEvent(Id, calendarConfiguration.Id));
+            AddDomainEvent(new CalendarConfigurationUpdatedDomainEvent(Id, calendarConfiguration.Id));
         }
     }
 
