@@ -22,9 +22,8 @@ public class AppointmentCreationStrategyPolicyTests
             category: CalendarConfigurationKeys.Appointments.CreationStrategy,
             selectedKey: CalendarConfigurationKeys.Appointments.CreationOptions.RequireConfirmation);
 
-        var configurations = new List<CalendarConfiguration> { configuration };
-
-        var policy = new AppointmentCreationStrategyPolicy();
+        List<CalendarConfiguration> configurations = [configuration];
+        AppointmentCreationStrategyPolicy policy = new();
 
         // Act
         var result = policy.DetermineInitialStatus(configurations);
@@ -44,9 +43,8 @@ public class AppointmentCreationStrategyPolicyTests
             category: CalendarConfigurationKeys.Appointments.CreationStrategy,
             selectedKey: CalendarConfigurationKeys.Appointments.CreationOptions.Direct);
 
-        var configurations = new List<CalendarConfiguration> { configuration };
-
-        var policy = new AppointmentCreationStrategyPolicy();
+        List<CalendarConfiguration> configurations = [configuration];
+        AppointmentCreationStrategyPolicy policy = new();
 
         // Act
         var result = policy.DetermineInitialStatus(configurations);
@@ -60,8 +58,8 @@ public class AppointmentCreationStrategyPolicyTests
     public void DetermineInitialStatus_ShouldReturnError_WhenNoCreationStrategyIsProvided()
     {
         // Arrange
-        var configurations = new List<CalendarConfiguration>();
-        var policy = new AppointmentCreationStrategyPolicy();
+        List<CalendarConfiguration> configurations = [];
+        AppointmentCreationStrategyPolicy policy = new();
 
         // Act
         var result = policy.DetermineInitialStatus(configurations);
