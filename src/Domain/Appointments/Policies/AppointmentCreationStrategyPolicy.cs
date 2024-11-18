@@ -19,7 +19,7 @@ public class AppointmentCreationStrategyPolicy : IAppointmentCreationStrategyPol
             return AppointmentErrors.MissingCreationStrategy;
         }
 
-        var defaultStatus = creationStrategy?.SelectedKey
+        var defaultStatus = creationStrategy.SelectedKey
             is CalendarConfigurationKeys.Appointments.CreationOptions.RequireConfirmation
             ? AppointmentStatus.Pending
             : AppointmentStatus.Accepted;

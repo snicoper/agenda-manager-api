@@ -5,10 +5,19 @@ using AgendaManager.Domain.Common.ValueObjects.Period;
 
 namespace AgendaManager.Domain.Calendars.Policies;
 
-public class CalendarHolidayAvailabilityPolicy : ICalendarHolidayAvailabilityPolicy
+public class CalendarHolidayAvailabilityPolicy(ICalendarHolidayRepository holidayRepository)
+    : ICalendarHolidayAvailabilityPolicy
 {
-    public Task<Result> ValidateAsync(CalendarId calendarId, Period period, CancellationToken cancellationToken)
+    public async Task<Result> IsAvailableAsync(
+        CalendarId calendarId,
+        Period period,
+        CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var isOverlapping = await holidayRepository.IsOverlappingInPeriodByCalendarIdAsync(
+            calendarId: calendarId,
+            period: period,
+            cancellationToken: cancellationToken);
+
+        return isOverlapping.IsFailure ? isOverlapping : Result.Success();
     }
 }

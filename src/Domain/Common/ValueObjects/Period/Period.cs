@@ -44,6 +44,6 @@ public sealed record Period
 
     public int DurationInDays()
     {
-        return (End - Start).Days + 1;
+        return Duration.Days + 1;
     }
 }

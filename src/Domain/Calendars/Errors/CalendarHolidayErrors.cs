@@ -6,4 +6,6 @@ public static class CalendarHolidayErrors
 {
     public static Error CreateOverlappingReject => Error.Conflict(
         "Cannot create holiday. Overlapping appointments found.");
+
+    public static Error HolidaysOverlap => Error.Conflict("Cannot create holiday. Overlapping holidays found.");
 }

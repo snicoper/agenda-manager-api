@@ -6,5 +6,5 @@ namespace AgendaManager.Domain.Calendars.Interfaces;
 
 public interface ICalendarHolidayAvailabilityPolicy
 {
-    Task<Result> ValidateAsync(CalendarId calendarId, Period period, CancellationToken cancellationToken);
+    Task<Result> IsAvailableAsync(CalendarId calendarId, Period period, CancellationToken cancellationToken);
 }
