@@ -63,14 +63,14 @@ public class ServiceManagerDeleteTests
     public async Task ServiceManager_DeleteFails_WhenHaveAppointmentsAssociated()
     {
         // Arrange
-        var appointment = AppointmentFactory.Create(
+        var appointment = AppointmentFactory.CreateAppointment(
             period: Period.From(
                 DateTimeOffset.Now,
                 DateTimeOffset.Now.AddHours(1)));
 
         var service = ServiceFactory.CreateService();
         SetupServiceIdExistsServiceRepository(service);
-        SetupGetAllByServiceIdAppointmentRepository([appointment]);
+        SetupGetAllByServiceIdAppointmentRepository([appointment.Value!]);
 
         // Act
         var result = await _sut.DeleteServiceAsync(service.Id);

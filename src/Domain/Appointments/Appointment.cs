@@ -66,10 +66,9 @@ public sealed class Appointment : AggregateRoot
 
     public IReadOnlyList<Resource> Resources => _resources.AsReadOnly();
 
-    public Result ChangeState(AppointmentStatus status, string? description)
+    public Result ChangeState(AppointmentStatus status, string? description = null)
     {
         var changeStatusResult = State.ChangeState(status);
-
         if (changeStatusResult.IsFailure)
         {
             return changeStatusResult;
@@ -80,6 +79,27 @@ public sealed class Appointment : AggregateRoot
 
         return changeStatusResult;
     }
+
+#if DEBUG
+    /// <summary>
+    /// Factory method for testing purposes only.
+    /// Allows creation of appointments with any status, bypassing normal state transition rules.
+    /// This is needed to test scenarios with invalid state transitions.
+    /// </summary>
+    internal static Result<Appointment> CreateForTesting(
+        AppointmentId id,
+        CalendarId calendarId,
+        ServiceId serviceId,
+        UserId userId,
+        Period period,
+        AppointmentStatus status,
+        List<Resource> resources)
+    {
+        var currentState = AppointmentCurrentState.From(status);
+
+        return new Appointment(id, calendarId, serviceId, userId, period, currentState.Value!, resources);
+    }
+#endif
 
     internal static Result<Appointment> Create(
         AppointmentId id,
@@ -95,8 +115,7 @@ public sealed class Appointment : AggregateRoot
             return AppointmentErrors.NoResourcesProvided;
         }
 
-        var currentState = AppointmentCurrentState.From(status);
-
+        var currentState = AppointmentCurrentState.Create(status);
         if (currentState.IsFailure)
         {
             return currentState.MapToValue<Appointment>();
@@ -104,7 +123,7 @@ public sealed class Appointment : AggregateRoot
 
         Appointment appointment = new(id, calendarId, serviceId, userId, period, currentState.Value!, resources);
 
-        appointment.AddNewCurrentStatus(null);
+        appointment.AddNewCurrentStatus();
         appointment.AddDomainEvent(new AppointmentCreatedDomainEvent(appointment.Id));
 
         return Result.Create(appointment);
@@ -113,7 +132,6 @@ public sealed class Appointment : AggregateRoot
     internal Result Update(Period period, List<Resource> resources)
     {
         var validation = ValidateForUpdate(resources);
-
         if (validation.IsFailure)
         {
             return validation;
@@ -145,15 +163,18 @@ public sealed class Appointment : AggregateRoot
         }
 
         var equals = _resources.Select(r => r.Id)
-            .OrderBy(id => id)
-            .SequenceEqual(other.Select(o => o.Id).OrderBy(id => id));
+            .OrderBy(id => id.Value)
+            .SequenceEqual(other.Select(o => o.Id).OrderBy(id => id.Value));
 
         return equals;
     }
 
     private Result ValidateForUpdate(List<Resource> resources)
     {
-        if (State.Value is not (AppointmentStatus.Pending or AppointmentStatus.Accepted))
+        if (State.Value is not (
+            AppointmentStatus.Pending
+            or AppointmentStatus.Accepted
+            or AppointmentStatus.RequiresRescheduling))
         {
             return AppointmentErrors.OnlyPendingAndAcceptedAllowed;
         }
@@ -161,11 +182,6 @@ public sealed class Appointment : AggregateRoot
         if (resources.Count == 0)
         {
             return AppointmentErrors.NoResourcesProvided;
-        }
-
-        if (_resources.Count == 0)
-        {
-            return AppointmentErrors.NoResourcesFound;
         }
 
         return Result.Success();
@@ -183,7 +199,7 @@ public sealed class Appointment : AggregateRoot
         currentStatus?.DeactivateCurrentStatus();
     }
 
-    private void AddNewCurrentStatus(string? description)
+    private void AddNewCurrentStatus(string? description = null)
     {
         var newStatusChange = AppointmentStatusChange.Create(
             appointmentStatusChangeId: AppointmentStatusChangeId.Create(),
@@ -202,7 +218,6 @@ public sealed class Appointment : AggregateRoot
     private void EnsureSingleCurrentStatus()
     {
         var currentStatusCount = _statusChanges.Count(s => s.IsCurrentStatus);
-
         if (currentStatusCount != 1)
         {
             throw new AppointmentDomainException("Can't have more than one current status.");

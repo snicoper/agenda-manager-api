@@ -64,12 +64,12 @@ public sealed class AppointmentStatusChange : AuditableEntity
 
     internal void DeactivateCurrentStatus()
     {
-        if (IsCurrentStatus)
+        if (!IsCurrentStatus)
         {
             return;
         }
 
-        IsCurrentStatus = true;
+        IsCurrentStatus = false;
     }
 
     private static void AgainstInvalidDescription(string? description)

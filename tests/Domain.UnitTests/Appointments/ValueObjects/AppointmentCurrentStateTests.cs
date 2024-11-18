@@ -7,7 +7,7 @@ namespace AgendaManager.Domain.UnitTests.Appointments.ValueObjects;
 public class AppointmentCurrentStateTests
 {
     [Fact]
-    public void CurrentState_ShouldSuccess_WithFromPendingValidValue()
+    public void CurrentState_ShouldSuccess_WithFromValidValue()
     {
         // Act
         var state = AppointmentCurrentState.From(AppointmentStatus.Accepted);
@@ -34,7 +34,7 @@ public class AppointmentCurrentStateTests
     [InlineData(AppointmentStatus.RequiresRescheduling)]
     [InlineData(AppointmentStatus.InProgress)]
     [InlineData(AppointmentStatus.Completed)]
-    public void CurrentState_ShouldSuccess_WithCreateInvalidValue(AppointmentStatus status)
+    public void CurrentState_ShouldFail_WithCreateInvalidValue(AppointmentStatus status)
     {
         // Act
         var state = AppointmentCurrentState.Create(status);
