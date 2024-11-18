@@ -25,49 +25,66 @@ public sealed record AppointmentCurrentState
             : new AppointmentCurrentState(value);
     }
 
-    internal Result<AppointmentCurrentState> ToPending()
+    internal Result<AppointmentCurrentState> ChangeState(AppointmentStatus status)
+    {
+        var changeStatusResult = status switch
+        {
+            AppointmentStatus.Pending => ToPending(),
+            AppointmentStatus.Accepted => ToAccepted(),
+            AppointmentStatus.Cancelled => ToCancelled(),
+            AppointmentStatus.RequiresRescheduling => ToRequiresRescheduling(),
+            AppointmentStatus.Waiting => ToWaiting(),
+            AppointmentStatus.InProgress => ToInProgress(),
+            AppointmentStatus.Completed => ToCompleted(),
+            _ => throw new ArgumentOutOfRangeException(nameof(status))
+        };
+
+        return changeStatusResult;
+    }
+
+    private Result<AppointmentCurrentState> ToPending()
     {
         return Value is not AppointmentStatus.RequiresRescheduling
             ? AppointmentStatusChangeErrors.OnlyPendingAllowed
             : From(AppointmentStatus.Pending);
     }
 
-    internal Result<AppointmentCurrentState> ToAccepted()
+    private Result<AppointmentCurrentState> ToAccepted()
     {
         return Value is not (AppointmentStatus.Pending or AppointmentStatus.RequiresRescheduling)
             ? AppointmentStatusChangeErrors.OnlyPendingAndReschedulingAllowed
             : From(AppointmentStatus.Accepted);
     }
 
-    internal Result<AppointmentCurrentState> ToWaiting()
+    private Result<AppointmentCurrentState> ToWaiting()
     {
         return Value is not (AppointmentStatus.Pending or AppointmentStatus.Accepted)
             ? AppointmentStatusChangeErrors.OnlyPendingAndAcceptedAllowed
             : From(AppointmentStatus.Waiting);
     }
 
-    internal Result<AppointmentCurrentState> ToCancelled()
+    private Result<AppointmentCurrentState> ToCancelled()
     {
         return Value is (AppointmentStatus.Cancelled or AppointmentStatus.Completed)
             ? AppointmentStatusChangeErrors.AlreadyCancelledOrCompleted
             : From(AppointmentStatus.Cancelled);
     }
 
-    internal Result<AppointmentCurrentState> ToRequiresRescheduling()
+    private Result<AppointmentCurrentState> ToRequiresRescheduling()
     {
         return Value is not (AppointmentStatus.Pending or AppointmentStatus.Accepted)
             ? AppointmentStatusChangeErrors.OnlyPendingAndAcceptedAllowed
             : From(AppointmentStatus.RequiresRescheduling);
     }
 
-    internal Result<AppointmentCurrentState> ToInProgress()
+    private Result<AppointmentCurrentState> ToInProgress()
     {
         return Value is not AppointmentStatus.Waiting
             ? AppointmentStatusChangeErrors.OnlyWaitingAllowed
             : From(AppointmentStatus.InProgress);
     }
 
-    internal Result<AppointmentCurrentState> ToCompleted()
+    private Result<AppointmentCurrentState> ToCompleted()
     {
         return Value is not AppointmentStatus.InProgress
             ? AppointmentStatusChangeErrors.OnlyInProgressAllowed

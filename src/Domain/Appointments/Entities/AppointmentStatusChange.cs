@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Appointments.ValueObjects;
+﻿using AgendaManager.Domain.Appointments.Exceptions;
+using AgendaManager.Domain.Appointments.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.ValueObjects.Period;
 
@@ -48,6 +49,8 @@ public sealed class AppointmentStatusChange : AuditableEntity
         bool isCurrentStatus,
         string? description)
     {
+        AgainstInvalidDescription(description);
+
         AppointmentStatusChange appointmentStatusChange = new(
             appointmentStatusChangeId,
             appointmentId,
@@ -67,5 +70,14 @@ public sealed class AppointmentStatusChange : AuditableEntity
         }
 
         IsCurrentStatus = true;
+    }
+
+    private static void AgainstInvalidDescription(string? description)
+    {
+        if (!string.IsNullOrWhiteSpace(description) && description.Length > 200)
+        {
+            throw new AppointmentStatusChangeDomainException(
+                "Description is invalid or exceeds length of 500 characters.");
+        }
     }
 }

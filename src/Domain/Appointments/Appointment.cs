@@ -2,6 +2,7 @@
 using AgendaManager.Domain.Appointments.Enums;
 using AgendaManager.Domain.Appointments.Errors;
 using AgendaManager.Domain.Appointments.Events;
+using AgendaManager.Domain.Appointments.Exceptions;
 using AgendaManager.Domain.Appointments.ValueObjects;
 using AgendaManager.Domain.Calendars;
 using AgendaManager.Domain.Calendars.ValueObjects;
@@ -67,17 +68,7 @@ public sealed class Appointment : AggregateRoot
 
     public Result ChangeState(AppointmentStatus status, string? description)
     {
-        var changeStatusResult = status switch
-        {
-            AppointmentStatus.Pending => State.ToPending(),
-            AppointmentStatus.Accepted => State.ToAccepted(),
-            AppointmentStatus.Cancelled => State.ToCancelled(),
-            AppointmentStatus.RequiresRescheduling => State.ToRequiresRescheduling(),
-            AppointmentStatus.Waiting => State.ToWaiting(),
-            AppointmentStatus.InProgress => State.ToInProgress(),
-            AppointmentStatus.Completed => State.ToCompleted(),
-            _ => throw new ArgumentOutOfRangeException(nameof(status))
-        };
+        var changeStatusResult = State.ChangeState(status);
 
         if (changeStatusResult.IsFailure)
         {
@@ -85,10 +76,7 @@ public sealed class Appointment : AggregateRoot
         }
 
         State = changeStatusResult.Value!;
-
         UpdateStatusChanges(description);
-
-        AddDomainEvent(new AppointmentStatusChangedDomainEvent(Id, changeStatusResult.Value!));
 
         return changeStatusResult;
     }
@@ -116,6 +104,7 @@ public sealed class Appointment : AggregateRoot
 
         Appointment appointment = new(id, calendarId, serviceId, userId, period, currentState.Value!, resources);
 
+        appointment.AddNewCurrentStatus(null);
         appointment.AddDomainEvent(new AppointmentCreatedDomainEvent(appointment.Id));
 
         return Result.Create(appointment);
@@ -135,14 +124,17 @@ public sealed class Appointment : AggregateRoot
             return Result.Success();
         }
 
-        Period = period;
-
-        _resources.Clear();
-        _resources.AddRange(resources);
-
+        UpdatePeriodAndResources(period, resources);
         AddDomainEvent(new AppointmentUpdatedDomainEvent(Id, period, resources));
 
         return Result.Success();
+    }
+
+    private void UpdatePeriodAndResources(Period period, List<Resource> resources)
+    {
+        Period = period;
+        _resources.Clear();
+        _resources.AddRange(resources);
     }
 
     private bool AreResourceListEqual(List<Resource> other)
@@ -202,5 +194,18 @@ public sealed class Appointment : AggregateRoot
             description: description);
 
         _statusChanges.Add(newStatusChange);
+        EnsureSingleCurrentStatus();
+
+        AddDomainEvent(new AppointmentStatusChangedDomainEvent(Id, State));
+    }
+
+    private void EnsureSingleCurrentStatus()
+    {
+        var currentStatusCount = _statusChanges.Count(s => s.IsCurrentStatus);
+
+        if (currentStatusCount != 1)
+        {
+            throw new AppointmentDomainException("Can't have more than one current status.");
+        }
     }
 }
