@@ -2,6 +2,7 @@
 using AgendaManager.Application.Authentication.Interfaces;
 using AgendaManager.Application.Common.Interfaces.Clock;
 using AgendaManager.Application.Common.Interfaces.Persistence;
+using AgendaManager.Application.Users.Services;
 using AgendaManager.Domain.Appointments.Interfaces;
 using AgendaManager.Domain.AuditRecords.Interfaces;
 using AgendaManager.Domain.Calendars.Interfaces;

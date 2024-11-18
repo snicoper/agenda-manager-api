@@ -1,4 +1,5 @@
 using AgendaManager.Application.Authentication.Interfaces;
+using AgendaManager.Application.Users.Services;
 using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Infrastructure.Users.Authentication;

@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using AgendaManager.Application.Authentication.Interfaces;
 using AgendaManager.Application.Users.Models;
+using AgendaManager.Application.Users.Services;
 using AgendaManager.Domain.Common.Constants;
 using AgendaManager.Domain.Users.ValueObjects;
 

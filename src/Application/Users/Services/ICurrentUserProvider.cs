@@ -1,6 +1,6 @@
 using AgendaManager.Application.Users.Models;
 
-namespace AgendaManager.Application.Authentication.Interfaces;
+namespace AgendaManager.Application.Users.Services;
 
 public interface ICurrentUserProvider
 {

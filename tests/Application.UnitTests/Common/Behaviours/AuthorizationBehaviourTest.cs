@@ -3,6 +3,7 @@ using AgendaManager.Application.Common.Authorization;
 using AgendaManager.Application.Common.Behaviours;
 using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Application.Users.Models;
+using AgendaManager.Application.Users.Services;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users.Constants;
 using AgendaManager.Domain.Users.ValueObjects;
