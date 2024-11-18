@@ -19,7 +19,7 @@ namespace AgendaManager.Domain.Appointments;
 
 public sealed class Appointment : AggregateRoot
 {
-    private readonly List<AppointmentStatusChange> _statusChanges = [];
+    private readonly List<AppointmentStatusHistory> _statusHistories = [];
     private readonly List<Resource> _resources = [];
 
     private Appointment()
@@ -32,7 +32,7 @@ public sealed class Appointment : AggregateRoot
         ServiceId serviceId,
         UserId userId,
         Period period,
-        AppointmentCurrentState state,
+        AppointmentCurrentState currentState,
         List<Resource> resources)
     {
         Id = appointmentId;
@@ -40,7 +40,7 @@ public sealed class Appointment : AggregateRoot
         ServiceId = serviceId;
         UserId = userId;
         Period = period;
-        State = state;
+        CurrentState = currentState;
         _resources = resources;
     }
 
@@ -60,21 +60,21 @@ public sealed class Appointment : AggregateRoot
 
     public Period Period { get; private set; } = null!;
 
-    public AppointmentCurrentState State { get; private set; } = null!;
+    public AppointmentCurrentState CurrentState { get; private set; } = null!;
 
-    public IReadOnlyList<AppointmentStatusChange> StatusChanges => _statusChanges.AsReadOnly();
+    public IReadOnlyList<AppointmentStatusHistory> StatusHistories => _statusHistories.AsReadOnly();
 
     public IReadOnlyList<Resource> Resources => _resources.AsReadOnly();
 
     public Result ChangeState(AppointmentStatus status, string? description = null)
     {
-        var changeStatusResult = State.ChangeState(status);
+        var changeStatusResult = CurrentState.ChangeState(status);
         if (changeStatusResult.IsFailure)
         {
             return changeStatusResult;
         }
 
-        State = changeStatusResult.Value!;
+        CurrentState = changeStatusResult.Value!;
         UpdateStatusChanges(description);
 
         return changeStatusResult;
@@ -171,7 +171,7 @@ public sealed class Appointment : AggregateRoot
 
     private Result ValidateForUpdate(List<Resource> resources)
     {
-        if (State.Value is not (
+        if (CurrentState.Value is not (
             AppointmentStatus.Pending
             or AppointmentStatus.Accepted
             or AppointmentStatus.RequiresRescheduling))
@@ -195,29 +195,29 @@ public sealed class Appointment : AggregateRoot
 
     private void DeactivateCurrentStatus()
     {
-        var currentStatus = _statusChanges.FirstOrDefault(s => s.IsCurrentStatus);
+        var currentStatus = _statusHistories.FirstOrDefault(s => s.IsCurrentStatus);
         currentStatus?.DeactivateCurrentStatus();
     }
 
     private void AddNewCurrentStatus(string? description = null)
     {
-        var newStatusChange = AppointmentStatusChange.Create(
+        var newStatusChange = AppointmentStatusHistory.Create(
             appointmentStatusChangeId: AppointmentStatusChangeId.Create(),
             appointmentId: Id,
             period: Period,
-            state: State,
+            state: CurrentState,
             isCurrentStatus: true,
             description: description);
 
-        _statusChanges.Add(newStatusChange);
+        _statusHistories.Add(newStatusChange);
         EnsureSingleCurrentStatus();
 
-        AddDomainEvent(new AppointmentStatusChangedDomainEvent(Id, State));
+        AddDomainEvent(new AppointmentStatusChangedDomainEvent(Id, CurrentState));
     }
 
     private void EnsureSingleCurrentStatus()
     {
-        var currentStatusCount = _statusChanges.Count(s => s.IsCurrentStatus);
+        var currentStatusCount = _statusHistories.Count(s => s.IsCurrentStatus);
         if (currentStatusCount != 1)
         {
             throw new AppointmentDomainException("Can't have more than one current status.");

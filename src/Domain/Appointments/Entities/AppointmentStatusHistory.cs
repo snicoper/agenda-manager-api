@@ -5,13 +5,13 @@ using AgendaManager.Domain.Common.ValueObjects.Period;
 
 namespace AgendaManager.Domain.Appointments.Entities;
 
-public sealed class AppointmentStatusChange : AuditableEntity
+public sealed class AppointmentStatusHistory : AuditableEntity
 {
-    private AppointmentStatusChange()
+    private AppointmentStatusHistory()
     {
     }
 
-    private AppointmentStatusChange(
+    private AppointmentStatusHistory(
         AppointmentStatusChangeId appointmentStatusChangeId,
         AppointmentId appointmentId,
         Period period,
@@ -22,7 +22,7 @@ public sealed class AppointmentStatusChange : AuditableEntity
         Id = appointmentStatusChangeId;
         AppointmentId = appointmentId;
         Period = period;
-        State = status;
+        CurrentState = status;
         IsCurrentStatus = isCurrentStatus;
         Description = description;
     }
@@ -35,13 +35,13 @@ public sealed class AppointmentStatusChange : AuditableEntity
 
     public Period Period { get; private set; } = null!;
 
-    public AppointmentCurrentState State { get; private set; } = null!;
+    public AppointmentCurrentState CurrentState { get; private set; } = null!;
 
     public bool IsCurrentStatus { get; private set; } = true;
 
     public string? Description { get; private set; }
 
-    internal static AppointmentStatusChange Create(
+    internal static AppointmentStatusHistory Create(
         AppointmentStatusChangeId appointmentStatusChangeId,
         AppointmentId appointmentId,
         Period period,
@@ -51,7 +51,7 @@ public sealed class AppointmentStatusChange : AuditableEntity
     {
         AgainstInvalidDescription(description);
 
-        AppointmentStatusChange appointmentStatusChange = new(
+        AppointmentStatusHistory appointmentStatusHistory = new(
             appointmentStatusChangeId,
             appointmentId,
             period,
@@ -59,7 +59,7 @@ public sealed class AppointmentStatusChange : AuditableEntity
             isCurrentStatus,
             description);
 
-        return appointmentStatusChange;
+        return appointmentStatusHistory;
     }
 
     internal void DeactivateCurrentStatus()

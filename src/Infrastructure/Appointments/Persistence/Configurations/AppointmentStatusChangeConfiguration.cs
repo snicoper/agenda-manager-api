@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AgendaManager.Infrastructure.Appointments.Persistence.Configurations;
 
-public class AppointmentStatusChangeConfiguration : IEntityTypeConfiguration<AppointmentStatusChange>
+public class AppointmentStatusChangeConfiguration : IEntityTypeConfiguration<AppointmentStatusHistory>
 {
-    public void Configure(EntityTypeBuilder<AppointmentStatusChange> builder)
+    public void Configure(EntityTypeBuilder<AppointmentStatusHistory> builder)
     {
-        builder.ToTable("AppointmentStatusChanges");
+        builder.ToTable("AppointmentStatusHistories");
 
         builder.HasKey(asc => asc.Id);
 
@@ -28,7 +28,7 @@ public class AppointmentStatusChangeConfiguration : IEntityTypeConfiguration<App
             .IsRequired();
 
         builder.HasOne(asc => asc.Appointment)
-            .WithMany(a => a.StatusChanges)
+            .WithMany(a => a.StatusHistories)
             .HasForeignKey(asc => asc.AppointmentId)
             .OnDelete(DeleteBehavior.Restrict);
 
@@ -43,7 +43,7 @@ public class AppointmentStatusChangeConfiguration : IEntityTypeConfiguration<App
                     .HasColumnName("End");
             });
 
-        builder.Property(asc => asc.State)
+        builder.Property(asc => asc.CurrentState)
             .HasConversion(
                 state => state.Value,
                 value => AppointmentCurrentState.From(value).Value!)

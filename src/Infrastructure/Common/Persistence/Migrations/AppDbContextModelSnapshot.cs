@@ -38,6 +38,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<AppointmentStatus>("CurrentState")
+                        .HasColumnType("integer");
+
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -47,9 +50,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uuid");
-
-                    b.Property<AppointmentStatus>("State")
-                        .HasColumnType("integer");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -68,7 +68,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.ToTable("Appointments", (string)null);
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Appointments.Entities.AppointmentStatusChange", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Appointments.Entities.AppointmentStatusHistory", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -82,6 +82,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<AppointmentStatus>("CurrentState")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Description")
                         .HasMaxLength(200)
@@ -97,9 +100,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<AppointmentStatus>("State")
-                        .HasColumnType("integer");
-
                     b.Property<int>("Version")
                         .HasColumnType("integer");
 
@@ -107,7 +107,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
                     b.HasIndex("AppointmentId");
 
-                    b.ToTable("AppointmentStatusChanges", (string)null);
+                    b.ToTable("AppointmentStatusHistories", (string)null);
                 });
 
             modelBuilder.Entity("AgendaManager.Domain.AuditRecords.AuditRecord", b =>
@@ -851,17 +851,17 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Appointments.Entities.AppointmentStatusChange", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Appointments.Entities.AppointmentStatusHistory", b =>
                 {
                     b.HasOne("AgendaManager.Domain.Appointments.Appointment", "Appointment")
-                        .WithMany("StatusChanges")
+                        .WithMany("StatusHistories")
                         .HasForeignKey("AppointmentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Period.Period", "Period", b1 =>
                         {
-                            b1.Property<Guid>("AppointmentStatusChangeId")
+                            b1.Property<Guid>("AppointmentStatusHistoryId")
                                 .HasColumnType("uuid");
 
                             b1.Property<DateTimeOffset>("End")
@@ -872,12 +872,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("Start");
 
-                            b1.HasKey("AppointmentStatusChangeId");
+                            b1.HasKey("AppointmentStatusHistoryId");
 
-                            b1.ToTable("AppointmentStatusChanges");
+                            b1.ToTable("AppointmentStatusHistories");
 
                             b1.WithOwner()
-                                .HasForeignKey("AppointmentStatusChangeId");
+                                .HasForeignKey("AppointmentStatusHistoryId");
                         });
 
                     b.Navigation("Appointment");
@@ -1209,7 +1209,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
             modelBuilder.Entity("AgendaManager.Domain.Appointments.Appointment", b =>
                 {
-                    b.Navigation("StatusChanges");
+                    b.Navigation("StatusHistories");
                 });
 
             modelBuilder.Entity("AgendaManager.Domain.Calendars.Calendar", b =>

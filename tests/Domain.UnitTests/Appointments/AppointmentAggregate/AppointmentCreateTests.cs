@@ -70,6 +70,6 @@ public class AppointmentCreateTests
         var appointment = AppointmentFactory.CreateAppointment();
 
         // Assert
-        appointment.Value!.StatusChanges.Should().NotBeNullOrEmpty();
+        appointment.Value!.StatusHistories.Should().NotBeNullOrEmpty();
     }
 }

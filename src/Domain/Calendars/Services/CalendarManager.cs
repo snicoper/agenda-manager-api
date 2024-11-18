@@ -72,10 +72,10 @@ public class CalendarManager(ICalendarRepository calendarRepository)
 
         calendar.AddConfiguration(
             CalendarConfiguration.Create(
-                CalendarConfigurationId.Create(),
-                calendarId,
-                CalendarConfigurationKeys.TimeZone.Category,
-                ianaTimeZone.Value));
+                id: CalendarConfigurationId.Create(),
+                calendarId: calendarId,
+                category: CalendarConfigurationKeys.TimeZone.Category,
+                selectedKey: ianaTimeZone.Value));
 
         return Result.Success(calendar);
     }

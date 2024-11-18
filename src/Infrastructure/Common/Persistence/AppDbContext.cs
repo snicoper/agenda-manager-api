@@ -21,7 +21,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
 {
     public DbSet<Appointment> Appointments => Set<Appointment>();
 
-    public DbSet<AppointmentStatusChange> AppointmentStatusChanges => Set<AppointmentStatusChange>();
+    public DbSet<AppointmentStatusHistory> AppointmentStatusHistories => Set<AppointmentStatusHistory>();
 
     public DbSet<Calendar> Calendars => Set<Calendar>();
 

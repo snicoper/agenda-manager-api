@@ -61,7 +61,7 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
             .HasForeignKey(a => a.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasMany(a => a.StatusChanges)
+        builder.HasMany(a => a.StatusHistories)
             .WithOne(sc => sc.Appointment)
             .HasForeignKey(sc => sc.AppointmentId)
             .OnDelete(DeleteBehavior.Cascade);
@@ -77,13 +77,13 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
                     .HasColumnName("End");
             });
 
-        builder.Property(a => a.State)
+        builder.Property(a => a.CurrentState)
             .HasConversion(
                 state => state.Value,
                 value => AppointmentCurrentState.From(value).Value!)
             .IsRequired();
 
-        builder.HasMany(a => a.StatusChanges)
+        builder.HasMany(a => a.StatusHistories)
             .WithOne(asc => asc.Appointment)
             .HasForeignKey(asc => asc.AppointmentId)
             .OnDelete(DeleteBehavior.Cascade);

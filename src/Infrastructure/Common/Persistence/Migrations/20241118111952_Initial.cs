@@ -312,7 +312,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     Start = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     End = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    State = table.Column<int>(type: "integer", nullable: false),
+                    CurrentState = table.Column<int>(type: "integer", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: false),
@@ -414,14 +414,14 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AppointmentStatusChanges",
+                name: "AppointmentStatusHistories",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     AppointmentId = table.Column<Guid>(type: "uuid", nullable: false),
                     Start = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     End = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    State = table.Column<int>(type: "integer", nullable: false),
+                    CurrentState = table.Column<int>(type: "integer", nullable: false),
                     IsCurrentStatus = table.Column<bool>(type: "boolean", nullable: false),
                     Description = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
@@ -432,9 +432,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AppointmentStatusChanges", x => x.Id);
+                    table.PrimaryKey("PK_AppointmentStatusHistories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AppointmentStatusChanges_Appointments_AppointmentId",
+                        name: "FK_AppointmentStatusHistories_Appointments_AppointmentId",
                         column: x => x.AppointmentId,
                         principalTable: "Appointments",
                         principalColumn: "Id",
@@ -527,8 +527,8 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppointmentStatusChanges_AppointmentId",
-                table: "AppointmentStatusChanges",
+                name: "IX_AppointmentStatusHistories_AppointmentId",
+                table: "AppointmentStatusHistories",
                 column: "AppointmentId");
 
             migrationBuilder.CreateIndex(
@@ -655,7 +655,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 name: "AppointmentResources");
 
             migrationBuilder.DropTable(
-                name: "AppointmentStatusChanges");
+                name: "AppointmentStatusHistories");
 
             migrationBuilder.DropTable(
                 name: "AuditRecords");
