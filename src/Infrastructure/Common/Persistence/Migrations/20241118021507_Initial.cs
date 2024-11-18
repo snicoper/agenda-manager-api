@@ -421,7 +421,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     AppointmentId = table.Column<Guid>(type: "uuid", nullable: false),
                     Start = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     End = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
+                    State = table.Column<int>(type: "integer", nullable: false),
                     IsCurrentStatus = table.Column<bool>(type: "boolean", nullable: false),
                     Description = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),

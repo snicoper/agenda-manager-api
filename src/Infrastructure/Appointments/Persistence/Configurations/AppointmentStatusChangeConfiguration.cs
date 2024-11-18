@@ -43,7 +43,10 @@ public class AppointmentStatusChangeConfiguration : IEntityTypeConfiguration<App
                     .HasColumnName("End");
             });
 
-        builder.Property(asc => asc.Status)
+        builder.Property(asc => asc.State)
+            .HasConversion(
+                state => state.Value,
+                value => AppointmentCurrentState.From(value).Value!)
             .IsRequired();
 
         builder.Property(adc => adc.IsCurrentStatus);

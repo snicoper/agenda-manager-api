@@ -1,6 +1,4 @@
-﻿using AgendaManager.Domain.Appointments.Enums;
-using AgendaManager.Domain.Appointments.Events;
-using AgendaManager.Domain.Appointments.ValueObjects;
+﻿using AgendaManager.Domain.Appointments.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.ValueObjects.Period;
 
@@ -12,9 +10,20 @@ public sealed class AppointmentStatusChange : AuditableEntity
     {
     }
 
-    private AppointmentStatusChange(AppointmentStatusChangeId appointmentStatusChangeId)
+    private AppointmentStatusChange(
+        AppointmentStatusChangeId appointmentStatusChangeId,
+        AppointmentId appointmentId,
+        Period period,
+        AppointmentCurrentState status,
+        bool isCurrentStatus,
+        string? description)
     {
         Id = appointmentStatusChangeId;
+        AppointmentId = appointmentId;
+        Period = period;
+        State = status;
+        IsCurrentStatus = isCurrentStatus;
+        Description = description;
     }
 
     public AppointmentStatusChangeId Id { get; } = null!;
@@ -25,19 +34,38 @@ public sealed class AppointmentStatusChange : AuditableEntity
 
     public Period Period { get; private set; } = null!;
 
-    public AppointmentStatus Status { get; private set; } = AppointmentStatus.Pending;
+    public AppointmentCurrentState State { get; private set; } = null!;
 
     public bool IsCurrentStatus { get; private set; } = true;
 
     public string? Description { get; private set; }
 
-    public static AppointmentStatusChange Create(AppointmentStatusChangeId appointmentStatusChangeId)
+    internal static AppointmentStatusChange Create(
+        AppointmentStatusChangeId appointmentStatusChangeId,
+        AppointmentId appointmentId,
+        Period period,
+        AppointmentCurrentState state,
+        bool isCurrentStatus,
+        string? description)
     {
-        AppointmentStatusChange appointmentStatusChange = new(appointmentStatusChangeId);
-
-        appointmentStatusChange.AddDomainEvent(
-            new AppointmentStatusChangeCreatedDomainEvent(appointmentStatusChange.Id));
+        AppointmentStatusChange appointmentStatusChange = new(
+            appointmentStatusChangeId,
+            appointmentId,
+            period,
+            state,
+            isCurrentStatus,
+            description);
 
         return appointmentStatusChange;
+    }
+
+    internal void DeactivateCurrentStatus()
+    {
+        if (IsCurrentStatus)
+        {
+            return;
+        }
+
+        IsCurrentStatus = true;
     }
 }

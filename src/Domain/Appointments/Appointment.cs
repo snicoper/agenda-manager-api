@@ -65,7 +65,7 @@ public sealed class Appointment : AggregateRoot
 
     public IReadOnlyList<Resource> Resources => _resources.AsReadOnly();
 
-    public Result ChangeState(AppointmentStatus status)
+    public Result ChangeState(AppointmentStatus status, string? description)
     {
         var changeStatusResult = status switch
         {
@@ -85,6 +85,9 @@ public sealed class Appointment : AggregateRoot
         }
 
         State = changeStatusResult.Value!;
+
+        UpdateStatusChanges(description);
+
         AddDomainEvent(new AppointmentStatusChangedDomainEvent(Id, changeStatusResult.Value!));
 
         return changeStatusResult;
@@ -174,5 +177,30 @@ public sealed class Appointment : AggregateRoot
         }
 
         return Result.Success();
+    }
+
+    private void UpdateStatusChanges(string? description)
+    {
+        DeactivateCurrentStatus();
+        AddNewCurrentStatus(description);
+    }
+
+    private void DeactivateCurrentStatus()
+    {
+        var currentStatus = _statusChanges.FirstOrDefault(s => s.IsCurrentStatus);
+        currentStatus?.DeactivateCurrentStatus();
+    }
+
+    private void AddNewCurrentStatus(string? description)
+    {
+        var newStatusChange = AppointmentStatusChange.Create(
+            appointmentStatusChangeId: AppointmentStatusChangeId.Create(),
+            appointmentId: Id,
+            period: Period,
+            state: State,
+            isCurrentStatus: true,
+            description: description);
+
+        _statusChanges.Add(newStatusChange);
     }
 }

@@ -97,7 +97,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Status")
+                    b.Property<AppointmentStatus>("State")
                         .HasColumnType("integer");
 
                     b.Property<int>("Version")

@@ -48,13 +48,8 @@ public sealed record AppointmentCurrentState
 
     internal Result<AppointmentCurrentState> ToCancelled()
     {
-        return Value is not (
-            AppointmentStatus.Pending
-            or AppointmentStatus.Accepted
-            or AppointmentStatus.RequiresRescheduling
-            or AppointmentStatus.Waiting
-            or AppointmentStatus.InProgress)
-            ? AppointmentStatusChangeErrors.OnlyPendingAndAcceptedAndReschedulingAllowed
+        return Value is (AppointmentStatus.Cancelled or AppointmentStatus.Completed)
+            ? AppointmentStatusChangeErrors.AlreadyCancelledOrCompleted
             : From(AppointmentStatus.Cancelled);
     }
 

@@ -13,8 +13,8 @@ public static class AppointmentStatusChangeErrors
     public static Error OnlyPendingAndReschedulingAllowed =>
         Error.Conflict("Only pending and rescheduling appointments can be changed.");
 
-    public static Error OnlyPendingAndAcceptedAndReschedulingAllowed =>
-        Error.Conflict("Only pending, accepted and rescheduling appointments can be changed.");
+    public static Error AlreadyCancelledOrCompleted =>
+        Error.Conflict("The appointment is already cancelled or completed.");
 
     public static Error OnlyWaitingAllowed =>
         Error.Conflict("Only waiting appointments can be changed.");
