@@ -12,7 +12,7 @@ public class AppointmentCreationStrategyPolicy : IAppointmentCreationStrategyPol
     public Result<AppointmentStatus> DetermineInitialStatus(List<CalendarConfiguration> configurations)
     {
         var creationStrategy = configurations.SingleOrDefault(
-            cc => cc.SelectedKey == CalendarConfigurationKeys.Appointments.CreationStrategy);
+            cc => cc.Category == CalendarConfigurationKeys.Appointments.CreationStrategy);
 
         if (creationStrategy is null)
         {
