@@ -1,5 +1,5 @@
 ﻿namespace AgendaManager.Domain.Appointments.Interfaces;
 
-public interface IAppointmentStatusChangeRepository
+public interface IAppointmentOverlapPolicy
 {
 }

@@ -1,5 +1,11 @@
-﻿using AgendaManager.Domain.Appointments.Services;
+﻿using AgendaManager.Domain.Appointments.Interfaces;
+using AgendaManager.Domain.Appointments.Policies;
+using AgendaManager.Domain.Appointments.Services;
+using AgendaManager.Domain.Calendars.Interfaces;
+using AgendaManager.Domain.Calendars.Policies;
 using AgendaManager.Domain.Calendars.Services;
+using AgendaManager.Domain.Resources.Interfaces;
+using AgendaManager.Domain.Resources.Policies;
 using AgendaManager.Domain.Resources.Services;
 using AgendaManager.Domain.ResourceTypes.Services;
 using AgendaManager.Domain.Services.Services;
@@ -28,19 +34,24 @@ public static class DependencyInjection
         services.AddScoped<UserManager>();
         services.AddScoped<RoleManager>();
         services.AddScoped<PermissionManager>();
-        services.AddScoped<IEmailUniquenessChecker, EmailUniquenessChecker>();
-        services.AddScoped<AuthenticationService>();
-        services.AddScoped<AuthorizationManager>();
+
+        services.AddTransient<IEmailUniquenessChecker, EmailUniquenessChecker>();
+        services.AddTransient<AuthenticationService>();
+        services.AddTransient<AuthorizationManager>();
     }
 
     private static void AddCalendarsDomain(this IServiceCollection services)
     {
         services.AddScoped<CalendarManager>();
+
+        services.AddTransient<ICalendarHolidayAvailabilityPolicy, CalendarHolidayAvailabilityPolicy>();
     }
 
     private static void AddResourceTypesDomain(this IServiceCollection services)
     {
         services.AddScoped<ResourceTypeManager>();
+
+        services.AddTransient<IResourceAvailabilityPolicy, ResourceAvailabilityPolicy>();
     }
 
     private static void AddResourcesDomain(this IServiceCollection services)
@@ -56,5 +67,7 @@ public static class DependencyInjection
     private static void AddAppointmentsDomain(this IServiceCollection services)
     {
         services.AddScoped<AppointmentManager>();
+
+        services.AddTransient<IAppointmentOverlapPolicy, AppointmentOverlapPolicy>();
     }
 }

@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.Users.Services;
+﻿using AgendaManager.Domain.Users.Policies;
 using AgendaManager.TestCommon.Constants;
 using FluentAssertions;
 

@@ -2,6 +2,6 @@
 
 namespace AgendaManager.Infrastructure.Appointments.Persistence.Repositories;
 
-public class AppointmentStatusChangeRepository : IAppointmentStatusChangeRepository
+public class AppointmentStatusHistoryRepository : IAppointmentStatusHistoryRepository
 {
 }

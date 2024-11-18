@@ -3,7 +3,7 @@ using AgendaManager.Domain.Common.Utils;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
 
-namespace AgendaManager.Domain.Users.Services;
+namespace AgendaManager.Domain.Users.Policies;
 
 public class PasswordPolicy : IPasswordPolicy
 {

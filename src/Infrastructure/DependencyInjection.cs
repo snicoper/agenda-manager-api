@@ -97,7 +97,7 @@ public static class DependencyInjection
 
         // Appointments.
         services.AddScoped<IAppointmentRepository, AppointmentRepository>();
-        services.AddScoped<IAppointmentStatusChangeRepository, AppointmentStatusChangeRepository>();
+        services.AddScoped<IAppointmentStatusHistoryRepository, AppointmentStatusHistoryRepository>();
     }
 
     private static void AddDatabase(

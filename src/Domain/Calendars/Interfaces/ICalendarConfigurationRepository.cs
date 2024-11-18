@@ -5,7 +5,7 @@ namespace AgendaManager.Domain.Calendars.Interfaces;
 
 public interface ICalendarConfigurationRepository
 {
-    Task<List<CalendarConfiguration>> GetAllByCalendarIdAsync(
+    Task<List<CalendarConfiguration>> GetConfigurationsByCalendarIdAsync(
         CalendarId calendarId,
         CancellationToken cancellationToken = default);
 
