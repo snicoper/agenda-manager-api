@@ -312,7 +312,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     Start = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     End = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
+                    State = table.Column<int>(type: "integer", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: false),

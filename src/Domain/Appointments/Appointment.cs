@@ -31,7 +31,7 @@ public sealed class Appointment : AggregateRoot
         ServiceId serviceId,
         UserId userId,
         Period period,
-        AppointmentStatus status,
+        AppointmentCurrentState state,
         List<Resource> resources)
     {
         Id = appointmentId;
@@ -39,7 +39,7 @@ public sealed class Appointment : AggregateRoot
         ServiceId = serviceId;
         UserId = userId;
         Period = period;
-        Status = status;
+        State = state;
         _resources = resources;
     }
 
@@ -59,11 +59,36 @@ public sealed class Appointment : AggregateRoot
 
     public Period Period { get; private set; } = null!;
 
-    public AppointmentStatus Status { get; } = AppointmentStatus.Pending;
+    public AppointmentCurrentState State { get; private set; } = null!;
 
     public IReadOnlyList<AppointmentStatusChange> StatusChanges => _statusChanges.AsReadOnly();
 
     public IReadOnlyList<Resource> Resources => _resources.AsReadOnly();
+
+    public Result ChangeState(AppointmentStatus status)
+    {
+        var changeStatusResult = status switch
+        {
+            AppointmentStatus.Pending => State.ToPending(),
+            AppointmentStatus.Accepted => State.ToAccepted(),
+            AppointmentStatus.Cancelled => State.ToCancelled(),
+            AppointmentStatus.RequiresRescheduling => State.ToRequiresRescheduling(),
+            AppointmentStatus.Waiting => State.ToWaiting(),
+            AppointmentStatus.InProgress => State.ToInProgress(),
+            AppointmentStatus.Completed => State.ToCompleted(),
+            _ => throw new ArgumentOutOfRangeException(nameof(status))
+        };
+
+        if (changeStatusResult.IsFailure)
+        {
+            return changeStatusResult;
+        }
+
+        State = changeStatusResult.Value!;
+        AddDomainEvent(new AppointmentStatusChangedDomainEvent(Id, changeStatusResult.Value!));
+
+        return changeStatusResult;
+    }
 
     internal static Result<Appointment> Create(
         AppointmentId id,
@@ -74,17 +99,19 @@ public sealed class Appointment : AggregateRoot
         AppointmentStatus status,
         List<Resource> resources)
     {
-        if (status is not (AppointmentStatus.Pending or AppointmentStatus.Accepted))
-        {
-            return AppointmentErrors.OnlyPendingAndAcceptedAllowed;
-        }
-
         if (resources.Count == 0)
         {
             return AppointmentErrors.NoResourcesProvided;
         }
 
-        Appointment appointment = new(id, calendarId, serviceId, userId, period, status, resources);
+        var currentState = AppointmentCurrentState.From(status);
+
+        if (currentState.IsFailure)
+        {
+            return currentState.MapToValue<Appointment>();
+        }
+
+        Appointment appointment = new(id, calendarId, serviceId, userId, period, currentState.Value!, resources);
 
         appointment.AddDomainEvent(new AppointmentCreatedDomainEvent(appointment.Id));
 
@@ -131,7 +158,7 @@ public sealed class Appointment : AggregateRoot
 
     private Result ValidateForUpdate(List<Resource> resources)
     {
-        if (Status is not (AppointmentStatus.Pending or AppointmentStatus.Accepted))
+        if (State.Value is not (AppointmentStatus.Pending or AppointmentStatus.Accepted))
         {
             return AppointmentErrors.OnlyPendingAndAcceptedAllowed;
         }
