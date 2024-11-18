@@ -195,8 +195,8 @@ public sealed class Appointment : AggregateRoot
 
     private void DeactivateCurrentStatus()
     {
-        var currentStatus = _statusHistories.FirstOrDefault(s => s.IsCurrentStatus);
-        currentStatus?.DeactivateCurrentStatus();
+        var currentStatus = _statusHistories.FirstOrDefault(s => s.IsCurrentState);
+        currentStatus?.DeactivateCurrentState();
     }
 
     private void AddNewCurrentStatus(string? description = null)
@@ -217,7 +217,7 @@ public sealed class Appointment : AggregateRoot
 
     private void EnsureSingleCurrentStatus()
     {
-        var currentStatusCount = _statusHistories.Count(s => s.IsCurrentStatus);
+        var currentStatusCount = _statusHistories.Count(s => s.IsCurrentState);
         if (currentStatusCount != 1)
         {
             throw new AppointmentDomainException("Can't have more than one current status.");

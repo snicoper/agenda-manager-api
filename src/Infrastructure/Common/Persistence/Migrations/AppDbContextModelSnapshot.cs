@@ -90,7 +90,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<bool>("IsCurrentStatus")
+                    b.Property<bool>("IsCurrentState")
                         .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset>("LastModifiedAt")

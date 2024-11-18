@@ -16,14 +16,14 @@ public sealed class AppointmentStatusHistory : AuditableEntity
         AppointmentId appointmentId,
         Period period,
         AppointmentCurrentState status,
-        bool isCurrentStatus,
+        bool isCurrentState,
         string? description)
     {
         Id = appointmentStatusChangeId;
         AppointmentId = appointmentId;
         Period = period;
         CurrentState = status;
-        IsCurrentStatus = isCurrentStatus;
+        IsCurrentState = isCurrentState;
         Description = description;
     }
 
@@ -37,7 +37,7 @@ public sealed class AppointmentStatusHistory : AuditableEntity
 
     public AppointmentCurrentState CurrentState { get; private set; } = null!;
 
-    public bool IsCurrentStatus { get; private set; } = true;
+    public bool IsCurrentState { get; private set; } = true;
 
     public string? Description { get; private set; }
 
@@ -62,14 +62,14 @@ public sealed class AppointmentStatusHistory : AuditableEntity
         return appointmentStatusHistory;
     }
 
-    internal void DeactivateCurrentStatus()
+    internal void DeactivateCurrentState()
     {
-        if (!IsCurrentStatus)
+        if (!IsCurrentState)
         {
             return;
         }
 
-        IsCurrentStatus = false;
+        IsCurrentState = false;
     }
 
     private static void AgainstInvalidDescription(string? description)

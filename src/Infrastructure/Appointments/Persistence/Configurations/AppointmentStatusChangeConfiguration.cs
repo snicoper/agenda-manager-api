@@ -49,7 +49,7 @@ public class AppointmentStatusChangeConfiguration : IEntityTypeConfiguration<App
                 value => AppointmentCurrentState.From(value).Value!)
             .IsRequired();
 
-        builder.Property(adc => adc.IsCurrentStatus);
+        builder.Property(adc => adc.IsCurrentState);
 
         builder.Property(asc => asc.Description)
             .HasMaxLength(200);

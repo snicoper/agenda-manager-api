@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241118111952_Initial")]
+    [Migration("20241118112929_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -93,7 +93,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<bool>("IsCurrentStatus")
+                    b.Property<bool>("IsCurrentState")
                         .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset>("LastModifiedAt")
