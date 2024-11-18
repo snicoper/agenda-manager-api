@@ -50,7 +50,7 @@ public class AppointmentCurrentStateTests
         var state = AppointmentCurrentState.From(AppointmentStatus.RequiresRescheduling);
 
         // Act
-        var result = state.Value!.ChangeState(AppointmentStatus.Pending);
+        var result = state.Value!.ChangeStatus(AppointmentStatus.Pending);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -68,7 +68,7 @@ public class AppointmentCurrentStateTests
         var state = AppointmentCurrentState.From(status);
 
         // Act
-        var result = state.Value!.ChangeState(AppointmentStatus.Pending);
+        var result = state.Value!.ChangeStatus(AppointmentStatus.Pending);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -83,7 +83,7 @@ public class AppointmentCurrentStateTests
         var state = AppointmentCurrentState.From(status);
 
         // Act
-        var result = state.Value!.ChangeState(AppointmentStatus.Accepted);
+        var result = state.Value!.ChangeStatus(AppointmentStatus.Accepted);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -101,7 +101,7 @@ public class AppointmentCurrentStateTests
         var state = AppointmentCurrentState.From(status);
 
         // Act
-        var result = state.Value!.ChangeState(AppointmentStatus.Pending);
+        var result = state.Value!.ChangeStatus(AppointmentStatus.Pending);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -116,7 +116,7 @@ public class AppointmentCurrentStateTests
         var state = AppointmentCurrentState.From(status);
 
         // Act
-        var result = state.Value!.ChangeState(AppointmentStatus.Waiting);
+        var result = state.Value!.ChangeStatus(AppointmentStatus.Waiting);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -134,7 +134,7 @@ public class AppointmentCurrentStateTests
         var state = AppointmentCurrentState.From(status);
 
         // Act
-        var result = state.Value!.ChangeState(AppointmentStatus.Waiting);
+        var result = state.Value!.ChangeStatus(AppointmentStatus.Waiting);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -152,7 +152,7 @@ public class AppointmentCurrentStateTests
         var state = AppointmentCurrentState.From(status);
 
         // Act
-        var result = state.Value!.ChangeState(AppointmentStatus.Cancelled);
+        var result = state.Value!.ChangeStatus(AppointmentStatus.Cancelled);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -167,7 +167,7 @@ public class AppointmentCurrentStateTests
         var state = AppointmentCurrentState.From(status);
 
         // Act
-        var result = state.Value!.ChangeState(AppointmentStatus.Cancelled);
+        var result = state.Value!.ChangeStatus(AppointmentStatus.Cancelled);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -182,7 +182,7 @@ public class AppointmentCurrentStateTests
         var state = AppointmentCurrentState.From(status);
 
         // Act
-        var result = state.Value!.ChangeState(AppointmentStatus.Cancelled);
+        var result = state.Value!.ChangeStatus(AppointmentStatus.Cancelled);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -199,7 +199,7 @@ public class AppointmentCurrentStateTests
         var state = AppointmentCurrentState.From(status);
 
         // Act
-        var result = state.Value!.ChangeState(AppointmentStatus.RequiresRescheduling);
+        var result = state.Value!.ChangeStatus(AppointmentStatus.RequiresRescheduling);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -212,7 +212,7 @@ public class AppointmentCurrentStateTests
         var state = AppointmentCurrentState.From(AppointmentStatus.Waiting);
 
         // Act
-        var result = state.Value!.ChangeState(AppointmentStatus.InProgress);
+        var result = state.Value!.ChangeStatus(AppointmentStatus.InProgress);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -230,7 +230,7 @@ public class AppointmentCurrentStateTests
         var state = AppointmentCurrentState.From(status);
 
         // Act
-        var result = state.Value!.ChangeState(AppointmentStatus.InProgress);
+        var result = state.Value!.ChangeStatus(AppointmentStatus.InProgress);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -243,7 +243,7 @@ public class AppointmentCurrentStateTests
         var state = AppointmentCurrentState.From(AppointmentStatus.InProgress);
 
         // Act
-        var result = state.Value!.ChangeState(AppointmentStatus.Completed);
+        var result = state.Value!.ChangeStatus(AppointmentStatus.Completed);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -261,7 +261,7 @@ public class AppointmentCurrentStateTests
         var state = AppointmentCurrentState.From(status);
 
         // Act
-        var result = state.Value!.ChangeState(AppointmentStatus.Completed);
+        var result = state.Value!.ChangeStatus(AppointmentStatus.Completed);
 
         // Assert
         result.IsFailure.Should().BeTrue();

@@ -25,7 +25,7 @@ public sealed record AppointmentCurrentState
             : new AppointmentCurrentState(value);
     }
 
-    internal Result<AppointmentCurrentState> ChangeState(AppointmentStatus status)
+    internal Result<AppointmentCurrentState> ChangeStatus(AppointmentStatus status)
     {
         var changeStatusResult = status switch
         {

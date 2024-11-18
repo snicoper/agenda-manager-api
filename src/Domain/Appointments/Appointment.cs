@@ -68,7 +68,7 @@ public sealed class Appointment : AggregateRoot
 
     public Result ChangeState(AppointmentStatus status, string? description = null)
     {
-        var changeStatusResult = CurrentState.ChangeState(status);
+        var changeStatusResult = CurrentState.ChangeStatus(status);
         if (changeStatusResult.IsFailure)
         {
             return changeStatusResult;
