@@ -6,17 +6,19 @@ using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects.Period;
 using AgendaManager.Domain.Resources;
 using AgendaManager.Domain.Resources.Interfaces;
+using AgendaManager.Domain.Services.Interfaces;
 using AgendaManager.Domain.Services.ValueObjects;
 using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Appointments.Services;
 
 public class AppointmentManager(
-    ICalendarConfigurationRepository calendarConfigurationRepository,
+    ICalendarConfigurationRepository configurationRepository,
     ICalendarHolidayAvailabilityPolicy calendarHolidayPolicy,
     IAppointmentCreationStrategyPolicy creationStrategyPolicy,
     IAppointmentOverlapPolicy overlapPolicy,
-    IResourceAvailabilityPolicy resourcePolicy)
+    IResourceAvailabilityPolicy resourcePolicy,
+    IServiceRequirementsPolicy servicePolicy)
 {
     public async Task<Result<Appointment>> CreateAppointmentAsync(
         CalendarId calendarId,
@@ -27,7 +29,7 @@ public class AppointmentManager(
         CancellationToken cancellationToken)
     {
         // 1. Obtener configuración.
-        var configurations = await calendarConfigurationRepository
+        var configurations = await configurationRepository
             .GetConfigurationsByCalendarIdAsync(calendarId, cancellationToken);
 
         // 2. Validar calendario y festivos.
@@ -47,7 +49,7 @@ public class AppointmentManager(
         }
 
         // 4. Validar solapamientos si es necesario.
-        var overlapResult = await overlapPolicy.IsOverlapping(calendarId, period, configurations, cancellationToken);
+        var overlapResult = await overlapPolicy.IsOverlappingAsync(calendarId, period, configurations, cancellationToken);
 
         if (overlapResult.IsFailure)
         {
@@ -62,7 +64,15 @@ public class AppointmentManager(
             return resourceResult.MapToValue<Appointment>();
         }
 
-        // 6. Crear cita.
+        // 6. Validar disponibilidad del servicio.
+        var serviceResult = await servicePolicy.IsSatisfiedByAsync(serviceId, resources, cancellationToken);
+
+        if (serviceResult.IsFailure)
+        {
+            return serviceResult.MapToValue<Appointment>();
+        }
+
+        // 7. Crear cita.
         var appointment = Appointment.Create(
             id: AppointmentId.Create(),
             calendarId: calendarId,

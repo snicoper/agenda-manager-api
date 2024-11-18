@@ -7,7 +7,7 @@ namespace AgendaManager.Domain.Appointments.Interfaces;
 
 public interface IAppointmentOverlapPolicy
 {
-    Task<Result> IsOverlapping(
+    Task<Result> IsOverlappingAsync(
         CalendarId calendarId,
         Period period,
         List<CalendarConfiguration> configurations,
