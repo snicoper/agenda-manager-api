@@ -1,5 +1,5 @@
-﻿using AgendaManager.Application.Common.Interfaces.Messaging;
-using AgendaManager.Application.Common.Models.Users;
+﻿using AgendaManager.Application.Authentication.Models;
+using AgendaManager.Application.Common.Interfaces.Messaging;
 
 namespace AgendaManager.Application.Authentication.Commands.RefreshToken;
 

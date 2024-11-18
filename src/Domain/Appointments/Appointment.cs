@@ -75,7 +75,7 @@ public sealed class Appointment : AggregateRoot
         }
 
         CurrentState = changeStatusResult.Value!;
-        UpdateStatusChanges(description);
+        UpdateStatusHistories(description);
 
         return changeStatusResult;
     }
@@ -187,7 +187,7 @@ public sealed class Appointment : AggregateRoot
         return Result.Success();
     }
 
-    private void UpdateStatusChanges(string? description)
+    private void UpdateStatusHistories(string? description)
     {
         DeactivateCurrentStatus();
         AddNewCurrentStatus(description);
@@ -201,7 +201,7 @@ public sealed class Appointment : AggregateRoot
 
     private void AddNewCurrentStatus(string? description = null)
     {
-        var newStatusChange = AppointmentStatusHistory.Create(
+        var newStatusHistory = AppointmentStatusHistory.Create(
             appointmentStatusChangeId: AppointmentStatusChangeId.Create(),
             appointmentId: Id,
             period: Period,
@@ -209,13 +209,13 @@ public sealed class Appointment : AggregateRoot
             isCurrentStatus: true,
             description: description);
 
-        _statusHistories.Add(newStatusChange);
-        EnsureSingleCurrentStatus();
+        _statusHistories.Add(newStatusHistory);
+        EnsureSingleCurrentState();
 
         AddDomainEvent(new AppointmentStatusChangedDomainEvent(Id, CurrentState));
     }
 
-    private void EnsureSingleCurrentStatus()
+    private void EnsureSingleCurrentState()
     {
         var currentStatusCount = _statusHistories.Count(s => s.IsCurrentState);
         if (currentStatusCount != 1)

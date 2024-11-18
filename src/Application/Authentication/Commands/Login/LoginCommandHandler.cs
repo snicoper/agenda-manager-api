@@ -1,7 +1,7 @@
-﻿using AgendaManager.Application.Common.Interfaces.Messaging;
+﻿using AgendaManager.Application.Authentication.Interfaces;
+using AgendaManager.Application.Authentication.Models;
+using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Application.Common.Interfaces.Persistence;
-using AgendaManager.Application.Common.Interfaces.Users;
-using AgendaManager.Application.Common.Models.Users;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 using AgendaManager.Domain.Common.ValueObjects.Token;

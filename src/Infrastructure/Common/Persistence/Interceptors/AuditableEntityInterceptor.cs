@@ -1,5 +1,5 @@
+using AgendaManager.Application.Authentication.Interfaces;
 using AgendaManager.Application.Common.Interfaces.Clock;
-using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Domain.Common.Interfaces;
 using AgendaManager.Infrastructure.Common.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;

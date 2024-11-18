@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Calendars.Services;
+﻿using AgendaManager.Domain.Appointments.Services;
+using AgendaManager.Domain.Calendars.Services;
 using AgendaManager.Domain.Resources.Services;
 using AgendaManager.Domain.ResourceTypes.Services;
 using AgendaManager.Domain.Services.Services;
@@ -17,6 +18,7 @@ public static class DependencyInjection
         services.AddResourceTypesDomain();
         services.AddResourcesDomain();
         services.AddServicesDomain();
+        services.AddAppointmentsDomain();
 
         return services;
     }
@@ -49,5 +51,10 @@ public static class DependencyInjection
     private static void AddServicesDomain(this IServiceCollection services)
     {
         services.AddScoped<ServiceManager>();
+    }
+
+    private static void AddAppointmentsDomain(this IServiceCollection services)
+    {
+        services.AddScoped<AppointmentManager>();
     }
 }

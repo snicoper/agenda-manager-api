@@ -1,7 +1,7 @@
-﻿using AgendaManager.Application.Common.Models.Users;
+﻿using AgendaManager.Application.Authentication.Models;
 using AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.Application.Common.Interfaces.Users;
+namespace AgendaManager.Application.Authentication.Interfaces;
 
 public interface IJwtTokenGenerator
 {

@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using AgendaManager.Application.Common.Models.Users;
+using AgendaManager.Application.Authentication.Models;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.TestCommon.Constants;

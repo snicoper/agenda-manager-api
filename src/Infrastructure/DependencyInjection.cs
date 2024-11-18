@@ -1,7 +1,7 @@
 ﻿using System.Text;
+using AgendaManager.Application.Authentication.Interfaces;
 using AgendaManager.Application.Common.Interfaces.Clock;
 using AgendaManager.Application.Common.Interfaces.Persistence;
-using AgendaManager.Application.Common.Interfaces.Users;
 using AgendaManager.Domain.Appointments.Interfaces;
 using AgendaManager.Domain.AuditRecords.Interfaces;
 using AgendaManager.Domain.Calendars.Interfaces;

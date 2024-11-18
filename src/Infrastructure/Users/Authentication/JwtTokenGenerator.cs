@@ -1,9 +1,9 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using AgendaManager.Application.Authentication.Interfaces;
+using AgendaManager.Application.Authentication.Models;
 using AgendaManager.Application.Common.Exceptions;
-using AgendaManager.Application.Common.Interfaces.Users;
-using AgendaManager.Application.Common.Models.Users;
 using AgendaManager.Domain.Common.Constants;
 using AgendaManager.Domain.Common.ValueObjects.Token;
 using AgendaManager.Domain.Users;

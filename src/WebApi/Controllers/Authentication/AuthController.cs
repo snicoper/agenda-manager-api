@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Application.Authentication.Commands.Login;
 using AgendaManager.Application.Authentication.Commands.RefreshToken;
-using AgendaManager.Application.Common.Models.Users;
+using AgendaManager.Application.Authentication.Models;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Controllers.Authentication.Contracts;
 using AgendaManager.WebApi.Infrastructure;

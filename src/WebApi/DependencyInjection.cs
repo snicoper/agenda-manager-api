@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using AgendaManager.Application.Common.Interfaces.Users;
+using AgendaManager.Application.Authentication.Interfaces;
 using AgendaManager.Application.Common.Localization;
 using AgendaManager.WebApi.Infrastructure;
 using Asp.Versioning;

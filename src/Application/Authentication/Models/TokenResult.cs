@@ -1,3 +1,3 @@
-namespace AgendaManager.Application.Common.Models.Users;
+namespace AgendaManager.Application.Authentication.Models;
 
 public record TokenResult(string AccessToken, string RefreshToken, DateTimeOffset Expires);
