@@ -10,4 +10,6 @@ public static class AppointmentErrors
     public static Error NoResourcesProvided => Error.Validation(
         nameof(Appointment.Resources),
         "No resources provided for this appointment.");
+
+    public static Error MissingCreationStrategy => Error.Conflict("Creation strategy not found");
 }
