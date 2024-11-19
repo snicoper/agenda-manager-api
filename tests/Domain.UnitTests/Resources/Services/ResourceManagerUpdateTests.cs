@@ -43,7 +43,7 @@ public class ResourceManagerUpdateTests
     }
 
     [Fact]
-    public async Task UpdateResource_ShouldFail_WhenResourceNotFound()
+    public async Task UpdateResource_ShouldFailure_WhenResourceNotFound()
     {
         // Arrange
         SetupGetByIdResourceRepository(null);
@@ -57,7 +57,7 @@ public class ResourceManagerUpdateTests
     }
 
     [Fact]
-    public async Task UpdateResource_ShouldFail_WhenNameExists()
+    public async Task UpdateResource_ShouldFailure_WhenNameExists()
     {
         // Arrange
         SetupGetByIdResourceRepository(_resourceUpdated);
@@ -72,7 +72,7 @@ public class ResourceManagerUpdateTests
     }
 
     [Fact]
-    public async Task UpdateResource_ShouldFail_WhenDescriptionExists()
+    public async Task UpdateResource_ShouldFaiure_WhenDescriptionExists()
     {
         // Arrange
         SetupGetByIdResourceRepository(_resourceUpdated);

@@ -20,7 +20,7 @@ public class AppointmentChangeStateTests
     }
 
     [Fact]
-    public void ChangeState_ShouldFail_WithInvalidValues()
+    public void ChangeState_ShouldFailure_WithInvalidValues()
     {
         // Arrange
         var appointment = AppointmentFactory.CreateAppointment(status: AppointmentStatus.Accepted);

@@ -205,12 +205,13 @@ public sealed class Appointment : AggregateRoot
             description: description);
 
         _statusHistories.Add(newStatusHistory);
-        EnsureSingleCurrentState();
 
-        AddDomainEvent(new AppointmentStatusChangedDomainEvent(Id, CurrentState));
+        GuardAgainstMultipleCurrentStatesInStatusHistories();
+
+        AddDomainEvent(new AppointmentStatusHistoryCreatedDomainEvent(Id, CurrentState));
     }
 
-    private void EnsureSingleCurrentState()
+    private void GuardAgainstMultipleCurrentStatesInStatusHistories()
     {
         var currentStatusCount = _statusHistories.Count(s => s.IsCurrentState);
         if (currentStatusCount != 1)

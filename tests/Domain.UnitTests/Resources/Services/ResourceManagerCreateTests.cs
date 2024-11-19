@@ -42,7 +42,7 @@ public class ResourceManagerCreateTests
     }
 
     [Fact]
-    public async Task CreateResource_ShouldFail_WhenNameAlreadyExists()
+    public async Task CreateResource_ShouldFailure_WhenNameAlreadyExists()
     {
         // Arrange
         SetupNameExistsResourceRepository(true);
@@ -55,7 +55,7 @@ public class ResourceManagerCreateTests
     }
 
     [Fact]
-    public async Task CreateResource_ShouldFail_WhenDescriptionAlreadyExists()
+    public async Task CreateResource_ShouldFailure_WhenDescriptionAlreadyExists()
     {
         // Arrange
         SetupNameExistsResourceRepository(false);

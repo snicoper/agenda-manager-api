@@ -23,7 +23,7 @@ public class TimeZoneUtilsTests
     [Theory]
     [InlineData(IanaTimeZoneConstants.InvalidTimeZone)]
     [InlineData(IanaTimeZoneConstants.NotATimeZone)]
-    public void GetTimeZoneInfoFromIana_ShouldFail_WithInvalidIds(string invalidId)
+    public void GetTimeZoneInfoFromIana_ShouldFailure_WithInvalidIds(string invalidId)
     {
         // Act
         var result = TimeZoneUtils.GetTimeZoneInfoFromIana(invalidId);

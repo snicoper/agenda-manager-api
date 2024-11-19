@@ -49,7 +49,7 @@ public class ServiceManagerCreateTests
     }
 
     [Fact]
-    public async Task Create_ShouldFail_WhenCalendarIdDoesNotExist()
+    public async Task Create_ShouldFailure_WhenCalendarIdDoesNotExist()
     {
         // Arrange
         var serviceManager = ServiceFactory.CreateService();
@@ -71,7 +71,7 @@ public class ServiceManagerCreateTests
     }
 
     [Fact]
-    public async Task Create_ShouldFail_WhenNameAlreadyExists()
+    public async Task Create_ShouldFailure_WhenNameAlreadyExists()
     {
         // Arrange
         var serviceManager = ServiceFactory.CreateService();

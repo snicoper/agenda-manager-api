@@ -35,7 +35,7 @@ public class AppointmentCreateTests
         var appointment = AppointmentFactory.CreateAppointment();
 
         // Assert
-        appointment.Value!.DomainEvents.Should().Contain(x => x is AppointmentStatusChangedDomainEvent);
+        appointment.Value!.DomainEvents.Should().Contain(x => x is AppointmentStatusHistoryCreatedDomainEvent);
     }
 
     [Fact]
@@ -54,7 +54,7 @@ public class AppointmentCreateTests
     [InlineData(AppointmentStatus.RequiresRescheduling)]
     [InlineData(AppointmentStatus.InProgress)]
     [InlineData(AppointmentStatus.Completed)]
-    public void Create_ShouldFail_WhenInvalidStatus(AppointmentStatus status)
+    public void Create_ShouldFailure_WhenInvalidStatus(AppointmentStatus status)
     {
         // Act
         var appointment = AppointmentFactory.CreateAppointment(status: status);

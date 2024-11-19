@@ -31,7 +31,7 @@ public class AppointmentUpdateTests
     [InlineData(AppointmentStatus.Cancelled)]
     [InlineData(AppointmentStatus.InProgress)]
     [InlineData(AppointmentStatus.Completed)]
-    public void Update_ShouldFail_WhenStatusIsInvalid(AppointmentStatus status)
+    public void Update_ShouldFailure_WhenStatusIsInvalid(AppointmentStatus status)
     {
         // Arrange
         var appointment = AppointmentFactory.CreateAppointmentForTesting(status: status);
@@ -47,7 +47,7 @@ public class AppointmentUpdateTests
     }
 
     [Fact]
-    public void Update_ShouldFail_WhenResourcesPassedAreEmpty()
+    public void Update_ShouldFailure_WhenResourcesPassedAreEmpty()
     {
         // Arrange
         var appointment = AppointmentFactory.CreateAppointment();

@@ -38,7 +38,7 @@ public class CalendarManagerTests
     }
 
     [Fact]
-    public async Task Calendar_ShouldFail_WhenNameAlreadyExists()
+    public async Task Calendar_ShouldFailure_WhenNameAlreadyExists()
     {
         // Arrange
         SetupNameExistsInCalendarRepositoryAsync(true);

@@ -34,7 +34,7 @@ public class AppointmentCurrentStateTests
     [InlineData(AppointmentStatus.RequiresRescheduling)]
     [InlineData(AppointmentStatus.InProgress)]
     [InlineData(AppointmentStatus.Completed)]
-    public void CurrentState_ShouldFail_WithCreateInvalidValue(AppointmentStatus status)
+    public void CurrentState_ShouldFailure_WithCreateInvalidValue(AppointmentStatus status)
     {
         // Act
         var state = AppointmentCurrentState.Create(status);
@@ -62,7 +62,7 @@ public class AppointmentCurrentStateTests
     [InlineData(AppointmentStatus.Cancelled)]
     [InlineData(AppointmentStatus.InProgress)]
     [InlineData(AppointmentStatus.Completed)]
-    public void CurrentState_ShouldFail_WithToPendingInvalidValue(AppointmentStatus status)
+    public void CurrentState_ShouldFailure_WithToPendingInvalidValue(AppointmentStatus status)
     {
         // Arrange
         var state = AppointmentCurrentState.From(status);
@@ -95,7 +95,7 @@ public class AppointmentCurrentStateTests
     [InlineData(AppointmentStatus.Cancelled)]
     [InlineData(AppointmentStatus.InProgress)]
     [InlineData(AppointmentStatus.Completed)]
-    public void CurrentState_ShouldFail_WithToAcceptedInvalidValue(AppointmentStatus status)
+    public void CurrentState_ShouldFailure_WithToAcceptedInvalidValue(AppointmentStatus status)
     {
         // Arrange
         var state = AppointmentCurrentState.From(status);
@@ -128,7 +128,7 @@ public class AppointmentCurrentStateTests
     [InlineData(AppointmentStatus.InProgress)]
     [InlineData(AppointmentStatus.Completed)]
     [InlineData(AppointmentStatus.RequiresRescheduling)]
-    public void CurrentState_ShouldFail_WithToWaitingInvalidValue(AppointmentStatus status)
+    public void CurrentState_ShouldFailure_WithToWaitingInvalidValue(AppointmentStatus status)
     {
         // Arrange
         var state = AppointmentCurrentState.From(status);
@@ -161,7 +161,7 @@ public class AppointmentCurrentStateTests
     [Theory]
     [InlineData(AppointmentStatus.Cancelled)]
     [InlineData(AppointmentStatus.Completed)]
-    public void CurrentState_ShouldFail_WithToCancelledInvalidValue(AppointmentStatus status)
+    public void CurrentState_ShouldFailure_WithToCancelledInvalidValue(AppointmentStatus status)
     {
         // Arrange
         var state = AppointmentCurrentState.From(status);
@@ -193,7 +193,7 @@ public class AppointmentCurrentStateTests
     [InlineData(AppointmentStatus.Cancelled)]
     [InlineData(AppointmentStatus.InProgress)]
     [InlineData(AppointmentStatus.Completed)]
-    public void CurrentState_ShouldFail_WithToRequiresReschedulingInvalidValue(AppointmentStatus status)
+    public void CurrentState_ShouldFailure_WithToRequiresReschedulingInvalidValue(AppointmentStatus status)
     {
         // Arrange
         var state = AppointmentCurrentState.From(status);
@@ -224,7 +224,7 @@ public class AppointmentCurrentStateTests
     [InlineData(AppointmentStatus.RequiresRescheduling)]
     [InlineData(AppointmentStatus.InProgress)]
     [InlineData(AppointmentStatus.Completed)]
-    public void CurrentState_ShouldFail_WithToInProgressInvalidValue(AppointmentStatus status)
+    public void CurrentState_ShouldFailure_WithToInProgressInvalidValue(AppointmentStatus status)
     {
         // Arrange
         var state = AppointmentCurrentState.From(status);
@@ -255,7 +255,7 @@ public class AppointmentCurrentStateTests
     [InlineData(AppointmentStatus.Waiting)]
     [InlineData(AppointmentStatus.RequiresRescheduling)]
     [InlineData(AppointmentStatus.Completed)]
-    public void CurrentState_ShouldFail_WithToCompletedInvalidValue(AppointmentStatus status)
+    public void CurrentState_ShouldFailure_WithToCompletedInvalidValue(AppointmentStatus status)
     {
         // Arrange
         var state = AppointmentCurrentState.From(status);

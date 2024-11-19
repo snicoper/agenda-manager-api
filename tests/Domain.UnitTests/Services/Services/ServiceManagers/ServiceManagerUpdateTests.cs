@@ -42,7 +42,7 @@ public class ServiceManagerUpdateTests
     }
 
     [Fact]
-    public async Task Update_ShouldFail_WhenServiceIdDoesNotExist()
+    public async Task Update_ShouldFailure_WhenServiceIdDoesNotExist()
     {
         // Arrange
         var service = ServiceFactory.CreateService();
@@ -57,7 +57,7 @@ public class ServiceManagerUpdateTests
     }
 
     [Fact]
-    public async Task Update_ShouldFail_WhenNameAlreadyExists()
+    public async Task Update_ShouldFailure_WhenNameAlreadyExists()
     {
         // Arrange
         var service = ServiceFactory.CreateService();
