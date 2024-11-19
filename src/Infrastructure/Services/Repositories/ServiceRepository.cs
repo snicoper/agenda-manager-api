@@ -15,6 +15,17 @@ public class ServiceRepository(AppDbContext context) : IServiceRepository
         return calendar;
     }
 
+    public async Task<Service?> GetByIdWithResourceTypesAsync(
+        ServiceId serviceId,
+        CancellationToken cancellationToken = default)
+    {
+        var calendar = await context.Services
+            .Include(s => s.ResourceTypes)
+            .FirstOrDefaultAsync(s => s.Id == serviceId, cancellationToken);
+
+        return calendar;
+    }
+
     public async Task<bool> NameExistsAsync(string name, CancellationToken cancellationToken = default)
     {
         var exists = await context.Services.AnyAsync(s => s.Name == name, cancellationToken);

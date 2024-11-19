@@ -55,7 +55,7 @@ public class ServiceManager(
 
         if (service is null)
         {
-            return ServiceErrors.NotFound;
+            return ServiceErrors.ServiceNotFound;
         }
 
         if (await NameExistsAsync(name, cancellationToken))
@@ -74,10 +74,10 @@ public class ServiceManager(
 
         if (service is null)
         {
-            return ServiceErrors.NotFound;
+            return ServiceErrors.ServiceNotFound;
         }
 
-        // No se puede eliminar un servicio que tenga citas asociadas a él.
+        // Service deletion is not allowed when it has dependent appointments.
         var appointments = appointmentRepository.GetAllByServiceId(serviceId, cancellationToken);
 
         if (appointments.Count != 0)

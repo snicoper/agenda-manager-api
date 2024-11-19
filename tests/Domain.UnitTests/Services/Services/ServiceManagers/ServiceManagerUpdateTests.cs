@@ -53,7 +53,7 @@ public class ServiceManagerUpdateTests
 
         // Assert
         result.IsFailure.Should().BeTrue();
-        result.Error?.FirstError().Should().Be(ServiceErrors.NotFound.FirstError());
+        result.Error?.FirstError().Should().Be(ServiceErrors.ServiceNotFound.FirstError());
     }
 
     [Fact]

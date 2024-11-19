@@ -179,12 +179,7 @@ public sealed class Appointment : AggregateRoot
             return AppointmentErrors.OnlyPendingAndAcceptedAllowed;
         }
 
-        if (resources.Count == 0)
-        {
-            return AppointmentErrors.NoResourcesProvided;
-        }
-
-        return Result.Success();
+        return resources.Count == 0 ? AppointmentErrors.NoResourcesProvided : Result.Success();
     }
 
     private void UpdateStatusHistories(string? description)
