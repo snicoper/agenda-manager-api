@@ -16,14 +16,13 @@ public sealed class AppointmentStatusHistory : AuditableEntity
         AppointmentId appointmentId,
         Period period,
         AppointmentCurrentState status,
-        bool isCurrentState,
         string? description)
     {
         Id = appointmentStatusChangeId;
         AppointmentId = appointmentId;
         Period = period;
         CurrentState = status;
-        IsCurrentState = isCurrentState;
+        IsCurrentState = true;
         Description = description;
     }
 
@@ -46,7 +45,6 @@ public sealed class AppointmentStatusHistory : AuditableEntity
         AppointmentId appointmentId,
         Period period,
         AppointmentCurrentState state,
-        bool isCurrentStatus,
         string? description)
     {
         AgainstInvalidDescription(description);
@@ -56,7 +54,6 @@ public sealed class AppointmentStatusHistory : AuditableEntity
             appointmentId,
             period,
             state,
-            isCurrentStatus,
             description);
 
         return appointmentStatusHistory;
@@ -77,7 +74,7 @@ public sealed class AppointmentStatusHistory : AuditableEntity
         if (!string.IsNullOrWhiteSpace(description) && description.Length > 200)
         {
             throw new AppointmentStatusChangeDomainException(
-                "Description is invalid or exceeds length of 500 characters.");
+                "Description is invalid or exceeds length of 200 characters.");
         }
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AgendaManager.Infrastructure.Appointments.Persistence.Configurations;
 
-public class AppointmentStatusChangeConfiguration : IEntityTypeConfiguration<AppointmentStatusHistory>
+public class AppointmentStatusHistoryConfiguration : IEntityTypeConfiguration<AppointmentStatusHistory>
 {
     public void Configure(EntityTypeBuilder<AppointmentStatusHistory> builder)
     {

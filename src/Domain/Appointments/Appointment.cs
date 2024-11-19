@@ -201,7 +201,6 @@ public sealed class Appointment : AggregateRoot
             appointmentId: Id,
             period: Period,
             state: CurrentState,
-            isCurrentStatus: true,
             description: description);
 
         _statusHistories.Add(newStatusHistory);
