@@ -6,5 +6,9 @@ namespace AgendaManager.Domain.Resources.Interfaces;
 
 public interface IResourceAvailabilityPolicy
 {
-    Task<Result> IsAvailableAsync(CalendarId calendarId, Period period, CancellationToken cancellationToken = default);
+    Task<Result> IsAvailableAsync(
+        CalendarId calendarId,
+        List<Resource> resources,
+        Period period,
+        CancellationToken cancellationToken = default);
 }

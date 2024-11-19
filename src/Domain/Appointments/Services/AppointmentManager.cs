@@ -56,7 +56,7 @@ public class AppointmentManager(
         }
 
         // 5. Validate resource availability.
-        var resourceResult = await resourcePolicy.IsAvailableAsync(calendarId, period, cancellationToken);
+        var resourceResult = await resourcePolicy.IsAvailableAsync(calendarId, resources, period, cancellationToken);
 
         if (resourceResult.IsFailure)
         {

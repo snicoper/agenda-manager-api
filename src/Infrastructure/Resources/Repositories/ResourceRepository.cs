@@ -1,4 +1,7 @@
-﻿using AgendaManager.Domain.Resources;
+﻿using AgendaManager.Domain.Calendars.ValueObjects;
+using AgendaManager.Domain.Common.ValueObjects.Period;
+using AgendaManager.Domain.Resources;
+using AgendaManager.Domain.Resources.Enums;
 using AgendaManager.Domain.Resources.Interfaces;
 using AgendaManager.Domain.Resources.ValueObjects;
 using AgendaManager.Infrastructure.Common.Persistence;
@@ -35,5 +38,29 @@ public class ResourceRepository(AppDbContext context) : IResourceRepository
             cancellationToken);
 
         return exists;
+    }
+
+    public async Task<bool> AreResourcesAvailableInPeriodAsync(
+        CalendarId calendarId,
+        List<Resource> resources,
+        Period period,
+        CancellationToken cancellationToken = default)
+    {
+        var resourcesAvailability = await context.Resources
+            .Include(r => r.Schedules)
+            .Where(r => r.CalendarId == calendarId && resources.Select(res => res.Id).Contains(r.Id))
+            .AnyAsync(
+                r => r.CalendarId == calendarId
+                     && r.Schedules.Any(
+                         rs => rs.Period.Start <= period.End
+                               && rs.Period.End >= period.Start
+                               && rs.Type == ResourceScheduleType.Available)
+                     && !r.Schedules.Any(
+                         rs => rs.Period.Start <= period.End
+                               && rs.Period.End >= period.Start
+                               && rs.Type == ResourceScheduleType.Unavailable),
+                cancellationToken);
+
+        return !resourcesAvailability;
     }
 }
