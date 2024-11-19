@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Domain.Appointments.Enums;
 using AgendaManager.Domain.Appointments.Errors;
+using AgendaManager.Domain.Appointments.Events;
 using AgendaManager.Domain.Appointments.Interfaces;
 using AgendaManager.Domain.Appointments.ValueObjects;
 using AgendaManager.Domain.Calendars.Interfaces;
@@ -63,6 +64,7 @@ public sealed class AppointmentManager(
             calendarId,
             resources,
             period,
+            configurations,
             cancellationToken);
 
         if (resourceResult.IsFailure)
@@ -147,6 +149,7 @@ public sealed class AppointmentManager(
             appointment.CalendarId,
             resources,
             period,
+            configurations,
             cancellationToken);
 
         if (resourceResult.IsFailure)
@@ -198,6 +201,9 @@ public sealed class AppointmentManager(
 
         // 3. Delete appointment from repository.
         appointmentRepository.Delete(appointment, cancellationToken);
+
+        // 4. Raise domain event.
+        appointment.AddDomainEvent(new AppointmentDeletedDomainEvent(appointmentId));
 
         return Result.Success();
     }

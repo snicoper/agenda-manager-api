@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Calendars.ValueObjects;
+﻿using AgendaManager.Domain.Calendars.Entities;
+using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects.Period;
 
@@ -10,5 +11,6 @@ public interface IResourceAvailabilityPolicy
         CalendarId calendarId,
         List<Resource> resources,
         Period period,
+        List<CalendarConfiguration> configurations,
         CancellationToken cancellationToken = default);
 }

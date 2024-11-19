@@ -97,6 +97,7 @@ public abstract class AppointmentManagerTestsBase
                 Arg.Any<CalendarId>(),
                 Arg.Any<List<Resource>>(),
                 Arg.Any<Period>(),
+                Arg.Any<List<CalendarConfiguration>>(),
                 Arg.Any<CancellationToken>())
             .Returns(result);
     }
@@ -113,7 +114,7 @@ public abstract class AppointmentManagerTestsBase
             .Returns(result);
     }
 
-    protected void SetupAppointmentRepositoryGetByIdAsync(
+    protected Appointment? SetupAppointmentRepositoryGetByIdAsync(
         Appointment? appointmentResult = null,
         bool createAppointment = true)
     {
@@ -124,5 +125,7 @@ public abstract class AppointmentManagerTestsBase
         _appointmentRepository
             .GetByIdAsync(Arg.Any<AppointmentId>(), Arg.Any<CancellationToken>())
             .Returns(appointmentResult);
+
+        return appointmentResult;
     }
 }

@@ -1,4 +1,6 @@
-﻿using AgendaManager.Domain.Calendars.ValueObjects;
+﻿using AgendaManager.Domain.Calendars.Configurations;
+using AgendaManager.Domain.Calendars.Errors;
+using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.ValueObjects.Period;
 using AgendaManager.Domain.Resources;
 using AgendaManager.Domain.Resources.Interfaces;
@@ -25,6 +27,10 @@ public class ResourceAvailabilityPolicyTests
     {
         // Arrange
         List<Resource> resources = [ResourceFactory.CreateResource()];
+        var calendarConfiguration = CalendarConfigurationFactory.CreateCalendarConfiguration(
+            category: CalendarConfigurationKeys.ResourcesSchedules.ResourcesScheduleValidationStrategy,
+            selectedKey: CalendarConfigurationKeys.ResourcesSchedules.SchedulesValidationOptions.NotRequired);
+
         var calendarId = CalendarId.Create();
         var period = PeriodFactory.Create();
 
@@ -40,6 +46,7 @@ public class ResourceAvailabilityPolicyTests
             calendarId,
             resources,
             period,
+            [calendarConfiguration],
             CancellationToken.None);
 
         // Assert
@@ -47,10 +54,34 @@ public class ResourceAvailabilityPolicyTests
     }
 
     [Fact]
+    public async Task IsAvailableAsync_ShouldReturnFailure_WhenConfigurationIsNotDefined()
+    {
+        // Arrange
+        List<Resource> resources = [ResourceFactory.CreateResource()];
+        var calendarConfiguration = CalendarConfigurationFactory.CreateCalendarConfiguration();
+
+        var calendarId = CalendarId.Create();
+        var period = PeriodFactory.Create();
+
+        // Act
+        var result = await _sut.IsAvailableAsync(
+            calendarId,
+            resources,
+            period,
+            [calendarConfiguration],
+            CancellationToken.None);
+
+        // Assert
+        result.IsFailure.Should().BeTrue();
+        result.Error?.FirstError().Should().Be(CalendarConfigurationErrors.KeyNotFound.FirstError());
+    }
+
+    [Fact]
     public async Task IsAvailableAsync_ShouldReturnFailure_WhenAllResourcesAreNotAvailable()
     {
         // Arrange
         List<Resource> resources = [ResourceFactory.CreateResource()];
+        var calendarConfiguration = CalendarConfigurationFactory.CreateCalendarConfiguration();
         var calendarId = CalendarId.Create();
         var period = PeriodFactory.Create();
 
@@ -66,6 +97,7 @@ public class ResourceAvailabilityPolicyTests
             calendarId,
             resources,
             period,
+            [calendarConfiguration],
             CancellationToken.None);
 
         // Assert

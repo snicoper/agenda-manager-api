@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Domain.Appointments.Enums;
 using AgendaManager.Domain.Appointments.Errors;
+using AgendaManager.Domain.Appointments.Events;
 using AgendaManager.Domain.Appointments.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.TestCommon.Factories;
@@ -20,6 +21,21 @@ public class AppointmentManagerDeleteTests : AppointmentManagerTestsBase
 
         // Assert
         result.IsSuccess.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task Delete_ShouldRaiseEvent_WhenAppointmentIsDeleted()
+    {
+        // Arrange
+        SetupAppointmentRepositoryGetByIdAsync();
+        var appointment = SetupAppointmentRepositoryGetByIdAsync();
+
+        // Act
+        var result = await DeleteAppointmentManagerFactory();
+
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+        appointment?.DomainEvents.Should().Contain(x => x is AppointmentDeletedDomainEvent);
     }
 
     [Fact]

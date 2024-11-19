@@ -4,7 +4,10 @@ public static class CalendarConfigurationKeys
 {
     public static class Appointments
     {
+        // Determines the creation strategy for appointments.
         public const string CreationStrategy = "AppointmentCreationStrategy";
+
+        // Determines the overlapping strategy for appointments.
         public const string OverlappingStrategy = "AppointmentOverlappingStrategy";
 
         public static class CreationOptions
@@ -20,8 +23,21 @@ public static class CalendarConfigurationKeys
         }
     }
 
+    public static class ResourcesSchedules
+    {
+        // Determines the resources schedule validation strategy for appointments.
+        public const string ResourcesScheduleValidationStrategy = "ResourcesSchedulesValidationStrategy";
+
+        public static class SchedulesValidationOptions
+        {
+            public const string Required = "Validate";
+            public const string NotRequired = "DoNotValidate";
+        }
+    }
+
     public static class Holidays
     {
+        // Determines the creation strategy for holidays.
         public const string CreateStrategy = "HolidayCreateStrategy";
 
         public static class CreationOptions
@@ -32,6 +48,7 @@ public static class CalendarConfigurationKeys
         }
     }
 
+    // Determines the time zone of the calendar.
     public static class TimeZone
     {
         public const string Category = "IanaTimeZone";
@@ -64,6 +81,17 @@ public static class CalendarConfigurationKeys
                         Appointments.OverlappingOptions.AllowOverlapping
                     ],
                     description: "Defines how overlapping appointments are handled"),
+
+                // Appointment Resources Schedule Validation Strategy.
+                [ResourcesSchedules.ResourcesScheduleValidationStrategy] = new(
+                    category: ResourcesSchedules.ResourcesScheduleValidationStrategy,
+                    defaultKey: ResourcesSchedules.SchedulesValidationOptions.Required,
+                    availableKeys:
+                    [
+                        ResourcesSchedules.SchedulesValidationOptions.Required,
+                        ResourcesSchedules.SchedulesValidationOptions.NotRequired
+                    ],
+                    description: "Defines how resources schedule validation is handled"),
 
                 // Holiday Creation Strategy.
                 [Holidays.CreateStrategy] = new(
