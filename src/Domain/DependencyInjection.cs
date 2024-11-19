@@ -8,6 +8,8 @@ using AgendaManager.Domain.Resources.Interfaces;
 using AgendaManager.Domain.Resources.Policies;
 using AgendaManager.Domain.Resources.Services;
 using AgendaManager.Domain.ResourceTypes.Services;
+using AgendaManager.Domain.Services.Interfaces;
+using AgendaManager.Domain.Services.Policies;
 using AgendaManager.Domain.Services.Services;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.Services;
@@ -62,12 +64,16 @@ public static class DependencyInjection
     private static void AddServicesDomain(this IServiceCollection services)
     {
         services.AddScoped<ServiceManager>();
+
+        services.AddTransient<IServiceRequirementsPolicy, ServiceRequirementsPolicy>();
     }
 
     private static void AddAppointmentsDomain(this IServiceCollection services)
     {
         services.AddScoped<AppointmentManager>();
 
+        services.AddTransient<IAppointmentOverlapPolicy, AppointmentOverlapPolicy>();
+        services.AddTransient<IAppointmentCreationStrategyPolicy, AppointmentCreationStrategyPolicy>();
         services.AddTransient<IAppointmentOverlapPolicy, AppointmentOverlapPolicy>();
     }
 }
