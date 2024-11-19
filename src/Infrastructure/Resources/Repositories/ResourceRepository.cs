@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.ValueObjects.Period;
+using AgendaManager.Domain.Common.WekDays;
 using AgendaManager.Domain.Resources;
 using AgendaManager.Domain.Resources.Enums;
 using AgendaManager.Domain.Resources.Interfaces;
@@ -48,17 +49,29 @@ public class ResourceRepository(AppDbContext context) : IResourceRepository
     {
         var resourcesAvailability = await context.Resources
             .Include(r => r.Schedules)
-            .Where(r => r.CalendarId == calendarId && resources.Select(res => res.Id).Contains(r.Id))
+            .Where(
+                r => r.CalendarId == calendarId &&
+                     resources.Select(res => res.Id).Contains(r.Id))
             .AnyAsync(
-                r => r.CalendarId == calendarId
-                     && r.Schedules.Any(
-                         rs => rs.Period.Start <= period.End
-                               && rs.Period.End >= period.Start
-                               && rs.Type == ResourceScheduleType.Available)
-                     && !r.Schedules.Any(
-                         rs => rs.Period.Start <= period.End
-                               && rs.Period.End >= period.Start
-                               && rs.Type == ResourceScheduleType.Unavailable),
+                r => r.CalendarId == calendarId &&
+
+                     // Has regular schedule that applies?
+                     r.Schedules.Any(
+                         rs =>
+                             rs.IsActive &&
+                             rs.Type == ResourceScheduleType.Available &&
+                             rs.Period.Start <= period.End &&
+                             rs.Period.End >= period.Start &&
+                             (rs.AvailableDays & (WeekDays)(1 << (int)period.Start.DayOfWeek)) != 0) &&
+
+                     // No exceptions that invalidate it?
+                     !r.Schedules.Any(
+                         rs =>
+                             rs.IsActive &&
+                             rs.Type == ResourceScheduleType.Unavailable &&
+                             rs.Period.Start <= period.End &&
+                             rs.Period.End >= period.Start &&
+                             (rs.AvailableDays & (WeekDays)(1 << (int)period.Start.DayOfWeek)) != 0),
                 cancellationToken);
 
         return !resourcesAvailability;

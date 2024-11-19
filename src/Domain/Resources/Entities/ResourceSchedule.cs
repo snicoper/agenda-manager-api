@@ -9,7 +9,7 @@ using AgendaManager.Domain.Resources.ValueObjects;
 
 namespace AgendaManager.Domain.Resources.Entities;
 
-public sealed class ResourceSchedule : AggregateRoot
+public sealed class ResourceSchedule : AuditableEntity
 {
     private ResourceSchedule()
     {
