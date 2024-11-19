@@ -59,7 +59,7 @@ public sealed class AppointmentManager(
             return overlapResult.MapToValue<Appointment>();
         }
 
-        // 5. Validate resource availability.
+        // 5. Validate resource availability if required.
         var resourceResult = await resourceAvailabilityPolicy.IsAvailableAsync(
             calendarId,
             resources,
@@ -144,7 +144,7 @@ public sealed class AppointmentManager(
             return overlapResult.MapToValue<Appointment>();
         }
 
-        // 6. Validate resource availability.
+        // 6. Validate resource availability if required.
         var resourceResult = await resourceAvailabilityPolicy.IsAvailableAsync(
             appointment.CalendarId,
             resources,
