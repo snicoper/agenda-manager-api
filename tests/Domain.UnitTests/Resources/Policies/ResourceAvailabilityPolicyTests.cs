@@ -23,7 +23,7 @@ public class ResourceAvailabilityPolicyTests
     }
 
     [Fact]
-    public async Task IsAvailableAsync_ShouldReturnSuccess_WhenAllResourcesAreAvailable()
+    public async Task IsAvailableAsync_ShouldSuccess_WhenAllResourcesAreAvailable()
     {
         // Arrange
         List<Resource> resources = [ResourceFactory.CreateResource()];
@@ -54,7 +54,7 @@ public class ResourceAvailabilityPolicyTests
     }
 
     [Fact]
-    public async Task IsAvailableAsync_ShouldReturnFailure_WhenConfigurationIsNotDefined()
+    public async Task IsAvailableAsync_ShouldFailure_WhenConfigurationIsNotDefined()
     {
         // Arrange
         List<Resource> resources = [ResourceFactory.CreateResource()];
@@ -77,7 +77,7 @@ public class ResourceAvailabilityPolicyTests
     }
 
     [Fact]
-    public async Task IsAvailableAsync_ShouldReturnFailure_WhenAllResourcesAreNotAvailable()
+    public async Task IsAvailableAsync_ShouldFailure_WhenAllResourcesAreNotAvailable()
     {
         // Arrange
         List<Resource> resources = [ResourceFactory.CreateResource()];

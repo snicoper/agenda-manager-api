@@ -27,6 +27,7 @@ public class ResourceAvailabilityPolicy(IResourceRepository resourceRepository)
             return CalendarConfigurationErrors.KeyNotFound;
         }
 
+        // If not required validate availability, return success.
         if (configuration.SelectedKey is CalendarConfigurationKeys.ResourcesSchedules.SchedulesValidationOptions
                 .NotRequired)
         {
