@@ -1,7 +1,11 @@
-﻿using AgendaManager.Domain.Appointments.Enums;
+﻿using AgendaManager.Domain.Appointments;
+using AgendaManager.Domain.Appointments.Enums;
 using AgendaManager.Domain.Appointments.Errors;
+using AgendaManager.Domain.Appointments.ValueObjects;
 using AgendaManager.Domain.Calendars.Errors;
 using AgendaManager.Domain.Common.Responses;
+using AgendaManager.Domain.Common.ValueObjects.Period;
+using AgendaManager.Domain.Resources;
 using AgendaManager.Domain.Resources.Errors;
 using AgendaManager.Domain.Services.Errors;
 using AgendaManager.TestCommon.Factories;
@@ -137,5 +141,25 @@ public class AppointmentManagerUpdateTests : AppointmentManagerTestsBase
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error?.FirstError().Should().Be(ServiceErrors.ResourceRequirementsMismatch.FirstError());
+    }
+
+    private Task<Result<Appointment>> UpdateAppointmentManagerFactory(
+        AppointmentId? appointmentId = null,
+        Period? period = null,
+        List<Resource>? resources = null)
+    {
+        resources ??=
+        [
+            ResourceFactory.CreateResource(),
+            ResourceFactory.CreateResource()
+        ];
+
+        var appointmentUpdated = Sut.UpdateAppointmentAsync(
+            appointmentId: appointmentId ?? AppointmentId.Create(),
+            period: period ?? PeriodFactory.Create(),
+            resources: resources ?? [],
+            cancellationToken: CancellationToken.None);
+
+        return appointmentUpdated;
     }
 }

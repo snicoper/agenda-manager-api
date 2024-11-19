@@ -12,7 +12,6 @@ using AgendaManager.Domain.Resources;
 using AgendaManager.Domain.Resources.Interfaces;
 using AgendaManager.Domain.Services.Interfaces;
 using AgendaManager.Domain.Services.ValueObjects;
-using AgendaManager.Domain.Users.ValueObjects;
 using AgendaManager.TestCommon.Factories;
 using NSubstitute;
 
@@ -28,8 +27,6 @@ public abstract class AppointmentManagerTestsBase
     private readonly IResourceAvailabilityPolicy _resourceAvailabilityPolicy;
     private readonly IServiceRequirementsPolicy _serviceRequirementsPolicy;
 
-    private readonly AppointmentManager _sut;
-
     protected AppointmentManagerTestsBase()
     {
         _configurationRepository = Substitute.For<ICalendarConfigurationRepository>();
@@ -40,7 +37,7 @@ public abstract class AppointmentManagerTestsBase
         _resourceAvailabilityPolicy = Substitute.For<IResourceAvailabilityPolicy>();
         _serviceRequirementsPolicy = Substitute.For<IServiceRequirementsPolicy>();
 
-        _sut = new AppointmentManager(
+        Sut = new AppointmentManager(
             _configurationRepository,
             _appointmentRepository,
             _holidayAvailabilityPolicy,
@@ -50,58 +47,7 @@ public abstract class AppointmentManagerTestsBase
             _serviceRequirementsPolicy);
     }
 
-    protected async Task<Result<Appointment>> CreateAppointmentManagerFactory(
-        CalendarId? calendarId = null,
-        ServiceId? serviceId = null,
-        UserId? userId = null,
-        Period? period = null,
-        List<Resource>? resources = null)
-    {
-        resources ??=
-        [
-            ResourceFactory.CreateResource(),
-            ResourceFactory.CreateResource()
-        ];
-
-        var appointmentCreated = await _sut.CreateAppointmentAsync(
-            calendarId: calendarId ?? CalendarId.Create(),
-            serviceId: serviceId ?? ServiceId.Create(),
-            userId: userId ?? UserId.Create(),
-            period: period ?? PeriodFactory.Create(),
-            resources: resources,
-            cancellationToken: CancellationToken.None);
-
-        return appointmentCreated;
-    }
-
-    protected Task<Result<Appointment>> UpdateAppointmentManagerFactory(
-        AppointmentId? appointmentId = null,
-        Period? period = null,
-        List<Resource>? resources = null)
-    {
-        resources ??=
-        [
-            ResourceFactory.CreateResource(),
-            ResourceFactory.CreateResource()
-        ];
-
-        var appointmentUpdated = _sut.UpdateAppointmentAsync(
-            appointmentId: appointmentId ?? AppointmentId.Create(),
-            period: period ?? PeriodFactory.Create(),
-            resources: resources ?? [],
-            cancellationToken: CancellationToken.None);
-
-        return appointmentUpdated;
-    }
-
-    protected Task<Result> DeleteAppointmentManagerFactory(AppointmentId? appointmentId = null)
-    {
-        var appointmentDeleted = _sut.DeleteAppointmentAsync(
-            appointmentId: appointmentId ?? AppointmentId.Create(),
-            cancellationToken: CancellationToken.None);
-
-        return appointmentDeleted;
-    }
+    protected AppointmentManager Sut { get; }
 
     protected void SetupConfigurationRepositoryGetConfigurationsByCalendarIdAsync(
         List<CalendarConfiguration>? configurationsResult = null)

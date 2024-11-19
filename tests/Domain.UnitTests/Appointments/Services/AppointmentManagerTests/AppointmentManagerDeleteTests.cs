@@ -1,5 +1,7 @@
 ﻿using AgendaManager.Domain.Appointments.Enums;
 using AgendaManager.Domain.Appointments.Errors;
+using AgendaManager.Domain.Appointments.ValueObjects;
+using AgendaManager.Domain.Common.Responses;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
@@ -51,5 +53,14 @@ public class AppointmentManagerDeleteTests : AppointmentManagerTestsBase
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error?.FirstError().Should().Be(AppointmentErrors.AppointmentStatusInvalidForDelete.FirstError());
+    }
+
+    private Task<Result> DeleteAppointmentManagerFactory(AppointmentId? appointmentId = null)
+    {
+        var appointmentDeleted = Sut.DeleteAppointmentAsync(
+            appointmentId: appointmentId ?? AppointmentId.Create(),
+            cancellationToken: CancellationToken.None);
+
+        return appointmentDeleted;
     }
 }

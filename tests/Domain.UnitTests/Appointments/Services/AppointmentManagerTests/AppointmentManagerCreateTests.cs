@@ -1,7 +1,14 @@
-﻿using AgendaManager.Domain.Calendars.Errors;
+﻿using AgendaManager.Domain.Appointments;
+using AgendaManager.Domain.Calendars.Errors;
+using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
+using AgendaManager.Domain.Common.ValueObjects.Period;
+using AgendaManager.Domain.Resources;
 using AgendaManager.Domain.Resources.Errors;
 using AgendaManager.Domain.Services.Errors;
+using AgendaManager.Domain.Services.ValueObjects;
+using AgendaManager.Domain.Users.ValueObjects;
+using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
 namespace AgendaManager.Domain.UnitTests.Appointments.Services.AppointmentManagerTests;
@@ -97,5 +104,29 @@ public class AppointmentManagerCreateTests : AppointmentManagerTestsBase
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error?.FirstError().Should().Be(ServiceErrors.ServiceNotFound.FirstError());
+    }
+
+    private async Task<Result<Appointment>> CreateAppointmentManagerFactory(
+        CalendarId? calendarId = null,
+        ServiceId? serviceId = null,
+        UserId? userId = null,
+        Period? period = null,
+        List<Resource>? resources = null)
+    {
+        resources ??=
+        [
+            ResourceFactory.CreateResource(),
+            ResourceFactory.CreateResource()
+        ];
+
+        var appointmentCreated = await Sut.CreateAppointmentAsync(
+            calendarId: calendarId ?? CalendarId.Create(),
+            serviceId: serviceId ?? ServiceId.Create(),
+            userId: userId ?? UserId.Create(),
+            period: period ?? PeriodFactory.Create(),
+            resources: resources,
+            cancellationToken: CancellationToken.None);
+
+        return appointmentCreated;
     }
 }
