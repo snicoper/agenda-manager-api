@@ -11,5 +11,10 @@ public interface IAppointmentRepository
         Period period,
         CancellationToken cancellationToken = default);
 
+    Task<bool> IsOverlappingAppointmentsAsync(
+        CalendarId calendarId,
+        Period period,
+        CancellationToken cancellationToken = default);
+
     List<Appointment> GetAllByServiceId(ServiceId serviceId, CancellationToken cancellationToken = default);
 }

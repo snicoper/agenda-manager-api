@@ -3,7 +3,6 @@ using AgendaManager.Domain.Appointments.Errors;
 using AgendaManager.Domain.Appointments.Policies;
 using AgendaManager.Domain.Calendars.Configurations;
 using AgendaManager.Domain.Calendars.Entities;
-using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
@@ -17,8 +16,6 @@ public class AppointmentCreationStrategyPolicyTests
     {
         // Arrange
         var configuration = CalendarConfigurationFactory.CreateCalendarConfiguration(
-            id: CalendarConfigurationId.Create(),
-            calendarId: CalendarId.Create(),
             category: CalendarConfigurationKeys.Appointments.CreationStrategy,
             selectedKey: CalendarConfigurationKeys.Appointments.CreationOptions.RequireConfirmation);
 
@@ -38,8 +35,6 @@ public class AppointmentCreationStrategyPolicyTests
     {
         // Arrange
         var configuration = CalendarConfigurationFactory.CreateCalendarConfiguration(
-            id: CalendarConfigurationId.Create(),
-            calendarId: CalendarId.Create(),
             category: CalendarConfigurationKeys.Appointments.CreationStrategy,
             selectedKey: CalendarConfigurationKeys.Appointments.CreationOptions.Direct);
 

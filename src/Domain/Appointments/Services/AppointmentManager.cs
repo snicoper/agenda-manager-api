@@ -43,11 +43,6 @@ public class AppointmentManager(
         // 3. Determine initial state based on creation strategy.
         var statusResult = creationStrategyPolicy.DetermineInitialStatus(configurations);
 
-        if (statusResult.IsFailure)
-        {
-            return statusResult.MapToValue<Appointment>();
-        }
-
         // 4. Validate appointment overlapping if required.
         var overlapResult = await overlapPolicy.IsOverlappingAsync(
             calendarId,
