@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Appointments.Interfaces;
+﻿using AgendaManager.Domain.Appointments.Errors;
+using AgendaManager.Domain.Appointments.Interfaces;
 using AgendaManager.Domain.Calendars.Configurations;
 using AgendaManager.Domain.Calendars.Entities;
 using AgendaManager.Domain.Calendars.Errors;
@@ -38,6 +39,8 @@ public class AppointmentOverlapPolicy(IAppointmentRepository appointmentReposito
             period,
             cancellationToken);
 
-        return Result.Success(overlappingAppointments);
+        return overlappingAppointments
+            ? AppointmentErrors.AppointmentsOverlapping
+            : Result.Success();
     }
 }
