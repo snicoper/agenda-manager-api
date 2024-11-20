@@ -10,10 +10,7 @@ public class AuthorizationService(
     IRoleRepository roleRepository,
     IPermissionRepository permissionRepository)
 {
-    public async Task<Result> AddRoleToUserAsync(
-        UserId userId,
-        RoleId roleId,
-        CancellationToken cancellationToken)
+    public async Task<Result> AddRoleToUserAsync(UserId userId, RoleId roleId, CancellationToken cancellationToken)
     {
         var user = await userRepository.GetByIdWithRolesAsync(userId, cancellationToken);
 
@@ -34,10 +31,7 @@ public class AuthorizationService(
         return result;
     }
 
-    public async Task<Result> RemoveRoleFromUserAsync(
-        UserId userId,
-        RoleId roleId,
-        CancellationToken cancellationToken = default)
+    public async Task<Result> RemoveRoleFromUserAsync(UserId userId, RoleId roleId, CancellationToken cancellationToken)
     {
         var user = await userRepository.GetByIdWithRolesAsync(userId, cancellationToken);
 
@@ -61,7 +55,7 @@ public class AuthorizationService(
     public async Task<Result> AddPermissionToRole(
         RoleId roleId,
         PermissionId permissionId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var role = await roleRepository.GetByIdAsync(roleId, cancellationToken);
 
@@ -85,7 +79,7 @@ public class AuthorizationService(
     public async Task<Result> RemovePermissionFromRole(
         RoleId roleId,
         PermissionId permissionId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var role = await roleRepository.GetByIdAsync(roleId, cancellationToken);
 

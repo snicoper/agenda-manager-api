@@ -107,7 +107,7 @@ public class AuthorizationServiceTests
 
         // Act
         _user.AddRole(_role);
-        var result = await _sut.RemoveRoleFromUserAsync(_user.Id, _role.Id);
+        var result = await _sut.RemoveRoleFromUserAsync(_user.Id, _role.Id, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -122,7 +122,7 @@ public class AuthorizationServiceTests
         _userRepository.GetByIdWithRolesAsync(_user.Id).ReturnsNull();
 
         // Act
-        var result = await _sut.RemoveRoleFromUserAsync(_user.Id, _role.Id);
+        var result = await _sut.RemoveRoleFromUserAsync(_user.Id, _role.Id, CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -139,7 +139,7 @@ public class AuthorizationServiceTests
         _roleRepository.GetByIdAsync(_role.Id).ReturnsNull();
 
         // Act
-        var result = await _sut.RemoveRoleFromUserAsync(_user.Id, _role.Id);
+        var result = await _sut.RemoveRoleFromUserAsync(_user.Id, _role.Id, CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -155,7 +155,7 @@ public class AuthorizationServiceTests
         _roleRepository.GetByIdAsync(_role.Id).Returns(_role);
 
         // Act
-        var result = await _sut.RemoveRoleFromUserAsync(_user.Id, _role.Id);
+        var result = await _sut.RemoveRoleFromUserAsync(_user.Id, _role.Id, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -169,7 +169,7 @@ public class AuthorizationServiceTests
         _permissionRepository.GetByIdAsync(_permission.Id).Returns(_permission);
 
         // Act
-        var result = await _sut.AddPermissionToRole(_role.Id, _permission.Id);
+        var result = await _sut.AddPermissionToRole(_role.Id, _permission.Id, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -185,7 +185,7 @@ public class AuthorizationServiceTests
         _permissionRepository.GetByIdAsync(_permission.Id).Returns(_permission);
 
         // Act
-        var result = await _sut.AddPermissionToRole(_role.Id, _permission.Id);
+        var result = await _sut.AddPermissionToRole(_role.Id, _permission.Id, CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -202,7 +202,7 @@ public class AuthorizationServiceTests
         _permissionRepository.GetByIdAsync(_permission.Id).ReturnsNull();
 
         // Act
-        var result = await _sut.AddPermissionToRole(_role.Id, _permission.Id);
+        var result = await _sut.AddPermissionToRole(_role.Id, _permission.Id, CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -219,7 +219,7 @@ public class AuthorizationServiceTests
 
         // Act
         _role.AddPermission(_permission);
-        var result = await _sut.AddPermissionToRole(_role.Id, _permission.Id);
+        var result = await _sut.AddPermissionToRole(_role.Id, _permission.Id, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -234,7 +234,7 @@ public class AuthorizationServiceTests
 
         // Act
         _role.AddPermission(_permission);
-        var result = await _sut.RemovePermissionFromRole(_role.Id, _permission.Id);
+        var result = await _sut.RemovePermissionFromRole(_role.Id, _permission.Id, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -250,7 +250,7 @@ public class AuthorizationServiceTests
         _permissionRepository.GetByIdAsync(_permission.Id).Returns(_permission);
 
         // Act
-        var result = await _sut.RemovePermissionFromRole(_role.Id, _permission.Id);
+        var result = await _sut.RemovePermissionFromRole(_role.Id, _permission.Id, CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -267,7 +267,7 @@ public class AuthorizationServiceTests
         _permissionRepository.GetByIdAsync(_permission.Id).ReturnsNull();
 
         // Act
-        var result = await _sut.RemovePermissionFromRole(_role.Id, _permission.Id);
+        var result = await _sut.RemovePermissionFromRole(_role.Id, _permission.Id, CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -283,7 +283,7 @@ public class AuthorizationServiceTests
         _permissionRepository.GetByIdAsync(_permission.Id).Returns(_permission);
 
         // Act
-        var result = await _sut.RemovePermissionFromRole(_role.Id, _permission.Id);
+        var result = await _sut.RemovePermissionFromRole(_role.Id, _permission.Id, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
