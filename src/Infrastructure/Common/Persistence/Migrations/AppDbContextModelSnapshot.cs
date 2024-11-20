@@ -107,6 +107,8 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
                     b.HasIndex("AppointmentId");
 
+                    b.HasIndex("Id", "AppointmentId");
+
                     b.ToTable("AppointmentStatusHistories", (string)null);
                 });
 
@@ -562,7 +564,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
-                    b.Property<bool>("Editable")
+                    b.Property<bool>("IsEditable")
                         .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset>("LastModifiedAt")
@@ -1009,13 +1011,13 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                             b1.Property<Guid>("ResourceId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<string>("BackgroundColor")
+                            b1.Property<string>("Background")
                                 .IsRequired()
                                 .HasMaxLength(7)
                                 .HasColumnType("character varying(7)")
                                 .HasColumnName("BackgroundColor");
 
-                            b1.Property<string>("TextColor")
+                            b1.Property<string>("Text")
                                 .IsRequired()
                                 .HasMaxLength(7)
                                 .HasColumnType("character varying(7)")
@@ -1052,12 +1054,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                             b1.Property<Guid>("ServiceId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<string>("BackgroundColor")
+                            b1.Property<string>("Background")
                                 .IsRequired()
                                 .HasColumnType("text")
                                 .HasColumnName("BackgroundColor");
 
-                            b1.Property<string>("TextColor")
+                            b1.Property<string>("Text")
                                 .IsRequired()
                                 .HasColumnType("text")
                                 .HasColumnName("TextColor");

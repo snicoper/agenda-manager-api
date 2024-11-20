@@ -77,7 +77,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    Editable = table.Column<bool>(type: "boolean", nullable: false),
+                    IsEditable = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: false),
@@ -530,6 +530,11 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 name: "IX_AppointmentStatusHistories_AppointmentId",
                 table: "AppointmentStatusHistories",
                 column: "AppointmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppointmentStatusHistories_Id_AppointmentId",
+                table: "AppointmentStatusHistories",
+                columns: new[] { "Id", "AppointmentId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AuditRecords_AggregateId",
