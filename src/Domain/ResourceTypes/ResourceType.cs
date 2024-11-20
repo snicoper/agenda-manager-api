@@ -1,11 +1,11 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
+﻿using AgendaManager.Domain.Authorization;
+using AgendaManager.Domain.Authorization.ValueObjects;
+using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Resources;
 using AgendaManager.Domain.ResourceTypes.Events;
 using AgendaManager.Domain.ResourceTypes.Exceptions;
 using AgendaManager.Domain.ResourceTypes.ValueObjects;
 using AgendaManager.Domain.Services;
-using AgendaManager.Domain.Users.Entities;
-using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.ResourceTypes;
 

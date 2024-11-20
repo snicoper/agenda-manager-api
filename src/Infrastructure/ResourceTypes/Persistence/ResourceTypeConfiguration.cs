@@ -1,6 +1,6 @@
-﻿using AgendaManager.Domain.ResourceTypes;
+﻿using AgendaManager.Domain.Authorization.ValueObjects;
+using AgendaManager.Domain.ResourceTypes;
 using AgendaManager.Domain.ResourceTypes.ValueObjects;
-using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

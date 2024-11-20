@@ -1,4 +1,7 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
+﻿using AgendaManager.Domain.Authorization;
+using AgendaManager.Domain.Authorization.Entities;
+using AgendaManager.Domain.Authorization.ValueObjects;
+using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 using AgendaManager.Domain.Common.ValueObjects.Token;

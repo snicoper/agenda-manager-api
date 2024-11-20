@@ -1,5 +1,5 @@
-﻿using AgendaManager.Domain.Users;
-using AgendaManager.Domain.Users.Entities;
+﻿using AgendaManager.Domain.Authorization;
+using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Events;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;

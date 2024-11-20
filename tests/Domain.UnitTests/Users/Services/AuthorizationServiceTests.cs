@@ -1,9 +1,12 @@
-﻿using AgendaManager.Domain.Common.Responses;
+﻿using AgendaManager.Domain.Authorization;
+using AgendaManager.Domain.Authorization.Entities;
+using AgendaManager.Domain.Authorization.Errors;
+using AgendaManager.Domain.Authorization.Interfaces;
+using AgendaManager.Domain.Authorization.Services;
+using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users;
-using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
-using AgendaManager.Domain.Users.Services;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 using NSubstitute;

@@ -3,6 +3,8 @@ using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Domain.Appointments;
 using AgendaManager.Domain.Appointments.Entities;
 using AgendaManager.Domain.AuditRecords;
+using AgendaManager.Domain.Authorization;
+using AgendaManager.Domain.Authorization.Entities;
 using AgendaManager.Domain.Calendars;
 using AgendaManager.Domain.Calendars.Entities;
 using AgendaManager.Domain.Common.Interfaces;
@@ -11,7 +13,6 @@ using AgendaManager.Domain.Resources.Entities;
 using AgendaManager.Domain.ResourceTypes;
 using AgendaManager.Domain.Services;
 using AgendaManager.Domain.Users;
-using AgendaManager.Domain.Users.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace AgendaManager.Infrastructure.Common.Persistence;

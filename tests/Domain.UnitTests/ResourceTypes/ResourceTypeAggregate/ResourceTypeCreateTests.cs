@@ -1,7 +1,7 @@
-﻿using AgendaManager.Domain.ResourceTypes;
+﻿using AgendaManager.Domain.Authorization.ValueObjects;
+using AgendaManager.Domain.ResourceTypes;
 using AgendaManager.Domain.ResourceTypes.Events;
 using AgendaManager.Domain.ResourceTypes.Exceptions;
-using AgendaManager.Domain.Users.ValueObjects;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 

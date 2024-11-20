@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.Users.Entities;
+﻿using AgendaManager.Domain.Authorization;
 using AgendaManager.Infrastructure.Common.Persistence.Seeds.Modules;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

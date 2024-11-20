@@ -1,10 +1,10 @@
-﻿using AgendaManager.Domain.Common.Responses;
+﻿using AgendaManager.Domain.Authorization.Errors;
+using AgendaManager.Domain.Authorization.Interfaces;
+using AgendaManager.Domain.Authorization.ValueObjects;
+using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.ResourceTypes.Errors;
 using AgendaManager.Domain.ResourceTypes.Interfaces;
 using AgendaManager.Domain.ResourceTypes.ValueObjects;
-using AgendaManager.Domain.Users.Errors;
-using AgendaManager.Domain.Users.Interfaces;
-using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.ResourceTypes.Services;
 

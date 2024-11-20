@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.Users.ValueObjects;
+﻿using AgendaManager.Domain.Authorization.ValueObjects;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 

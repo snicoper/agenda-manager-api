@@ -1,6 +1,7 @@
 ﻿using AgendaManager.Domain.Appointments.Interfaces;
 using AgendaManager.Domain.Appointments.Policies;
 using AgendaManager.Domain.Appointments.Services;
+using AgendaManager.Domain.Authorization.Services;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.Policies;
 using AgendaManager.Domain.Calendars.Services;

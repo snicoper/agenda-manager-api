@@ -25,4 +25,9 @@
     <Using Include="Xunit"/>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Authorization\Entities\" />
+    <Folder Include="Authorization\Services\" />
+  </ItemGroup>
+
 </Project>

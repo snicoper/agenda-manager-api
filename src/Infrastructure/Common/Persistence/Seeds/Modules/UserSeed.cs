@@ -1,6 +1,7 @@
-﻿using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
+﻿using AgendaManager.Domain.Authorization;
+using AgendaManager.Domain.Authorization.Services;
+using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 using AgendaManager.Domain.Users.Constants;
-using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.Services;
 using AgendaManager.Domain.Users.ValueObjects;

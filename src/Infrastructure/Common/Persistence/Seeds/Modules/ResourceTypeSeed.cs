@@ -1,7 +1,7 @@
-﻿using AgendaManager.Domain.ResourceTypes.Services;
+﻿using AgendaManager.Domain.Authorization;
+using AgendaManager.Domain.ResourceTypes.Services;
 using AgendaManager.Domain.ResourceTypes.ValueObjects;
 using AgendaManager.Domain.Users.Constants;
-using AgendaManager.Domain.Users.Entities;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AgendaManager.Infrastructure.Common.Persistence.Seeds.Modules;
