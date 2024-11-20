@@ -22,7 +22,7 @@ public sealed class Permission : AuditableEntity
     {
     }
 
-    public PermissionId Id { get; private set; } = null!;
+    public PermissionId Id { get; } = null!;
 
     public string Name { get; private set; } = default!;
 
