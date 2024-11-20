@@ -52,7 +52,7 @@ public class AuthorizationService(
         return result;
     }
 
-    public async Task<Result> AddPermissionToRole(
+    public async Task<Result> AddPermissionToRoleAsync(
         RoleId roleId,
         PermissionId permissionId,
         CancellationToken cancellationToken)
@@ -76,7 +76,7 @@ public class AuthorizationService(
         return result;
     }
 
-    public async Task<Result> RemovePermissionFromRole(
+    public async Task<Result> RemovePermissionFromRoleAsync(
         RoleId roleId,
         PermissionId permissionId,
         CancellationToken cancellationToken)

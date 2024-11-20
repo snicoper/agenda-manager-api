@@ -266,21 +266,21 @@ public static class PermissionSeed
         var adminRole = roles.First(r => r.Name == SystemRoles.Administrator);
         foreach (var permission in permissions)
         {
-            await authorizationManager.AddPermissionToRole(adminRole.Id, permission.Id, CancellationToken.None);
+            await authorizationManager.AddPermissionToRoleAsync(adminRole.Id, permission.Id, CancellationToken.None);
         }
 
         // Asignar todos permisos a role Employee.
         var managerRole = roles.First(r => r.Name == SystemRoles.Employee);
         foreach (var permission in permissions)
         {
-            await authorizationManager.AddPermissionToRole(managerRole.Id, permission.Id, CancellationToken.None);
+            await authorizationManager.AddPermissionToRoleAsync(managerRole.Id, permission.Id, CancellationToken.None);
         }
 
         // Asignar solo permisos de lectura a role Customer.
         var clientRole = roles.First(r => r.Name == SystemRoles.Customer);
         foreach (var permission in permissions.Where(p => p.Name.Contains("read")))
         {
-            await authorizationManager.AddPermissionToRole(clientRole.Id, permission.Id, CancellationToken.None);
+            await authorizationManager.AddPermissionToRoleAsync(clientRole.Id, permission.Id, CancellationToken.None);
         }
 
         await context.SaveChangesAsync();
