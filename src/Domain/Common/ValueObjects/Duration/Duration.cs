@@ -16,6 +16,16 @@ public sealed record Duration
         return new Duration(duration);
     }
 
+    public static Duration From(int hours, int minutes)
+    {
+        return new Duration(TimeSpan.FromHours(hours) + TimeSpan.FromMinutes(minutes));
+    }
+
+    public static Duration From(int days, int hours, int minutes)
+    {
+        return new Duration(TimeSpan.FromDays(days) + TimeSpan.FromHours(hours) + TimeSpan.FromMinutes(minutes));
+    }
+
     private static void GuardAgainstInvalidDuration(TimeSpan duration)
     {
         ArgumentNullException.ThrowIfNull(duration);
