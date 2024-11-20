@@ -7,6 +7,7 @@ using AgendaManager.Domain.Common.ValueObjects.Period;
 using AgendaManager.Domain.Resources;
 using AgendaManager.Domain.Services.ValueObjects;
 using AgendaManager.Domain.Users.ValueObjects;
+using AgendaManager.TestCommon.Factories.ValueObjects;
 
 namespace AgendaManager.TestCommon.Factories;
 

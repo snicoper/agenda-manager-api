@@ -13,6 +13,8 @@ public class AppointmentStatusHistoryConfiguration : IEntityTypeConfiguration<Ap
 
         builder.HasKey(asc => asc.Id);
 
+        builder.HasIndex(ash => new { ash.Id, ash.AppointmentId });
+
         builder
             .Property(asc => asc.Id)
             .HasConversion(

@@ -3,6 +3,7 @@ using AgendaManager.Domain.Appointments.Errors;
 using AgendaManager.Domain.Appointments.Events;
 using AgendaManager.Domain.Resources;
 using AgendaManager.TestCommon.Factories;
+using AgendaManager.TestCommon.Factories.ValueObjects;
 using FluentAssertions;
 
 namespace AgendaManager.Domain.UnitTests.Appointments.AppointmentAggregate;

@@ -6,6 +6,7 @@ using AgendaManager.Domain.Resources;
 using AgendaManager.Domain.Resources.Interfaces;
 using AgendaManager.Domain.Resources.Policies;
 using AgendaManager.TestCommon.Factories;
+using AgendaManager.TestCommon.Factories.ValueObjects;
 using FluentAssertions;
 using NSubstitute;
 

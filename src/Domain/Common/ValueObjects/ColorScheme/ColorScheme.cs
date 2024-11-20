@@ -2,18 +2,18 @@
 
 public sealed record ColorScheme
 {
-    private ColorScheme(string textColor, string backgroundColor)
+    private ColorScheme(string text, string background)
     {
-        ArgumentNullException.ThrowIfNull(textColor);
-        ArgumentNullException.ThrowIfNull(backgroundColor);
+        ArgumentNullException.ThrowIfNull(text);
+        ArgumentNullException.ThrowIfNull(background);
 
-        TextColor = textColor;
-        BackgroundColor = backgroundColor;
+        Text = text;
+        Background = background;
     }
 
-    public string TextColor { get; }
+    public string Text { get; }
 
-    public string BackgroundColor { get; }
+    public string Background { get; }
 
     public static ColorScheme From(string text, string background)
     {

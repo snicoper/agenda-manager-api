@@ -52,10 +52,10 @@ public class ServiceConfiguration : IEntityTypeConfiguration<Service>
             s => s.ColorScheme,
             serviceBuilder =>
             {
-                serviceBuilder.Property(p => p.TextColor)
+                serviceBuilder.Property(p => p.Text)
                     .HasColumnName("TextColor");
 
-                serviceBuilder.Property(p => p.BackgroundColor)
+                serviceBuilder.Property(p => p.Background)
                     .HasColumnName("BackgroundColor");
             });
 

@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Common.ValueObjects.Period;
 
-namespace AgendaManager.TestCommon.Factories;
+namespace AgendaManager.TestCommon.Factories.ValueObjects;
 
 public static class PeriodFactory
 {

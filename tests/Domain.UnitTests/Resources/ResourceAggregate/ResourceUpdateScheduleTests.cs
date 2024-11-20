@@ -3,6 +3,7 @@ using AgendaManager.Domain.Resources.Errors;
 using AgendaManager.Domain.Resources.Events;
 using AgendaManager.Domain.Resources.ValueObjects;
 using AgendaManager.TestCommon.Factories;
+using AgendaManager.TestCommon.Factories.ValueObjects;
 using FluentAssertions;
 
 namespace AgendaManager.Domain.UnitTests.Resources.ResourceAggregate;

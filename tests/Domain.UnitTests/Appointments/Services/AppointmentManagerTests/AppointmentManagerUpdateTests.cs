@@ -9,6 +9,7 @@ using AgendaManager.Domain.Resources;
 using AgendaManager.Domain.Resources.Errors;
 using AgendaManager.Domain.Services.Errors;
 using AgendaManager.TestCommon.Factories;
+using AgendaManager.TestCommon.Factories.ValueObjects;
 using FluentAssertions;
 
 namespace AgendaManager.Domain.UnitTests.Appointments.Services.AppointmentManagerTests;

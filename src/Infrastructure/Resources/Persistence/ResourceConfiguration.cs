@@ -66,12 +66,12 @@ public class ResourceConfiguration : IEntityTypeConfiguration<Resource>
             r => r.ColorScheme,
             colorSchemeBuilder =>
             {
-                colorSchemeBuilder.Property(cs => cs.TextColor)
+                colorSchemeBuilder.Property(cs => cs.Text)
                     .HasColumnName("TextColor")
                     .HasMaxLength(7)
                     .IsRequired();
 
-                colorSchemeBuilder.Property(cs => cs.BackgroundColor)
+                colorSchemeBuilder.Property(cs => cs.Background)
                     .HasColumnName("BackgroundColor")
                     .HasMaxLength(7)
                     .IsRequired();
