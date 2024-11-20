@@ -12,6 +12,6 @@ public class RoleEditableTests
         var role = RoleFactory.CreateRole();
 
         // Assert
-        role.Editable.Should().BeFalse();
+        role.IsEditable.Should().BeFalse();
     }
 }

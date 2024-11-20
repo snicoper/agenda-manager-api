@@ -51,6 +51,6 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
             .HasMaxLength(500)
             .IsRequired();
 
-        builder.Property(r => r.Editable);
+        builder.Property(r => r.IsEditable);
     }
 }

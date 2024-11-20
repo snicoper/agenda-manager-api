@@ -10,7 +10,7 @@ public sealed class Role : AuditableEntity
 {
     private readonly List<Permission> _permissions = [];
 
-    internal Role(RoleId roleId, string name, string description, bool editable = false)
+    internal Role(RoleId roleId, string name, string description, bool isEditable = false)
     {
         GuardAgainstInvalidName(name);
         GuardAgainstInvalidDescription(description);
@@ -18,7 +18,7 @@ public sealed class Role : AuditableEntity
         Id = roleId;
         Name = name;
         Description = description;
-        Editable = editable;
+        IsEditable = isEditable;
 
         AddDomainEvent(new RoleCreatedDomainEvent(Id));
     }
@@ -33,7 +33,7 @@ public sealed class Role : AuditableEntity
 
     public string Description { get; private set; } = default!;
 
-    public bool Editable { get; private set; }
+    public bool IsEditable { get; private set; }
 
     public IReadOnlyCollection<Permission> Permissions => _permissions.AsReadOnly();
 
@@ -69,6 +69,11 @@ public sealed class Role : AuditableEntity
         AddDomainEvent(new RolePermissionRemovedDomainEvent(Id, permission.Id));
 
         return Result.Success();
+    }
+
+    internal bool HasPermission(PermissionId permissionId)
+    {
+        return _permissions.Any(p => p.Id == permissionId);
     }
 
     private static void GuardAgainstInvalidName(string name)

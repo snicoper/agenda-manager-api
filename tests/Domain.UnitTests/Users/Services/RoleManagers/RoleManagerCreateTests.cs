@@ -33,7 +33,7 @@ public class RoleManagerCreateTests
             role.Id,
             role.Name,
             role.Description,
-            role.Editable,
+            role.IsEditable,
             Arg.Any<CancellationToken>());
 
         // Assert
@@ -42,7 +42,7 @@ public class RoleManagerCreateTests
         roleResult.ResultType.Should().Be(ResultType.Created);
         roleResult.Value!.Id.Should().Be(role.Id);
         roleResult.Value.Name.Should().Be(role.Name);
-        roleResult.Value.Editable.Should().Be(role.Editable);
+        roleResult.Value.IsEditable.Should().Be(role.IsEditable);
         roleResult.Value.DomainEvents.Should().Contain(x => x is RoleCreatedDomainEvent);
     }
 
@@ -54,7 +54,7 @@ public class RoleManagerCreateTests
 
         // Act
         _roleRepository.NameExistsAsync(Arg.Any<Role>(), CancellationToken.None).Returns(true);
-        var roleResult = await _sut.CreateRoleAsync(role.Id, role.Name, role.Description, role.Editable);
+        var roleResult = await _sut.CreateRoleAsync(role.Id, role.Name, role.Description, role.IsEditable);
 
         // Assert
         roleResult.Should().BeOfType<Result<Role>>();

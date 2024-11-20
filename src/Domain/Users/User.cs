@@ -158,6 +158,23 @@ public sealed class User : AggregateRoot
         AddDomainEvent(new UserTokenRemovedDomainEvent(Id, userToken.Id));
     }
 
+    public bool HasRole(RoleId roleId)
+    {
+        return _roles.Any(x => x.Id == roleId);
+    }
+
+    public bool HasPermission(PermissionId permissionId)
+    {
+        return _roles.Any(role => role.HasPermission(permissionId));
+    }
+
+    public IReadOnlyList<Permission> GetAllPermissions()
+    {
+        return _roles.SelectMany(x => x.Permissions)
+            .ToList()
+            .AsReadOnly();
+    }
+
     internal static User Create(
         UserId userId,
         EmailAddress email,
