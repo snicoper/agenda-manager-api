@@ -13,17 +13,17 @@ public class UpdateEmailTests
 {
     private readonly User _user = UserFactory.CreateUser();
 
-    private readonly IEmailUniquenessChecker _emailUniquenessChecker = Substitute.For<IEmailUniquenessChecker>();
+    private readonly IEmailUniquenessPolicy _emailUniquenessPolicy = Substitute.For<IEmailUniquenessPolicy>();
 
     [Fact]
     public async Task UpdateEmail_ShouldRaiseUserEmailUpdatedEvent_WhenEmailIsUpdated()
     {
         // Arrange
         var email = UserConstants.UserLexi.Email;
-        _emailUniquenessChecker.IsUnique(Arg.Any<EmailAddress>(), Arg.Any<CancellationToken>()).Returns(true);
+        _emailUniquenessPolicy.IsUnique(Arg.Any<EmailAddress>(), Arg.Any<CancellationToken>()).Returns(true);
 
         // Act
-        await _user.UpdateEmail(email, _emailUniquenessChecker, CancellationToken.None);
+        await _user.UpdateEmail(email, _emailUniquenessPolicy, CancellationToken.None);
 
         // Assert
         _user.DomainEvents.Should().Contain(x => x is UserEmailUpdatedDomainEvent);
@@ -34,10 +34,10 @@ public class UpdateEmailTests
     public async Task UpdateEmail_ShouldNotRaiseUserEmailUpdatedEvent_WhenEmailIsNotUpdated()
     {
         // Arrange
-        _emailUniquenessChecker.IsUnique(Arg.Any<EmailAddress>(), Arg.Any<CancellationToken>()).Returns(true);
+        _emailUniquenessPolicy.IsUnique(Arg.Any<EmailAddress>(), Arg.Any<CancellationToken>()).Returns(true);
 
         // Act
-        await _user.UpdateEmail(_user.Email, _emailUniquenessChecker, CancellationToken.None);
+        await _user.UpdateEmail(_user.Email, _emailUniquenessPolicy, CancellationToken.None);
 
         // Assert
         _user.DomainEvents.Should().NotContain(x => x is UserEmailUpdatedDomainEvent);

@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 using AgendaManager.Domain.Users.Interfaces;
+using AgendaManager.Domain.Users.Policies;
 using AgendaManager.Domain.Users.Services;
 using AgendaManager.TestCommon.Constants;
 using FluentAssertions;
@@ -7,14 +8,14 @@ using NSubstitute;
 
 namespace AgendaManager.Domain.UnitTests.Users.Services;
 
-public class EmailUniquenessCheckerTests
+public class EmailUniquenessPolicyTests
 {
     private readonly IUserRepository _userRepository = Substitute.For<IUserRepository>();
-    private readonly EmailUniquenessChecker _sut;
+    private readonly EmailUniquenessPolicy _sut;
 
-    public EmailUniquenessCheckerTests()
+    public EmailUniquenessPolicyTests()
     {
-        _sut = new EmailUniquenessChecker(_userRepository);
+        _sut = new EmailUniquenessPolicy(_userRepository);
     }
 
     [Fact]

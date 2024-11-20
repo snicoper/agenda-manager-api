@@ -79,7 +79,7 @@ public sealed class User : AggregateRoot
 
     public async Task<Result> UpdateEmail(
         EmailAddress newEmail,
-        IEmailUniquenessChecker emailUniquenessChecker,
+        IEmailUniquenessPolicy emailUniquenessPolicy,
         CancellationToken cancellationToken)
     {
         if (Email == newEmail)
@@ -87,7 +87,7 @@ public sealed class User : AggregateRoot
             return Result.Success();
         }
 
-        if (!await emailUniquenessChecker.IsUnique(newEmail, cancellationToken))
+        if (!await emailUniquenessPolicy.IsUnique(newEmail, cancellationToken))
         {
             return UserErrors.EmailAlreadyExists;
         }
