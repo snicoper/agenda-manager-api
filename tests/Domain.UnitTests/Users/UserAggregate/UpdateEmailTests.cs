@@ -9,22 +9,11 @@ using NSubstitute;
 
 namespace AgendaManager.Domain.UnitTests.Users.UserAggregate;
 
-public class UserEmailTests
+public class UpdateEmailTests
 {
     private readonly User _user = UserFactory.CreateUser();
 
     private readonly IEmailUniquenessChecker _emailUniquenessChecker = Substitute.For<IEmailUniquenessChecker>();
-
-    [Fact]
-    public void SetEmailConfirmed_ShouldRaiseUserEmailConfirmedEvent_WhenEmailIsConfirmed()
-    {
-        // Act
-        _user.SetEmailConfirmed();
-
-        // Assert
-        _user.DomainEvents.Should().Contain(x => x is UserEmailConfirmedDomainEvent);
-        _user.IsEmailConfirmed.Should().BeTrue();
-    }
 
     [Fact]
     public async Task UpdateEmail_ShouldRaiseUserEmailUpdatedEvent_WhenEmailIsUpdated()

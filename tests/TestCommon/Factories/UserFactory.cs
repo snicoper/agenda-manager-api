@@ -19,7 +19,7 @@ public abstract class UserFactory
         bool isActive = true,
         bool emailConfirmed = false)
     {
-        var user = User.Create(
+        User user = new(
             userId: id ?? UserConstants.UserAlice.Id,
             email: email ?? UserConstants.UserAlice.Email,
             passwordHash: passwordHash ?? PasswordHash.FromHashed(BcryptPasswordHasher.HashPassword("Password4!")),

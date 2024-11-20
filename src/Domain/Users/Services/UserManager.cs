@@ -18,7 +18,7 @@ public class UserManager(IUserRepository userRepository)
         bool emailConfirmed = false,
         CancellationToken cancellationToken = default)
     {
-        var user = User.Create(userId, email, passwordHash, firstName, lastName, active, emailConfirmed);
+        User user = new(userId, email, passwordHash, firstName, lastName, active, emailConfirmed);
 
         var validationResult = await IsValidAsync(user, cancellationToken);
         if (validationResult.IsFailure)

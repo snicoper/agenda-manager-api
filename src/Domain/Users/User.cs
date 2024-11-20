@@ -16,11 +16,7 @@ public sealed class User : AggregateRoot
     private readonly List<Role> _roles = [];
     private readonly List<UserToken> _userTokens = [];
 
-    private User()
-    {
-    }
-
-    private User(
+    internal User(
         UserId userId,
         EmailAddress email,
         PasswordHash passwordHash,
@@ -39,6 +35,12 @@ public sealed class User : AggregateRoot
         LastName = lastName;
         IsActive = isActive;
         IsEmailConfirmed = emailConfirmed;
+
+        AddDomainEvent(new UserCreatedDomainEvent(userId));
+    }
+
+    private User()
+    {
     }
 
     public UserId Id { get; } = null!;
@@ -80,7 +82,7 @@ public sealed class User : AggregateRoot
         IEmailUniquenessChecker emailUniquenessChecker,
         CancellationToken cancellationToken)
     {
-        if (Email.Equals(newEmail))
+        if (Email == newEmail)
         {
             return Result.Success();
         }
@@ -99,7 +101,7 @@ public sealed class User : AggregateRoot
 
     public void UpdateRefreshToken(Token token)
     {
-        if (RefreshToken is not null && RefreshToken.Equals(token))
+        if (RefreshToken is not null && RefreshToken == token)
         {
             return;
         }
@@ -109,7 +111,7 @@ public sealed class User : AggregateRoot
         AddDomainEvent(new UserRefreshTokenUpdatedDomainEvent(Id));
     }
 
-    public void SetEmailConfirmed()
+    public void ConfirmEmail()
     {
         if (IsEmailConfirmed)
         {
@@ -173,29 +175,6 @@ public sealed class User : AggregateRoot
         return _roles.SelectMany(x => x.Permissions)
             .ToList()
             .AsReadOnly();
-    }
-
-    internal static User Create(
-        UserId userId,
-        EmailAddress email,
-        PasswordHash passwordHash,
-        string? firstName,
-        string? lastName,
-        bool isActive = true,
-        bool emailConfirmed = false)
-    {
-        User user = new(
-            userId,
-            email,
-            passwordHash,
-            firstName,
-            lastName,
-            isActive,
-            emailConfirmed);
-
-        user.AddDomainEvent(new UserCreatedDomainEvent(userId));
-
-        return user;
     }
 
     internal void Update(string? firstName, string? lastName)
