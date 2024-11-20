@@ -18,7 +18,7 @@ public class UserRoleTests
         _user.AddRole(_role);
 
         // Assert
-        _user.DomainEvents.Should().Contain(x => x is UserRoleAddedDomainEvent);
+        _role.DomainEvents.Should().Contain(x => x is UserRoleAddedDomainEvent);
         _user.Roles.Should().Contain(_role);
         _user.Roles.Should().HaveCount(1);
         _user.Roles.Should().ContainSingle(x => x.Id == _role.Id);
@@ -34,7 +34,7 @@ public class UserRoleTests
         _user.RemoveRole(_role);
 
         // Assert
-        _user.DomainEvents.Should().Contain(x => x is UserRoleRemovedDomainEvent);
+        _role.DomainEvents.Should().Contain(x => x is UserRoleRemovedDomainEvent);
         _user.Roles.Should().NotContain(_role);
         _user.Roles.Should().HaveCount(0);
     }

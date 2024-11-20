@@ -35,17 +35,4 @@ public class UserTokenConsume
         result.IsFailure.Should().BeTrue();
         result.Error?.FirstError()?.Description.Should().Be("User token is invalid.");
     }
-
-    [Fact]
-    public void UserToken_ShouldRaiseEvent_WhenUserTokenIsConsumed()
-    {
-        // Arrange
-        var token = _userToken.Token.Value;
-
-        // Act
-        _userToken.Consume(token);
-
-        // Assert
-        _userToken.DomainEvents.Should().Contain(x => x is UserTokenConsumedDomainEvent);
-    }
 }

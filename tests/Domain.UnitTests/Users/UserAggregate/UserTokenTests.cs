@@ -41,7 +41,7 @@ public class UserTokenTests
         _user.AddUserToken(_userToken);
 
         // Assert
-        _user.DomainEvents.Should().Contain(x => x is UserTokenAddedDomainEvent);
+        _userToken.DomainEvents.Should().Contain(x => x is UserTokenAddedDomainEvent);
     }
 
     [Fact]
@@ -54,6 +54,6 @@ public class UserTokenTests
         _user.RemoveUserToken(_userToken);
 
         // Assert
-        _user.DomainEvents.Should().Contain(x => x is UserTokenRemovedDomainEvent);
+        _userToken.DomainEvents.Should().Contain(x => x is UserTokenRemovedDomainEvent);
     }
 }

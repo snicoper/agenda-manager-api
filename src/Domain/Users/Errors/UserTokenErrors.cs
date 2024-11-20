@@ -7,4 +7,6 @@ public static class UserTokenErrors
     public static Error InvalidToken => Error.Conflict("User token is invalid.");
 
     public static Error TokenHasExpired => Error.Conflict("Token has expired.");
+
+    public static Error UserTokenNotFound => Error.NotFound("User token not found.");
 }

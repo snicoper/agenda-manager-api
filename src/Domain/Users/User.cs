@@ -3,6 +3,7 @@ using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 using AgendaManager.Domain.Common.ValueObjects.Token;
 using AgendaManager.Domain.Users.Entities;
+using AgendaManager.Domain.Users.Enums;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.Exceptions;
@@ -146,18 +147,62 @@ public sealed class User : AggregateRoot
         AddDomainEvent(new UserDeactivatedDomainEvent(Id));
     }
 
+    public bool HasUserToken(UserTokenId userTokenId)
+    {
+        return _userTokens.Any(x => x.Id == userTokenId);
+    }
+
+    public Result<UserToken> CreateUserToken(UserTokenType type, TimeSpan validityPeriod)
+    {
+        var userToken = UserToken.Create(
+            id: UserTokenId.Create(),
+            userId: Id,
+            token: Token.Generate(validityPeriod),
+            type: type);
+
+        AddUserToken(userToken);
+
+        userToken.AddDomainEvent(new UserTokenCreatedDomainEvent(userToken.Id));
+
+        return Result.Success(userToken);
+    }
+
+    public Result ConsumeUserToken(UserTokenId userTokenId, string tokenValue)
+    {
+        var userToken = _userTokens.FirstOrDefault(x => x.Id == userTokenId);
+
+        if (userToken is null)
+        {
+            return UserTokenErrors.UserTokenNotFound;
+        }
+
+        userToken.AddDomainEvent(new UserTokenConsumedDomainEvent(userToken.Id));
+
+        return userToken.Consume(tokenValue);
+    }
+
     public void AddUserToken(UserToken userToken)
     {
+        if (HasUserToken(userToken.Id))
+        {
+            return;
+        }
+
         _userTokens.Add(userToken);
 
-        AddDomainEvent(new UserTokenAddedDomainEvent(Id, userToken.Id));
+        userToken.AddDomainEvent(new UserTokenAddedDomainEvent(Id, userToken.Id));
     }
 
     public void RemoveUserToken(UserToken userToken)
     {
+        if (!HasUserToken(userToken.Id))
+        {
+            return;
+        }
+
         _userTokens.Remove(userToken);
 
-        AddDomainEvent(new UserTokenRemovedDomainEvent(Id, userToken.Id));
+        userToken.AddDomainEvent(new UserTokenRemovedDomainEvent(Id, userToken.Id));
     }
 
     public bool HasRole(RoleId roleId)
@@ -198,7 +243,7 @@ public sealed class User : AggregateRoot
         }
 
         _roles.Add(role);
-        AddDomainEvent(new UserRoleAddedDomainEvent(Id, role.Id));
+        role.AddDomainEvent(new UserRoleAddedDomainEvent(Id, role.Id));
 
         return Result.Success();
     }
@@ -212,7 +257,7 @@ public sealed class User : AggregateRoot
 
         _roles.Remove(role);
 
-        AddDomainEvent(new UserRoleRemovedDomainEvent(Id, role.Id));
+        role.AddDomainEvent(new UserRoleRemovedDomainEvent(Id, role.Id));
 
         return Result.Success();
     }
