@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Authorization;
+using AgendaManager.Domain.Authorization.Events;
 using AgendaManager.Domain.Authorization.Exceptions;
 using AgendaManager.Domain.Users.Events;
 using AgendaManager.TestCommon.Factories;

@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Authorization.Exceptions;
+﻿using AgendaManager.Domain.Authorization.Events;
+using AgendaManager.Domain.Authorization.Exceptions;
 using AgendaManager.Domain.Authorization.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Users.Events;

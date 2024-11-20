@@ -1,6 +1,4 @@
 ﻿using AgendaManager.Domain.Authorization;
-using AgendaManager.Domain.Authorization.Entities;
-using AgendaManager.Domain.Authorization.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
@@ -208,23 +206,6 @@ public sealed class User : AggregateRoot
         userToken.AddDomainEvent(new UserTokenRemovedDomainEvent(Id, userToken.Id));
     }
 
-    public bool HasRole(RoleId roleId)
-    {
-        return _roles.Any(x => x.Id == roleId);
-    }
-
-    public bool HasPermission(PermissionId permissionId)
-    {
-        return _roles.Any(role => role.HasPermission(permissionId));
-    }
-
-    public IReadOnlyList<Permission> GetAllPermissions()
-    {
-        return _roles.SelectMany(x => x.Permissions)
-            .ToList()
-            .AsReadOnly();
-    }
-
     internal void Update(string? firstName, string? lastName)
     {
         if (FirstName == firstName && LastName == lastName)
@@ -240,11 +221,6 @@ public sealed class User : AggregateRoot
 
     internal Result AddRole(Role role)
     {
-        if (HasRole(role.Id))
-        {
-            return Result.Success();
-        }
-
         _roles.Add(role);
         role.AddDomainEvent(new UserRoleAddedDomainEvent(Id, role.Id));
 
@@ -253,11 +229,6 @@ public sealed class User : AggregateRoot
 
     internal Result RemoveRole(Role role)
     {
-        if (!HasRole(role.Id))
-        {
-            return Result.Success();
-        }
-
         _roles.Remove(role);
 
         role.AddDomainEvent(new UserRoleRemovedDomainEvent(Id, role.Id));
