@@ -55,6 +55,11 @@ public sealed class Role : AuditableEntity
 
     internal Result AddPermission(Permission permission)
     {
+        if (HasPermission(permission.Id))
+        {
+            return Result.Success();
+        }
+
         _permissions.Add(permission);
 
         AddDomainEvent(new RolePermissionAddedDomainEvent(Id, permission.Id));
@@ -64,6 +69,11 @@ public sealed class Role : AuditableEntity
 
     internal Result RemovePermission(Permission permission)
     {
+        if (!HasPermission(permission.Id))
+        {
+            return Result.Success();
+        }
+
         _permissions.Remove(permission);
 
         AddDomainEvent(new RolePermissionRemovedDomainEvent(Id, permission.Id));

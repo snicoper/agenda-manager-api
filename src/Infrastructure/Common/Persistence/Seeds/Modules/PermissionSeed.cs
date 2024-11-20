@@ -21,7 +21,7 @@ public static class PermissionSeed
         }
 
         var permissionManager = serviceProvider.GetRequiredService<PermissionManager>();
-        var authorizationManager = serviceProvider.GetRequiredService<AuthorizationManager>();
+        var authorizationManager = serviceProvider.GetRequiredService<AuthorizationService>();
 
         // Appointment permissions.
         var appointmentReadPermission = await permissionManager.CreatePermissionAsync(

@@ -25,7 +25,7 @@ public static class UserSeed
 
         var userManager = serviceProvider.GetRequiredService<UserManager>();
         var passwordHasher = serviceProvider.GetRequiredService<IPasswordHasher>();
-        var authorizationManager = serviceProvider.GetRequiredService<AuthorizationManager>();
+        var authorizationManager = serviceProvider.GetRequiredService<AuthorizationService>();
 
         var passwordHash = passwordHasher.HashPassword("Password4!");
 
@@ -53,9 +53,17 @@ public static class UserSeed
             var employeeRole = roles.First(r => r.Name == SystemRoles.Employee);
             var customerRole = roles.First(r => r.Name == SystemRoles.Customer);
 
-            await authorizationManager.AddRoleToUserAsync(adminResult.Value.Id, adminRole.Id);
-            await authorizationManager.AddRoleToUserAsync(adminResult.Value.Id, employeeRole.Id);
-            await authorizationManager.AddRoleToUserAsync(adminResult.Value.Id, customerRole.Id);
+            await authorizationManager.AddRoleToUserAsync(adminResult.Value.Id, adminRole.Id, CancellationToken.None);
+
+            await authorizationManager.AddRoleToUserAsync(
+                adminResult.Value.Id,
+                employeeRole.Id,
+                CancellationToken.None);
+
+            await authorizationManager.AddRoleToUserAsync(
+                adminResult.Value.Id,
+                customerRole.Id,
+                CancellationToken.None);
         }
 
         // Manager user.
@@ -81,8 +89,14 @@ public static class UserSeed
             var managerRole = roles.First(r => r.Name == SystemRoles.Administrator);
             var customerRole = roles.First(r => r.Name == SystemRoles.Customer);
 
-            await authorizationManager.AddRoleToUserAsync(managerResult.Value.Id, managerRole.Id);
-            await authorizationManager.AddRoleToUserAsync(managerResult.Value.Id, customerRole.Id);
+            await authorizationManager.AddRoleToUserAsync(
+                managerResult.Value.Id,
+                managerRole.Id,
+                CancellationToken.None);
+            await authorizationManager.AddRoleToUserAsync(
+                managerResult.Value.Id,
+                customerRole.Id,
+                CancellationToken.None);
         }
 
         // Client user.
@@ -106,7 +120,10 @@ public static class UserSeed
             await context.SaveChangesAsync();
 
             var customerRole = roles.First(r => r.Name == SystemRoles.Customer);
-            await authorizationManager.AddRoleToUserAsync(clientResult.Value.Id, customerRole.Id);
+            await authorizationManager.AddRoleToUserAsync(
+                clientResult.Value.Id,
+                customerRole.Id,
+                CancellationToken.None);
         }
 
         // Client user.
@@ -128,7 +145,10 @@ public static class UserSeed
         if (!await context.Users.AnyAsync(u => u.Email.Equals(client2Result.Value.Email)))
         {
             var customerRole = roles.First(r => r.Name == SystemRoles.Customer);
-            await authorizationManager.AddRoleToUserAsync(client2Result.Value.Id, customerRole.Id);
+            await authorizationManager.AddRoleToUserAsync(
+                client2Result.Value.Id,
+                customerRole.Id,
+                CancellationToken.None);
         }
 
         await context.SaveChangesAsync();

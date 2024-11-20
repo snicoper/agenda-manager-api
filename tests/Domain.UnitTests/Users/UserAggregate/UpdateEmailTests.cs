@@ -23,9 +23,10 @@ public class UpdateEmailTests
         _emailUniquenessPolicy.IsUnique(Arg.Any<EmailAddress>(), Arg.Any<CancellationToken>()).Returns(true);
 
         // Act
-        await _user.UpdateEmail(email, _emailUniquenessPolicy, CancellationToken.None);
+        var result = await _user.UpdateEmail(email, _emailUniquenessPolicy, CancellationToken.None);
 
         // Assert
+        result.IsSuccess.Should().BeTrue();
         _user.DomainEvents.Should().Contain(x => x is UserEmailUpdatedDomainEvent);
         _user.Email.Should().Be(email);
     }

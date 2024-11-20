@@ -5,7 +5,7 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users.Services;
 
-public class AuthorizationManager(
+public class AuthorizationService(
     IUserRepository userRepository,
     IRoleRepository roleRepository,
     IPermissionRepository permissionRepository)
@@ -13,7 +13,7 @@ public class AuthorizationManager(
     public async Task<Result> AddRoleToUserAsync(
         UserId userId,
         RoleId roleId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var user = await userRepository.GetByIdWithRolesAsync(userId, cancellationToken);
 
@@ -27,11 +27,6 @@ public class AuthorizationManager(
         if (role is null)
         {
             return RoleErrors.RoleNotFound;
-        }
-
-        if (user.Roles.Any(r => r.Id.Equals(roleId)))
-        {
-            return RoleErrors.RoleAlreadyExists;
         }
 
         var result = user.AddRole(role);
@@ -58,11 +53,6 @@ public class AuthorizationManager(
             return RoleErrors.RoleNotFound;
         }
 
-        if (!user.Roles.Any(r => r.Id.Equals(roleId)))
-        {
-            return UserErrors.UserDoesNotHaveRoleAssigned;
-        }
-
         var result = user.RemoveRole(role);
 
         return result;
@@ -87,11 +77,6 @@ public class AuthorizationManager(
             return PermissionErrors.PermissionNotFound;
         }
 
-        if (role.Permissions.Any(r => r.Id.Equals(permissionId)))
-        {
-            return PermissionErrors.PermissionAlreadyExists;
-        }
-
         var result = role.AddPermission(permission);
 
         return result;
@@ -114,11 +99,6 @@ public class AuthorizationManager(
         if (permission is null)
         {
             return PermissionErrors.PermissionNotFound;
-        }
-
-        if (!role.Permissions.Any(r => r.Id.Equals(permissionId)))
-        {
-            return RoleErrors.RoleDoesNotHavePermissionAssigned;
         }
 
         var result = role.RemovePermission(permission);

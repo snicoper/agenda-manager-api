@@ -40,7 +40,7 @@ public static class DependencyInjection
 
         services.AddTransient<IEmailUniquenessPolicy, EmailUniquenessPolicy>();
         services.AddTransient<AuthenticationService>();
-        services.AddTransient<AuthorizationManager>();
+        services.AddTransient<AuthorizationService>();
     }
 
     private static void AddCalendarsDomain(this IServiceCollection services)

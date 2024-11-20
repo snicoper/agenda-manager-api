@@ -14,8 +14,6 @@ public static class UserErrors
 
     public static Error EmailIsNotConfirmed => Error.Conflict("Email is not confirmed.");
 
-    public static Error UserDoesNotHaveRoleAssigned => Error.Conflict("User does not have role assigned.");
-
     public static Error InvalidFormatPassword => Error.Validation(
         "Password",
         "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit and one special character.");

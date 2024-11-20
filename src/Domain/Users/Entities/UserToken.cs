@@ -49,10 +49,10 @@ public sealed class UserToken : AuditableEntity
         validityPeriod ??= TimeSpan.FromDays(7);
 
         var userToken = new UserToken(
-            UserTokenId.Create(),
-            userId,
-            Token.Generate(validityPeriod.Value),
-            UserTokenType.EmailConfirmation);
+            id: UserTokenId.Create(),
+            userId: userId,
+            token: Token.Generate(validityPeriod.Value),
+            type: UserTokenType.EmailConfirmation);
 
         return userToken;
     }
@@ -62,10 +62,10 @@ public sealed class UserToken : AuditableEntity
         validityPeriod ??= TimeSpan.FromHours(1);
 
         var userToken = new UserToken(
-            UserTokenId.Create(),
-            userId,
-            Token.Generate(validityPeriod.Value),
-            UserTokenType.PasswordReset);
+            id: UserTokenId.Create(),
+            userId: userId,
+            token: Token.Generate(validityPeriod.Value),
+            type: UserTokenType.PasswordReset);
 
         return userToken;
     }

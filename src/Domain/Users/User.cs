@@ -192,8 +192,12 @@ public sealed class User : AggregateRoot
 
     internal Result AddRole(Role role)
     {
-        _roles.Add(role);
+        if (HasRole(role.Id))
+        {
+            return Result.Success();
+        }
 
+        _roles.Add(role);
         AddDomainEvent(new UserRoleAddedDomainEvent(Id, role.Id));
 
         return Result.Success();
@@ -201,6 +205,11 @@ public sealed class User : AggregateRoot
 
     internal Result RemoveRole(Role role)
     {
+        if (!HasRole(role.Id))
+        {
+            return Result.Success();
+        }
+
         _roles.Remove(role);
 
         AddDomainEvent(new UserRoleRemovedDomainEvent(Id, role.Id));
