@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241120035031_Initial")]
+    [Migration("20241121003016_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -179,6 +179,84 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.HasIndex("AggregateName", "AggregateId");
 
                     b.ToTable("AuditRecords", (string)null);
+                });
+
+            modelBuilder.Entity("AgendaManager.Domain.Authorization.Entities.Permission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Permissions", (string)null);
+                });
+
+            modelBuilder.Entity("AgendaManager.Domain.Authorization.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<bool>("IsEditable")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("AgendaManager.Domain.Calendars.Calendar", b =>
@@ -515,9 +593,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.ToTable("Services", (string)null);
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Users.Entities.Permission", b =>
+            modelBuilder.Entity("AgendaManager.Domain.Users.Entities.UserRole", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("RoleId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedAt")
@@ -534,63 +615,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
                     b.Property<int>("Version")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "RoleId");
 
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("Permissions", (string)null);
-                });
-
-            modelBuilder.Entity("AgendaManager.Domain.Users.Entities.Role", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<bool>("IsEditable")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTimeOffset>("LastModifiedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<int>("Version")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("UserRoles", (string)null);
                 });
 
             modelBuilder.Entity("AgendaManager.Domain.Users.Entities.UserToken", b =>
@@ -774,37 +804,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.ToTable("ServiceResourceTypes", (string)null);
                 });
 
-            modelBuilder.Entity("RoleUser", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("UserId");
-
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("RoleId");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTimeOffset>("LastModifiedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("UserRoles", (string)null);
-                });
-
             modelBuilder.Entity("AgendaManager.Domain.Appointments.Appointment", b =>
                 {
                     b.HasOne("AgendaManager.Domain.Calendars.Calendar", "Calendar")
@@ -939,7 +938,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
             modelBuilder.Entity("AgendaManager.Domain.ResourceTypes.ResourceType", b =>
                 {
-                    b.HasOne("AgendaManager.Domain.Users.Entities.Role", "Role")
+                    b.HasOne("AgendaManager.Domain.Authorization.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1081,6 +1080,15 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("AgendaManager.Domain.Users.Entities.UserRole", b =>
+                {
+                    b.HasOne("AgendaManager.Domain.Users.User", null)
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("AgendaManager.Domain.Users.Entities.UserToken", b =>
                 {
                     b.HasOne("AgendaManager.Domain.Users.User", null)
@@ -1169,13 +1177,13 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
             modelBuilder.Entity("PermissionRole", b =>
                 {
-                    b.HasOne("AgendaManager.Domain.Users.Entities.Permission", null)
+                    b.HasOne("AgendaManager.Domain.Authorization.Entities.Permission", null)
                         .WithMany()
                         .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AgendaManager.Domain.Users.Entities.Role", null)
+                    b.HasOne("AgendaManager.Domain.Authorization.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1193,21 +1201,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.HasOne("AgendaManager.Domain.Services.Service", null)
                         .WithMany()
                         .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("RoleUser", b =>
-                {
-                    b.HasOne("AgendaManager.Domain.Users.Entities.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AgendaManager.Domain.Users.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -1237,6 +1230,8 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
             modelBuilder.Entity("AgendaManager.Domain.Users.User", b =>
                 {
                     b.Navigation("Tokens");
+
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

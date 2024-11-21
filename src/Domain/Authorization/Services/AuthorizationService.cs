@@ -2,6 +2,7 @@
 using AgendaManager.Domain.Authorization.Interfaces;
 using AgendaManager.Domain.Authorization.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
+using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
@@ -29,7 +30,10 @@ public class AuthorizationService(
             return RoleErrors.RoleNotFound;
         }
 
-        var result = user.AddRole(role);
+        var userRole = UserRole.From(user.Id, role.Id);
+        var result = user.AddRole(userRole);
+
+        userRepository.Update(user);
 
         return result;
     }
@@ -50,7 +54,10 @@ public class AuthorizationService(
             return RoleErrors.RoleNotFound;
         }
 
-        var result = user.RemoveRole(role);
+        var userRole = UserRole.From(user.Id, role.Id);
+        var result = user.RemoveRole(userRole);
+
+        userRepository.Update(user);
 
         return result;
     }
@@ -75,6 +82,7 @@ public class AuthorizationService(
         }
 
         var result = role.AddPermission(permission);
+        roleRepository.Update(role);
 
         return result;
     }
@@ -99,6 +107,7 @@ public class AuthorizationService(
         }
 
         var result = role.RemovePermission(permission);
+        roleRepository.Update(role);
 
         return result;
     }

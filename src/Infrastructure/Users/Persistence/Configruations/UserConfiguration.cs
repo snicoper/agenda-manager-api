@@ -1,6 +1,4 @@
-﻿using AgendaManager.Domain.Authorization.ValueObjects;
-using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
+﻿using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -66,25 +64,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                     .HasColumnName("RefreshTokenExpires");
             });
 
-        builder.HasMany(u => u.Roles)
-            .WithMany()
-            .UsingEntity(
-                typeBuilder =>
-                {
-                    const string userIdName = nameof(UserId);
-                    const string roleIdName = nameof(RoleId);
-
-                    typeBuilder.ToTable("UserRoles");
-                    typeBuilder.Property<UserId>(userIdName).HasColumnName(userIdName);
-                    typeBuilder.Property<RoleId>(roleIdName).HasColumnName(roleIdName);
-                    typeBuilder.HasKey(userIdName, roleIdName);
-
-                    // Campos de auditoría.
-                    typeBuilder.Property<DateTimeOffset>(nameof(AuditableEntity.CreatedAt)).IsRequired();
-                    typeBuilder.Property<string>(nameof(AuditableEntity.CreatedBy)).IsRequired();
-                    typeBuilder.Property<DateTimeOffset>(nameof(AuditableEntity.LastModifiedAt)).IsRequired();
-                    typeBuilder.Property<string>(nameof(AuditableEntity.LastModifiedBy)).IsRequired();
-                });
+        builder.HasMany(x => x.UserRoles)
+            .WithOne()
+            .HasForeignKey(ur => ur.UserId);
 
         builder.HasMany(u => u.Tokens)
             .WithOne()

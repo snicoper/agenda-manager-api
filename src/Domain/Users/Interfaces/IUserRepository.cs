@@ -11,13 +11,6 @@ public interface IUserRepository
 
     Task<User?> GetByIdWithRolesAsync(UserId userId, CancellationToken cancellationToken = default);
 
-    Task<User?> GetByIdWithPermissionsAsync(UserId userId, CancellationToken cancellationToken = default);
-
-    Task<bool> UserHasPermissionAsync(
-        UserId userId,
-        string permissionName,
-        CancellationToken cancellationToken = default);
-
     Task<User?> GetByEmailAsync(EmailAddress email, CancellationToken cancellationToken = default);
 
     Task<bool> EmailExistsAsync(EmailAddress email, CancellationToken cancellationToken = default);

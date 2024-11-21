@@ -14,28 +14,32 @@ public class UserRoleTests
     [Fact]
     public void UserRole_ShouldRaiseEvent_WhenRoleIsAdded()
     {
+        // Arrange
+        var userRole = UserRoleFactory.CreateUserRole(_user.Id, _role.Id);
+
         // Act
-        _user.AddRole(_role);
+        _user.AddRole(userRole);
 
         // Assert
         _role.DomainEvents.Should().Contain(x => x is UserRoleAddedDomainEvent);
-        _user.Roles.Should().Contain(_role);
-        _user.Roles.Should().HaveCount(1);
-        _user.Roles.Should().ContainSingle(x => x.Id == _role.Id);
+        _user.UserRoles.Should().Contain(userRole);
+        _user.UserRoles.Should().HaveCount(1);
+        _user.UserRoles.Should().ContainSingle(x => x.RoleId == _role.Id);
     }
 
     [Fact]
     public void UserRole_ShouldRaiseEvent_WhenRoleIsRemoved()
     {
         // Arrange
-        _user.AddRole(_role);
+        var userRole = UserRoleFactory.CreateUserRole(_user.Id, _role.Id);
+        _user.AddRole(userRole);
 
         // Act
-        _user.RemoveRole(_role);
+        _user.RemoveRole(userRole);
 
         // Assert
         _role.DomainEvents.Should().Contain(x => x is UserRoleRemovedDomainEvent);
-        _user.Roles.Should().NotContain(_role);
-        _user.Roles.Should().HaveCount(0);
+        _user.UserRoles.Should().NotContain(userRole);
+        _user.UserRoles.Should().HaveCount(0);
     }
 }

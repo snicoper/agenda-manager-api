@@ -21,33 +21,11 @@ public class UserRepository(AppDbContext context) : IUserRepository
 
     public async Task<User?> GetByIdWithRolesAsync(UserId userId, CancellationToken cancellationToken = default)
     {
-        return await context.Users
-            .Include(u => u.Roles)
-            .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
-    }
-
-    public async Task<User?> GetByIdWithPermissionsAsync(UserId userId, CancellationToken cancellationToken = default)
-    {
         var user = await context.Users
-            .Include(u => u.Roles)
-            .ThenInclude(r => r.Permissions)
-            .FirstOrDefaultAsync(u => u.Id.Equals(userId), cancellationToken);
+            .Include(u => u.UserRoles)
+            .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
 
         return user;
-    }
-
-    public async Task<bool> UserHasPermissionAsync(
-        UserId userId,
-        string permissionName,
-        CancellationToken cancellationToken = default)
-    {
-        var hasPermission = await context.Users
-            .Where(u => u.Id.Equals(userId))
-            .SelectMany(u => u.Roles)
-            .SelectMany(r => r.Permissions)
-            .AnyAsync(p => p.Name == permissionName, cancellationToken);
-
-        return hasPermission;
     }
 
     public async Task<User?> GetByEmailAsync(EmailAddress email, CancellationToken cancellationToken = default)

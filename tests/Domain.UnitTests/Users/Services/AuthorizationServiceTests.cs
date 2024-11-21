@@ -92,9 +92,10 @@ public class AuthorizationServiceTests
         // Arrange
         _userRepository.GetByIdWithRolesAsync(_user.Id).Returns(_user);
         _roleRepository.GetByIdAsync(_role.Id).Returns(_role);
+        var userRole = UserRoleFactory.CreateUserRole(_user.Id, _role.Id);
 
         // Act
-        _user.AddRole(_role);
+        _user.AddRole(userRole);
         var result = await _sut.AddRoleToUserAsync(_user.Id, _role.Id, CancellationToken.None);
 
         // Assert
@@ -107,9 +108,10 @@ public class AuthorizationServiceTests
         // Arrange
         _userRepository.GetByIdWithRolesAsync(_user.Id).Returns(_user);
         _roleRepository.GetByIdAsync(_role.Id).Returns(_role);
+        var userRole = UserRoleFactory.CreateUserRole(_user.Id, _role.Id);
 
         // Act
-        _user.AddRole(_role);
+        _user.AddRole(userRole);
         var result = await _sut.RemoveRoleFromUserAsync(_user.Id, _role.Id, CancellationToken.None);
 
         // Assert

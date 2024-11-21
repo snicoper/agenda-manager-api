@@ -1,5 +1,4 @@
-﻿using AgendaManager.Domain.Authorization;
-using AgendaManager.Domain.Common.Abstractions;
+﻿using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 using AgendaManager.Domain.Common.ValueObjects.Token;
@@ -15,7 +14,7 @@ namespace AgendaManager.Domain.Users;
 
 public sealed class User : AggregateRoot
 {
-    private readonly List<Role> _roles = [];
+    private readonly List<UserRole> _userRoles = [];
     private readonly List<UserToken> _userTokens = [];
 
     internal User(
@@ -61,7 +60,7 @@ public sealed class User : AggregateRoot
 
     public Token? RefreshToken { get; private set; }
 
-    public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
+    public IReadOnlyCollection<UserRole> UserRoles => _userRoles.AsReadOnly();
 
     public IReadOnlyCollection<UserToken> Tokens => _userTokens.AsReadOnly();
 
@@ -219,19 +218,19 @@ public sealed class User : AggregateRoot
         AddDomainEvent(new UserUpdatedDomainEvent(Id));
     }
 
-    internal Result AddRole(Role role)
+    internal Result AddRole(UserRole userRole)
     {
-        _roles.Add(role);
-        role.AddDomainEvent(new UserRoleAddedDomainEvent(Id, role.Id));
+        _userRoles.Add(userRole);
+        AddDomainEvent(new UserRoleAddedDomainEvent(userRole));
 
         return Result.Success();
     }
 
-    internal Result RemoveRole(Role role)
+    internal Result RemoveRole(UserRole userRole)
     {
-        _roles.Remove(role);
+        _userRoles.Remove(userRole);
 
-        role.AddDomainEvent(new UserRoleRemovedDomainEvent(Id, role.Id));
+        AddDomainEvent(new UserRoleRemovedDomainEvent(userRole));
 
         return Result.Success();
     }

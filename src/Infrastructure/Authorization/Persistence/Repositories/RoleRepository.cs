@@ -15,20 +15,23 @@ public class RoleRepository(AppDbContext context) : IRoleRepository
         return role;
     }
 
+    public async Task<List<Role>> GetByIdsWithPermissionsAsync(
+        List<RoleId> roleIds,
+        CancellationToken cancellationToken)
+    {
+        var roles = await context.Roles
+            .Include(r => r.Permissions)
+            .Where(r => roleIds.Contains(r.Id))
+            .ToListAsync(cancellationToken);
+
+        return roles;
+    }
+
     public Task<bool> ExistsByIdAsync(RoleId roleId, CancellationToken cancellationToken)
     {
         var exists = context.Roles.AnyAsync(r => r.Id.Equals(roleId), cancellationToken);
 
         return exists;
-    }
-
-    public async Task<Role?> GetByIdWithPermissionsAsync(RoleId roleId, CancellationToken cancellationToken = default)
-    {
-        var role = await context.Roles
-            .Include(r => r.Permissions)
-            .FirstOrDefaultAsync(r => r.Id.Equals(roleId), cancellationToken);
-
-        return role;
     }
 
     public async Task<bool> NameExistsAsync(Role role, CancellationToken cancellationToken = default)
