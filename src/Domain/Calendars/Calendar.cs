@@ -1,5 +1,4 @@
-﻿using AgendaManager.Domain.Calendars.Configurations;
-using AgendaManager.Domain.Calendars.Entities;
+﻿using AgendaManager.Domain.Calendars.Entities;
 using AgendaManager.Domain.Calendars.Events;
 using AgendaManager.Domain.Calendars.Exceptions;
 using AgendaManager.Domain.Calendars.ValueObjects;
@@ -39,26 +38,6 @@ public sealed class Calendar : AggregateRoot
 
     public IReadOnlyList<CalendarConfiguration> Configurations => _configurations.AsReadOnly();
 
-    public string GetConfigurationValue(string category)
-    {
-        var config = _configurations.FirstOrDefault(c => c.Category == category)
-                     ?? throw new CalendarDomainException($"Configuration not found: {category}");
-
-        return config.SelectedKey;
-    }
-
-    public bool AllowsOverlapping()
-    {
-        return GetConfigurationValue(CalendarConfigurationKeys.Appointments.OverlappingStrategy) ==
-               CalendarConfigurationKeys.Appointments.OverlappingOptions.AllowOverlapping;
-    }
-
-    public bool RequiresConfirmation()
-    {
-        return GetConfigurationValue(CalendarConfigurationKeys.Appointments.CreationStrategy) ==
-               CalendarConfigurationKeys.Appointments.CreationOptions.RequireConfirmation;
-    }
-
     public void Activate()
     {
         if (IsActive)
@@ -82,47 +61,47 @@ public sealed class Calendar : AggregateRoot
         AddDomainEvent(new CalendarDeactivatedDomainEvent(Id));
     }
 
-    public void AddConfiguration(CalendarConfiguration calendarConfiguration)
+    public void AddConfiguration(CalendarConfiguration configuration)
     {
-        _configurations.Add(calendarConfiguration);
+        _configurations.Add(configuration);
 
-        AddDomainEvent(new CalendarConfigurationAddedDomainEvent(Id, calendarConfiguration.Id));
+        AddDomainEvent(new CalendarConfigurationAddedDomainEvent(Id, configuration.Id));
     }
 
-    public void RemoveConfiguration(CalendarConfiguration calendarConfiguration)
+    public void RemoveConfiguration(CalendarConfiguration configuration)
     {
-        _configurations.Remove(calendarConfiguration);
+        _configurations.Remove(configuration);
 
-        AddDomainEvent(new CalendarConfigurationRemovedDomainEvent(Id, calendarConfiguration.Id));
+        AddDomainEvent(new CalendarConfigurationRemovedDomainEvent(Id, configuration.Id));
     }
 
     public void UpdateConfiguration(CalendarConfigurationId configurationId, string category, string selectedKey)
     {
-        var calendarConfiguration = _configurations.FirstOrDefault(x => x.Id == configurationId);
+        var configuration = _configurations.FirstOrDefault(x => x.Id == configurationId);
 
-        if (calendarConfiguration is null)
+        if (configuration is null)
         {
             throw new CalendarConfigurationDomainException("Invalid calendar configuration option.");
         }
 
-        if (calendarConfiguration.Update(category, selectedKey))
+        if (configuration.Update(category, selectedKey))
         {
-            AddDomainEvent(new CalendarConfigurationUpdatedDomainEvent(Id, calendarConfiguration.Id));
+            AddDomainEvent(new CalendarConfigurationUpdatedDomainEvent(Id, configuration.Id));
         }
     }
 
-    public void AddHoliday(CalendarHoliday calendarHoliday)
+    public void AddHoliday(CalendarHoliday holiday)
     {
-        _holidays.Add(calendarHoliday);
+        _holidays.Add(holiday);
 
-        AddDomainEvent(new CalendarHolidayAddedDomainEvent(Id, calendarHoliday.Id));
+        AddDomainEvent(new CalendarHolidayAddedDomainEvent(Id, holiday.Id));
     }
 
-    public void RemoveHoliday(CalendarHoliday calendarHoliday)
+    public void RemoveHoliday(CalendarHoliday holiday)
     {
-        _holidays.Remove(calendarHoliday);
+        _holidays.Remove(holiday);
 
-        AddDomainEvent(new CalendarHolidayRemovedDomainEvent(Id, calendarHoliday.Id));
+        AddDomainEvent(new CalendarHolidayRemovedDomainEvent(Id, holiday.Id));
     }
 
     internal static Calendar Create(CalendarId id, string name, string description, bool active = true)
