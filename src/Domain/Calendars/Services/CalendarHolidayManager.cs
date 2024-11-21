@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Appointments;
+using AgendaManager.Domain.Appointments.Enums;
 using AgendaManager.Domain.Appointments.Interfaces;
 using AgendaManager.Domain.Calendars.Configurations;
 using AgendaManager.Domain.Calendars.Entities;
@@ -47,13 +48,13 @@ public class CalendarHolidayManager(
                 case CalendarConfigurationKeys.Holidays.CreationOptions.RejectIfOverlapping:
                     return CalendarHolidayErrors.CreateOverlappingReject;
                 case CalendarConfigurationKeys.Holidays.CreationOptions.CancelOverlapping:
-                    await CancelOverlappingAppointmentsAsync(overlappingAppointments, cancellationToken);
+                    CancelOverlappingAppointments(overlappingAppointments);
                     break;
                 case CalendarConfigurationKeys.Holidays.CreationOptions.AllowOverlapping:
                     // Continuar con la creación del holiday.
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException($"{holidayCreateStrategy.SelectedKey} is not a valid value.");
             }
         }
 
@@ -78,16 +79,12 @@ public class CalendarHolidayManager(
         return Result.Success(holiday);
     }
 
-    private Task CancelOverlappingAppointmentsAsync(
-        List<Appointment> overlappingAppointments,
-        CancellationToken cancellationToken)
+    private void CancelOverlappingAppointments(List<Appointment> overlappingAppointments)
     {
         foreach (var appointment in overlappingAppointments)
         {
-            // TODO: Establecer como RequiresRescheduling.
-            // TODO: Omitir algún estado?
+            appointment.ChangeState(AppointmentStatus.Cancelled, "Cancelled by holiday creation.");
+            appointmentRepository.Update(appointment);
         }
-
-        return Task.CompletedTask;
     }
 }

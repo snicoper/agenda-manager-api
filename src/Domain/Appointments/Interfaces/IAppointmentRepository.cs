@@ -24,7 +24,7 @@ public interface IAppointmentRepository
 
     Task AddAsync(Result<Appointment> appointment, CancellationToken cancellationToken = default);
 
-    void Update(Appointment appointment, CancellationToken cancellationToken = default);
+    void Update(Appointment appointment);
 
-    void Delete(Appointment appointment, CancellationToken cancellationToken = default);
+    void Delete(Appointment appointment);
 }

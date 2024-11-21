@@ -26,7 +26,14 @@ public class AppointmentRepository(AppDbContext context) : IAppointmentRepositor
         Period period,
         CancellationToken cancellationToken = default)
     {
-        return Task.FromResult<List<Appointment>>([]);
+        var overlappingAppointments = context.Appointments
+            .Where(
+                a => a.CalendarId == calendarId
+                     && a.Period.Start < period.End
+                     && a.Period.End > period.Start)
+            .ToListAsync(cancellationToken);
+
+        return overlappingAppointments;
     }
 
     public async Task<bool> IsOverlappingAppointmentsAsync(
@@ -58,12 +65,12 @@ public class AppointmentRepository(AppDbContext context) : IAppointmentRepositor
         await context.Appointments.AddAsync(appointment.Value!, cancellationToken);
     }
 
-    public void Update(Appointment appointment, CancellationToken cancellationToken = default)
+    public void Update(Appointment appointment)
     {
         context.Appointments.Update(appointment);
     }
 
-    public void Delete(Appointment appointment, CancellationToken cancellationToken = default)
+    public void Delete(Appointment appointment)
     {
         context.Appointments.Remove(appointment);
     }

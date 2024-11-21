@@ -177,7 +177,7 @@ public sealed class AppointmentManager(
         }
 
         // 9. Update appointment in repository.
-        appointmentRepository.Update(appointment, cancellationToken);
+        appointmentRepository.Update(appointment);
 
         return Result.Success(appointment);
     }
@@ -200,7 +200,7 @@ public sealed class AppointmentManager(
         }
 
         // 3. Delete appointment from repository.
-        appointmentRepository.Delete(appointment, cancellationToken);
+        appointmentRepository.Delete(appointment);
 
         // 4. Raise domain event.
         appointment.AddDomainEvent(new AppointmentDeletedDomainEvent(appointmentId));
