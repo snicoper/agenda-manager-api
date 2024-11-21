@@ -17,4 +17,8 @@ public static class UserErrors
     public static Error InvalidFormatPassword => Error.Validation(
         "Password",
         "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit and one special character.");
+
+    public static Error RoleAlreadyExists => Error.Conflict("Role already exists.");
+
+    public static Error RoleDoesNotExist => Error.Conflict("Role does not exist.");
 }

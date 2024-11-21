@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Domain.Authorization;
 using AgendaManager.Domain.Users;
+using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Events;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
@@ -28,6 +29,21 @@ public class UserRoleTests
     }
 
     [Fact]
+    public void UserRoles_ShouldFailure_WhenRoleIsDuplicated()
+    {
+        // Arrange
+        var userRole = UserRoleFactory.CreateUserRole(_user.Id, _role.Id);
+        _user.AddRole(userRole);
+
+        // Act
+        var result = _user.AddRole(userRole);
+
+        // Assert
+        result.IsFailure.Should().BeTrue();
+        result.Error?.FirstError().Should().Be(UserErrors.RoleAlreadyExists.FirstError());
+    }
+
+    [Fact]
     public void UserRole_ShouldRaiseEvent_WhenRoleIsRemoved()
     {
         // Arrange
@@ -41,5 +57,19 @@ public class UserRoleTests
         _user.DomainEvents.Should().Contain(x => x is UserRoleRemovedDomainEvent);
         _user.UserRoles.Should().NotContain(userRole);
         _user.UserRoles.Should().HaveCount(0);
+    }
+
+    [Fact]
+    public void UserRoles_ShouldFailure_WhenRoleIsNotAdded()
+    {
+        // Arrange
+        var userRole = UserRoleFactory.CreateUserRole(_user.Id, _role.Id);
+
+        // Act
+        var result = _user.RemoveRole(userRole);
+
+        // Assert
+        result.IsFailure.Should().BeTrue();
+        result.Error?.FirstError().Should().Be(UserErrors.RoleDoesNotExist.FirstError());
     }
 }

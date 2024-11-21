@@ -205,6 +205,11 @@ public sealed class User : AggregateRoot
         userToken.AddDomainEvent(new UserTokenRemovedDomainEvent(Id, userToken.Id));
     }
 
+    public bool HasRole(UserRole userRole)
+    {
+        return _userRoles.Any(ur => ur == userRole);
+    }
+
     internal void Update(string? firstName, string? lastName)
     {
         if (FirstName == firstName && LastName == lastName)
@@ -220,6 +225,11 @@ public sealed class User : AggregateRoot
 
     internal Result AddRole(UserRole userRole)
     {
+        if (HasRole(userRole))
+        {
+            return UserErrors.RoleAlreadyExists;
+        }
+
         _userRoles.Add(userRole);
         AddDomainEvent(new UserRoleAddedDomainEvent(userRole));
 
@@ -228,8 +238,12 @@ public sealed class User : AggregateRoot
 
     internal Result RemoveRole(UserRole userRole)
     {
-        _userRoles.Remove(userRole);
+        if (!HasRole(userRole))
+        {
+            return UserErrors.RoleDoesNotExist;
+        }
 
+        _userRoles.Remove(userRole);
         AddDomainEvent(new UserRoleRemovedDomainEvent(userRole));
 
         return Result.Success();
