@@ -25,6 +25,7 @@ public static class DependencyInjection
             .AddDataAnnotationsLocalization(
                 options =>
                 {
+                    // ReSharper disable once DelegateAnonymousParameter
                     options.DataAnnotationLocalizerProvider = (type, factory) =>
                         factory.Create(typeof(SharedResource));
                 });

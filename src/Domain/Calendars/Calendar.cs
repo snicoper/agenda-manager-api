@@ -35,9 +35,9 @@ public sealed class Calendar : AggregateRoot
 
     public bool IsActive { get; private set; }
 
-    public IReadOnlyCollection<CalendarHoliday> Holidays => _holidays.AsReadOnly();
+    public IReadOnlyList<CalendarHoliday> Holidays => _holidays.AsReadOnly();
 
-    public IReadOnlyCollection<CalendarConfiguration> Configurations => _configurations.AsReadOnly();
+    public IReadOnlyList<CalendarConfiguration> Configurations => _configurations.AsReadOnly();
 
     public string GetConfigurationValue(string category)
     {

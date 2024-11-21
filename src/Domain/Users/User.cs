@@ -60,9 +60,9 @@ public sealed class User : AggregateRoot
 
     public Token? RefreshToken { get; private set; }
 
-    public IReadOnlyCollection<UserRole> UserRoles => _userRoles.AsReadOnly();
+    public IReadOnlyList<UserRole> UserRoles => _userRoles.AsReadOnly();
 
-    public IReadOnlyCollection<UserToken> Tokens => _userTokens.AsReadOnly();
+    public IReadOnlyList<UserToken> Tokens => _userTokens.AsReadOnly();
 
     public Result UpdatePassword(PasswordHash newPasswordHash)
     {

@@ -1,3 +1,4 @@
+using AgendaManager.Application.Common.Interfaces.Clock;
 using AgendaManager.Infrastructure.Common.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -49,6 +50,8 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
                 {
                     services.Remove(dbContextDescriptor);
                 }
+
+                services.AddSingleton<IDateTimeProvider, TestDateTimeProvider>();
 
                 services.AddDbContext<AppDbContext>(
                     (_, options) =>

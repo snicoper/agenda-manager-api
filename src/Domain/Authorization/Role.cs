@@ -37,7 +37,7 @@ public sealed class Role : AggregateRoot
 
     public bool IsEditable { get; private set; }
 
-    public IReadOnlyCollection<Permission> Permissions => _permissions.AsReadOnly();
+    public IReadOnlyList<Permission> Permissions => _permissions.AsReadOnly();
 
     internal void Update(string name, string description)
     {
