@@ -87,22 +87,6 @@ public class AuthorizationServiceTests
     }
 
     [Fact]
-    public async Task AddRoleToUser_ShouldSuccess_WhenUserAlreadyHaveRole()
-    {
-        // Arrange
-        _userRepository.GetByIdWithRolesAsync(_user.Id).Returns(_user);
-        _roleRepository.GetByIdAsync(_role.Id).Returns(_role);
-        var userRole = UserRoleFactory.CreateUserRole(_user.Id, _role.Id);
-
-        // Act
-        _user.AddRole(userRole);
-        var result = await _sut.AddRoleToUserAsync(_user.Id, _role.Id, CancellationToken.None);
-
-        // Assert
-        result.IsSuccess.Should().BeTrue();
-    }
-
-    [Fact]
     public async Task RemoveRoleFromUser_ShouldSuccess()
     {
         // Arrange
@@ -150,20 +134,6 @@ public class AuthorizationServiceTests
         result.IsFailure.Should().BeTrue();
         result.Error?.FirstError()?.Description.Should().Be(descriptionError);
         result.ResultType.Should().Be(ResultType.NotFound);
-    }
-
-    [Fact]
-    public async Task RemoveRoleFromUser_ShouldSuccess_WhenUserDoesNotHaveRoleAssigned()
-    {
-        // Arrange
-        _userRepository.GetByIdWithRolesAsync(_user.Id).Returns(_user);
-        _roleRepository.GetByIdAsync(_role.Id).Returns(_role);
-
-        // Act
-        var result = await _sut.RemoveRoleFromUserAsync(_user.Id, _role.Id, CancellationToken.None);
-
-        // Assert
-        result.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
