@@ -1,4 +1,4 @@
-namespace AgendaManager.Domain.Users.Constants;
+namespace AgendaManager.Domain.Authorization.Constants;
 
 public static class SystemPermissions
 {

@@ -1,10 +1,10 @@
 ﻿using AgendaManager.Domain.Authorization.Entities;
+using AgendaManager.Domain.Authorization.Errors;
 using AgendaManager.Domain.Authorization.Events;
 using AgendaManager.Domain.Authorization.Exceptions;
 using AgendaManager.Domain.Authorization.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.Responses;
-using AgendaManager.Domain.Users.Events;
 
 namespace AgendaManager.Domain.Authorization;
 
@@ -59,7 +59,7 @@ public sealed class Role : AggregateRoot
     {
         if (HasPermission(permission.Id))
         {
-            return Result.Success();
+            return RoleErrors.PermissionAlreadyExistsInRole;
         }
 
         _permissions.Add(permission);
@@ -73,7 +73,7 @@ public sealed class Role : AggregateRoot
     {
         if (!HasPermission(permission.Id))
         {
-            return Result.Success();
+            return RoleErrors.PermissionNotFoundInRole;
         }
 
         _permissions.Remove(permission);

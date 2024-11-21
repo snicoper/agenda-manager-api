@@ -1,5 +1,5 @@
 ﻿using AgendaManager.Domain.Authorization;
-using AgendaManager.Infrastructure.Common.Persistence.Seeds.Modules;
+using AgendaManager.Infrastructure.Common.Persistence.Seeds.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 

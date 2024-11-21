@@ -4,7 +4,7 @@ using AgendaManager.Domain.Resources.Services;
 using AgendaManager.Domain.Resources.ValueObjects;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AgendaManager.Infrastructure.Common.Persistence.Seeds.Modules;
+namespace AgendaManager.Infrastructure.Common.Persistence.Seeds.Features;
 
 public static class ResourceSeed
 {

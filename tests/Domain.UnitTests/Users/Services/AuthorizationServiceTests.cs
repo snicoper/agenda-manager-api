@@ -186,21 +186,6 @@ public class AuthorizationServiceTests
     }
 
     [Fact]
-    public async Task AddPermissionToRole_ShouldSuccess_WhenRoleAlreadyHavePermission()
-    {
-        // Arrange
-        _roleRepository.GetByIdAsync(_role.Id).Returns(_role);
-        _permissionRepository.GetByIdAsync(_permission.Id).Returns(_permission);
-
-        // Act
-        _role.AddPermission(_permission);
-        var result = await _sut.AddPermissionToRoleAsync(_role.Id, _permission.Id, CancellationToken.None);
-
-        // Assert
-        result.IsSuccess.Should().BeTrue();
-    }
-
-    [Fact]
     public async Task RemovePermissionFromRole_ShouldSuccess_WhenRoleHavePermission()
     {
         // Arrange
@@ -248,19 +233,5 @@ public class AuthorizationServiceTests
         result.IsFailure.Should().BeTrue();
         result.Error?.FirstError()?.Description.Should().Be(descriptionError);
         result.ResultType.Should().Be(ResultType.NotFound);
-    }
-
-    [Fact]
-    public async Task RemovePermissionFromRole_ShouldSuccess_WhenRoleDontHavePermission()
-    {
-        // Arrange
-        _roleRepository.GetByIdAsync(_role.Id).Returns(_role);
-        _permissionRepository.GetByIdAsync(_permission.Id).Returns(_permission);
-
-        // Act
-        var result = await _sut.RemovePermissionFromRoleAsync(_role.Id, _permission.Id, CancellationToken.None);
-
-        // Assert
-        result.IsSuccess.Should().BeTrue();
     }
 }

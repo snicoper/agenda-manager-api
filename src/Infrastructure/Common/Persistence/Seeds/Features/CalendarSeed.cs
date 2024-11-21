@@ -3,7 +3,7 @@ using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.ValueObjects.IanaTimeZone;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AgendaManager.Infrastructure.Common.Persistence.Seeds.Modules;
+namespace AgendaManager.Infrastructure.Common.Persistence.Seeds.Features;
 
 public static class CalendarSeed
 {

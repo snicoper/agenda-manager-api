@@ -1,10 +1,10 @@
 ﻿using AgendaManager.Domain.Authorization;
+using AgendaManager.Domain.Authorization.Constants;
 using AgendaManager.Domain.Authorization.Services;
 using AgendaManager.Domain.Authorization.ValueObjects;
-using AgendaManager.Domain.Users.Constants;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AgendaManager.Infrastructure.Common.Persistence.Seeds.Modules;
+namespace AgendaManager.Infrastructure.Common.Persistence.Seeds.Features;
 
 public static class RoleSeed
 {

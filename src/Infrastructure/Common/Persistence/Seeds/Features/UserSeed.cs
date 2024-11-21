@@ -1,14 +1,14 @@
 ﻿using AgendaManager.Domain.Authorization;
+using AgendaManager.Domain.Authorization.Constants;
 using AgendaManager.Domain.Authorization.Services;
 using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
-using AgendaManager.Domain.Users.Constants;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.Services;
 using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AgendaManager.Infrastructure.Common.Persistence.Seeds.Modules;
+namespace AgendaManager.Infrastructure.Common.Persistence.Seeds.Features;
 
 public static class UserSeed
 {

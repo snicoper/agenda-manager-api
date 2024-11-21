@@ -1,10 +1,10 @@
 ﻿using AgendaManager.Domain.Authorization;
+using AgendaManager.Domain.Authorization.Constants;
 using AgendaManager.Domain.ResourceTypes.Services;
 using AgendaManager.Domain.ResourceTypes.ValueObjects;
-using AgendaManager.Domain.Users.Constants;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AgendaManager.Infrastructure.Common.Persistence.Seeds.Modules;
+namespace AgendaManager.Infrastructure.Common.Persistence.Seeds.Features;
 
 public class ResourceTypeSeed
 {

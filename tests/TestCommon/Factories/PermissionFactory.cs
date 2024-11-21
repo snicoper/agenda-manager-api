@@ -1,6 +1,6 @@
-﻿using AgendaManager.Domain.Authorization.Entities;
+﻿using AgendaManager.Domain.Authorization.Constants;
+using AgendaManager.Domain.Authorization.Entities;
 using AgendaManager.Domain.Authorization.ValueObjects;
-using AgendaManager.Domain.Users.Constants;
 
 namespace AgendaManager.TestCommon.Factories;
 
