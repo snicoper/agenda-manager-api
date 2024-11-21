@@ -4,4 +4,4 @@ using AgendaManager.Domain.Services.ValueObjects;
 
 namespace AgendaManager.Domain.Services.Events;
 
-public record ResourceTypeAddedToServiceDomainEvent(ServiceId Id, ResourceTypeId ResourceTypeId) : IDomainEvent;
+public record ResourceTypeAddedToServiceDomainEvent(ServiceId ServiceId, ResourceTypeId ResourceTypeId) : IDomainEvent;

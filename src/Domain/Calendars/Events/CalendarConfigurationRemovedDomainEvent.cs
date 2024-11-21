@@ -3,5 +3,7 @@ using AgendaManager.Domain.Common.Interfaces;
 
 namespace AgendaManager.Domain.Calendars.Events;
 
-public record CalendarConfigurationRemovedDomainEvent(CalendarId Id, CalendarConfigurationId CalendarConfigurationId)
+public record CalendarConfigurationRemovedDomainEvent(
+    CalendarId CalendarId,
+    CalendarConfigurationId CalendarConfigurationId)
     : IDomainEvent;

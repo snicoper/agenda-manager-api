@@ -3,5 +3,7 @@ using AgendaManager.Domain.Common.Interfaces;
 
 namespace AgendaManager.Domain.Appointments.Events;
 
-public record AppointmentStatusHistoryCreatedDomainEvent(AppointmentId Id, AppointmentCurrentState ResultValue)
+public record AppointmentStatusHistoryCreatedDomainEvent(
+    AppointmentId AppointmentId,
+    AppointmentCurrentState ResultValue)
     : IDomainEvent;

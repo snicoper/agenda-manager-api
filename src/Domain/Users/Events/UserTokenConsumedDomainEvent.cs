@@ -3,4 +3,4 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users.Events;
 
-public record UserTokenConsumedDomainEvent(UserTokenId Id) : IDomainEvent;
+public record UserTokenConsumedDomainEvent(UserTokenId UserTokenId) : IDomainEvent;

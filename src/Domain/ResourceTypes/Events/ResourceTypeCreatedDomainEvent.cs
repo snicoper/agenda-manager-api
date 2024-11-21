@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Domain.Common.Interfaces;
+using AgendaManager.Domain.ResourceTypes.ValueObjects;
 
 namespace AgendaManager.Domain.ResourceTypes.Events;
 
-public record ResourceTypeCreatedDomainEvent(ResourceType ResourceType) : IDomainEvent;
+public record ResourceTypeCreatedDomainEvent(ResourceTypeId ResourceTypeId) : IDomainEvent;

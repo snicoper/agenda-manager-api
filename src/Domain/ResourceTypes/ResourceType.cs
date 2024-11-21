@@ -47,7 +47,7 @@ public sealed class ResourceType : AggregateRoot
     {
         ResourceType resourceType = new(id, name, description, roleId);
 
-        resourceType.AddDomainEvent(new ResourceTypeCreatedDomainEvent(resourceType));
+        resourceType.AddDomainEvent(new ResourceTypeCreatedDomainEvent(resourceType.Id));
 
         return resourceType;
     }

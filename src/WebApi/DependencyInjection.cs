@@ -18,14 +18,15 @@ public static class DependencyInjection
 
         AddGlobalInjections(services);
 
-        services.AddControllersWithViews()
+        services.AddControllers()
             .AddJsonOptions(
                 options => { options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; })
             .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
             .AddDataAnnotationsLocalization(
                 options =>
                 {
-                    options.DataAnnotationLocalizerProvider = (type, factory) => factory.Create(typeof(SharedResource));
+                    options.DataAnnotationLocalizerProvider = (type, factory) =>
+                        factory.Create(typeof(SharedResource));
                 });
 
         services.AddRouting(options => { options.LowercaseUrls = true; });
@@ -39,8 +40,7 @@ public static class DependencyInjection
 
         AddOpenTelemetry(services);
 
-        AddRazorViewsForEmails(services);
-
+        // AddRazorViewsForEmails(services);
         return services;
     }
 

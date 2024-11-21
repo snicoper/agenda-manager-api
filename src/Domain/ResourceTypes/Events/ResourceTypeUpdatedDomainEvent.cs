@@ -3,4 +3,4 @@ using AgendaManager.Domain.ResourceTypes.ValueObjects;
 
 namespace AgendaManager.Domain.ResourceTypes.Events;
 
-internal record ResourceTypeUpdatedDomainEvent(ResourceTypeId Id) : IDomainEvent;
+internal record ResourceTypeUpdatedDomainEvent(ResourceTypeId ResourceTypeId) : IDomainEvent;

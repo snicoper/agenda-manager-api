@@ -3,4 +3,4 @@ using AgendaManager.Domain.Services.ValueObjects;
 
 namespace AgendaManager.Domain.Services.Events;
 
-public record ServiceUpdatedDomainEvent(ServiceId Id) : IDomainEvent;
+public record ServiceUpdatedDomainEvent(ServiceId ServiceId) : IDomainEvent;
