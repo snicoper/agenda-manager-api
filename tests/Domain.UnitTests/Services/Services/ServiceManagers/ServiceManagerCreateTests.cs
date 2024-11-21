@@ -32,7 +32,7 @@ public class ServiceManagerCreateTests
         // Arrange
         var serviceManager = ServiceFactory.CreateService();
         SetupCalendarIdExistsCalendarRepository(false);
-        SetupNameExistsServiceRepository(false);
+        SetupExistsByNameServiceRepository(false);
 
         // Act
         var result = await _sut.CreateServiceAsync(
@@ -76,7 +76,7 @@ public class ServiceManagerCreateTests
         // Arrange
         var serviceManager = ServiceFactory.CreateService();
         SetupCalendarIdExistsCalendarRepository(false);
-        SetupNameExistsServiceRepository(true);
+        SetupExistsByNameServiceRepository(true);
 
         // Act
         var result = await _sut.CreateServiceAsync(
@@ -94,13 +94,13 @@ public class ServiceManagerCreateTests
 
     private void SetupCalendarIdExistsCalendarRepository(bool returnValue)
     {
-        _calendarRepository.CalendarIdExistsAsync(Arg.Any<CalendarId>(), Arg.Any<CancellationToken>())
+        _calendarRepository.ExistsByCalendarIdAsync(Arg.Any<CalendarId>(), Arg.Any<CancellationToken>())
             .Returns(returnValue);
     }
 
-    private void SetupNameExistsServiceRepository(bool returnValue)
+    private void SetupExistsByNameServiceRepository(bool returnValue)
     {
-        _serviceRepository.NameExistsAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
+        _serviceRepository.ExistsByNameAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(returnValue);
     }
 }

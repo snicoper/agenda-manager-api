@@ -18,7 +18,7 @@ public class ResourceTypeRepository(AppDbContext context) : IResourceTypeReposit
         return resourceType;
     }
 
-    public async Task<bool> NameExistsAsync(
+    public async Task<bool> ExistsByNameAsync(
         ResourceTypeId resourceTypeId,
         string name,
         CancellationToken cancellationToken)
@@ -29,7 +29,7 @@ public class ResourceTypeRepository(AppDbContext context) : IResourceTypeReposit
         return exists;
     }
 
-    public async Task<bool> DescriptionExistsAsync(
+    public async Task<bool> ExistsByDescriptionAsync(
         ResourceTypeId resourceTypeId,
         string description,
         CancellationToken cancellationToken)

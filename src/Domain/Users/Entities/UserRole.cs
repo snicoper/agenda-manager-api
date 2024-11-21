@@ -20,7 +20,7 @@ public sealed class UserRole : AuditableEntity
 
     public RoleId RoleId { get; private set; } = null!;
 
-    public static UserRole From(UserId userId, RoleId roleId)
+    public static UserRole Create(UserId userId, RoleId roleId)
     {
         return new UserRole(userId, roleId);
     }

@@ -30,8 +30,8 @@ public class ResourceTypeManagerCreateTests
     public async Task Create_ShouldSuccess_WhenResourceTypeIsValid()
     {
         // Arrange
-        SetupNameExistsResourceTypeRepository(false);
-        SetupDescriptionExistsResourceTypeRepository(false);
+        SetupExistsByNameResourceTypeRepository(false);
+        SetupExistsByDescriptionResourceTypeRepository(false);
 
         // Act
         var resourceType = await GetResourceTypeAsync();
@@ -44,8 +44,8 @@ public class ResourceTypeManagerCreateTests
     public async Task Create_ShouldSuccess_WhenRoleIdIsProvided()
     {
         // Arrange
-        SetupNameExistsResourceTypeRepository(false);
-        SetupDescriptionExistsResourceTypeRepository(false);
+        SetupExistsByNameResourceTypeRepository(false);
+        SetupExistsByDescriptionResourceTypeRepository(false);
         SetupExistsByIdRoleRepository(true);
 
         // Act
@@ -61,11 +61,11 @@ public class ResourceTypeManagerCreateTests
     }
 
     [Fact]
-    public async Task Create_ShouldErrorNameExists_WhenNameInResourceTypeAlreadyExists()
+    public async Task Create_ShouldErrorExistsByName_WhenNameInResourceTypeAlreadyExists()
     {
         // Arrange
         var errorExpected = ResourceTypeErrors.NameAlreadyExists.FirstError();
-        SetupNameExistsResourceTypeRepository(true);
+        SetupExistsByNameResourceTypeRepository(true);
 
         // Act
         var resourceType = await GetResourceTypeAsync();
@@ -76,11 +76,11 @@ public class ResourceTypeManagerCreateTests
     }
 
     [Fact]
-    public async Task Create_ShouldErrorDescriptionExists_WhenDescriptionInResourceTypeAlreadyExists()
+    public async Task Create_ShouldErrorExistsDescription_WhenInResourceTypeAlreadyExists()
     {
         // Arrange
         var errorExpected = ResourceTypeErrors.DescriptionExists.FirstError();
-        SetupDescriptionExistsResourceTypeRepository(true);
+        SetupExistsByDescriptionResourceTypeRepository(true);
 
         // Act
         var resourceType = await GetResourceTypeAsync();
@@ -110,18 +110,18 @@ public class ResourceTypeManagerCreateTests
         resourceType.Error?.FirstError().Should().Be(errorExpected);
     }
 
-    private void SetupNameExistsResourceTypeRepository(bool returnValue)
+    private void SetupExistsByNameResourceTypeRepository(bool returnValue)
     {
-        _resourceTypeRepository.NameExistsAsync(
+        _resourceTypeRepository.ExistsByNameAsync(
                 Arg.Any<ResourceTypeId>(),
                 Arg.Any<string>(),
                 Arg.Any<CancellationToken>())
             .Returns(returnValue);
     }
 
-    private void SetupDescriptionExistsResourceTypeRepository(bool returnValue)
+    private void SetupExistsByDescriptionResourceTypeRepository(bool returnValue)
     {
-        _resourceTypeRepository.DescriptionExistsAsync(
+        _resourceTypeRepository.ExistsByDescriptionAsync(
                 Arg.Any<ResourceTypeId>(),
                 Arg.Any<string>(),
                 Arg.Any<CancellationToken>())

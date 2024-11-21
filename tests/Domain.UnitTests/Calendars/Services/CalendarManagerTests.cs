@@ -27,7 +27,7 @@ public class CalendarManagerTests
     public async Task Calendar_ShouldReturnSucceed_WhenValidParametersProvided()
     {
         // Arrange
-        SetupNameExistsInCalendarRepositoryAsync(false);
+        SetupExistsByNameInCalendarRepositoryAsync(false);
 
         // Act
         var calendarResult = await CreateCalendarAsync();
@@ -41,7 +41,7 @@ public class CalendarManagerTests
     public async Task Calendar_ShouldFailure_WhenNameAlreadyExists()
     {
         // Arrange
-        SetupNameExistsInCalendarRepositoryAsync(true);
+        SetupExistsByNameInCalendarRepositoryAsync(true);
 
         // Act
         var calendarResult = await CreateCalendarAsync();
@@ -65,9 +65,9 @@ public class CalendarManagerTests
         return result;
     }
 
-    private void SetupNameExistsInCalendarRepositoryAsync(bool returnValue)
+    private void SetupExistsByNameInCalendarRepositoryAsync(bool returnValue)
     {
-        _calendarRepository.NameExistsAsync(Arg.Any<Calendar>(), Arg.Any<CancellationToken>())
+        _calendarRepository.ExistsByNameAsync(Arg.Any<Calendar>(), Arg.Any<CancellationToken>())
             .Returns(returnValue);
     }
 }

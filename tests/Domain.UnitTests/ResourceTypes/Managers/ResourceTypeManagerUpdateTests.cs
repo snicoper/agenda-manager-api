@@ -33,8 +33,8 @@ public class ResourceTypeManagerUpdateTests
     public async Task Update_ShouldRaiseEvent_WhenResourceTypeIsValid()
     {
         // Arrange
-        SetupNameExistsResourceTypeRepository(false);
-        SetupDescriptionExistsResourceTypeRepository(false);
+        SetupExistsByNameResourceTypeRepository(false);
+        SetupExistsDescriptionResourceTypeRepository(false);
         SetupGetByIdAsyncResourceTypeRepository(_resourceType);
 
         // Act
@@ -49,8 +49,8 @@ public class ResourceTypeManagerUpdateTests
     public async Task Update_ShouldNotRaiseEvent_WhenResourceTypeIdNotExists()
     {
         // Arrange
-        SetupNameExistsResourceTypeRepository(false);
-        SetupDescriptionExistsResourceTypeRepository(false);
+        SetupExistsByNameResourceTypeRepository(false);
+        SetupExistsDescriptionResourceTypeRepository(false);
         SetupGetByIdAsyncResourceTypeRepository();
 
         // Act
@@ -62,11 +62,11 @@ public class ResourceTypeManagerUpdateTests
     }
 
     [Fact]
-    public async Task Update_ShouldFailure_WhenNameExists()
+    public async Task Update_ShouldFailure_WhenExistsByName()
     {
         // Arrange
         var errorExpected = ResourceTypeErrors.NameAlreadyExists.FirstError();
-        SetupNameExistsResourceTypeRepository(true);
+        SetupExistsByNameResourceTypeRepository(true);
 
         // Act
         var result = await UpdateResourceTypeAsync();
@@ -77,12 +77,12 @@ public class ResourceTypeManagerUpdateTests
     }
 
     [Fact]
-    public async Task Update_ShouldFailure_WhenDescriptionExists()
+    public async Task Update_ShouldFailure_WhenExistsDescription()
     {
         // Arrange
         var errorExpected = ResourceTypeErrors.DescriptionExists.FirstError();
-        SetupNameExistsResourceTypeRepository(false);
-        SetupDescriptionExistsResourceTypeRepository(true);
+        SetupExistsByNameResourceTypeRepository(false);
+        SetupExistsDescriptionResourceTypeRepository(true);
 
         // Act
         var result = await UpdateResourceTypeAsync();
@@ -98,18 +98,18 @@ public class ResourceTypeManagerUpdateTests
             .Returns(returnValue);
     }
 
-    private void SetupNameExistsResourceTypeRepository(bool returnValue)
+    private void SetupExistsByNameResourceTypeRepository(bool returnValue)
     {
-        _resourceTypeRepository.NameExistsAsync(
+        _resourceTypeRepository.ExistsByNameAsync(
                 Arg.Any<ResourceTypeId>(),
                 Arg.Any<string>(),
                 Arg.Any<CancellationToken>())
             .Returns(returnValue);
     }
 
-    private void SetupDescriptionExistsResourceTypeRepository(bool returnValue)
+    private void SetupExistsDescriptionResourceTypeRepository(bool returnValue)
     {
-        _resourceTypeRepository.DescriptionExistsAsync(
+        _resourceTypeRepository.ExistsByDescriptionAsync(
                 Arg.Any<ResourceTypeId>(),
                 Arg.Any<string>(),
                 Arg.Any<CancellationToken>())

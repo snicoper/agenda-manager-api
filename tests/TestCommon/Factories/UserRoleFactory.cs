@@ -8,6 +8,6 @@ public static class UserRoleFactory
 {
     public static UserRole CreateUserRole(UserId? userId = null, RoleId? roleId = null)
     {
-        return UserRole.From(userId ?? UserId.Create(), roleId ?? RoleId.Create());
+        return UserRole.Create(userId ?? UserId.Create(), roleId ?? RoleId.Create());
     }
 }

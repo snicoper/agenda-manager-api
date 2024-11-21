@@ -30,7 +30,7 @@ public class AuthorizationService(
             return RoleErrors.RoleNotFound;
         }
 
-        var userRole = UserRole.From(user.Id, role.Id);
+        var userRole = UserRole.Create(user.Id, role.Id);
         var result = user.AddRole(userRole);
 
         userRepository.Update(user);
@@ -54,7 +54,7 @@ public class AuthorizationService(
             return RoleErrors.RoleNotFound;
         }
 
-        var userRole = UserRole.From(user.Id, role.Id);
+        var userRole = UserRole.Create(user.Id, role.Id);
         var result = user.RemoveRole(userRole);
 
         userRepository.Update(user);

@@ -82,7 +82,7 @@ public class CalendarManager(ICalendarRepository calendarRepository)
 
     private async Task<Result> IsValidAsync(Calendar calendar, CancellationToken cancellationToken)
     {
-        if (await NameExistsAsync(calendar, cancellationToken))
+        if (await ExistsByNameAsync(calendar, cancellationToken))
         {
             return CalendarErrors.NameAlreadyExists;
         }
@@ -90,9 +90,9 @@ public class CalendarManager(ICalendarRepository calendarRepository)
         return Result.Success();
     }
 
-    private async Task<bool> NameExistsAsync(Calendar calendar, CancellationToken cancellationToken)
+    private async Task<bool> ExistsByNameAsync(Calendar calendar, CancellationToken cancellationToken)
     {
-        var nameIsUnique = await calendarRepository.NameExistsAsync(calendar, cancellationToken);
+        var nameIsUnique = await calendarRepository.ExistsByNameAsync(calendar, cancellationToken);
 
         return nameIsUnique;
     }

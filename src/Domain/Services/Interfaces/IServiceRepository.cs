@@ -8,7 +8,7 @@ public interface IServiceRepository
 
     Task<Service?> GetByIdWithResourceTypesAsync(ServiceId serviceId, CancellationToken cancellationToken = default);
 
-    Task<bool> NameExistsAsync(string name, CancellationToken cancellationToken = default);
+    Task<bool> ExistsByNameAsync(string name, CancellationToken cancellationToken = default);
 
     Task AddAsync(Service service, CancellationToken cancellationToken = default);
 

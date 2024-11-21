@@ -6,9 +6,9 @@ public interface IResourceTypeRepository
 {
     Task<ResourceType?> GetByIdAsync(ResourceTypeId resourceTypeId, CancellationToken cancellationToken = default);
 
-    Task<bool> NameExistsAsync(ResourceTypeId resourceTypeId, string name, CancellationToken cancellationToken);
+    Task<bool> ExistsByNameAsync(ResourceTypeId resourceTypeId, string name, CancellationToken cancellationToken);
 
-    Task<bool> DescriptionExistsAsync(
+    Task<bool> ExistsByDescriptionAsync(
         ResourceTypeId resourceTypeId,
         string description,
         CancellationToken cancellationToken);

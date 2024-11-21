@@ -15,14 +15,14 @@ public class CalendarRepository(AppDbContext context) : ICalendarRepository
         return calendar;
     }
 
-    public Task<bool> CalendarIdExistsAsync(CalendarId calendarId, CancellationToken cancellationToken = default)
+    public Task<bool> ExistsByCalendarIdAsync(CalendarId calendarId, CancellationToken cancellationToken = default)
     {
         var exists = context.Calendars.AnyAsync(c => c.Id.Equals(calendarId), cancellationToken);
 
         return exists;
     }
 
-    public async Task<bool> NameExistsAsync(Calendar calendar, CancellationToken cancellationToken = default)
+    public async Task<bool> ExistsByNameAsync(Calendar calendar, CancellationToken cancellationToken = default)
     {
         var nameIsUnique = await context
             .Calendars

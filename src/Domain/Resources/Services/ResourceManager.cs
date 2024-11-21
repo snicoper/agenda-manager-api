@@ -22,12 +22,12 @@ public class ResourceManager(IResourceRepository resourceRepository)
         bool isActive,
         CancellationToken cancellationToken)
     {
-        if (await NameExistsAsync(resourceId, name, cancellationToken))
+        if (await ExistsByNameAsync(resourceId, name, cancellationToken))
         {
             return ResourceErrors.NameAlreadyExists;
         }
 
-        if (await DescriptionExistsAsync(resourceId, description, cancellationToken))
+        if (await ExistsByDescriptionAsync(resourceId, description, cancellationToken))
         {
             return ResourceErrors.DescriptionAlreadyExists;
         }
@@ -59,12 +59,12 @@ public class ResourceManager(IResourceRepository resourceRepository)
             return ResourceErrors.NotFound;
         }
 
-        if (await NameExistsAsync(resourceId, name, cancellationToken))
+        if (await ExistsByNameAsync(resourceId, name, cancellationToken))
         {
             return ResourceErrors.NameAlreadyExists;
         }
 
-        if (await DescriptionExistsAsync(resourceId, description, cancellationToken))
+        if (await ExistsByDescriptionAsync(resourceId, description, cancellationToken))
         {
             return ResourceErrors.DescriptionAlreadyExists;
         }
@@ -74,19 +74,19 @@ public class ResourceManager(IResourceRepository resourceRepository)
         return resource;
     }
 
-    private async Task<bool> NameExistsAsync(ResourceId resourceId, string name, CancellationToken cancellationToken)
+    private async Task<bool> ExistsByNameAsync(ResourceId resourceId, string name, CancellationToken cancellationToken)
     {
-        var exists = await resourceRepository.NameExistsAsync(resourceId, name, cancellationToken);
+        var exists = await resourceRepository.ExistsByNameAsync(resourceId, name, cancellationToken);
 
         return exists;
     }
 
-    private async Task<bool> DescriptionExistsAsync(
+    private async Task<bool> ExistsByDescriptionAsync(
         ResourceId resourceId,
         string name,
         CancellationToken cancellationToken)
     {
-        var exists = await resourceRepository.DescriptionExistsAsync(resourceId, name, cancellationToken);
+        var exists = await resourceRepository.ExistsByDescriptionAsync(resourceId, name, cancellationToken);
 
         return exists;
     }

@@ -1,4 +1,3 @@
-using AgendaManager.Application.Authentication.Interfaces;
 using AgendaManager.Application.Common.Interfaces.Clock;
 using AgendaManager.Application.Users.Services;
 using AgendaManager.Domain.Common.Interfaces;
@@ -112,7 +111,7 @@ public class AuditableEntityInterceptor(ICurrentUserProvider currentUserProvider
 
         var currentDateTime = dateTimeProvider.UtcNow;
         var currentUser = currentUserProvider.GetCurrentUser();
-        var currentUserId = currentUser?.Id.Value.ToString() ?? "System";
+        var currentUserId = currentUser?.UserId.Value.ToString() ?? "System";
 
         foreach (var entry in context.ChangeTracker.Entries())
         {

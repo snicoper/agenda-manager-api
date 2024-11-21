@@ -5,7 +5,6 @@ using AgendaManager.Domain.Authorization.Interfaces;
 using AgendaManager.Domain.Authorization.Services;
 using AgendaManager.Domain.Authorization.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
-using AgendaManager.Domain.Users.Events;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 using NSubstitute;
@@ -54,7 +53,7 @@ public class RoleManagerCreateTests
         var role = RoleFactory.CreateRole();
 
         // Act
-        _roleRepository.NameExistsAsync(Arg.Any<Role>(), CancellationToken.None).Returns(true);
+        _roleRepository.ExistsByNameAsync(Arg.Any<Role>(), CancellationToken.None).Returns(true);
         var roleResult = await _sut.CreateRoleAsync(role.Id, role.Name, role.Description, role.IsEditable);
 
         // Assert

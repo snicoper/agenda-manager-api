@@ -12,7 +12,7 @@ public interface IRoleRepository
 
     Task<bool> ExistsByIdAsync(RoleId roleId, CancellationToken cancellationToken);
 
-    Task<bool> NameExistsAsync(Role role, CancellationToken cancellationToken = default);
+    Task<bool> ExistsByNameAsync(Role role, CancellationToken cancellationToken = default);
 
     Task AddAsync(Role role, CancellationToken cancellationToken = default);
 

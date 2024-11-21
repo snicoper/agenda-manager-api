@@ -32,7 +32,7 @@ public class ServiceManagerUpdateTests
         // Arrange
         var service = ServiceFactory.CreateService();
         SetupServiceIdExistsServiceRepository(service);
-        SetupNameExistsServiceRepository(false);
+        SetupExistsByNameServiceRepository(false);
 
         // Act
         var result = await GetUpdatedServiceAsync(service);
@@ -62,7 +62,7 @@ public class ServiceManagerUpdateTests
         // Arrange
         var service = ServiceFactory.CreateService();
         SetupServiceIdExistsServiceRepository(service);
-        SetupNameExistsServiceRepository(true);
+        SetupExistsByNameServiceRepository(true);
 
         // Act
         var result = await GetUpdatedServiceAsync(service);
@@ -90,9 +90,9 @@ public class ServiceManagerUpdateTests
             .Returns(returnValue);
     }
 
-    private void SetupNameExistsServiceRepository(bool returnValue)
+    private void SetupExistsByNameServiceRepository(bool returnValue)
     {
-        _serviceRepository.NameExistsAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
+        _serviceRepository.ExistsByNameAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(returnValue);
     }
 }

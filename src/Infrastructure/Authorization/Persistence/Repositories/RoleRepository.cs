@@ -34,7 +34,7 @@ public class RoleRepository(AppDbContext context) : IRoleRepository
         return exists;
     }
 
-    public async Task<bool> NameExistsAsync(Role role, CancellationToken cancellationToken = default)
+    public async Task<bool> ExistsByNameAsync(Role role, CancellationToken cancellationToken = default)
     {
         var nameIsUnique = await context
             .Roles

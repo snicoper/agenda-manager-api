@@ -28,8 +28,8 @@ public class ResourceManagerCreateTests
     public async Task CreateResource_ShouldCreateResource_WhenResourceAreProvided()
     {
         // Arrange
-        SetupNameExistsResourceRepository(false);
-        SetupDescriptionExistsResourceRepository(false);
+        SetupExistsByNameResourceRepository(false);
+        SetupExistsDescriptionResourceRepository(false);
 
         // Act
         var result = await CreateResourceAsync();
@@ -45,7 +45,7 @@ public class ResourceManagerCreateTests
     public async Task CreateResource_ShouldFailure_WhenNameAlreadyExists()
     {
         // Arrange
-        SetupNameExistsResourceRepository(true);
+        SetupExistsByNameResourceRepository(true);
 
         // Act
         var result = await CreateResourceAsync();
@@ -58,8 +58,8 @@ public class ResourceManagerCreateTests
     public async Task CreateResource_ShouldFailure_WhenDescriptionAlreadyExists()
     {
         // Arrange
-        SetupNameExistsResourceRepository(false);
-        SetupDescriptionExistsResourceRepository(true);
+        SetupExistsByNameResourceRepository(false);
+        SetupExistsDescriptionResourceRepository(true);
 
         // Act
         var result = await CreateResourceAsync();
@@ -68,15 +68,15 @@ public class ResourceManagerCreateTests
         result.IsFailure.Should().BeTrue();
     }
 
-    private void SetupNameExistsResourceRepository(bool returnValue)
+    private void SetupExistsByNameResourceRepository(bool returnValue)
     {
-        _resourceRepository.NameExistsAsync(Arg.Any<ResourceId>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
+        _resourceRepository.ExistsByNameAsync(Arg.Any<ResourceId>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(returnValue);
     }
 
-    private void SetupDescriptionExistsResourceRepository(bool returnValue)
+    private void SetupExistsDescriptionResourceRepository(bool returnValue)
     {
-        _resourceRepository.DescriptionExistsAsync(
+        _resourceRepository.ExistsByDescriptionAsync(
                 Arg.Any<ResourceId>(),
                 Arg.Any<string>(),
                 Arg.Any<CancellationToken>())

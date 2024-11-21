@@ -26,7 +26,7 @@ public class ServiceRepository(AppDbContext context) : IServiceRepository
         return calendar;
     }
 
-    public async Task<bool> NameExistsAsync(string name, CancellationToken cancellationToken = default)
+    public async Task<bool> ExistsByNameAsync(string name, CancellationToken cancellationToken = default)
     {
         var exists = await context.Services.AnyAsync(s => s.Name == name, cancellationToken);
 

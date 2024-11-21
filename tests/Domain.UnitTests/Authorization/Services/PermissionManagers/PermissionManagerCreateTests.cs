@@ -5,7 +5,6 @@ using AgendaManager.Domain.Authorization.Interfaces;
 using AgendaManager.Domain.Authorization.Services;
 using AgendaManager.Domain.Authorization.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
-using AgendaManager.Domain.Users.Events;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 using NSubstitute;
@@ -49,7 +48,7 @@ public class PermissionManagerCreateTests
     public async Task CreatePermissionAsync_ShouldReturnResultFailure_WhenNameAlreadyExists()
     {
         // Act
-        _permissionRepository.NameExistsAsync(Arg.Any<Permission>(), CancellationToken.None).Returns(true);
+        _permissionRepository.ExistsByNameAsync(Arg.Any<Permission>(), CancellationToken.None).Returns(true);
         var permissionResult = await _sut.CreatePermissionAsync(_permission.Id, _permission.Name);
 
         // Assert

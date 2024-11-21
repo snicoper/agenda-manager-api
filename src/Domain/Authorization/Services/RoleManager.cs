@@ -11,10 +11,10 @@ public class RoleManager(IRoleRepository roleRepository)
         RoleId roleId,
         string name,
         string description,
-        bool editable = false,
+        bool isEditable = false,
         CancellationToken cancellationToken = default)
     {
-        Role role = new(roleId, name, description, editable);
+        Role role = new(roleId, name, description, isEditable);
 
         var validationResult = await IsValidAsync(role, cancellationToken);
         if (validationResult.IsFailure)
@@ -47,7 +47,7 @@ public class RoleManager(IRoleRepository roleRepository)
 
     private async Task<Result> IsValidAsync(Role role, CancellationToken cancellationToken)
     {
-        if (await NameExistsAsync(role, cancellationToken))
+        if (await ExistsByNameAsync(role, cancellationToken))
         {
             return RoleErrors.RoleNameAlreadyExists;
         }
@@ -55,9 +55,9 @@ public class RoleManager(IRoleRepository roleRepository)
         return Result.Success();
     }
 
-    private async Task<bool> NameExistsAsync(Role role, CancellationToken cancellationToken)
+    private async Task<bool> ExistsByNameAsync(Role role, CancellationToken cancellationToken)
     {
-        var nameIsUnique = await roleRepository.NameExistsAsync(role, cancellationToken);
+        var nameIsUnique = await roleRepository.ExistsByNameAsync(role, cancellationToken);
 
         return nameIsUnique;
     }

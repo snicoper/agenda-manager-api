@@ -19,12 +19,12 @@ public sealed class ResourceTypeManager(
         CancellationToken cancellationToken,
         RoleId? roleId = null)
     {
-        if (await NameExistsAsync(resourceTypeId, name, cancellationToken))
+        if (await ExistsByNameAsync(resourceTypeId, name, cancellationToken))
         {
             return ResourceTypeErrors.NameAlreadyExists;
         }
 
-        if (await DescriptionExistsAsync(resourceTypeId, description, cancellationToken))
+        if (await ExistsByDescriptionAsync(resourceTypeId, description, cancellationToken))
         {
             return ResourceTypeErrors.DescriptionExists;
         }
@@ -51,12 +51,12 @@ public sealed class ResourceTypeManager(
         string description,
         CancellationToken cancellationToken)
     {
-        if (await NameExistsAsync(resourceTypeId, name, cancellationToken))
+        if (await ExistsByNameAsync(resourceTypeId, name, cancellationToken))
         {
             return ResourceTypeErrors.NameAlreadyExists;
         }
 
-        if (await DescriptionExistsAsync(resourceTypeId, description, cancellationToken))
+        if (await ExistsByDescriptionAsync(resourceTypeId, description, cancellationToken))
         {
             return ResourceTypeErrors.DescriptionExists;
         }
@@ -75,22 +75,22 @@ public sealed class ResourceTypeManager(
         return Result.Success(resourceType);
     }
 
-    private async Task<bool> NameExistsAsync(
+    private async Task<bool> ExistsByNameAsync(
         ResourceTypeId resourceTypeId,
         string name,
         CancellationToken cancellationToken)
     {
-        var exists = await resourceTypeRepository.NameExistsAsync(resourceTypeId, name, cancellationToken);
+        var exists = await resourceTypeRepository.ExistsByNameAsync(resourceTypeId, name, cancellationToken);
 
         return exists;
     }
 
-    private async Task<bool> DescriptionExistsAsync(
+    private async Task<bool> ExistsByDescriptionAsync(
         ResourceTypeId resourceTypeId,
         string description,
         CancellationToken cancellationToken)
     {
-        var exists = await resourceTypeRepository.DescriptionExistsAsync(
+        var exists = await resourceTypeRepository.ExistsByDescriptionAsync(
             resourceTypeId,
             description,
             cancellationToken);

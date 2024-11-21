@@ -19,7 +19,7 @@ public class ResourceRepository(AppDbContext context) : IResourceRepository
         return resource;
     }
 
-    public async Task<bool> NameExistsAsync(
+    public async Task<bool> ExistsByNameAsync(
         ResourceId resourceId,
         string name,
         CancellationToken cancellationToken = default)
@@ -29,7 +29,7 @@ public class ResourceRepository(AppDbContext context) : IResourceRepository
         return exists;
     }
 
-    public async Task<bool> DescriptionExistsAsync(
+    public async Task<bool> ExistsByDescriptionAsync(
         ResourceId resourceId,
         string name,
         CancellationToken cancellationToken = default)

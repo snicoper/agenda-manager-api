@@ -31,7 +31,7 @@ public class ServiceManager(
             return CalendarErrors.CalendarNotFound.ToResult<Service>();
         }
 
-        if (await NameExistsAsync(name, cancellationToken))
+        if (await ExistsByNameAsync(name, cancellationToken))
         {
             return ServiceErrors.NameAlreadyExists;
         }
@@ -58,7 +58,7 @@ public class ServiceManager(
             return ServiceErrors.ServiceNotFound;
         }
 
-        if (await NameExistsAsync(name, cancellationToken))
+        if (await ExistsByNameAsync(name, cancellationToken))
         {
             return ServiceErrors.NameAlreadyExists;
         }
@@ -92,14 +92,14 @@ public class ServiceManager(
 
     private async Task<bool> CalendarIdExistsAsync(CalendarId calendarId, CancellationToken cancellationToken)
     {
-        var exists = await calendarRepository.CalendarIdExistsAsync(calendarId, cancellationToken);
+        var exists = await calendarRepository.ExistsByCalendarIdAsync(calendarId, cancellationToken);
 
         return exists;
     }
 
-    private async Task<bool> NameExistsAsync(string name, CancellationToken cancellationToken)
+    private async Task<bool> ExistsByNameAsync(string name, CancellationToken cancellationToken)
     {
-        var exists = await serviceRepository.NameExistsAsync(name, cancellationToken);
+        var exists = await serviceRepository.ExistsByNameAsync(name, cancellationToken);
 
         return exists;
     }

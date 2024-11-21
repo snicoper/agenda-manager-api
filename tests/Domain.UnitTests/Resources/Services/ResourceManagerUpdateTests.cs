@@ -31,8 +31,8 @@ public class ResourceManagerUpdateTests
     {
         // Arrange
         SetupGetByIdResourceRepository(_resourceUpdated);
-        SetupNameExistsResourceRepository(false);
-        SetupDescriptionExistsResourceRepository(false);
+        SetupExistsByNameResourceRepository(false);
+        SetupExistsDescriptionResourceRepository(false);
 
         // Act
         var result = await UpdateResourceAsync();
@@ -57,11 +57,11 @@ public class ResourceManagerUpdateTests
     }
 
     [Fact]
-    public async Task UpdateResource_ShouldFailure_WhenNameExists()
+    public async Task UpdateResource_ShouldFailure_WhenExistsByName()
     {
         // Arrange
         SetupGetByIdResourceRepository(_resourceUpdated);
-        SetupNameExistsResourceRepository(true);
+        SetupExistsByNameResourceRepository(true);
 
         // Act
         var result = await UpdateResourceAsync();
@@ -72,12 +72,12 @@ public class ResourceManagerUpdateTests
     }
 
     [Fact]
-    public async Task UpdateResource_ShouldFaiure_WhenDescriptionExists()
+    public async Task UpdateResource_ShouldFailure_WhenDescriptionExists()
     {
         // Arrange
         SetupGetByIdResourceRepository(_resourceUpdated);
-        SetupNameExistsResourceRepository(false);
-        SetupDescriptionExistsResourceRepository(true);
+        SetupExistsByNameResourceRepository(false);
+        SetupExistsDescriptionResourceRepository(true);
 
         // Act
         var result = await UpdateResourceAsync();
@@ -93,15 +93,15 @@ public class ResourceManagerUpdateTests
             .Returns(returnValue);
     }
 
-    private void SetupNameExistsResourceRepository(bool returnValue)
+    private void SetupExistsByNameResourceRepository(bool returnValue)
     {
-        _resourceRepository.NameExistsAsync(Arg.Any<ResourceId>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
+        _resourceRepository.ExistsByNameAsync(Arg.Any<ResourceId>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(returnValue);
     }
 
-    private void SetupDescriptionExistsResourceRepository(bool returnValue)
+    private void SetupExistsDescriptionResourceRepository(bool returnValue)
     {
-        _resourceRepository.DescriptionExistsAsync(
+        _resourceRepository.ExistsByDescriptionAsync(
                 Arg.Any<ResourceId>(),
                 Arg.Any<string>(),
                 Arg.Any<CancellationToken>())

@@ -19,7 +19,7 @@ public class PermissionRepository(AppDbContext context) : IPermissionRepository
         return permission;
     }
 
-    public Task<bool> NameExistsAsync(Permission permission, CancellationToken cancellationToken = default)
+    public Task<bool> ExistsByNameAsync(Permission permission, CancellationToken cancellationToken = default)
     {
         var nameIsUnique = context
             .Permissions
