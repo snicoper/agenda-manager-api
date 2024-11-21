@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Testcontainers.PostgreSql;
 
@@ -29,11 +29,21 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
     {
         builder.UseEnvironment("Test");
 
+        builder.ConfigureAppConfiguration(
+            (_, configBuilder) =>
+            {
+                configBuilder.AddInMemoryCollection(
+                    new Dictionary<string, string?>
+                    {
+                        ["ConnectionStrings:DefaultConnection"] = _dbContainer.GetConnectionString()
+                    });
+            });
+
         builder.ConfigureTestServices(
             services =>
             {
-                var dbContextDescriptor =
-                    services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
+                var dbContextDescriptor = services
+                    .SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
 
                 if (dbContextDescriptor is not null)
                 {
@@ -41,10 +51,10 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
                 }
 
                 services.AddDbContext<AppDbContext>(
-                    (provider, options) =>
+                    (_, options) =>
                     {
                         options.UseNpgsql(_dbContainer.GetConnectionString());
-                        options.AddInterceptors(provider.GetServices<ISaveChangesInterceptor>());
+                        options.EnableSensitiveDataLogging();
                     });
             });
     }
