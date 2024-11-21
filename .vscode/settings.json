@@ -1,3 +1,15 @@
 {
-  "cSpell.words": ["Behaviour", "Behaviours", "dotnet", "Hasher", "Mediat"]
+  "cSpell.words": [
+    "Behaviour",
+    "Behaviours",
+    "dotnet",
+    "Hasher",
+    "Mediat",
+    "Npgsql",
+    "Postgre",
+    "Serilog",
+    "Swashbuckle",
+    "Testcontainers",
+    "xunit"
+  ]
 }
