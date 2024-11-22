@@ -7,12 +7,12 @@ using AgendaManager.Domain.Common.Responses;
 
 namespace AgendaManager.Domain.Appointments.Policies;
 
-public class AppointmentCreationStrategyPolicy : IAppointmentCreationStrategyPolicy
+public class AppointmentConfirmationStrategyPolicy : IAppointmentConfirmationStrategyPolicy
 {
     public Result<AppointmentStatus> DetermineInitialStatus(List<CalendarConfiguration> configurations)
     {
         var creationStrategy = configurations.SingleOrDefault(
-            cc => cc.Category == CalendarConfigurationKeys.Appointments.CreationStrategy);
+            cc => cc.Category == CalendarConfigurationKeys.Appointments.ConfirmationStrategy);
 
         if (creationStrategy is null)
         {
@@ -20,7 +20,7 @@ public class AppointmentCreationStrategyPolicy : IAppointmentCreationStrategyPol
         }
 
         var defaultStatus = creationStrategy.SelectedKey
-            is CalendarConfigurationKeys.Appointments.CreationOptions.RequireConfirmation
+            is CalendarConfigurationKeys.Appointments.ConfirmationOptions.RequireConfirmation
             ? AppointmentStatus.Pending
             : AppointmentStatus.Accepted;
 

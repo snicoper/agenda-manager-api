@@ -20,7 +20,7 @@ public class ResourceAvailabilityPolicy(IResourceRepository resourceRepository)
         CancellationToken cancellationToken = default)
     {
         var configuration = configurations.FirstOrDefault(
-            cc => cc.Category == CalendarConfigurationKeys.ResourcesSchedules.ResourcesScheduleValidationStrategy);
+            cc => cc.Category == CalendarConfigurationKeys.ResourcesSchedules.AvailabilityStrategy);
 
         if (configuration == null)
         {
@@ -28,8 +28,8 @@ public class ResourceAvailabilityPolicy(IResourceRepository resourceRepository)
         }
 
         // If not required validate availability, return success.
-        if (configuration.SelectedKey is CalendarConfigurationKeys.ResourcesSchedules.SchedulesValidationOptions
-                .NotValidate)
+        if (configuration.SelectedKey is CalendarConfigurationKeys.ResourcesSchedules.AvailabilityOptions
+                .IgnoreSchedules)
         {
             return Result.Success();
         }

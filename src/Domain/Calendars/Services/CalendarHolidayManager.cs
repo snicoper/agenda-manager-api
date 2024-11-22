@@ -25,13 +25,13 @@ public class CalendarHolidayManager(
         string description,
         CancellationToken cancellationToken)
     {
-        var holidayCreateStrategy = await calendarConfigurationRepository
+        var holidayConflictStrategy = await calendarConfigurationRepository
             .GetBySelectedKeyAsync(
                 calendarId: calendarId,
-                selectedKey: CalendarConfigurationKeys.Holidays.CreateStrategy,
+                selectedKey: CalendarConfigurationKeys.Holidays.ConflictStrategy,
                 cancellationToken: cancellationToken);
 
-        if (holidayCreateStrategy is null)
+        if (holidayConflictStrategy is null)
         {
             return CalendarConfigurationErrors.KeyNotFound;
         }
@@ -43,18 +43,19 @@ public class CalendarHolidayManager(
 
         if (overlappingAppointments.Count != 0)
         {
-            switch (holidayCreateStrategy.SelectedKey)
+            switch (holidayConflictStrategy.SelectedKey)
             {
-                case CalendarConfigurationKeys.Holidays.CreationOptions.RejectIfOverlapping:
+                case CalendarConfigurationKeys.Holidays.ConflictOptions.RejectIfOverlapping:
                     return CalendarHolidayErrors.CreateOverlappingReject;
-                case CalendarConfigurationKeys.Holidays.CreationOptions.CancelOverlapping:
+                case CalendarConfigurationKeys.Holidays.ConflictOptions.CancelOverlapping:
                     CancelOverlappingAppointments(overlappingAppointments);
                     break;
-                case CalendarConfigurationKeys.Holidays.CreationOptions.AllowOverlapping:
+                case CalendarConfigurationKeys.Holidays.ConflictOptions.AllowOverlapping:
                     // Continuar con la creación del holiday.
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException($"{holidayCreateStrategy.SelectedKey} is not a valid value.");
+                    throw new ArgumentOutOfRangeException(
+                        $"{holidayConflictStrategy.SelectedKey} is not a valid value.");
             }
         }
 

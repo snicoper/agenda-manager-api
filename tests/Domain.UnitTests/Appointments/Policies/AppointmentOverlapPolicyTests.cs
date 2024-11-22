@@ -55,8 +55,8 @@ public class AppointmentOverlapPolicyTests
     {
         // Arrange
         var configuration = CalendarConfigurationFactory.CreateCalendarConfiguration(
-            category: CalendarConfigurationKeys.Appointments.CreationStrategy,
-            selectedKey: CalendarConfigurationKeys.Appointments.CreationOptions.RequireConfirmation);
+            category: CalendarConfigurationKeys.Appointments.ConfirmationStrategy,
+            selectedKey: CalendarConfigurationKeys.Appointments.ConfirmationOptions.RequireConfirmation);
 
         List<CalendarConfiguration> configurations = [configuration];
 

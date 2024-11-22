@@ -19,7 +19,7 @@ public sealed class AppointmentManager(
     ICalendarConfigurationRepository configurationRepository,
     IAppointmentRepository appointmentRepository,
     ICalendarHolidayAvailabilityPolicy holidayAvailabilityPolicy,
-    IAppointmentCreationStrategyPolicy creationStrategyPolicy,
+    IAppointmentConfirmationStrategyPolicy confirmationStrategyPolicy,
     IAppointmentOverlapPolicy overlapPolicy,
     IResourceAvailabilityPolicy resourceAvailabilityPolicy,
     IServiceRequirementsPolicy serviceRequirementsPolicy)
@@ -37,7 +37,7 @@ public sealed class AppointmentManager(
             .GetConfigurationsByCalendarIdAsync(calendarId, cancellationToken);
 
         // 2. Determine initial state based on creation strategy.
-        var statusResult = creationStrategyPolicy.DetermineInitialStatus(configurations);
+        var statusResult = confirmationStrategyPolicy.DetermineInitialStatus(configurations);
 
         // 3. Validate calendar and holidays.
         var holidayResult = await holidayAvailabilityPolicy.IsAvailableAsync(calendarId, period, cancellationToken);

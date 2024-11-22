@@ -5,15 +5,15 @@ public static class CalendarConfigurationKeys
     public static class Appointments
     {
         // Determines the creation strategy for appointments.
-        public const string CreationStrategy = "AppointmentCreationStrategy";
+        public const string ConfirmationStrategy = "AppointmentConfirmationStrategy";
 
         // Determines the overlapping strategy for appointments.
         public const string OverlappingStrategy = "AppointmentOverlappingStrategy";
 
-        public static class CreationOptions
+        public static class ConfirmationOptions
         {
             public const string RequireConfirmation = nameof(RequireConfirmation);
-            public const string Direct = nameof(Direct);
+            public const string AutoAccept = nameof(AutoAccept);
         }
 
         public static class OverlappingOptions
@@ -26,21 +26,21 @@ public static class CalendarConfigurationKeys
     public static class ResourcesSchedules
     {
         // Determines the resources schedule validation strategy for appointments.
-        public const string ResourcesScheduleValidationStrategy = "ResourcesSchedulesValidationStrategy";
+        public const string AvailabilityStrategy = "ResourceAvailabilityStrategy";
 
-        public static class SchedulesValidationOptions
+        public static class AvailabilityOptions
         {
-            public const string Validate = nameof(Validate);
-            public const string NotValidate = nameof(NotValidate);
+            public const string ValidateSchedules = nameof(ValidateSchedules);
+            public const string IgnoreSchedules = nameof(IgnoreSchedules);
         }
     }
 
     public static class Holidays
     {
         // Determines the creation strategy for holidays.
-        public const string CreateStrategy = "HolidayCreateStrategy";
+        public const string ConflictStrategy = "HolidayConflictStrategy";
 
-        public static class CreationOptions
+        public static class ConflictOptions
         {
             public const string RejectIfOverlapping = nameof(RejectIfOverlapping);
             public const string CancelOverlapping = nameof(CancelOverlapping);
@@ -61,13 +61,13 @@ public static class CalendarConfigurationKeys
             new Dictionary<string, ConfigurationOption>
             {
                 // Appointment Creation Strategy.
-                [Appointments.CreationStrategy] = new(
-                    category: Appointments.CreationStrategy,
-                    defaultKey: Appointments.CreationOptions.Direct,
+                [Appointments.ConfirmationStrategy] = new(
+                    category: Appointments.ConfirmationStrategy,
+                    defaultKey: Appointments.ConfirmationOptions.AutoAccept,
                     availableKeys:
                     [
-                        Appointments.CreationOptions.Direct,
-                        Appointments.CreationOptions.RequireConfirmation
+                        Appointments.ConfirmationOptions.AutoAccept,
+                        Appointments.ConfirmationOptions.RequireConfirmation
                     ],
                     description: "Defines how appointments are created"),
 
@@ -83,25 +83,25 @@ public static class CalendarConfigurationKeys
                     description: "Defines how overlapping appointments are handled"),
 
                 // Appointment Resources Schedule Validation Strategy.
-                [ResourcesSchedules.ResourcesScheduleValidationStrategy] = new(
-                    category: ResourcesSchedules.ResourcesScheduleValidationStrategy,
-                    defaultKey: ResourcesSchedules.SchedulesValidationOptions.Validate,
+                [ResourcesSchedules.AvailabilityStrategy] = new(
+                    category: ResourcesSchedules.AvailabilityStrategy,
+                    defaultKey: ResourcesSchedules.AvailabilityOptions.ValidateSchedules,
                     availableKeys:
                     [
-                        ResourcesSchedules.SchedulesValidationOptions.Validate,
-                        ResourcesSchedules.SchedulesValidationOptions.NotValidate
+                        ResourcesSchedules.AvailabilityOptions.ValidateSchedules,
+                        ResourcesSchedules.AvailabilityOptions.IgnoreSchedules
                     ],
                     description: "Defines how resources schedule validation is handled"),
 
                 // Holiday Creation Strategy.
-                [Holidays.CreateStrategy] = new(
-                    category: Holidays.CreateStrategy,
-                    defaultKey: Holidays.CreationOptions.RejectIfOverlapping,
+                [Holidays.ConflictStrategy] = new(
+                    category: Holidays.ConflictStrategy,
+                    defaultKey: Holidays.ConflictOptions.RejectIfOverlapping,
                     availableKeys:
                     [
-                        Holidays.CreationOptions.RejectIfOverlapping,
-                        Holidays.CreationOptions.CancelOverlapping,
-                        Holidays.CreationOptions.AllowOverlapping
+                        Holidays.ConflictOptions.RejectIfOverlapping,
+                        Holidays.ConflictOptions.CancelOverlapping,
+                        Holidays.ConflictOptions.AllowOverlapping
                     ],
                     description: "Defines how holidays interact with existing appointments"),
 

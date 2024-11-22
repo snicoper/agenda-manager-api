@@ -46,7 +46,7 @@ public static class DependencyInjection
 
     private static void AddCalendarsDomain(this IServiceCollection services)
     {
-        services.AddScoped<CalendarManagerCreate>();
+        services.AddScoped<CalendarManager>();
 
         services.AddTransient<ICalendarHolidayAvailabilityPolicy, CalendarHolidayAvailabilityPolicy>();
         services.AddTransient<ICalendarNameValidationPolicy, CalendarNameValidationPolicy>();
@@ -79,7 +79,7 @@ public static class DependencyInjection
         services.AddScoped<AppointmentManager>();
 
         services.AddTransient<IAppointmentOverlapPolicy, AppointmentOverlapPolicy>();
-        services.AddTransient<IAppointmentCreationStrategyPolicy, AppointmentCreationStrategyPolicy>();
+        services.AddTransient<IAppointmentConfirmationStrategyPolicy, AppointmentConfirmationStrategyPolicy>();
         services.AddTransient<IAppointmentOverlapPolicy, AppointmentOverlapPolicy>();
         services.AddTransient<IHasAppointmentsInCalendarPolicy, HasAppointmentsInCalendarPolicy>();
     }

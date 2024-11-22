@@ -11,8 +11,8 @@ public class CalendarUpdateConfigurationTests
     public void UpdateConfiguration_ShouldUpdate_WhenConfigurationExists()
     {
         // Arrange
-        const string initialSelectedKey = CalendarConfigurationKeys.Appointments.CreationOptions.RequireConfirmation;
-        const string newSelectedKey = CalendarConfigurationKeys.Appointments.CreationOptions.Direct;
+        const string initialSelectedKey = CalendarConfigurationKeys.Appointments.ConfirmationOptions.RequireConfirmation;
+        const string newSelectedKey = CalendarConfigurationKeys.Appointments.ConfirmationOptions.AutoAccept;
         var calendar = CalendarFactory.CreateCalendar();
         var configuration = CalendarConfigurationFactory.CreateCalendarConfiguration(selectedKey: initialSelectedKey);
         calendar.AddConfiguration(configuration);
@@ -20,7 +20,7 @@ public class CalendarUpdateConfigurationTests
         // Act
         calendar.UpdateConfiguration(
             configurationId: configuration.Id,
-            category: CalendarConfigurationKeys.Appointments.CreationStrategy,
+            category: CalendarConfigurationKeys.Appointments.ConfirmationStrategy,
             selectedKey: newSelectedKey);
 
         // Assert
@@ -31,8 +31,8 @@ public class CalendarUpdateConfigurationTests
     public void UpdateConfiguration_ShouldRaiseEvent_WhenConfigurationExists()
     {
         // Arrange
-        const string initialSelectedKey = CalendarConfigurationKeys.Appointments.CreationOptions.RequireConfirmation;
-        const string newSelectedKey = CalendarConfigurationKeys.Appointments.CreationOptions.Direct;
+        const string initialSelectedKey = CalendarConfigurationKeys.Appointments.ConfirmationOptions.RequireConfirmation;
+        const string newSelectedKey = CalendarConfigurationKeys.Appointments.ConfirmationOptions.AutoAccept;
         var calendar = CalendarFactory.CreateCalendar();
         var configuration = CalendarConfigurationFactory.CreateCalendarConfiguration(selectedKey: initialSelectedKey);
         calendar.AddConfiguration(configuration);
@@ -40,7 +40,7 @@ public class CalendarUpdateConfigurationTests
         // Act
         calendar.UpdateConfiguration(
             configurationId: configuration.Id,
-            category: CalendarConfigurationKeys.Appointments.CreationStrategy,
+            category: CalendarConfigurationKeys.Appointments.ConfirmationStrategy,
             selectedKey: newSelectedKey);
 
         // Assert

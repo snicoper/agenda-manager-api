@@ -22,7 +22,7 @@ public abstract class AppointmentManagerTestsBase
     private readonly ICalendarConfigurationRepository _configurationRepository;
     private readonly IAppointmentRepository _appointmentRepository;
     private readonly ICalendarHolidayAvailabilityPolicy _holidayAvailabilityPolicy;
-    private readonly IAppointmentCreationStrategyPolicy _creationStrategyPolicy;
+    private readonly IAppointmentConfirmationStrategyPolicy _confirmationStrategyPolicy;
     private readonly IAppointmentOverlapPolicy _overlapPolicy;
     private readonly IResourceAvailabilityPolicy _resourceAvailabilityPolicy;
     private readonly IServiceRequirementsPolicy _serviceRequirementsPolicy;
@@ -32,7 +32,7 @@ public abstract class AppointmentManagerTestsBase
         _configurationRepository = Substitute.For<ICalendarConfigurationRepository>();
         _appointmentRepository = Substitute.For<IAppointmentRepository>();
         _holidayAvailabilityPolicy = Substitute.For<ICalendarHolidayAvailabilityPolicy>();
-        _creationStrategyPolicy = Substitute.For<IAppointmentCreationStrategyPolicy>();
+        _confirmationStrategyPolicy = Substitute.For<IAppointmentConfirmationStrategyPolicy>();
         _overlapPolicy = Substitute.For<IAppointmentOverlapPolicy>();
         _resourceAvailabilityPolicy = Substitute.For<IResourceAvailabilityPolicy>();
         _serviceRequirementsPolicy = Substitute.For<IServiceRequirementsPolicy>();
@@ -41,7 +41,7 @@ public abstract class AppointmentManagerTestsBase
             _configurationRepository,
             _appointmentRepository,
             _holidayAvailabilityPolicy,
-            _creationStrategyPolicy,
+            _confirmationStrategyPolicy,
             _overlapPolicy,
             _resourceAvailabilityPolicy,
             _serviceRequirementsPolicy);
@@ -62,7 +62,7 @@ public abstract class AppointmentManagerTestsBase
     {
         result ??= Result.Success(AppointmentStatus.Accepted);
 
-        _creationStrategyPolicy.DetermineInitialStatus(Arg.Any<List<CalendarConfiguration>>())
+        _confirmationStrategyPolicy.DetermineInitialStatus(Arg.Any<List<CalendarConfiguration>>())
             .Returns(result);
     }
 

@@ -29,8 +29,8 @@ public class ResourceAvailabilityPolicyTests
         // Arrange
         List<Resource> resources = [ResourceFactory.CreateResource()];
         var calendarConfiguration = CalendarConfigurationFactory.CreateCalendarConfiguration(
-            category: CalendarConfigurationKeys.ResourcesSchedules.ResourcesScheduleValidationStrategy,
-            selectedKey: CalendarConfigurationKeys.ResourcesSchedules.SchedulesValidationOptions.NotValidate);
+            category: CalendarConfigurationKeys.ResourcesSchedules.AvailabilityStrategy,
+            selectedKey: CalendarConfigurationKeys.ResourcesSchedules.AvailabilityOptions.IgnoreSchedules);
 
         var calendarId = CalendarId.Create();
         var period = PeriodFactory.Create();

@@ -12,13 +12,13 @@ public class CalendarConfigurationUpdateTests
     {
         // Arrange
         var configuration = CalendarConfigurationFactory.CreateCalendarConfiguration(
-            category: CalendarConfigurationKeys.Appointments.CreationStrategy,
-            selectedKey: CalendarConfigurationKeys.Appointments.CreationOptions.RequireConfirmation);
+            category: CalendarConfigurationKeys.Appointments.ConfirmationStrategy,
+            selectedKey: CalendarConfigurationKeys.Appointments.ConfirmationOptions.RequireConfirmation);
 
         // Act
         var updatedConfiguration = configuration.Update(
-            category: CalendarConfigurationKeys.Appointments.CreationStrategy,
-            selectedKey: CalendarConfigurationKeys.Appointments.CreationOptions.Direct);
+            category: CalendarConfigurationKeys.Appointments.ConfirmationStrategy,
+            selectedKey: CalendarConfigurationKeys.Appointments.ConfirmationOptions.AutoAccept);
 
         // Assert
         updatedConfiguration.Should().BeTrue();
@@ -29,13 +29,13 @@ public class CalendarConfigurationUpdateTests
     {
         // Arrange
         var configuration = CalendarConfigurationFactory.CreateCalendarConfiguration(
-            category: CalendarConfigurationKeys.Appointments.CreationStrategy,
-            selectedKey: CalendarConfigurationKeys.Appointments.CreationOptions.RequireConfirmation);
+            category: CalendarConfigurationKeys.Appointments.ConfirmationStrategy,
+            selectedKey: CalendarConfigurationKeys.Appointments.ConfirmationOptions.RequireConfirmation);
 
         // Act
         var updatedConfiguration = configuration.Update(
-            category: CalendarConfigurationKeys.Appointments.CreationStrategy,
-            selectedKey: CalendarConfigurationKeys.Appointments.CreationOptions.RequireConfirmation);
+            category: CalendarConfigurationKeys.Appointments.ConfirmationStrategy,
+            selectedKey: CalendarConfigurationKeys.Appointments.ConfirmationOptions.RequireConfirmation);
 
         // Assert
         updatedConfiguration.Should().BeFalse();
@@ -84,13 +84,13 @@ public class CalendarConfigurationUpdateTests
     {
         // Arrange
         var configuration = CalendarConfigurationFactory.CreateCalendarConfiguration(
-            category: CalendarConfigurationKeys.Appointments.CreationStrategy,
-            selectedKey: CalendarConfigurationKeys.Appointments.CreationOptions.RequireConfirmation);
+            category: CalendarConfigurationKeys.Appointments.ConfirmationStrategy,
+            selectedKey: CalendarConfigurationKeys.Appointments.ConfirmationOptions.RequireConfirmation);
 
         // Act
         var action = () => configuration.Update(
             category: "CategoryNotExist",
-            selectedKey: CalendarConfigurationKeys.Appointments.CreationOptions.RequireConfirmation);
+            selectedKey: CalendarConfigurationKeys.Appointments.ConfirmationOptions.RequireConfirmation);
 
         // Assert
         action.Should().Throw<CalendarConfigurationDomainException>()

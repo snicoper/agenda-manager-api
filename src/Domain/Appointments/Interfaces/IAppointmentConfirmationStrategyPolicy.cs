@@ -4,7 +4,7 @@ using AgendaManager.Domain.Common.Responses;
 
 namespace AgendaManager.Domain.Appointments.Interfaces;
 
-public interface IAppointmentCreationStrategyPolicy
+public interface IAppointmentConfirmationStrategyPolicy
 {
     Result<AppointmentStatus> DetermineInitialStatus(List<CalendarConfiguration> configurations);
 }

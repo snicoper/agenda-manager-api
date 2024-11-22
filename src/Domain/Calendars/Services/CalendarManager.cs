@@ -11,7 +11,7 @@ using AgendaManager.Domain.Services.Interfaces;
 
 namespace AgendaManager.Domain.Calendars.Services;
 
-public class CalendarManagerCreate(
+public class CalendarManager(
     ICalendarRepository calendarRepository,
     ICalendarNameValidationPolicy calendarNameValidationPolicy,
     IHasAppointmentsInCalendarPolicy appointmentsInCalendarPolicy,

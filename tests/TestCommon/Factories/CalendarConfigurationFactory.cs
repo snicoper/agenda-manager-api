@@ -15,8 +15,8 @@ public static class CalendarConfigurationFactory
         var calendarConfiguration = CalendarConfiguration.Create(
             id: id ?? CalendarConfigurationId.Create(),
             calendarId: calendarId ?? CalendarId.Create(),
-            category: category ?? CalendarConfigurationKeys.Appointments.CreationStrategy,
-            selectedKey: selectedKey ?? CalendarConfigurationKeys.Appointments.CreationOptions.RequireConfirmation);
+            category: category ?? CalendarConfigurationKeys.Appointments.ConfirmationStrategy,
+            selectedKey: selectedKey ?? CalendarConfigurationKeys.Appointments.ConfirmationOptions.RequireConfirmation);
 
         return calendarConfiguration;
     }

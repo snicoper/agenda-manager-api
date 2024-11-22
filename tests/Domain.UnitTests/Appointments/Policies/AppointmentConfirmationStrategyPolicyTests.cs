@@ -9,18 +9,18 @@ using FluentAssertions;
 
 namespace AgendaManager.Domain.UnitTests.Appointments.Policies;
 
-public class AppointmentCreationStrategyPolicyTests
+public class AppointmentConfirmationStrategyPolicyTests
 {
     [Fact]
     public void DetermineInitialStatus_ShouldReturnPending_WhenRequireConfirmationIsProvided()
     {
         // Arrange
         var configuration = CalendarConfigurationFactory.CreateCalendarConfiguration(
-            category: CalendarConfigurationKeys.Appointments.CreationStrategy,
-            selectedKey: CalendarConfigurationKeys.Appointments.CreationOptions.RequireConfirmation);
+            category: CalendarConfigurationKeys.Appointments.ConfirmationStrategy,
+            selectedKey: CalendarConfigurationKeys.Appointments.ConfirmationOptions.RequireConfirmation);
 
         List<CalendarConfiguration> configurations = [configuration];
-        AppointmentCreationStrategyPolicy policy = new();
+        AppointmentConfirmationStrategyPolicy policy = new();
 
         // Act
         var result = policy.DetermineInitialStatus(configurations);
@@ -35,11 +35,11 @@ public class AppointmentCreationStrategyPolicyTests
     {
         // Arrange
         var configuration = CalendarConfigurationFactory.CreateCalendarConfiguration(
-            category: CalendarConfigurationKeys.Appointments.CreationStrategy,
-            selectedKey: CalendarConfigurationKeys.Appointments.CreationOptions.Direct);
+            category: CalendarConfigurationKeys.Appointments.ConfirmationStrategy,
+            selectedKey: CalendarConfigurationKeys.Appointments.ConfirmationOptions.AutoAccept);
 
         List<CalendarConfiguration> configurations = [configuration];
-        AppointmentCreationStrategyPolicy policy = new();
+        AppointmentConfirmationStrategyPolicy policy = new();
 
         // Act
         var result = policy.DetermineInitialStatus(configurations);
@@ -54,7 +54,7 @@ public class AppointmentCreationStrategyPolicyTests
     {
         // Arrange
         List<CalendarConfiguration> configurations = [];
-        AppointmentCreationStrategyPolicy policy = new();
+        AppointmentConfirmationStrategyPolicy policy = new();
 
         // Act
         var result = policy.DetermineInitialStatus(configurations);

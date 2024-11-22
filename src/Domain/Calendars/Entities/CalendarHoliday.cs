@@ -62,7 +62,7 @@ public sealed class CalendarHoliday : AggregateRoot
             name,
             description);
 
-        calendarHoliday.AddDomainEvent(new CalendarHolidayCreatedDomainEvent(calendarHoliday.Id));
+        calendarHoliday.AddDomainEvent(new CalendarHolidayCreatedDomainEvent(calendarHolidayId));
 
         return calendarHoliday;
     }

@@ -51,7 +51,7 @@ public class CalendarConfigurationCreateTests
         // Act
         var action = () => CalendarConfigurationFactory.CreateCalendarConfiguration(
             category: "CategoryNotExist",
-            selectedKey: CalendarConfigurationKeys.Appointments.CreationOptions.RequireConfirmation);
+            selectedKey: CalendarConfigurationKeys.Appointments.ConfirmationOptions.RequireConfirmation);
 
         // Assert
         action.Should().Throw<CalendarConfigurationDomainException>()

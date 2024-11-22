@@ -1,6 +1,5 @@
 ﻿using AgendaManager.Domain.Appointments.Interfaces;
 using AgendaManager.Domain.Calendars.Interfaces;
-using AgendaManager.Domain.Calendars.Services;
 using AgendaManager.Domain.Resources.Interfaces;
 using AgendaManager.Domain.Services.Interfaces;
 using NSubstitute;
@@ -17,7 +16,7 @@ public abstract class CalendarManagerBase
         ResourcesInCalendarPolicy = Substitute.For<IHasResourcesInCalendarPolicy>();
         ServicesInCalendarPolicy = Substitute.For<IHasServicesInCalendarPolicy>();
 
-        Sut = new CalendarManagerCreate(
+        Sut = new Domain.Calendars.Services.CalendarManager(
             CalendarRepository,
             CalendarNameValidationPolicy,
             AppointmentsInCalendarPolicy,
@@ -35,5 +34,5 @@ public abstract class CalendarManagerBase
 
     protected IHasServicesInCalendarPolicy ServicesInCalendarPolicy { get; }
 
-    protected CalendarManagerCreate Sut { get; }
+    protected Domain.Calendars.Services.CalendarManager Sut { get; }
 }
