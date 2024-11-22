@@ -31,7 +31,7 @@ public class ServiceManagerCreateTests
     {
         // Arrange
         var serviceManager = ServiceFactory.CreateService();
-        SetupCalendarIdExistsCalendarRepository(false);
+        SetupCalendarIdExistsCalendarRepository(true);
         SetupExistsByNameServiceRepository(false);
 
         // Act
@@ -53,7 +53,7 @@ public class ServiceManagerCreateTests
     {
         // Arrange
         var serviceManager = ServiceFactory.CreateService();
-        SetupCalendarIdExistsCalendarRepository(true);
+        SetupCalendarIdExistsCalendarRepository(false);
 
         // Act
         var result = await _sut.CreateServiceAsync(
@@ -75,7 +75,7 @@ public class ServiceManagerCreateTests
     {
         // Arrange
         var serviceManager = ServiceFactory.CreateService();
-        SetupCalendarIdExistsCalendarRepository(false);
+        SetupCalendarIdExistsCalendarRepository(true);
         SetupExistsByNameServiceRepository(true);
 
         // Act

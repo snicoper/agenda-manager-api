@@ -26,7 +26,7 @@ public class ServiceManager(
         bool isActive = true,
         CancellationToken cancellationToken = default)
     {
-        if (await CalendarIdExistsAsync(calendarId, cancellationToken))
+        if (!await CalendarIdExistsAsync(calendarId, cancellationToken))
         {
             return CalendarErrors.CalendarNotFound.ToResult<Service>();
         }
