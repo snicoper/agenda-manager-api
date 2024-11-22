@@ -80,6 +80,11 @@ public class AppointmentRepository(AppDbContext context) : IAppointmentRepositor
         context.Appointments.Update(appointment);
     }
 
+    public void UpdateRange(List<Appointment> appointments)
+    {
+        context.Appointments.UpdateRange(appointments);
+    }
+
     public void Delete(Appointment appointment)
     {
         context.Appointments.Remove(appointment);

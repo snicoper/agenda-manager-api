@@ -8,9 +8,9 @@ using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 using NSubstitute;
 
-namespace AgendaManager.Domain.UnitTests.Calendars.Services.CalendarManager;
+namespace AgendaManager.Domain.UnitTests.Calendars.Services.CalendarManagerTests;
 
-public class CalendarManagerCreateTests : CalendarManagerBase
+public class CalendarManagerCreateTests : CalendarManagerTestsBase
 {
     [Fact]
     public async Task Create_ShouldReturnSucceed_WhenValidParametersProvided()

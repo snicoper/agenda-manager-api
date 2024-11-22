@@ -3,9 +3,9 @@ using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 using NSubstitute;
 
-namespace AgendaManager.Domain.UnitTests.Calendars.Services.CalendarManager;
+namespace AgendaManager.Domain.UnitTests.Calendars.Services.CalendarManagerTests;
 
-public class CalendarManagerDeleteTests : CalendarManagerBase
+public class CalendarManagerDeleteTests : CalendarManagerTestsBase
 {
     [Fact]
     public async Task Delete_ShouldReturnSucceed_WhenValidParametersProvided()

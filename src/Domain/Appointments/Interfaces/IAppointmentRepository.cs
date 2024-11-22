@@ -28,5 +28,7 @@ public interface IAppointmentRepository
 
     void Update(Appointment appointment);
 
+    void UpdateRange(List<Appointment> appointments);
+
     void Delete(Appointment appointment);
 }

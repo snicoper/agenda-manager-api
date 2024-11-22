@@ -12,7 +12,7 @@ using AgendaManager.Domain.Common.WekDays;
 
 namespace AgendaManager.Domain.Calendars.Services;
 
-public class CalendarHolidayManager(
+public sealed class CalendarHolidayManager(
     ICalendarRepository calendarRepository,
     ICalendarConfigurationRepository calendarConfigurationRepository,
     IAppointmentRepository appointmentRepository)
@@ -85,7 +85,8 @@ public class CalendarHolidayManager(
         foreach (var appointment in overlappingAppointments)
         {
             appointment.ChangeState(AppointmentStatus.Cancelled, "Cancelled by holiday creation.");
-            appointmentRepository.Update(appointment);
         }
+
+        appointmentRepository.UpdateRange(overlappingAppointments);
     }
 }

@@ -50,10 +50,10 @@ public sealed class AppointmentManager(
 
         // 4. Validate appointment overlapping if required.
         var overlapResult = await overlapPolicy.IsOverlappingAsync(
-            calendarId,
-            period,
-            configurations,
-            cancellationToken);
+            calendarId: calendarId,
+            period: period,
+            configurations: configurations,
+            cancellationToken: cancellationToken);
 
         if (overlapResult.IsFailure)
         {
