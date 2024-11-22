@@ -21,9 +21,6 @@ public sealed class CalendarHoliday : AggregateRoot
         string name,
         string description)
     {
-        GuardAgainstInvalidName(name);
-        GuardAgainstInvalidDescription(description);
-
         Id = calendarHolidayId;
         CalendarId = calendarId;
         Period = period;
@@ -54,6 +51,9 @@ public sealed class CalendarHoliday : AggregateRoot
         string name,
         string description)
     {
+        GuardAgainstInvalidName(name);
+        GuardAgainstInvalidDescription(description);
+
         CalendarHoliday calendarHoliday = new(
             calendarHolidayId,
             calendarId,

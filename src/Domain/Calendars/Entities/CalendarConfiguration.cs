@@ -43,7 +43,9 @@ public sealed class CalendarConfiguration : AuditableEntity
         GuardAgainstInvalidSelectedKey(selectedKey);
         GuardAgainstInvalidConfiguration(category, selectedKey);
 
-        return new CalendarConfiguration(id, calendarId, category, selectedKey);
+        CalendarConfiguration configuration = new(id, calendarId, category, selectedKey);
+
+        return configuration;
     }
 
     internal bool Update(string category, string selectedKey)
