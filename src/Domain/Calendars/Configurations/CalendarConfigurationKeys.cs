@@ -12,14 +12,14 @@ public static class CalendarConfigurationKeys
 
         public static class CreationOptions
         {
-            public const string RequireConfirmation = "RequireConfirmation";
-            public const string Direct = "Direct";
+            public const string RequireConfirmation = nameof(RequireConfirmation);
+            public const string Direct = nameof(Direct);
         }
 
         public static class OverlappingOptions
         {
-            public const string AllowOverlapping = "AllowOverlapping";
-            public const string RejectIfOverlapping = "RejectIfOverlapping";
+            public const string AllowOverlapping = nameof(AllowOverlapping);
+            public const string RejectIfOverlapping = nameof(RejectIfOverlapping);
         }
     }
 
@@ -30,8 +30,8 @@ public static class CalendarConfigurationKeys
 
         public static class SchedulesValidationOptions
         {
-            public const string Required = "Validate";
-            public const string NotRequired = "DoNotValidate";
+            public const string Validate = nameof(Validate);
+            public const string NotValidate = nameof(NotValidate);
         }
     }
 
@@ -42,9 +42,9 @@ public static class CalendarConfigurationKeys
 
         public static class CreationOptions
         {
-            public const string RejectIfOverlapping = "RejectIfOverlapping";
-            public const string CancelOverlapping = "CancelOverlapping";
-            public const string AllowOverlapping = "AllowOverlapping";
+            public const string RejectIfOverlapping = nameof(RejectIfOverlapping);
+            public const string CancelOverlapping = nameof(CancelOverlapping);
+            public const string AllowOverlapping = nameof(AllowOverlapping);
         }
     }
 
@@ -85,11 +85,11 @@ public static class CalendarConfigurationKeys
                 // Appointment Resources Schedule Validation Strategy.
                 [ResourcesSchedules.ResourcesScheduleValidationStrategy] = new(
                     category: ResourcesSchedules.ResourcesScheduleValidationStrategy,
-                    defaultKey: ResourcesSchedules.SchedulesValidationOptions.Required,
+                    defaultKey: ResourcesSchedules.SchedulesValidationOptions.Validate,
                     availableKeys:
                     [
-                        ResourcesSchedules.SchedulesValidationOptions.Required,
-                        ResourcesSchedules.SchedulesValidationOptions.NotRequired
+                        ResourcesSchedules.SchedulesValidationOptions.Validate,
+                        ResourcesSchedules.SchedulesValidationOptions.NotValidate
                     ],
                     description: "Defines how resources schedule validation is handled"),
 

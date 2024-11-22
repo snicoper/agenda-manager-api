@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Domain.Calendars;
 using AgendaManager.Domain.Calendars.Errors;
+using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects.IanaTimeZone;
 using AgendaManager.TestCommon.Constants;
@@ -55,7 +56,10 @@ public class CalendarManagerCreateTests : CalendarManagerBase
 
     private void SetupExistsByNameInCalendarRepositoryAsync(bool returnValue)
     {
-        CalendarRepository.ExistsByNameAsync(Arg.Any<Calendar>(), Arg.Any<CancellationToken>())
+        CalendarNameValidationPolicy.ExistsAsync(
+                Arg.Any<CalendarId>(),
+                Arg.Any<string>(),
+                Arg.Any<CancellationToken>())
             .Returns(returnValue);
     }
 }

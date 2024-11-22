@@ -13,6 +13,7 @@ namespace AgendaManager.Domain.Calendars.Services;
 
 public class CalendarManagerCreate(
     ICalendarRepository calendarRepository,
+    ICalendarNameValidationPolicy calendarNameValidationPolicy,
     IHasAppointmentsInCalendarPolicy appointmentsInCalendarPolicy,
     IHasResourcesInCalendarPolicy resourcesInCalendarPolicy,
     IHasServicesInCalendarPolicy servicesInCalendarPolicy)
@@ -25,7 +26,7 @@ public class CalendarManagerCreate(
         CancellationToken cancellationToken)
     {
         var calendar = Calendar.Create(calendarId, name, description);
-        var validationResult = await IsValidAsync(calendar, cancellationToken);
+        var validationResult = await ValidateCalendarAsync(calendar, cancellationToken);
 
         if (validationResult.IsFailure)
         {
@@ -49,7 +50,7 @@ public class CalendarManagerCreate(
 
     public async Task<Result<Calendar>> UpdateCalendarAsync(Calendar calendar, CancellationToken cancellationToken)
     {
-        var validationResult = await IsValidAsync(calendar, cancellationToken);
+        var validationResult = await ValidateCalendarAsync(calendar, cancellationToken);
 
         if (validationResult.IsFailure)
         {
@@ -118,20 +119,13 @@ public class CalendarManagerCreate(
         return Result.Success(calendar);
     }
 
-    private async Task<Result> IsValidAsync(Calendar calendar, CancellationToken cancellationToken)
+    private async Task<Result> ValidateCalendarAsync(Calendar calendar, CancellationToken cancellationToken)
     {
-        if (await ExistsByNameAsync(calendar, cancellationToken))
+        if (await calendarNameValidationPolicy.ExistsAsync(calendar.Id, calendar.Name, cancellationToken))
         {
             return CalendarErrors.NameAlreadyExists;
         }
 
         return Result.Success();
-    }
-
-    private async Task<bool> ExistsByNameAsync(Calendar calendar, CancellationToken cancellationToken)
-    {
-        var nameIsUnique = await calendarRepository.ExistsByNameAsync(calendar, cancellationToken);
-
-        return nameIsUnique;
     }
 }

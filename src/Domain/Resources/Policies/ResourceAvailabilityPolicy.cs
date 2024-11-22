@@ -29,7 +29,7 @@ public class ResourceAvailabilityPolicy(IResourceRepository resourceRepository)
 
         // If not required validate availability, return success.
         if (configuration.SelectedKey is CalendarConfigurationKeys.ResourcesSchedules.SchedulesValidationOptions
-                .NotRequired)
+                .NotValidate)
         {
             return Result.Success();
         }

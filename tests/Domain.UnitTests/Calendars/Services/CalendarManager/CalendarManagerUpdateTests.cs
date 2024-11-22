@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.Calendars;
+﻿using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 using NSubstitute;
@@ -37,7 +37,10 @@ public class CalendarManagerUpdateTests : CalendarManagerBase
 
     private void SetupExistsByNameInCalendarRepositoryAsync(bool returnValue)
     {
-        CalendarRepository.ExistsByNameAsync(Arg.Any<Calendar>(), Arg.Any<CancellationToken>())
+        CalendarNameValidationPolicy.ExistsAsync(
+                Arg.Any<CalendarId>(),
+                Arg.Any<string>(),
+                Arg.Any<CancellationToken>())
             .Returns(returnValue);
     }
 }
