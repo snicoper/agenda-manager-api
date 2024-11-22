@@ -37,7 +37,7 @@ public class CalendarManagerUpdateTests : CalendarManagerTestsBase
 
     private void SetupExistsByNameInCalendarRepositoryAsync(bool returnValue)
     {
-        CalendarNameValidationPolicy.ExistsAsync(
+        CalendarRepository.ExistsByNameAsync(
                 Arg.Any<CalendarId>(),
                 Arg.Any<string>(),
                 Arg.Any<CancellationToken>())

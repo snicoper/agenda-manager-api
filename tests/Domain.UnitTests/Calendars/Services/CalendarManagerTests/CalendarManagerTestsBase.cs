@@ -12,22 +12,18 @@ public abstract class CalendarManagerTestsBase
     protected CalendarManagerTestsBase()
     {
         CalendarRepository = Substitute.For<ICalendarRepository>();
-        CalendarNameValidationPolicy = Substitute.For<ICalendarNameValidationPolicy>();
         AppointmentsInCalendarPolicy = Substitute.For<IHasAppointmentsInCalendarPolicy>();
         ResourcesInCalendarPolicy = Substitute.For<IHasResourcesInCalendarPolicy>();
         ServicesInCalendarPolicy = Substitute.For<IHasServicesInCalendarPolicy>();
 
         Sut = new CalendarManager(
             CalendarRepository,
-            CalendarNameValidationPolicy,
             AppointmentsInCalendarPolicy,
             ResourcesInCalendarPolicy,
             ServicesInCalendarPolicy);
     }
 
     protected ICalendarRepository CalendarRepository { get; }
-
-    protected ICalendarNameValidationPolicy CalendarNameValidationPolicy { get; }
 
     protected IHasAppointmentsInCalendarPolicy AppointmentsInCalendarPolicy { get; }
 

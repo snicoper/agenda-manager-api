@@ -13,7 +13,6 @@ namespace AgendaManager.Domain.Calendars.Services;
 
 public class CalendarManager(
     ICalendarRepository calendarRepository,
-    ICalendarNameValidationPolicy calendarNameValidationPolicy,
     IHasAppointmentsInCalendarPolicy appointmentsInCalendarPolicy,
     IHasResourcesInCalendarPolicy resourcesInCalendarPolicy,
     IHasServicesInCalendarPolicy servicesInCalendarPolicy)
@@ -121,7 +120,7 @@ public class CalendarManager(
 
     private async Task<Result> ValidateCalendarAsync(Calendar calendar, CancellationToken cancellationToken)
     {
-        if (await calendarNameValidationPolicy.ExistsAsync(calendar.Id, calendar.Name, cancellationToken))
+        if (await calendarRepository.ExistsByNameAsync(calendar.Id, calendar.Name, cancellationToken))
         {
             return CalendarErrors.NameAlreadyExists;
         }

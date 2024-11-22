@@ -12,8 +12,6 @@ using AgendaManager.Domain.ResourceTypes.Services;
 using AgendaManager.Domain.Services.Interfaces;
 using AgendaManager.Domain.Services.Policies;
 using AgendaManager.Domain.Services.Services;
-using AgendaManager.Domain.Users.Interfaces;
-using AgendaManager.Domain.Users.Policies;
 using AgendaManager.Domain.Users.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -39,7 +37,6 @@ public static class DependencyInjection
         services.AddScoped<RoleManager>();
         services.AddScoped<PermissionManager>();
 
-        services.AddTransient<IEmailUniquenessPolicy, EmailUniquenessPolicy>();
         services.AddTransient<AuthenticationService>();
         services.AddTransient<AuthorizationService>();
     }
@@ -49,7 +46,6 @@ public static class DependencyInjection
         services.AddScoped<CalendarManager>();
 
         services.AddTransient<ICalendarHolidayAvailabilityPolicy, CalendarHolidayAvailabilityPolicy>();
-        services.AddTransient<ICalendarNameValidationPolicy, CalendarNameValidationPolicy>();
     }
 
     private static void AddResourceTypesDomain(this IServiceCollection services)
