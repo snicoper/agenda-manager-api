@@ -13,4 +13,6 @@ public interface ICalendarRepository
     Task AddAsync(Calendar calendar, CancellationToken cancellationToken = default);
 
     void Update(Calendar calendar);
+
+    void Delete(Calendar calendar);
 }

@@ -46,7 +46,7 @@ public static class DependencyInjection
 
     private static void AddCalendarsDomain(this IServiceCollection services)
     {
-        services.AddScoped<CalendarManager>();
+        services.AddScoped<CalendarManagerCreate>();
 
         services.AddTransient<ICalendarHolidayAvailabilityPolicy, CalendarHolidayAvailabilityPolicy>();
     }
@@ -61,6 +61,8 @@ public static class DependencyInjection
     private static void AddResourcesDomain(this IServiceCollection services)
     {
         services.AddScoped<ResourceManager>();
+
+        services.AddTransient<IHasResourcesInCalendarPolicy, HasResourcesInCalendarPolicy>();
     }
 
     private static void AddServicesDomain(this IServiceCollection services)
@@ -68,6 +70,7 @@ public static class DependencyInjection
         services.AddScoped<ServiceManager>();
 
         services.AddTransient<IServiceRequirementsPolicy, ServiceRequirementsPolicy>();
+        services.AddTransient<IHasServicesInCalendarPolicy, HasServicesInCalendarPolicy>();
     }
 
     private static void AddAppointmentsDomain(this IServiceCollection services)
@@ -77,5 +80,6 @@ public static class DependencyInjection
         services.AddTransient<IAppointmentOverlapPolicy, AppointmentOverlapPolicy>();
         services.AddTransient<IAppointmentCreationStrategyPolicy, AppointmentCreationStrategyPolicy>();
         services.AddTransient<IAppointmentOverlapPolicy, AppointmentOverlapPolicy>();
+        services.AddTransient<IHasAppointmentsInCalendarPolicy, HasAppointmentsInCalendarPolicy>();
     }
 }

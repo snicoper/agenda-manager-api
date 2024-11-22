@@ -40,4 +40,9 @@ public class CalendarRepository(AppDbContext context) : ICalendarRepository
     {
         context.Calendars.Update(calendar);
     }
+
+    public void Delete(Calendar calendar)
+    {
+        context.Calendars.Remove(calendar);
+    }
 }

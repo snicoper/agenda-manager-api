@@ -20,4 +20,6 @@ public interface IResourceRepository
         List<Resource> resources,
         Period period,
         CancellationToken cancellationToken = default);
+
+    Task<bool> HasResourcesInCalendarAsync(CalendarId calendarId, CancellationToken cancellationToken = default);
 }

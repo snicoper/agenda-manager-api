@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Services.ValueObjects;
+﻿using AgendaManager.Domain.Calendars.ValueObjects;
+using AgendaManager.Domain.Services.ValueObjects;
 
 namespace AgendaManager.Domain.Services.Interfaces;
 
@@ -9,6 +10,8 @@ public interface IServiceRepository
     Task<Service?> GetByIdWithResourceTypesAsync(ServiceId serviceId, CancellationToken cancellationToken = default);
 
     Task<bool> ExistsByNameAsync(string name, CancellationToken cancellationToken = default);
+
+    Task<bool> HasServicesInCalendarAsync(CalendarId calendarId, CancellationToken cancellationToken = default);
 
     Task AddAsync(Service service, CancellationToken cancellationToken = default);
 

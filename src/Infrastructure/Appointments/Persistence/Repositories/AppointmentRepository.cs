@@ -51,6 +51,16 @@ public class AppointmentRepository(AppDbContext context) : IAppointmentRepositor
         return overlappingAppointments;
     }
 
+    public async Task<bool> HasAppointmentsInCalendarAsync(
+        CalendarId calendarId,
+        CancellationToken cancellationToken = default)
+    {
+        var hasAppointments = await context.Appointments
+            .AnyAsync(a => a.CalendarId == calendarId, cancellationToken);
+
+        return hasAppointments;
+    }
+
     public List<Appointment> GetAllByServiceId(
         ServiceId serviceId,
         CancellationToken cancellationToken = default)

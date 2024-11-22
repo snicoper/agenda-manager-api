@@ -76,4 +76,13 @@ public class ResourceRepository(AppDbContext context) : IResourceRepository
 
         return !resourcesAvailability;
     }
+
+    public async Task<bool> HasResourcesInCalendarAsync(
+        CalendarId calendarId,
+        CancellationToken cancellationToken = default)
+    {
+        var hasResources = await context.Resources.AnyAsync(r => r.CalendarId == calendarId, cancellationToken);
+
+        return hasResources;
+    }
 }

@@ -20,6 +20,8 @@ public interface IAppointmentRepository
         Period period,
         CancellationToken cancellationToken = default);
 
+    Task<bool> HasAppointmentsInCalendarAsync(CalendarId calendarId, CancellationToken cancellationToken = default);
+
     List<Appointment> GetAllByServiceId(ServiceId serviceId, CancellationToken cancellationToken = default);
 
     Task AddAsync(Result<Appointment> appointment, CancellationToken cancellationToken = default);
