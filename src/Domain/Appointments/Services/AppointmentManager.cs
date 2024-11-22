@@ -33,8 +33,9 @@ public sealed class AppointmentManager(
         CancellationToken cancellationToken)
     {
         // 1. Get calendar configurations.
-        var configurations = await configurationRepository
-            .GetConfigurationsByCalendarIdAsync(calendarId, cancellationToken);
+        var configurations = await configurationRepository.GetConfigurationsByCalendarIdAsync(
+            calendarId,
+            cancellationToken);
 
         // 2. Determine initial state based on creation strategy.
         var statusResult = confirmationStrategyPolicy.DetermineInitialStatus(configurations);
@@ -61,11 +62,11 @@ public sealed class AppointmentManager(
 
         // 5. Validate resource availability if required.
         var resourceResult = await resourceAvailabilityPolicy.IsAvailableAsync(
-            calendarId,
-            resources,
-            period,
-            configurations,
-            cancellationToken);
+            calendarId: calendarId,
+            resources: resources,
+            period: period,
+            configurations: configurations,
+            cancellationToken: cancellationToken);
 
         if (resourceResult.IsFailure)
         {
@@ -111,12 +112,13 @@ public sealed class AppointmentManager(
         }
 
         // 2. Get calendar configurations.
-        var configurations = await configurationRepository
-            .GetConfigurationsByCalendarIdAsync(appointment.CalendarId, cancellationToken);
+        var configurations = await configurationRepository.GetConfigurationsByCalendarIdAsync(
+            appointment.CalendarId,
+            cancellationToken);
 
         // 3. Validate state is valid for update.
-        if (appointment.CurrentState.Value is not (AppointmentStatus.Pending or AppointmentStatus.Accepted
-            or AppointmentStatus.RequiresRescheduling))
+        if (appointment.CurrentState.Value is not
+            (AppointmentStatus.Pending or AppointmentStatus.Accepted or AppointmentStatus.RequiresRescheduling))
         {
             return AppointmentErrors.AppointmentStatusInvalidForUpdate;
         }
@@ -134,10 +136,10 @@ public sealed class AppointmentManager(
 
         // 5. Validate appointment overlapping if required.
         var overlapResult = await overlapPolicy.IsOverlappingAsync(
-            appointment.CalendarId,
-            period,
-            configurations,
-            cancellationToken);
+            calendarId: appointment.CalendarId,
+            period: period,
+            configurations: configurations,
+            cancellationToken: cancellationToken);
 
         if (overlapResult.IsFailure)
         {
@@ -146,11 +148,11 @@ public sealed class AppointmentManager(
 
         // 6. Validate resource availability if required.
         var resourceResult = await resourceAvailabilityPolicy.IsAvailableAsync(
-            appointment.CalendarId,
-            resources,
-            period,
-            configurations,
-            cancellationToken);
+            calendarId: appointment.CalendarId,
+            resources: resources,
+            period: period,
+            configurations: configurations,
+            cancellationToken: cancellationToken);
 
         if (resourceResult.IsFailure)
         {
