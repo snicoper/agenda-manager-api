@@ -11,13 +11,13 @@ namespace AgendaManager.WebApi;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddWebApi(this IServiceCollection services)
+    public static IServiceCollection AddWebApi(this IServiceCollection services, IWebHostEnvironment environment)
     {
         services.AddDatabaseDeveloperPageExceptionFilter();
         services.AddHttpContextAccessor();
 
         AddGlobalInjections(services);
-        AddCors(services);
+        services.AddCustomCors(environment);
 
         services.AddControllers()
             .AddJsonOptions(
@@ -44,24 +44,6 @@ public static class DependencyInjection
 
         // AddRazorViewsForEmails(services);
         return services;
-    }
-
-    private static void AddCors(IServiceCollection services)
-    {
-        services.AddCors(
-            options =>
-            {
-                options.AddPolicy(
-                    "DefaultCors",
-                    builder =>
-                    {
-                        builder
-                            .SetIsOriginAllowed(_ => true)
-                            .AllowAnyHeader()
-                            .AllowAnyMethod()
-                            .AllowCredentials();
-                    });
-            });
     }
 
     private static void AddGlobalInjections(IServiceCollection services)
@@ -111,6 +93,49 @@ public static class DependencyInjection
                 options.ViewLocationFormats.Add("/Views/{1}/{0}" + RazorViewEngine.ViewExtension);
                 options.ViewLocationFormats.Add("/Views/Emails/{0}" + RazorViewEngine.ViewExtension);
                 options.ViewLocationFormats.Add("/Views/Shared/{0}" + RazorViewEngine.ViewExtension);
+            });
+    }
+
+    private static void AddCustomCors(this IServiceCollection services, IWebHostEnvironment environment)
+    {
+        services.AddCors(
+            options =>
+            {
+                options.AddPolicy(
+                    "DefaultCors",
+                    builder =>
+                    {
+                        if (!environment.IsProduction())
+                        {
+                            builder
+                                .SetIsOriginAllowed(_ => true)
+                                .AllowAnyHeader()
+                                .AllowAnyMethod()
+                                .AllowCredentials();
+                        }
+                        else
+                        {
+                            // Dominios base permitidos
+                            var allowedDomains = new[] { "tudominio.com", "otro-dominio.com" };
+
+                            builder
+                                .SetIsOriginAllowed(
+                                    origin =>
+                                    {
+                                        var host = new Uri(origin).Host;
+                                        return allowedDomains.Any(
+                                            domain =>
+                                                host.Equals(domain) || // Dominio exacto
+                                                host.EndsWith($".{domain}")); // Subdominio
+                                    })
+                                .WithMethods("GET", "POST", "PUT", "DELETE")
+                                .WithHeaders(
+                                    "Authorization",
+                                    "Content-Type",
+                                    "Accept")
+                                .AllowCredentials();
+                        }
+                    });
             });
     }
 }
