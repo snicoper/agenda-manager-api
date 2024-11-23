@@ -30,19 +30,19 @@ public class ServiceManagerCreateTests
     public async Task Create_ShouldCreated_WhenValidDataIsPassed()
     {
         // Arrange
-        var serviceManager = ServiceFactory.CreateService();
+        var manager = ServiceFactory.CreateService();
         SetupCalendarIdExistsCalendarRepository(true);
         SetupExistsByNameServiceRepository(false);
 
         // Act
         var result = await _sut.CreateServiceAsync(
-            serviceManager.Id,
-            serviceManager.CalendarId,
-            serviceManager.Duration,
-            serviceManager.Name,
-            serviceManager.Description,
-            serviceManager.ColorScheme,
-            serviceManager.IsActive);
+            manager.Id,
+            manager.CalendarId,
+            manager.Duration,
+            manager.Name,
+            manager.Description,
+            manager.ColorScheme,
+            manager.IsActive);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -52,18 +52,18 @@ public class ServiceManagerCreateTests
     public async Task Create_ShouldFailure_WhenCalendarIdDoesNotExist()
     {
         // Arrange
-        var serviceManager = ServiceFactory.CreateService();
+        var manager = ServiceFactory.CreateService();
         SetupCalendarIdExistsCalendarRepository(false);
 
         // Act
         var result = await _sut.CreateServiceAsync(
-            serviceManager.Id,
-            serviceManager.CalendarId,
-            serviceManager.Duration,
-            serviceManager.Name,
-            serviceManager.Description,
-            serviceManager.ColorScheme,
-            serviceManager.IsActive);
+            manager.Id,
+            manager.CalendarId,
+            manager.Duration,
+            manager.Name,
+            manager.Description,
+            manager.ColorScheme,
+            manager.IsActive);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -74,19 +74,19 @@ public class ServiceManagerCreateTests
     public async Task Create_ShouldFailure_WhenNameAlreadyExists()
     {
         // Arrange
-        var serviceManager = ServiceFactory.CreateService();
+        var manager = ServiceFactory.CreateService();
         SetupCalendarIdExistsCalendarRepository(true);
         SetupExistsByNameServiceRepository(true);
 
         // Act
         var result = await _sut.CreateServiceAsync(
-            serviceManager.Id,
-            serviceManager.CalendarId,
-            serviceManager.Duration,
-            serviceManager.Name,
-            serviceManager.Description,
-            serviceManager.ColorScheme,
-            serviceManager.IsActive);
+            manager.Id,
+            manager.CalendarId,
+            manager.Duration,
+            manager.Name,
+            manager.Description,
+            manager.ColorScheme,
+            manager.IsActive);
 
         result.IsFailure.Should().BeTrue();
         result.Error?.FirstError().Should().Be(ServiceErrors.NameAlreadyExists.FirstError());

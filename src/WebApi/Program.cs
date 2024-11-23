@@ -32,6 +32,7 @@ else
     app.UseHsts();
 }
 
+app.UseCors("DefaultCors");
 app.UseHttpsRedirection();
 
 app.UseExceptionHandler(_ => { });

@@ -26,7 +26,7 @@ public class ServiceManager(
         bool isActive = true,
         CancellationToken cancellationToken = default)
     {
-        if (!await CalendarIdExistsAsync(calendarId, cancellationToken))
+        if (!await ExistsByCalendarIdAsync(calendarId, cancellationToken))
         {
             return CalendarErrors.CalendarNotFound.ToResult<Service>();
         }
@@ -90,7 +90,7 @@ public class ServiceManager(
         return Result.Success();
     }
 
-    private async Task<bool> CalendarIdExistsAsync(CalendarId calendarId, CancellationToken cancellationToken)
+    private async Task<bool> ExistsByCalendarIdAsync(CalendarId calendarId, CancellationToken cancellationToken)
     {
         var exists = await calendarRepository.ExistsByCalendarIdAsync(calendarId, cancellationToken);
 

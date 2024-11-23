@@ -17,6 +17,7 @@ public static class DependencyInjection
         services.AddHttpContextAccessor();
 
         AddGlobalInjections(services);
+        AddCors(services);
 
         services.AddControllers()
             .AddJsonOptions(
@@ -43,6 +44,24 @@ public static class DependencyInjection
 
         // AddRazorViewsForEmails(services);
         return services;
+    }
+
+    private static void AddCors(IServiceCollection services)
+    {
+        services.AddCors(
+            options =>
+            {
+                options.AddPolicy(
+                    "DefaultCors",
+                    builder =>
+                    {
+                        builder
+                            .SetIsOriginAllowed(_ => true)
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                    });
+            });
     }
 
     private static void AddGlobalInjections(IServiceCollection services)
