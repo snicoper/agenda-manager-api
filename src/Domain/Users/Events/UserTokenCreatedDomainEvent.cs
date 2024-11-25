@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Common.Interfaces;
-using AgendaManager.Domain.Users.ValueObjects;
+using AgendaManager.Domain.Users.Entities;
 
 namespace AgendaManager.Domain.Users.Events;
 
-public record UserTokenCreatedDomainEvent(UserTokenId UserTokenId) : IDomainEvent;
+public record UserTokenCreatedDomainEvent(UserToken UserToken) : IDomainEvent;
