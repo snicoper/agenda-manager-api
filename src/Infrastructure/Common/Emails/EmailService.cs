@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Mail;
+using AgendaManager.Infrastructure.Common.Emails.Exceptions;
 using AgendaManager.Infrastructure.Common.Emails.Interfaces;
 using AgendaManager.Infrastructure.Common.Emails.Models;
 using AgendaManager.Infrastructure.Common.Emails.Options;
@@ -97,17 +98,17 @@ public class EmailService : IEmailService
     {
         if (!message.To.Any())
         {
-            throw new ArgumentException("At least one recipient is required", nameof(message.To));
+            throw new EmailSenderException("At least one recipient is required", nameof(message.To));
         }
 
         if (string.IsNullOrWhiteSpace(message.Subject))
         {
-            throw new ArgumentException("Subject is required", nameof(message.Subject));
+            throw new EmailSenderException("Subject is required", nameof(message.Subject));
         }
 
         if (string.IsNullOrWhiteSpace(message.Body))
         {
-            throw new ArgumentException("Body is required", nameof(message.Body));
+            throw new EmailSenderException("Body is required", nameof(message.Body));
         }
     }
 
