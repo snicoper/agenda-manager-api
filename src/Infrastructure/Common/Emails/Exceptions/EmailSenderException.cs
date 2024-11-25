@@ -1,4 +1,4 @@
-namespace AgendaManager.Infrastructure.Common.Services.Emails;
+namespace AgendaManager.Infrastructure.Common.Emails.Exceptions;
 
 public class EmailSenderException(string message) : Exception(message)
 {

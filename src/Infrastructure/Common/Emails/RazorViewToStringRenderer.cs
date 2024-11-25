@@ -1,4 +1,4 @@
-using AgendaManager.Application.Common.Interfaces.Views;
+using AgendaManager.Infrastructure.Common.Emails.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 
-namespace AgendaManager.Infrastructure.Common.Services.Views;
+namespace AgendaManager.Infrastructure.Common.Emails;
 
 public class RazorViewToStringRenderer(
     IRazorViewEngine viewEngine,
@@ -17,13 +17,19 @@ public class RazorViewToStringRenderer(
     IServiceProvider serviceProvider)
     : IRazorViewToStringRenderer
 {
-    public async Task<string> RenderViewToStringAsync(string viewName, object model, Dictionary<string, object?> viewData)
+    public async Task<string> RenderViewToStringAsync(
+        string viewName,
+        object model,
+        Dictionary<string, object?> viewData)
     {
         var actionContext = GetActionContext();
         var view = FindView(actionContext, viewName);
 
         await using var output = new StringWriter();
-        var viewDataDict = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { Model = model };
+
+        var viewDataDict = new ViewDataDictionary(
+            new EmptyModelMetadataProvider(),
+            new ModelStateDictionary()) { Model = model };
 
         foreach (var data in viewData)
         {
@@ -62,7 +68,8 @@ public class RazorViewToStringRenderer(
         var searchedLocations = getViewResult.SearchedLocations.Concat(findViewResult.SearchedLocations);
         var errorMessage = string.Join(
             Environment.NewLine,
-            new[] { $"Unable to find view '{viewName}'. The following locations were searched:" }.Concat(searchedLocations));
+            new[] { $"Unable to find view '{viewName}'. The following locations were searched:" }
+                .Concat(searchedLocations));
 
         throw new InvalidOperationException(errorMessage);
     }

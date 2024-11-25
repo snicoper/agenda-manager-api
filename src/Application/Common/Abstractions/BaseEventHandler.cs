@@ -3,10 +3,17 @@ using Microsoft.Extensions.Logging;
 
 namespace AgendaManager.Application.Common.Abstractions;
 
-public abstract class BaseEventHandler<TEvent>(ILogger<BaseEventHandler<TEvent>> logger)
-    : INotificationHandler<TEvent>
+public abstract class BaseEventHandler<TEvent>() : INotificationHandler<TEvent>
     where TEvent : INotification
 {
+    protected BaseEventHandler(ILogger<BaseEventHandler<TEvent>> logger)
+        : this()
+    {
+        Logger = logger;
+    }
+
+    protected ILogger<BaseEventHandler<TEvent>> Logger { get; } = null!;
+
     public async Task Handle(TEvent notification, CancellationToken cancellationToken)
     {
         BeforeHandle(notification);
@@ -20,11 +27,11 @@ public abstract class BaseEventHandler<TEvent>(ILogger<BaseEventHandler<TEvent>>
 
     private void AfterHandle(TEvent notification)
     {
-        logger.LogInformation("Event handled: {EventName} in {EventHandleName}", typeof(TEvent).Name, GetType().Name);
+        Logger.LogInformation("Event handled: {EventName} in {EventHandleName}", typeof(TEvent).Name, GetType().Name);
     }
 
     private void BeforeHandle(TEvent notification)
     {
-        logger.LogInformation("Handling event: {EventName} in {EventHandleName}", typeof(TEvent).Name, GetType().Name);
+        Logger.LogInformation("Handling event: {EventName} in {EventHandleName}", typeof(TEvent).Name, GetType().Name);
     }
 }

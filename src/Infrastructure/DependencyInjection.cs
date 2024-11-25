@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using AgendaManager.Application.Accounts.Interfaces;
 using AgendaManager.Application.Authentication.Interfaces;
 using AgendaManager.Application.Common.Interfaces.Clock;
 using AgendaManager.Application.Common.Interfaces.Persistence;
@@ -16,14 +17,18 @@ using AgendaManager.Infrastructure.AuditRecords.Persistence.Repositories;
 using AgendaManager.Infrastructure.Authorization.Persistence.Repositories;
 using AgendaManager.Infrastructure.Calendars.Persistence.Repositories;
 using AgendaManager.Infrastructure.Common.Clock;
+using AgendaManager.Infrastructure.Common.Emails;
+using AgendaManager.Infrastructure.Common.Emails.Interfaces;
+using AgendaManager.Infrastructure.Common.Emails.Options;
+using AgendaManager.Infrastructure.Common.Options;
 using AgendaManager.Infrastructure.Common.Persistence;
 using AgendaManager.Infrastructure.Common.Persistence.Interceptors;
 using AgendaManager.Infrastructure.Common.Persistence.Seeds;
-using AgendaManager.Infrastructure.Common.Services.Emails;
 using AgendaManager.Infrastructure.Resources.Persistence.Repositories;
 using AgendaManager.Infrastructure.ResourceTypes.Repositories;
 using AgendaManager.Infrastructure.Services.Persistence.Repositories;
 using AgendaManager.Infrastructure.Users.Authentication;
+using AgendaManager.Infrastructure.Users.Emails.SendRecoveryPassword;
 using AgendaManager.Infrastructure.Users.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
@@ -62,8 +67,18 @@ public static class DependencyInjection
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
-        services.AddOptions<EmailSenderSettings>()
-            .Bind(configuration.GetSection(EmailSenderSettings.SectionName))
+        services.AddOptions<EmailConfiguration>()
+            .Bind(configuration.GetSection(EmailConfiguration.SectionName))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
+        services.AddOptions<WebAppSettings>()
+            .Bind(configuration.GetSection(WebAppSettings.SectionName))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
+        services.AddOptions<WebApiSettings>()
+            .Bind(configuration.GetSection(WebApiSettings.SectionName))
             .ValidateDataAnnotations()
             .ValidateOnStart();
     }
@@ -73,16 +88,18 @@ public static class DependencyInjection
         // Common.
         services.AddSingleton(TimeProvider.System);
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
+        services.AddTransient<IEmailService, EmailService>();
+        services.AddTransient<IRazorViewToStringRenderer, RazorViewToStringRenderer>();
 
         // AuditRecords.
         services.AddScoped<IAuditRecordRepository, AuditRecordRepository>();
 
-        // Repositories.
         // Users.
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IPermissionRepository, PermissionRepository>();
         services.AddScoped<IUserTokenRepository, UserTokenRepository>();
+        services.AddTransient<ISendRecoveryPasswordService, SendRecoveryPasswordService>();
 
         // Calendars.
         services.AddScoped<ICalendarRepository, CalendarRepository>();

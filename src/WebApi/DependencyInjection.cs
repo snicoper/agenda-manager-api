@@ -19,7 +19,7 @@ public static class DependencyInjection
         AddGlobalInjections(services);
         services.AddCustomCors(environment);
 
-        services.AddControllers()
+        services.AddControllersWithViews()
             .AddJsonOptions(
                 options => { options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; })
             .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
@@ -27,6 +27,7 @@ public static class DependencyInjection
                 options =>
                 {
                     // ReSharper disable once DelegateAnonymousParameter
+                    // ReSharper disable once DelegateTypeParameter
                     options.DataAnnotationLocalizerProvider = (type, factory) =>
                         factory.Create(typeof(SharedResource));
                 });
@@ -42,7 +43,7 @@ public static class DependencyInjection
 
         AddOpenTelemetry(services);
 
-        // AddRazorViewsForEmails(services);
+        AddRazorViewsForEmails(services);
         return services;
     }
 

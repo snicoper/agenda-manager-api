@@ -1,4 +1,4 @@
-﻿namespace AgendaManager.Application.Common.Interfaces.Views;
+﻿namespace AgendaManager.Infrastructure.Common.Emails.Interfaces;
 
 public interface IRazorViewToStringRenderer
 {
