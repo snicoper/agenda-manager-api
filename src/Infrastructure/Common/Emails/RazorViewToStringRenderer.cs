@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Routing;
 
 namespace AgendaManager.Infrastructure.Common.Emails;
 
-public class RazorViewToStringRenderer(
+public sealed class RazorViewToStringRenderer(
     IRazorViewEngine viewEngine,
     ITempDataProvider tempDataProvider,
     IServiceProvider serviceProvider)
@@ -22,36 +22,43 @@ public class RazorViewToStringRenderer(
         object model,
         Dictionary<string, object?> viewData)
     {
-        var actionContext = GetActionContext();
-        var view = FindView(actionContext, viewName);
+        var context = new ActionContext(
+            new DefaultHttpContext { RequestServices = serviceProvider },
+            new RouteData(),
+            new ActionDescriptor());
 
-        await using var output = new StringWriter();
+        var view = GetView(context, viewName);
 
         var viewDataDict = new ViewDataDictionary(
             new EmptyModelMetadataProvider(),
             new ModelStateDictionary()) { Model = model };
 
-        foreach (var data in viewData)
-        {
-            viewDataDict.Add(data);
-        }
+        viewData.ToList().ForEach(x => viewDataDict[x.Key] = x.Value);
 
-        TempDataDictionary tempDataDict = new(actionContext.HttpContext, tempDataProvider);
-
-        ViewContext viewContext = new(
-            actionContext,
+        var viewContext = new ViewContext(
+            context,
             view,
             viewDataDict,
-            tempDataDict,
-            output,
+            new TempDataDictionary(context.HttpContext, tempDataProvider),
+            new StringWriter(),
             new HtmlHelperOptions());
 
         await view.RenderAsync(viewContext);
 
-        return output.ToString();
+        return viewContext.Writer.ToString() ?? string.Empty;
     }
 
-    private IView FindView(ActionContext actionContext, string viewName)
+    private static string CreateViewNotFoundError(string viewName, IEnumerable<string> locations)
+    {
+        var viewError = $"""
+                         Unable to find view '{viewName}'. The following locations were searched:
+                         {string.Join(Environment.NewLine, locations)}
+                         """;
+
+        return viewError;
+    }
+
+    private IView GetView(ActionContext context, string viewName)
     {
         var getViewResult = viewEngine.GetView(null, viewName, true);
         if (getViewResult.Success)
@@ -59,27 +66,13 @@ public class RazorViewToStringRenderer(
             return getViewResult.View;
         }
 
-        var findViewResult = viewEngine.FindView(actionContext, viewName, true);
+        var findViewResult = viewEngine.FindView(context, viewName, true);
         if (findViewResult.Success)
         {
             return findViewResult.View;
         }
 
-        var searchedLocations = getViewResult.SearchedLocations.Concat(findViewResult.SearchedLocations);
-        var errorMessage = string.Join(
-            Environment.NewLine,
-            new[] { $"Unable to find view '{viewName}'. The following locations were searched:" }
-                .Concat(searchedLocations));
-
-        throw new InvalidOperationException(errorMessage);
-    }
-
-    private ActionContext GetActionContext()
-    {
-        var httpContext = new DefaultHttpContext { RequestServices = serviceProvider };
-
-        ActionContext actionContext = new(httpContext, new RouteData(), new ActionDescriptor());
-
-        return actionContext;
+        var locations = getViewResult.SearchedLocations.Concat(findViewResult.SearchedLocations);
+        throw new InvalidOperationException(CreateViewNotFoundError(viewName, locations));
     }
 }
