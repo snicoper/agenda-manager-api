@@ -2,9 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AgendaManager.Infrastructure.Common.Emails.Options;
 
-public class EmailConfiguration
+public sealed class EmailSettings
 {
-    public const string SectionName = "EmailConfiguration";
+    public const string SectionName = "EmailSettings";
 
     [Required]
     public string Host { get; set; } = default!;

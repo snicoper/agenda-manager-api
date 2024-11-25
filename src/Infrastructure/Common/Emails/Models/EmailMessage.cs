@@ -2,7 +2,7 @@
 
 namespace AgendaManager.Infrastructure.Common.Emails.Models;
 
-public record EmailMessage(
+public sealed record EmailMessage(
     IEnumerable<string> To,
     string Subject,
     string Body,

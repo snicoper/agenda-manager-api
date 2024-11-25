@@ -1,6 +1,6 @@
 ﻿namespace AgendaManager.Infrastructure.Common.Emails.Models;
 
-public record EmailTemplate<TModel>(
+public sealed record EmailTemplate<TModel>(
     IEnumerable<string> To,
     string Subject,
     string TemplateName,

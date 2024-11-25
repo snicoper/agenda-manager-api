@@ -62,23 +62,23 @@ public static class DependencyInjection
 
     private static void ValidateOptionsOnStartUp(IServiceCollection services, IConfiguration configuration)
     {
-        services.AddOptions<JwtOptions>()
-            .Bind(configuration.GetSection(JwtOptions.SectionName))
+        services.AddOptions<JwtSettings>()
+            .Bind(configuration.GetSection(JwtSettings.SectionName))
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
-        services.AddOptions<EmailConfiguration>()
-            .Bind(configuration.GetSection(EmailConfiguration.SectionName))
+        services.AddOptions<EmailSettings>()
+            .Bind(configuration.GetSection(EmailSettings.SectionName))
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
-        services.AddOptions<WebAppSettings>()
-            .Bind(configuration.GetSection(WebAppSettings.SectionName))
+        services.AddOptions<ClientAppSettings>()
+            .Bind(configuration.GetSection(ClientAppSettings.SectionName))
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
-        services.AddOptions<WebApiSettings>()
-            .Bind(configuration.GetSection(WebApiSettings.SectionName))
+        services.AddOptions<ClientApiSettings>()
+            .Bind(configuration.GetSection(ClientApiSettings.SectionName))
             .ValidateDataAnnotations()
             .ValidateOnStart();
     }
@@ -152,10 +152,10 @@ public static class DependencyInjection
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddSingleton<IPasswordHasher, BcryptPasswordHasher>();
 
-        JwtOptions jwtOptions = new();
-        configuration.Bind(JwtOptions.SectionName, jwtOptions);
+        JwtSettings jwtSettings = new();
+        configuration.Bind(JwtSettings.SectionName, jwtSettings);
 
-        services.AddSingleton(Options.Create(jwtOptions));
+        services.AddSingleton(Options.Create(jwtSettings));
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(
@@ -167,9 +167,9 @@ public static class DependencyInjection
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = jwtOptions.Issuer,
-                        ValidAudience = jwtOptions.Audience,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key)),
+                        ValidIssuer = jwtSettings.Issuer,
+                        ValidAudience = jwtSettings.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key)),
                         ClockSkew = TimeSpan.Zero
                     };
                 });

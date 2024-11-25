@@ -2,9 +2,9 @@
 
 namespace AgendaManager.Infrastructure.Common.Options;
 
-public class WebApiSettings
+public class ClientApiSettings
 {
-    public const string SectionName = "WebApi";
+    public const string SectionName = "ClientApi";
 
     [Required]
     public string SiteName { get; set; } = default!;

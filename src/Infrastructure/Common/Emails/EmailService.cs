@@ -10,20 +10,20 @@ using Microsoft.Extensions.Options;
 
 namespace AgendaManager.Infrastructure.Common.Emails;
 
-public class EmailService : IEmailService
+public sealed class EmailService : IEmailService
 {
-    private readonly EmailConfiguration _config;
+    private readonly EmailSettings _settings;
     private readonly ILogger<EmailService> _logger;
     private readonly IHostEnvironment _environment;
     private readonly IRazorViewToStringRenderer _templateRenderer;
 
     public EmailService(
-        IOptions<EmailConfiguration> config,
+        IOptions<EmailSettings> config,
         ILogger<EmailService> logger,
         IHostEnvironment environment,
         IRazorViewToStringRenderer templateRenderer)
     {
-        _config = config.Value;
+        _settings = config.Value;
         _logger = logger;
         _environment = environment;
         _templateRenderer = templateRenderer;
@@ -67,7 +67,7 @@ public class EmailService : IEmailService
     {
         var mailMessage = new MailMessage
         {
-            From = new MailAddress(_config.DefaultFrom),
+            From = new MailAddress(_settings.DefaultFrom),
             Subject = message.Subject,
             Body = message.Body,
             IsBodyHtml = message.IsHtml,
@@ -86,11 +86,11 @@ public class EmailService : IEmailService
     {
         return new SmtpClient
         {
-            Host = _config.Host,
-            Port = _config.Port,
+            Host = _settings.Host,
+            Port = _settings.Port,
             EnableSsl = true,
             UseDefaultCredentials = false,
-            Credentials = new NetworkCredential(_config.Username, _config.Password)
+            Credentials = new NetworkCredential(_settings.Username, _settings.Password)
         };
     }
 

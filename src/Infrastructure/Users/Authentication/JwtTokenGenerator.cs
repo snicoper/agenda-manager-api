@@ -17,12 +17,12 @@ using Microsoft.IdentityModel.Tokens;
 namespace AgendaManager.Infrastructure.Users.Authentication;
 
 public class JwtTokenGenerator(
-    IOptions<JwtOptions> jwtOptions,
+    IOptions<JwtSettings> jwtOptions,
     IUserRepository userRepository,
     IRoleRepository roleRepository)
     : IJwtTokenGenerator
 {
-    private readonly JwtOptions _jwtOptions = jwtOptions.Value;
+    private readonly JwtSettings _jwtSettings = jwtOptions.Value;
 
     public async Task<TokenResult> GenerateAccessTokenAsync(
         UserId userId,
@@ -40,18 +40,18 @@ public class JwtTokenGenerator(
 
         var claims = CreateClaimsForUser(user, roles);
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            _jwtOptions.Issuer,
-            _jwtOptions.Audience,
+            _jwtSettings.Issuer,
+            _jwtSettings.Audience,
             claims,
-            expires: DateTime.Now.AddMinutes(_jwtOptions.AccessTokenLifeTimeMinutes),
+            expires: DateTime.Now.AddMinutes(_jwtSettings.AccessTokenLifeTimeMinutes),
             signingCredentials: credentials);
 
         var jwtSecurityToken = new JwtSecurityTokenHandler().WriteToken(token);
-        var refreshTokenLifetime = TimeSpan.FromDays(_jwtOptions.RefreshTokenLifeTimeDays);
+        var refreshTokenLifetime = TimeSpan.FromDays(_jwtSettings.RefreshTokenLifeTimeDays);
         var refreshToken = Token.Generate(refreshTokenLifetime);
 
         var tokenResponse = new TokenResult(jwtSecurityToken, refreshToken.Value, refreshToken.Expires);

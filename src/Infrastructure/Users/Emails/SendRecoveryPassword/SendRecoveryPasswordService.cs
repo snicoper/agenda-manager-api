@@ -8,20 +8,28 @@ using Microsoft.Extensions.Options;
 
 namespace AgendaManager.Infrastructure.Users.Emails.SendRecoveryPassword;
 
-public class SendRecoveryPasswordService(IEmailService emailService, IOptions<WebApiSettings> apiSettings)
+public class SendRecoveryPasswordService(
+    IEmailService emailService,
+    IOptions<ClientApiSettings> apiSettings,
+    IOptions<ClientAppSettings> appSettings)
     : ISendRecoveryPasswordService
 {
     public async Task SendAsync(User user, string token, CancellationToken cancellationToken = default)
     {
         var siteName = apiSettings.Value.SiteName;
+        var resetLink = $"{appSettings.Value.BaseUrl}/accounts/recovery-password?token={Uri.EscapeDataString(token)}";
 
         // ViewModel.
-        var model = new SendRecoveryPasswordViewModel(siteName, user.Email.Value, token);
+        var model = new SendRecoveryPasswordViewModel(
+            SiteName: siteName,
+            Email: user.Email.Value,
+            ResetLink: resetLink,
+            ExpirationHours: 1);
 
         // Send email.
         var emailTempate = new EmailTemplate<SendRecoveryPasswordViewModel>(
             To: [user.Email.Value],
-            Subject: "Recovery Password",
+            Subject: $"Recuperación de contraseña - {siteName}",
             TemplateName: EmailViewNames.RecoveryPassword,
             model);
 
