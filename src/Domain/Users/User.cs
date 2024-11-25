@@ -152,8 +152,15 @@ public sealed class User : AggregateRoot
         return _userTokens.Any(x => x.Id == userTokenId);
     }
 
-    public Result<UserToken> CreateUserToken(UserTokenType type, TimeSpan validityPeriod)
+    public Result<UserToken> CreateUserToken(UserTokenType type)
     {
+        var validityPeriod = type switch
+        {
+            UserTokenType.EmailConfirmation => TimeSpan.FromMinutes(10),
+            UserTokenType.PasswordReset => TimeSpan.FromDays(7),
+            _ => throw new InvalidOperationException()
+        };
+
         var userToken = UserToken.Create(
             id: UserTokenId.Create(),
             userId: Id,
@@ -164,7 +171,7 @@ public sealed class User : AggregateRoot
 
         userToken.AddDomainEvent(new UserTokenCreatedDomainEvent(userToken.Id));
 
-        return Result.Success(userToken);
+        return Result.Create(userToken);
     }
 
     public Result ConsumeUserToken(UserTokenId userTokenId, string tokenValue)
