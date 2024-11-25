@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Application.Common.Interfaces.Messaging;
+using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 using AgendaManager.Domain.Users.Enums;
@@ -7,7 +8,7 @@ using AgendaManager.Domain.Users.Interfaces;
 
 namespace AgendaManager.Application.Accounts.Commands.RecoveryPassword;
 
-internal class RecoveryPasswordCommandHandler(IUserRepository userRepository)
+internal class RecoveryPasswordCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
     : ICommandHandler<RecoveryPasswordCommand>
 {
     public async Task<Result> Handle(RecoveryPasswordCommand request, CancellationToken cancellationToken)
@@ -21,6 +22,8 @@ internal class RecoveryPasswordCommandHandler(IUserRepository userRepository)
         }
 
         var userToken = user.CreateUserToken(UserTokenType.PasswordReset);
+        userRepository.Update(user);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return userToken;
     }
