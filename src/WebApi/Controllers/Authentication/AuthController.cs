@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AgendaManager.WebApi.Controllers.Authentication;
 
 [AllowAnonymous]
-[Route("api/v{version:apiVersion}/authentication")]
+[Route("api/v{version:apiVersion}/auth")]
 public class AuthController : ApiControllerBase
 {
     /// <summary>

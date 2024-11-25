@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Application.Accounts.Commands.RecoveryPassword;
 using AgendaManager.Domain.Common.Responses;
+using AgendaManager.WebApi.Controllers.Accounts.Contracts;
 using AgendaManager.WebApi.Infrastructure;
 using AgendaManager.WebApi.Infrastructure.Results;
 using Microsoft.AspNetCore.Authorization;
@@ -18,9 +19,9 @@ public class AccountsController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpPost("recovery-password")]
-    public async Task<ActionResult<Result>> RecoverPassword(RecoveryPasswordCommand command)
+    public async Task<ActionResult<Result>> RecoverPassword(RecoveryPasswordRequest command)
     {
-        var result = await Sender.Send(command);
+        var result = await Sender.Send(new RecoveryPasswordCommand(command.Email));
 
         return result.ToActionResult();
     }
