@@ -10,24 +10,14 @@ using Microsoft.Extensions.Options;
 
 namespace AgendaManager.Infrastructure.Common.Emails;
 
-public sealed class EmailService : IEmailService
+public sealed class EmailService(
+    IOptions<EmailSettings> options,
+    ILogger<EmailService> logger,
+    IHostEnvironment environment,
+    IRazorViewToStringRenderer templateRenderer)
+    : IEmailService
 {
-    private readonly EmailSettings _settings;
-    private readonly ILogger<EmailService> _logger;
-    private readonly IHostEnvironment _environment;
-    private readonly IRazorViewToStringRenderer _templateRenderer;
-
-    public EmailService(
-        IOptions<EmailSettings> config,
-        ILogger<EmailService> logger,
-        IHostEnvironment environment,
-        IRazorViewToStringRenderer templateRenderer)
-    {
-        _settings = config.Value;
-        _logger = logger;
-        _environment = environment;
-        _templateRenderer = templateRenderer;
-    }
+    private readonly EmailSettings _settings = options.Value;
 
     public async Task SendEmailAsync(EmailMessage message)
     {
@@ -36,10 +26,10 @@ public sealed class EmailService : IEmailService
         using var mailMessage = CreateMailMessage(message);
         using var client = CreateSmtpClient();
 
-        if (_environment.IsProduction())
+        if (environment.IsProduction())
         {
             await client.SendMailAsync(mailMessage);
-            _logger.LogInformation("Email sent successfully to {Recipients}", string.Join(", ", message.To));
+            logger.LogInformation("Email sent successfully to {Recipients}", string.Join(", ", message.To));
         }
         else
         {
@@ -50,16 +40,16 @@ public sealed class EmailService : IEmailService
     public async Task SendTemplatedEmailAsync<TModel>(EmailTemplate<TModel> template)
         where TModel : class
     {
-        var body = await _templateRenderer.RenderViewToStringAsync(
-            template.TemplateName,
-            template.Model,
-            new Dictionary<string, object?>());
+        var body = await templateRenderer.RenderViewToStringAsync(
+            viewName: template.TemplateName,
+            model: template.Model,
+            viewData: new Dictionary<string, object?>());
 
         await SendEmailAsync(
             new EmailMessage(
-                template.To,
-                template.Subject,
-                body,
+                To: template.To,
+                Subject: template.Subject,
+                Body: body,
                 IsHtml: true));
     }
 
@@ -114,7 +104,7 @@ public sealed class EmailService : IEmailService
 
     private void LogEmailDetails(MailMessage message)
     {
-        _logger.LogInformation(
+        logger.LogInformation(
             """
             ========== EMAIL DETAILS ==========
             From: {From}
@@ -126,6 +116,6 @@ public sealed class EmailService : IEmailService
             message.From,
             string.Join(", ", message.To),
             message.Subject,
-            _environment.IsProduction() ? "[BODY HIDDEN IN PRODUCTION]" : message.Body);
+            environment.IsProduction() ? "[BODY HIDDEN IN PRODUCTION]" : message.Body);
     }
 }

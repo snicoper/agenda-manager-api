@@ -4,7 +4,7 @@ namespace AgendaManager.Infrastructure.Common.Emails.Options;
 
 public sealed class EmailSettings
 {
-    public const string SectionName = "EmailSettings";
+    public const string SectionName = "Email";
 
     [Required]
     public string Host { get; set; } = default!;

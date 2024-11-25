@@ -2,7 +2,7 @@
 
 namespace AgendaManager.Infrastructure.Common.Options;
 
-public class ClientAppSettings
+public sealed class ClientAppSettings
 {
     public const string SectionName = "ClientApp";
 

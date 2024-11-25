@@ -2,7 +2,7 @@
 
 namespace AgendaManager.Infrastructure.Common.Options;
 
-public class ClientApiSettings
+public sealed class ClientApiSettings
 {
     public const string SectionName = "ClientApi";
 
