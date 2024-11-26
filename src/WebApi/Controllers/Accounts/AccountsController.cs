@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Application.Accounts.Commands.ConfirmRecoveryPassword;
 using AgendaManager.Application.Accounts.Commands.RecoveryPassword;
+using AgendaManager.Application.Accounts.Commands.ResendEmailCode;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Controllers.Accounts.Contracts;
 using AgendaManager.WebApi.Infrastructure;
@@ -40,6 +41,18 @@ public class AccountsController : ApiControllerBase
             ConfirmNewPassword: request.ConfirmNewPassword);
 
         var result = await Sender.Send(command);
+
+        return result.ToActionResult();
+    }
+
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpPost("email-code-resent")]
+    public async Task<ActionResult<Result>> ResendEmailCode(ResendEmailCodeRequest request)
+    {
+        var result = await Sender.Send(new ResendEmailCodeCommand(request.Email));
 
         return result.ToActionResult();
     }

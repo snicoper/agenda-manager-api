@@ -1,6 +1,8 @@
 ﻿using AgendaManager.Application.Accounts.Interfaces;
 using AgendaManager.Application.Common.Abstractions;
 using AgendaManager.Application.Common.Exceptions;
+using AgendaManager.Domain.Users;
+using AgendaManager.Domain.Users.Enums;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.Interfaces;
@@ -10,7 +12,7 @@ namespace AgendaManager.Application.Accounts.EventHandlers;
 
 public class UserTokenCreatedDomainEventHandler(
     IUserRepository userRepository,
-    ISendRecoveryPasswordService emailService,
+    ISendRecoveryPasswordService recoveryPasswordService,
     ILogger<BaseEventHandler<UserTokenCreatedDomainEvent>> logger)
     : BaseEventHandler<UserTokenCreatedDomainEvent>(logger)
 {
@@ -25,6 +27,32 @@ public class UserTokenCreatedDomainEventHandler(
             throw new ApplicationEventHandlerException(UserErrors.UserNotFound.FirstError()?.Description!);
         }
 
-        await emailService.SendAsync(user, notification.UserToken.Token.Value, cancellationToken);
+        switch (notification.UserToken.Type)
+        {
+            case UserTokenType.EmailConfirmation:
+                await SendEmailConfirmationAsync(user, notification, cancellationToken);
+                break;
+            case UserTokenType.PasswordReset:
+                await SendRecoveryPasswordAsync(user, notification, cancellationToken);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+
+    private Task SendEmailConfirmationAsync(
+        User user,
+        UserTokenCreatedDomainEvent notification,
+        CancellationToken cancellationToken)
+    {
+        return Task.CompletedTask;
+    }
+
+    private async Task SendRecoveryPasswordAsync(
+        User user,
+        UserTokenCreatedDomainEvent notification,
+        CancellationToken cancellationToken)
+    {
+        await recoveryPasswordService.SendAsync(user, notification.UserToken.Token.Value, cancellationToken);
     }
 }

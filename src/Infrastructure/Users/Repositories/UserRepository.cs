@@ -33,6 +33,17 @@ public class UserRepository(AppDbContext context) : IUserRepository
         return await context.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
+    public async Task<User?> GetByEmailWithTokensAsync(
+        EmailAddress email,
+        CancellationToken cancellationToken = default)
+    {
+        var user = await context.Users
+            .Include(u => u.Tokens)
+            .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
+
+        return user;
+    }
+
     public async Task<User?> GetByTokenValueWithTokensAsync(
         string tokenValue,
         CancellationToken cancellationToken = default)
