@@ -1,4 +1,5 @@
-﻿using AgendaManager.Application.Accounts.Commands.RecoveryPassword;
+﻿using AgendaManager.Application.Accounts.Commands.ConfirmRecoveryPassword;
+using AgendaManager.Application.Accounts.Commands.RecoveryPassword;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Controllers.Accounts.Contracts;
 using AgendaManager.WebApi.Infrastructure;
@@ -19,9 +20,26 @@ public class AccountsController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpPost("recovery-password")]
-    public async Task<ActionResult<Result>> RecoverPassword(RecoveryPasswordRequest command)
+    public async Task<ActionResult<Result>> RecoverPassword(RecoveryPasswordRequest request)
     {
-        var result = await Sender.Send(new RecoveryPasswordCommand(command.Email));
+        var result = await Sender.Send(new RecoveryPasswordCommand(request.Email));
+
+        return result.ToActionResult();
+    }
+
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpPost("confirm-recovery-password")]
+    public async Task<ActionResult<Result>> ConfirmRecoveryPassword(ConfirmRecoveryPasswordRequest request)
+    {
+        var command = new ConfirmRecoveryPasswordCommand(
+            TokenValue: request.Token,
+            NewPassword: request.NewPassword,
+            ConfirmNewPassword: request.ConfirmNewPassword);
+
+        var result = await Sender.Send(command);
 
         return result.ToActionResult();
     }

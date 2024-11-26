@@ -33,7 +33,7 @@ public class UserTokenConfiguration : IEntityTypeConfiguration<UserToken>
                     .IsUnique();
 
                 tokenBuilder.Property(token => token.Value)
-                    .HasColumnName(nameof(UserToken.Token))
+                    .HasColumnName("Token")
                     .HasMaxLength(200)
                     .IsUnicode(false);
 

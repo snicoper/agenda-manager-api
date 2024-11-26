@@ -25,6 +25,6 @@ public class UserTokenCreatedDomainEventHandler(
             throw new ApplicationEventHandlerException(UserErrors.UserNotFound.FirstError()?.Description!);
         }
 
-        await emailService.SendAsync(user, notification.UserToken.Token.ToString(), cancellationToken);
+        await emailService.SendAsync(user, notification.UserToken.Token.Value, cancellationToken);
     }
 }

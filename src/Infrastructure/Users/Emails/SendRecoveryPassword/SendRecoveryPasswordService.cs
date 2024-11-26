@@ -17,7 +17,8 @@ public class SendRecoveryPasswordService(
     public async Task SendAsync(User user, string token, CancellationToken cancellationToken = default)
     {
         var siteName = apiSettings.Value.SiteName;
-        var resetLink = $"{appSettings.Value.BaseUrl}/accounts/recovery-password?token={Uri.EscapeDataString(token)}";
+        var resetLink =
+            $"{appSettings.Value.BaseUrl}/accounts/confirm-recovery-password?token={Uri.EscapeDataString(token)}";
 
         // ViewModel.
         var model = new SendRecoveryPasswordViewModel(
