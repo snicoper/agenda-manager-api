@@ -6,6 +6,6 @@ public static class Enpoints
 
     public static class Authentication
     {
-        public const string Login = $"{BaseUri}/authentication/login";
+        public const string Login = $"{BaseUri}/auth/login";
     }
 }

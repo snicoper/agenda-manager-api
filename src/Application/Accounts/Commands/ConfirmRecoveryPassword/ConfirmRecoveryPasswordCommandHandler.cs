@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Application.Common.Interfaces.Messaging;
+using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
@@ -9,7 +10,8 @@ namespace AgendaManager.Application.Accounts.Commands.ConfirmRecoveryPassword;
 internal class ConfirmRecoveryPasswordCommandHandler(
     IUserRepository userRepository,
     IPasswordHasher passwordHasher,
-    IPasswordPolicy passwordPolicy)
+    IPasswordPolicy passwordPolicy,
+    IUnitOfWork unitOfWork)
     : ICommandHandler<ConfirmRecoveryPasswordCommand>
 {
     public async Task<Result> Handle(ConfirmRecoveryPasswordCommand request, CancellationToken cancellationToken)
@@ -18,7 +20,14 @@ internal class ConfirmRecoveryPasswordCommandHandler(
 
         if (user is null)
         {
-            return UserTokenErrors.UserTokenNotFound;
+            return UserTokenErrors.UserTokenNotFoundOrExpired;
+        }
+
+        var userToken = user.Tokens.First(x => x.Token.Value == request.Token);
+
+        if (userToken.IsExpired)
+        {
+            return UserTokenErrors.UserTokenNotFoundOrExpired;
         }
 
         var newPassword = PasswordHash.FromRaw(request.NewPassword, passwordHasher, passwordPolicy);
@@ -29,10 +38,10 @@ internal class ConfirmRecoveryPasswordCommandHandler(
         }
 
         user.UpdatePassword(newPassword.Value!);
-        user.RemoveUserToken(user.Tokens.First(x => x.Token.Value == request.Token));
+        user.RemoveUserToken(userToken);
         userRepository.Update(user);
 
-        // await unitOfWork.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
         return Result.Success();
     }
 }

@@ -68,6 +68,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .WithOne()
             .HasForeignKey(ur => ur.UserId);
 
+        builder.Navigation(u => u.Tokens)
+            .HasField("_userTokens")
+            .UsePropertyAccessMode(PropertyAccessMode.Field);
+
         builder.HasMany(u => u.Tokens)
             .WithOne()
             .HasForeignKey(u => u.UserId)

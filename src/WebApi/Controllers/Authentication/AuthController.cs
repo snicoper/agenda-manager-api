@@ -19,6 +19,7 @@ public class AuthController : ApiControllerBase
     /// </summary>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     [HttpPost("login")]
     public async Task<ActionResult<Result<TokenResult>>> Login(LoginRequest request)
     {
@@ -33,6 +34,7 @@ public class AuthController : ApiControllerBase
     /// </summary>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     [HttpPost("refresh-token")]
     public async Task<ActionResult<Result<TokenResult>>> RefreshToken(RefreshTokenRequest request)
     {
