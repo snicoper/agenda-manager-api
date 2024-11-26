@@ -1,0 +1,20 @@
+﻿@model AgendaManager.Infrastructure.Users.Emails.SendEmailConfirmation.SendEmailConfirmationViewModel
+
+@{
+  ViewData["Title"] = "Verificar correo electrónico";
+  ViewData["SiteName"] = Model.SiteName;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>Hola,</p>
+
+<p>Gracias por registrarte. Para completar el proceso de registro y verificar tu cuenta (@Model.Email), necesitamos
+  confirmar tu dirección de correo electrónico.</p>
+
+<p>Por favor, haz clic en el siguiente enlace para verificar tu correo electrónico:</p>
+
+<a href="@Model.ConfirmationLink" class="button">Verificar Email</a>
+
+<p>Si no has creado una cuenta en nuestra plataforma, puedes ignorar este mensaje. El enlace caducará
+  en @Model.ExpirationDays días por motivos de seguridad.</p>

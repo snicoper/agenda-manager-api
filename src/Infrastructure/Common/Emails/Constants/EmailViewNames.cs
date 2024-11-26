@@ -3,4 +3,6 @@
 public static class EmailViewNames
 {
     public const string RecoveryPassword = nameof(RecoveryPassword);
+
+    public const string SendEmailConfirmation = nameof(SendEmailConfirmation);
 }
