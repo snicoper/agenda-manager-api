@@ -73,7 +73,7 @@ public class AuthorizationBehaviourTest
         result.IsSuccess.Should().BeFalse();
         result.ResultType.Should().Be(ResultType.Unauthorized);
         result.Error?.HasErrors.Should().BeTrue();
-        result.Error?.FirstError()?.Code.Should().Be("Unauthorized");
+        result.Error?.FirstError()?.Code.Should().Be("401");
         result.Error?.FirstError()?.Description.Should().Contain("User is Unauthorized from taking this action");
     }
 
@@ -94,7 +94,7 @@ public class AuthorizationBehaviourTest
         result.IsSuccess.Should().BeFalse();
         result.ResultType.Should().Be(ResultType.Unauthorized);
         result.Error?.HasErrors.Should().BeTrue();
-        result.Error?.FirstError()?.Code.Should().Be("Unauthorized");
+        result.Error?.FirstError()?.Code.Should().Be("401");
         result.Error?.FirstError()?.Description.Should().Contain("User is Unauthorized from taking this action");
     }
 
@@ -118,7 +118,7 @@ public class AuthorizationBehaviourTest
         result.IsSuccess.Should().BeFalse();
         result.ResultType.Should().Be(ResultType.Unauthorized);
         result.Error?.HasErrors.Should().BeTrue();
-        result.Error?.FirstError()?.Code.Should().Be("Unauthorized");
+        result.Error?.FirstError()?.Code.Should().Be("401");
         result.Error?.FirstError()?.Description.Should().Contain("User is Unauthorized from taking this action");
     }
 
@@ -142,7 +142,7 @@ public class AuthorizationBehaviourTest
         result.IsSuccess.Should().BeFalse();
         result.ResultType.Should().Be(ResultType.Unauthorized);
         result.Error?.HasErrors.Should().BeTrue();
-        result.Error?.FirstError()?.Code.Should().Be("Unauthorized");
+        result.Error?.FirstError()?.Code.Should().Be("401");
         result.Error?.FirstError()?.Description.Should().Contain("User is Unauthorized from taking this action");
     }
 
