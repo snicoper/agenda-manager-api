@@ -35,7 +35,7 @@ public class AccountsController : ApiControllerBase
     public async Task<ActionResult<Result>> ConfirmRecoveryPassword(ConfirmRecoveryPasswordRequest request)
     {
         var command = new ConfirmRecoveryPasswordCommand(
-            TokenValue: request.Token,
+            Token: request.Token,
             NewPassword: request.NewPassword,
             ConfirmNewPassword: request.ConfirmNewPassword);
 

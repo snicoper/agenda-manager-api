@@ -2,5 +2,5 @@
 
 namespace AgendaManager.Application.Accounts.Commands.ConfirmRecoveryPassword;
 
-public record ConfirmRecoveryPasswordCommand(string TokenValue, string NewPassword, string ConfirmNewPassword)
+public record ConfirmRecoveryPasswordCommand(string Token, string NewPassword, string ConfirmNewPassword)
     : ICommand;

@@ -14,7 +14,7 @@ internal class ConfirmRecoveryPasswordCommandHandler(
 {
     public async Task<Result> Handle(ConfirmRecoveryPasswordCommand request, CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetByTokenValueWithTokensAsync(request.TokenValue, cancellationToken);
+        var user = await userRepository.GetByTokenValueWithTokensAsync(request.Token, cancellationToken);
 
         if (user is null)
         {
@@ -29,7 +29,7 @@ internal class ConfirmRecoveryPasswordCommandHandler(
         }
 
         user.UpdatePassword(newPassword.Value!);
-        user.RemoveUserToken(user.Tokens.First(x => x.Token.Value == request.TokenValue));
+        user.RemoveUserToken(user.Tokens.First(x => x.Token.Value == request.Token));
         userRepository.Update(user);
 
         // await unitOfWork.SaveChangesAsync(cancellationToken);

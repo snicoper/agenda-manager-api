@@ -7,7 +7,7 @@ public class ConfirmRecoveryPasswordCommandValidator : AbstractValidator<Confirm
 {
     public ConfirmRecoveryPasswordCommandValidator()
     {
-        RuleFor(x => x.TokenValue)
+        RuleFor(x => x.Token)
             .NotEmpty().WithMessage("The token is invalid or expired.");
 
         RuleFor(x => x.NewPassword)

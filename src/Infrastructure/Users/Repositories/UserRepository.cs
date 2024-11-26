@@ -39,7 +39,8 @@ public class UserRepository(AppDbContext context) : IUserRepository
     {
         var user = await context.Users
             .Include(u => u.Tokens)
-            .FirstOrDefaultAsync(u => u.Tokens.Any(t => t.Token.Value == tokenValue), cancellationToken);
+            .Where(u => u.Tokens.Any(ut => ut.Token.Value == tokenValue))
+            .FirstOrDefaultAsync(cancellationToken);
 
         return user;
     }

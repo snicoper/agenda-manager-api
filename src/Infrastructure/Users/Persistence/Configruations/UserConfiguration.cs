@@ -72,5 +72,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .WithOne()
             .HasForeignKey(u => u.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(u => u.Tokens)
+            .UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 }
