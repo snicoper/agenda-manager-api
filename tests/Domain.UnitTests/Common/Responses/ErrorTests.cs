@@ -62,7 +62,7 @@ public class ErrorTests
         // Assert
         error.ResultType.Should().Be(ResultType.NotFound);
         error.HasErrors.Should().BeTrue();
-        error.FirstError()?.Code.Should().Be("NotFound");
+        error.FirstError()?.Code.Should().Be("404");
         error.FirstError()?.Description.Should().NotBeEmpty();
         error.ToResult().Should().BeOfType<Result>();
     }
@@ -76,7 +76,7 @@ public class ErrorTests
         // Assert
         error.ResultType.Should().Be(ResultType.Unauthorized);
         error.HasErrors.Should().BeTrue();
-        error.FirstError()?.Code.Should().Be(nameof(ResultType.Unauthorized));
+        error.FirstError()?.Code.Should().Be("401");
         error.FirstError()?.Description.Should().NotBeEmpty();
         error.ToResult().Should().BeOfType<Result>();
     }
@@ -90,7 +90,7 @@ public class ErrorTests
         // Assert
         error.ResultType.Should().Be(ResultType.Forbidden);
         error.HasErrors.Should().BeTrue();
-        error.FirstError()?.Code.Should().Be(nameof(ResultType.Forbidden));
+        error.FirstError()?.Code.Should().Be("403");
         error.FirstError()?.Description.Should().NotBeEmpty();
         error.ToResult().Should().BeOfType<Result>();
     }
@@ -138,7 +138,7 @@ public class ErrorTests
         // Assert
         error.ResultType.Should().Be(ResultType.Unexpected);
         error.HasErrors.Should().BeTrue();
-        error.FirstError()?.Code.Should().Be(nameof(ResultType.Unexpected));
+        error.FirstError()?.Code.Should().Be("500");
         error.FirstError()?.Description.Should().NotBeEmpty();
         error.ToResult().Should().BeOfType<Result>();
     }

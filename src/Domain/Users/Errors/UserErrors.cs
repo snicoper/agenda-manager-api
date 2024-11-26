@@ -12,7 +12,9 @@ public static class UserErrors
 
     public static Error EmailAlreadyExists => Error.Validation(nameof(User.Email), "Email already exists.");
 
-    public static Error EmailIsNotConfirmed => Error.Conflict("Email is not confirmed.");
+    public static Error EmailIsNotConfirmed => Error.Conflict(
+        description: "Email is not confirmed.",
+        code: "UserErrors.EmailIsNotConfirmed");
 
     public static Error InvalidFormatPassword => Error.Validation(
         "Password",

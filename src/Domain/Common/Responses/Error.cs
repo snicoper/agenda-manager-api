@@ -52,29 +52,29 @@ public sealed record Error
         return new Error(validationErrors);
     }
 
-    public static Error NotFound(string description = "Not Found")
+    public static Error NotFound(string description = "Not Found", string code = "404")
     {
-        return new Error(nameof(NotFound), description, ResultType.NotFound);
+        return new Error(code, description, ResultType.NotFound);
     }
 
-    public static Error Unauthorized(string description = "Unauthorized")
+    public static Error Unauthorized(string description = "Unauthorized", string code = "401")
     {
-        return new Error(nameof(Unauthorized), description, ResultType.Unauthorized);
+        return new Error(code, description, ResultType.Unauthorized);
     }
 
-    public static Error Forbidden(string description = "Forbidden")
+    public static Error Forbidden(string description = "Forbidden", string code = "403")
     {
-        return new Error(nameof(Forbidden), description, ResultType.Forbidden);
+        return new Error(code, description, ResultType.Forbidden);
     }
 
-    public static Error Conflict(string description = "A conflict error occurred")
+    public static Error Conflict(string description = "A conflict error occurred", string code = "409")
     {
-        return new Error(nameof(Conflict), description, ResultType.Conflict);
+        return new Error(code, description, ResultType.Conflict);
     }
 
-    public static Error Unexpected(string description = "An unexpected error occurred")
+    public static Error Unexpected(string description = "An unexpected error occurred", string code = "500")
     {
-        return new Error(nameof(Unexpected), description, ResultType.Unexpected);
+        return new Error(code, description, ResultType.Unexpected);
     }
 
     public Error AddValidationError(string code, string description)
