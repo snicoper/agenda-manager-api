@@ -20,8 +20,12 @@ public static class ResultExtensions
             StatusCodes.Status400BadRequest => HandleBadRequestResult(result.Error?.ToDictionary()),
             StatusCodes.Status401Unauthorized => new UnauthorizedResult(),
             StatusCodes.Status403Forbidden => new ForbidResult(),
-            StatusCodes.Status404NotFound => HandleNotFoundResult(result.Error?.FirstError()?.Description),
-            StatusCodes.Status409Conflict => HandleConflictResult(result.Error?.FirstError()?.Description),
+            StatusCodes.Status404NotFound => HandleNotFoundResult(
+                result.Error?.FirstError()?.Description,
+                result.Error?.FirstError()?.Code),
+            StatusCodes.Status409Conflict => HandleConflictResult(
+                result.Error?.FirstError()?.Description,
+                result.Error?.FirstError()?.Code),
             _ => HandleUnexpectedResult(statusCode, result.Error?.FirstError())
         };
     }
@@ -41,8 +45,12 @@ public static class ResultExtensions
             StatusCodes.Status400BadRequest => HandleBadRequestResult(result.Error?.ToDictionary()),
             StatusCodes.Status401Unauthorized => new UnauthorizedResult(),
             StatusCodes.Status403Forbidden => new ForbidResult(),
-            StatusCodes.Status404NotFound => HandleNotFoundResult(result.Error?.FirstError()?.Description),
-            StatusCodes.Status409Conflict => HandleConflictResult(result.Error?.FirstError()?.Description),
+            StatusCodes.Status404NotFound => HandleNotFoundResult(
+                result.Error?.FirstError()?.Description,
+                result.Error?.FirstError()?.Code),
+            StatusCodes.Status409Conflict => HandleConflictResult(
+                result.Error?.FirstError()?.Description,
+                result.Error?.FirstError()?.Code),
             _ => HandleUnexpectedResult(statusCode, result.Error?.FirstError())
         };
     }
@@ -75,26 +83,28 @@ public static class ResultExtensions
         return new BadRequestObjectResult(validationProblemDetails);
     }
 
-    private static NotFoundObjectResult HandleNotFoundResult(string? description)
+    private static NotFoundObjectResult HandleNotFoundResult(string? description, string? code)
     {
-        ProblemDetails problemDetails = new()
+        CustomProblemDetails problemDetails = new()
         {
             Status = StatusCodes.Status404NotFound,
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
             Title = "The specified resource was not found.",
+            Code = code,
             Detail = description
         };
 
         return new NotFoundObjectResult(problemDetails);
     }
 
-    private static ConflictObjectResult HandleConflictResult(string? description)
+    private static ConflictObjectResult HandleConflictResult(string? description, string? code)
     {
-        ProblemDetails problemDetails = new()
+        CustomProblemDetails problemDetails = new()
         {
             Status = StatusCodes.Status409Conflict,
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.8",
             Title = "The request could not be completed due to a conflict.",
+            Code = code,
             Detail = description
         };
 
@@ -104,7 +114,7 @@ public static class ResultExtensions
     private static ObjectResult HandleUnexpectedResult(int statusCode, ValidationError? validationError)
     {
         return new ObjectResult(
-            new ProblemDetails
+            new CustomProblemDetails
             {
                 Status = statusCode,
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
