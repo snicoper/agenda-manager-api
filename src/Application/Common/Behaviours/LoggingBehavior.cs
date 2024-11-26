@@ -32,7 +32,7 @@ public class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior<TReque
             {
                 using (LogContext.PushProperty("Error", result.Error, true))
                 {
-                    logger.LogError("Request {RequestName} processed with error", requestName);
+                    logger.LogError("Request {RequestName} processed with error: {@Error}", requestName, result.Error);
                 }
             }
 

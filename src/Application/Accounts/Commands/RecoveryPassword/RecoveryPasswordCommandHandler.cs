@@ -21,6 +21,16 @@ internal class RecoveryPasswordCommandHandler(IUserRepository userRepository, IU
             return UserErrors.UserNotFound;
         }
 
+        if (!user.IsActive)
+        {
+            return UserErrors.UserIsNotActive;
+        }
+
+        if (!user.IsEmailConfirmed)
+        {
+            return UserErrors.EmailIsNotConfirmed;
+        }
+
         var userToken = user.CreateUserToken(UserTokenType.PasswordReset);
         userRepository.Update(user);
         await unitOfWork.SaveChangesAsync(cancellationToken);
