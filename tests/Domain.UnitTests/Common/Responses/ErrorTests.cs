@@ -57,7 +57,7 @@ public class ErrorTests
     public void Error_ShouldReturnNotFound_WhenNotFoundIsProvided()
     {
         // Act
-        var error = Error.NotFound(Description);
+        var error = Error.NotFound(description: Description);
 
         // Assert
         error.ResultType.Should().Be(ResultType.NotFound);

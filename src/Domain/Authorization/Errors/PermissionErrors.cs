@@ -5,9 +5,11 @@ namespace AgendaManager.Domain.Authorization.Errors;
 
 public static class PermissionErrors
 {
-    public static Error PermissionNotFound => Error.NotFound("Permission not found.");
+    public static Error PermissionNotFound => Error.NotFound(
+        code: "PermissionErrors.PermissionNotFound",
+        description: "Permission not found.");
 
     public static Error PermissionNameAlreadyExists => Error.Validation(
-        nameof(Permission.Name),
-        "Permission name already exists.");
+        code: nameof(Permission.Name),
+        description: "Permission name already exists.");
 }

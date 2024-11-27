@@ -1,5 +1,4 @@
 using System.Reflection;
-using AgendaManager.Application.Authentication.Interfaces;
 using AgendaManager.Application.Common.Authorization;
 using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Application.Users.Models;
@@ -71,7 +70,7 @@ public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserProvider cu
 
     private static TResponse ErrorUnauthorizedResult()
     {
-        var error = Error.Unauthorized("User is Unauthorized from taking this action");
+        var error = Error.Unauthorized(description: "User is Unauthorized from taking this action");
 
         var result = ResultBehaviourHelper.CreateResult<TResponse>(error);
 

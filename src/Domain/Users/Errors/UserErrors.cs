@@ -13,28 +13,30 @@ public static class UserErrors
         code: "UserErrors.UserIsNotActive");
 
     public static Error UserNotFound => Error.NotFound(
-        description: "User not found.",
-        code: "UserErrors.UserNotFound");
+        code: "UserErrors.UserNotFound",
+        description: "User not found.");
 
-    public static Error EmailAlreadyExists => Error.Validation(nameof(User.Email), "Email already exists.");
+    public static Error EmailAlreadyExists => Error.Validation(
+        code: nameof(User.Email),
+        description: "Email already exists.");
 
     public static Error EmailIsNotConfirmed => Error.Conflict(
-        description: "Email is not confirmed.",
-        code: "UserErrors.EmailIsNotConfirmed");
+        code: "UserErrors.EmailIsNotConfirmed",
+        description: "Email is not confirmed.");
 
     public static Error InvalidFormatPassword => Error.Validation(
         code: "Password",
         "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit and one special character.");
 
     public static Error RoleAlreadyExists => Error.Conflict(
-        description: "Role already exists.",
-        code: "UserErrors.RoleAlreadyExists");
+        code: "UserErrors.RoleAlreadyExists",
+        description: "Role already exists.");
 
     public static Error RoleDoesNotExist => Error.Conflict(
-        description: "Role does not exist.",
-        code: "UserErrors.RoleDoesNotExist");
+        code: "UserErrors.RoleDoesNotExist",
+        description: "Role does not exist.");
 
     public static Error UserAlreadyConfirmedEmail => Error.Conflict(
-        description: "User already confirmed email.",
-        code: "UserErrors.EmailIsConfirmed");
+        code: "UserErrors.EmailIsConfirmed",
+        description: "User already confirmed email.");
 }

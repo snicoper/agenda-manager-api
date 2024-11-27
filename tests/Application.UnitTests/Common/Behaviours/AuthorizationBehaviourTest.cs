@@ -66,8 +66,7 @@ public class AuthorizationBehaviourTest
         _currentUserProvider.IsAuthenticated.Returns(false);
 
         // Act
-        var result = await _sut
-            .Handle(request, () => Task.FromResult(Result.Success()), CancellationToken.None);
+        var result = await _sut.Handle(request, () => Task.FromResult(Result.Success()), CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeFalse();
