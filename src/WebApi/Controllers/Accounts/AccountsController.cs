@@ -1,6 +1,7 @@
-﻿using AgendaManager.Application.Accounts.Commands.ConfirmRecoveryPassword;
+﻿using AgendaManager.Application.Accounts.Commands.ConfirmEmailResent;
+using AgendaManager.Application.Accounts.Commands.ConfirmEmailVerify;
+using AgendaManager.Application.Accounts.Commands.ConfirmRecoveryPassword;
 using AgendaManager.Application.Accounts.Commands.RecoveryPassword;
-using AgendaManager.Application.Accounts.Commands.ResendEmailCode;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Controllers.Accounts.Contracts;
 using AgendaManager.WebApi.Infrastructure;
@@ -49,10 +50,22 @@ public class AccountsController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [HttpPost("email-code-resent")]
-    public async Task<ActionResult<Result>> ResendEmailCode(ResendEmailCodeRequest request)
+    [HttpPost("confirm-email-resent")]
+    public async Task<ActionResult<Result>> ConfirmEmailResent(ConfirmEmailResentRequest request)
     {
-        var result = await Sender.Send(new ResendEmailCodeCommand(request.Email));
+        var result = await Sender.Send(new ConfirmEmailResentCommand(request.Email));
+
+        return result.ToActionResult();
+    }
+
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpPost("confirm-email-verify")]
+    public async Task<ActionResult<Result>> ConfirmEmailVerify(ConfirmEmailVerifyRequest request)
+    {
+        var result = await Sender.Send(new ConfirmEmailVerifyCommand(request.Token));
 
         return result.ToActionResult();
     }

@@ -28,7 +28,7 @@ using AgendaManager.Infrastructure.Resources.Persistence.Repositories;
 using AgendaManager.Infrastructure.ResourceTypes.Repositories;
 using AgendaManager.Infrastructure.Services.Persistence.Repositories;
 using AgendaManager.Infrastructure.Users.Authentication;
-using AgendaManager.Infrastructure.Users.Emails.SendEmailConfirmation;
+using AgendaManager.Infrastructure.Users.Emails.ConfirmEmailResent;
 using AgendaManager.Infrastructure.Users.Emails.SendRecoveryPassword;
 using AgendaManager.Infrastructure.Users.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -101,7 +101,7 @@ public static class DependencyInjection
         services.AddScoped<IPermissionRepository, PermissionRepository>();
         services.AddScoped<IUserTokenRepository, UserTokenRepository>();
         services.AddTransient<ISendRecoveryPasswordService, SendRecoveryPasswordService>();
-        services.AddTransient<ISendEmailConfirmationService, SendEmailConfirmationService>();
+        services.AddTransient<ISendConfirmEmailResentService, SendConfirmEmailResentService>();
 
         // Calendars.
         services.AddScoped<ICalendarRepository, CalendarRepository>();

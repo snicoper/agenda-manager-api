@@ -73,6 +73,7 @@ public sealed class RazorViewToStringRenderer(
         }
 
         var locations = getViewResult.SearchedLocations.Concat(findViewResult.SearchedLocations);
+
         throw new InvalidOperationException(CreateViewNotFoundError(viewName, locations));
     }
 }

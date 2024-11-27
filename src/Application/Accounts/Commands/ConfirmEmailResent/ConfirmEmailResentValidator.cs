@@ -1,11 +1,11 @@
 ﻿using AgendaManager.Domain.Common.Utils;
 using FluentValidation;
 
-namespace AgendaManager.Application.Accounts.Commands.ResendEmailCode;
+namespace AgendaManager.Application.Accounts.Commands.ConfirmEmailResent;
 
-public class ResendEmailCodeValidator : AbstractValidator<ResendEmailCodeCommand>
+public class ConfirmEmailResentValidator : AbstractValidator<ConfirmEmailResentCommand>
 {
-    public ResendEmailCodeValidator()
+    public ConfirmEmailResentValidator()
     {
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("Email address is required")

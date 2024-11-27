@@ -13,7 +13,7 @@ namespace AgendaManager.Application.Accounts.EventHandlers;
 public class UserTokenCreatedDomainEventHandler(
     IUserRepository userRepository,
     ISendRecoveryPasswordService recoveryPasswordService,
-    ISendEmailConfirmationService emailConfirmationService,
+    ISendConfirmEmailResentService confirmEmailResentService,
     ILogger<BaseEventHandler<UserTokenCreatedDomainEvent>> logger)
     : BaseEventHandler<UserTokenCreatedDomainEvent>(logger)
 {
@@ -46,7 +46,7 @@ public class UserTokenCreatedDomainEventHandler(
         UserTokenCreatedDomainEvent notification,
         CancellationToken cancellationToken)
     {
-        await emailConfirmationService.SendAsync(user, notification.UserToken.Token.Value, cancellationToken);
+        await confirmEmailResentService.SendAsync(user, notification.UserToken.Token.Value, cancellationToken);
     }
 
     private async Task SendRecoveryPasswordAsync(
