@@ -6,11 +6,11 @@ public static class ResourceTypeErrors
 {
     public static Error NameAlreadyExists => Error.Validation(
         code: nameof(ResourceType.Name),
-        description: "Name already exists.");
+        description: "The name of the resource type already exists.");
 
     public static Error DescriptionExists => Error.Validation(
         code: nameof(ResourceType.Description),
-        description: "Description already exists.");
+        description: "The description of the resource type already exists.");
 
     public static Error ResourceTypeNotFound => Error.NotFound(
         code: "ResourceTypeErrors.ResourceTypeNotFound",

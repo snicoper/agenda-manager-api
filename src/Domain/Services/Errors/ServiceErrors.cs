@@ -14,9 +14,9 @@ public static class ServiceErrors
 
     public static Error HasAssociatedAppointments => Error.Conflict(
         code: "ServiceErrors.HasAssociatedAppointments",
-        description: "The service has associated appointments and it is not possible to delete it");
+        description: "The service has associated appointments and it is not possible to delete it.");
 
     public static Error ResourceRequirementsMismatch => Error.Conflict(
         code: "ServiceErrors.ResourceRequirementsMismatch",
-        description: "The provided resources do not match the exact requirements of the service");
+        description: "The provided resources do not match the exact requirements of the service.");
 }

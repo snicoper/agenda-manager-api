@@ -6,7 +6,7 @@ public static class AppointmentErrors
 {
     public static Error OnlyPendingAndAcceptedAllowed => Error.Conflict(
         code: "AppointmentErrors.OnlyPendingAndAcceptedAllowed",
-        description: "Invalid status, only Pending and Accepted are allowed.");
+        description: "Invalid status, only pending and accepted allowed.");
 
     public static Error NoResourcesProvided => Error.Validation(
         code: nameof(Appointment.Resources),
@@ -14,7 +14,7 @@ public static class AppointmentErrors
 
     public static Error MissingCreationStrategy => Error.Conflict(
         code: "AppointmentErrors.MissingCreationStrategy",
-        description: "Creation strategy not found.");
+        description: "Missing creation strategy.");
 
     public static Error AppointmentNotFound => Error.NotFound(
         code: "AppointmentErrors.AppointmentNotFound",

@@ -6,5 +6,5 @@ public static class ResourceScheduleErrors
 {
     public static Error NotFound => Error.NotFound(
         code: "ResourceScheduleErrors.NotFound",
-        description: "The resource schedule with the specified identifier was not found.");
+        description: "The resource schedule was not found..");
 }

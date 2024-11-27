@@ -6,21 +6,21 @@ public static class CalendarErrors
 {
     public static Error CalendarNotFound => Error.NotFound(
         code: "CalendarErrors.CalendarNotFound",
-        description: "Calendar not found.");
+        description: "The calendar was not found.");
 
     public static Error NameAlreadyExists => Error.Validation(
         code: nameof(Calendar.Name),
-        description: "Calendar name already exists.");
+        description: "The calendar name already exists.");
 
     public static Error CannotDeleteCalendarWithAppointments => Error.Conflict(
         code: "CalendarErrors.CannotDeleteCalendarWithAppointments",
-        description: "Cannot delete calendar because it has appointments associated.");
+        description: "The calendar cannot be deleted because it has appointments.");
 
     public static Error CannotDeleteCalendarWithServices => Error.Conflict(
         code: "CalendarErrors.CannotDeleteCalendarWithServices",
-        description: "Cannot delete calendar because it has services associated.");
+        description: "The calendar cannot be deleted because it has services.");
 
     public static Error CannotDeleteCalendarWithResources => Error.Conflict(
         code: "CalendarErrors.CannotDeleteCalendarWithResources",
-        description: "Cannot delete calendar because it has resources associated.");
+        description: "The calendar cannot be deleted because it has resources.");
 }

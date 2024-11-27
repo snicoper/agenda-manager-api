@@ -6,17 +6,17 @@ public static class UserTokenErrors
 {
     public static Error InvalidToken => Error.Conflict(
         code: "UserTokenErrors.InvalidToken",
-        description: "User token is invalid.");
+        description: "The user token is invalid.");
 
     public static Error TokenHasExpired => Error.Conflict(
         code: "UserTokenErrors.TokenHasExpired",
-        description: "Token has expired.");
+        description: "The user token has expired.");
 
     public static Error UserTokenNotFound => Error.NotFound(
         code: "UserTokenErrors.UserTokenNotFound",
-        description: "User token not found.");
+        description: "The user token was not found.");
 
     public static Error UserTokenNotFoundOrExpired => Error.Conflict(
         code: "UserTokenErrors.UserTokenNotFoundOrExpired",
-        description: "User token was not found or has expired.");
+        description: "The user token was not found or has expired.");
 }

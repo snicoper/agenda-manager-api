@@ -5,24 +5,24 @@ namespace AgendaManager.Domain.Users.Errors;
 public static class UserErrors
 {
     public static Error InvalidCredentials => Error.Conflict(
-        description: "Invalid credentials.",
-        code: "UserErrors.InvalidCredentials");
+        code: "UserErrors.InvalidCredentials",
+        description: "The provided credentials are invalid.");
 
     public static Error UserIsNotActive => Error.Conflict(
-        description: "User is not active.",
-        code: "UserErrors.UserIsNotActive");
+        code: "UserErrors.UserIsNotActive",
+        description: "The user is not active.");
 
     public static Error UserNotFound => Error.NotFound(
         code: "UserErrors.UserNotFound",
-        description: "User not found.");
+        description: "The user was not found.");
 
     public static Error EmailAlreadyExists => Error.Validation(
         code: nameof(User.Email),
-        description: "Email already exists.");
+        description: "The email already exists.");
 
     public static Error EmailIsNotConfirmed => Error.Conflict(
         code: "UserErrors.EmailIsNotConfirmed",
-        description: "Email is not confirmed.");
+        description: "The email is not confirmed.");
 
     public static Error InvalidFormatPassword => Error.Validation(
         code: "Password",
@@ -30,13 +30,13 @@ public static class UserErrors
 
     public static Error RoleAlreadyExists => Error.Conflict(
         code: "UserErrors.RoleAlreadyExists",
-        description: "Role already exists.");
+        description: "The user already has the specified role.");
 
     public static Error RoleDoesNotExist => Error.Conflict(
         code: "UserErrors.RoleDoesNotExist",
-        description: "Role does not exist.");
+        description: "The user does not have the specified role.");
 
     public static Error UserAlreadyConfirmedEmail => Error.Conflict(
         code: "UserErrors.EmailIsConfirmed",
-        description: "User already confirmed email.");
+        description: "The user has already confirmed their email.");
 }
