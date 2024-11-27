@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Users;
 
-namespace AgendaManager.Application.Accounts.Interfaces;
+namespace AgendaManager.Application.Users.Interfaces;
 
 public interface ISendConfirmEmailResentService
 {

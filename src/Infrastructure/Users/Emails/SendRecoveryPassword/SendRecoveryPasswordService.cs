@@ -1,4 +1,4 @@
-﻿using AgendaManager.Application.Accounts.Interfaces;
+﻿using AgendaManager.Application.Users.Interfaces;
 using AgendaManager.Domain.Users;
 using AgendaManager.Infrastructure.Common.Emails.Constants;
 using AgendaManager.Infrastructure.Common.Emails.Interfaces;

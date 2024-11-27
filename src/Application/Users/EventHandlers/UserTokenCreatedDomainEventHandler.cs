@@ -1,6 +1,6 @@
-﻿using AgendaManager.Application.Accounts.Interfaces;
-using AgendaManager.Application.Common.Abstractions;
+﻿using AgendaManager.Application.Common.Abstractions;
 using AgendaManager.Application.Common.Exceptions;
+using AgendaManager.Application.Users.Interfaces;
 using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Enums;
 using AgendaManager.Domain.Users.Errors;
@@ -8,7 +8,7 @@ using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.Interfaces;
 using Microsoft.Extensions.Logging;
 
-namespace AgendaManager.Application.Accounts.EventHandlers;
+namespace AgendaManager.Application.Users.EventHandlers;
 
 public class UserTokenCreatedDomainEventHandler(
     IUserRepository userRepository,
