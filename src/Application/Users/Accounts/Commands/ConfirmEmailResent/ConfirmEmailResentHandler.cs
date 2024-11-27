@@ -7,7 +7,7 @@ using AgendaManager.Domain.Users.Enums;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
 
-namespace AgendaManager.Application.Accounts.Commands.ConfirmEmailResent;
+namespace AgendaManager.Application.Users.Accounts.Commands.ConfirmEmailResent;
 
 internal class ConfirmEmailResentHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
     : ICommandHandler<ConfirmEmailResentCommand>

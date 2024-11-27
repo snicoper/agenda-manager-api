@@ -1,15 +1,15 @@
-﻿using AgendaManager.Application.Accounts.Commands.ConfirmEmailResent;
-using AgendaManager.Application.Accounts.Commands.ConfirmEmailVerify;
-using AgendaManager.Application.Accounts.Commands.ConfirmRecoveryPassword;
-using AgendaManager.Application.Accounts.Commands.RecoveryPassword;
+﻿using AgendaManager.Application.Users.Accounts.Commands.ConfirmEmailResent;
+using AgendaManager.Application.Users.Accounts.Commands.ConfirmEmailVerify;
+using AgendaManager.Application.Users.Accounts.Commands.ConfirmRecoveryPassword;
+using AgendaManager.Application.Users.Accounts.Commands.RecoveryPassword;
 using AgendaManager.Domain.Common.Responses;
-using AgendaManager.WebApi.Controllers.Accounts.Contracts;
+using AgendaManager.WebApi.Controllers.Users.Accounts.Contracts;
 using AgendaManager.WebApi.Infrastructure;
 using AgendaManager.WebApi.Infrastructure.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AgendaManager.WebApi.Controllers.Accounts;
+namespace AgendaManager.WebApi.Controllers.Users.Accounts;
 
 [Route("api/v{version:apiVersion}/accounts")]
 public class AccountsController : ApiControllerBase

@@ -6,7 +6,7 @@ using AgendaManager.Domain.Users.Enums;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
 
-namespace AgendaManager.Application.Accounts.Commands.RecoveryPassword;
+namespace AgendaManager.Application.Users.Accounts.Commands.RecoveryPassword;
 
 internal class RecoveryPasswordCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
     : ICommandHandler<RecoveryPasswordCommand>

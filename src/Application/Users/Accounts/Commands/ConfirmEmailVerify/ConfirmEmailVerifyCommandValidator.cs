@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace AgendaManager.Application.Accounts.Commands.ConfirmEmailVerify;
+namespace AgendaManager.Application.Users.Accounts.Commands.ConfirmEmailVerify;
 
 public class ConfirmEmailVerifyCommandValidator : AbstractValidator<ConfirmEmailVerifyCommand>
 {

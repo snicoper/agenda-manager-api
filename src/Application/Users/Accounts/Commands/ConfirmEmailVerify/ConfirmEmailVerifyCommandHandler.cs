@@ -4,7 +4,7 @@ using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
 
-namespace AgendaManager.Application.Accounts.Commands.ConfirmEmailVerify;
+namespace AgendaManager.Application.Users.Accounts.Commands.ConfirmEmailVerify;
 
 internal class ConfirmEmailVerifyCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
     : ICommandHandler<ConfirmEmailVerifyCommand>

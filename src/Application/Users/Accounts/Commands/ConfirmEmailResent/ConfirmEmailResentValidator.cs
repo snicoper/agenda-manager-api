@@ -1,11 +1,11 @@
 ﻿using AgendaManager.Domain.Common.Utils;
 using FluentValidation;
 
-namespace AgendaManager.Application.Accounts.Commands.RecoveryPassword;
+namespace AgendaManager.Application.Users.Accounts.Commands.ConfirmEmailResent;
 
-public class RecoveryPasswordCommandValidator : AbstractValidator<RecoveryPasswordCommand>
+public class ConfirmEmailResentValidator : AbstractValidator<ConfirmEmailResentCommand>
 {
-    public RecoveryPasswordCommandValidator()
+    public ConfirmEmailResentValidator()
     {
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("Email address is required")

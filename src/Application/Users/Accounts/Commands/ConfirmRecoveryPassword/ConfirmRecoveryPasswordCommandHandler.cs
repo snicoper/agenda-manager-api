@@ -5,7 +5,7 @@ using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.Application.Accounts.Commands.ConfirmRecoveryPassword;
+namespace AgendaManager.Application.Users.Accounts.Commands.ConfirmRecoveryPassword;
 
 internal class ConfirmRecoveryPasswordCommandHandler(
     IUserRepository userRepository,

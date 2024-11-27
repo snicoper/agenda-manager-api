@@ -1,7 +1,7 @@
 ﻿using AgendaManager.Domain.Common.Utils;
 using FluentValidation;
 
-namespace AgendaManager.Application.Accounts.Commands.ConfirmRecoveryPassword;
+namespace AgendaManager.Application.Users.Accounts.Commands.ConfirmRecoveryPassword;
 
 public class ConfirmRecoveryPasswordCommandValidator : AbstractValidator<ConfirmRecoveryPasswordCommand>
 {
