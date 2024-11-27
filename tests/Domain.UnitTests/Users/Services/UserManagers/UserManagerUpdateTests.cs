@@ -48,6 +48,6 @@ public class UserManagerUpdateTests
 
         // Assert
         result.IsFailure.Should().BeTrue();
-        result.Error?.FirstError()?.Description.Should().Be("Email already exists.");
+        result.Error?.FirstError()?.Description.Should().Be("The email already exists.");
     }
 }

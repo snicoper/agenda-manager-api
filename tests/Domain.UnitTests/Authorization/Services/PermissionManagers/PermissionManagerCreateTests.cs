@@ -55,7 +55,7 @@ public class PermissionManagerCreateTests
         permissionResult.Should().BeOfType<Result<Permission>>();
         permissionResult.IsSuccess.Should().BeFalse();
         permissionResult.ResultType.Should().Be(ResultType.Validation);
-        permissionResult.Error?.FirstError()?.Description.Should().Be("Permission name already exists.");
+        permissionResult.Error?.FirstError()?.Description.Should().Be("The permission name already exists.");
     }
 
     [Fact]

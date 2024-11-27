@@ -69,7 +69,7 @@ public class UserManagerCreateTests
         userResult.Should().BeOfType<Result<User>>();
         userResult.ResultType.Should().Be(ResultType.Validation);
         userResult.IsFailure.Should().BeTrue();
-        userResult.Error?.FirstError()?.Description.Should().Be("Email already exists.");
+        userResult.Error?.FirstError()?.Description.Should().Be("The email already exists.");
     }
 
     [Fact]

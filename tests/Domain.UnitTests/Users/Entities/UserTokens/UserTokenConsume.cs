@@ -33,6 +33,6 @@ public class UserTokenConsume
 
         // Assert
         result.IsFailure.Should().BeTrue();
-        result.Error?.FirstError()?.Description.Should().Be("User token is invalid.");
+        result.Error?.FirstError()?.Description.Should().Be("The user token is invalid.");
     }
 }

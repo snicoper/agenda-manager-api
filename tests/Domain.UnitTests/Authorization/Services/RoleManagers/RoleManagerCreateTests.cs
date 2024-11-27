@@ -60,7 +60,7 @@ public class RoleManagerCreateTests
         roleResult.Should().BeOfType<Result<Role>>();
         roleResult.IsSuccess.Should().BeFalse();
         roleResult.ResultType.Should().Be(ResultType.Validation);
-        roleResult.Error?.FirstError()?.Description.Should().Be("Role name already exists.");
+        roleResult.Error?.FirstError()?.Description.Should().Be("The role name already exists.");
     }
 
     [Fact]

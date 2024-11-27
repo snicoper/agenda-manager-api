@@ -43,7 +43,7 @@ public class AuthenticationServiceTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Error?.FirstError()?.Description.Should().Be("Invalid credentials.");
+        result.Error?.FirstError()?.Description.Should().Be("The provided credentials are invalid.");
     }
 
     [Fact]
@@ -58,7 +58,7 @@ public class AuthenticationServiceTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Error?.FirstError()?.Description.Should().Be("Email is not confirmed.");
+        result.Error?.FirstError()?.Description.Should().Be("The email is not confirmed.");
     }
 
     [Fact]
@@ -73,6 +73,6 @@ public class AuthenticationServiceTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Error?.FirstError()?.Description.Should().Be("User is not active.");
+        result.Error?.FirstError()?.Description.Should().Be("The user is not active.");
     }
 }
