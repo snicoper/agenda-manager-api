@@ -1,6 +1,8 @@
 ﻿using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Domain.Common.Responses;
+using AgendaManager.Domain.Users;
+using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
@@ -27,6 +29,8 @@ internal class ConfirmRecoveryPasswordCommandHandler(
 
         if (userToken.IsExpired)
         {
+            await RemoveTokenFromUserAsync(user, userToken, cancellationToken);
+
             return UserTokenErrors.UserTokenNotFoundOrExpired;
         }
 
@@ -34,14 +38,26 @@ internal class ConfirmRecoveryPasswordCommandHandler(
 
         if (newPassword.IsFailure)
         {
+            await RemoveTokenFromUserAsync(user, userToken, cancellationToken);
+
             return newPassword;
         }
 
         user.UpdatePassword(newPassword.Value!);
+        await RemoveTokenFromUserAsync(user, userToken, cancellationToken);
+
+        return Result.Success();
+    }
+
+    private async Task RemoveTokenFromUserAsync(User user, UserToken? userToken, CancellationToken cancellationToken)
+    {
+        if (userToken is null)
+        {
+            return;
+        }
+
         user.RemoveUserToken(userToken);
         userRepository.Update(user);
-
         await unitOfWork.SaveChangesAsync(cancellationToken);
-        return Result.Success();
     }
 }

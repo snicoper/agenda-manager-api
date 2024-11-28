@@ -1,6 +1,8 @@
 ﻿using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Domain.Common.Responses;
+using AgendaManager.Domain.Users;
+using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
 
@@ -18,18 +20,44 @@ internal class ConfirmEmailVerifyCommandHandler(IUserRepository userRepository, 
             return UserErrors.UserNotFound;
         }
 
+        var userToken = user.Tokens.First(x => x.Token.Value == request.Token);
+
+        if (!user.IsActive)
+        {
+            await RemoveTokenFromUserAsync(user, userToken, cancellationToken);
+
+            return UserErrors.UserIsNotActive;
+        }
+
         if (user.IsEmailConfirmed)
         {
+            await RemoveTokenFromUserAsync(user, userToken, cancellationToken);
+
             return UserErrors.UserAlreadyConfirmedEmail;
         }
 
-        var userToken = user.Tokens.First(x => x.Token.Value == request.Token);
-        user.ConfirmEmail();
-        user.RemoveUserToken(userToken);
+        if (userToken.Token.IsExpired)
+        {
+            await RemoveTokenFromUserAsync(user, userToken, cancellationToken);
 
-        userRepository.Update(user);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+            return UserTokenErrors.TokenHasExpired;
+        }
+
+        user.ConfirmEmail();
+        await RemoveTokenFromUserAsync(user, userToken, cancellationToken);
 
         return Result.Create();
+    }
+
+    private async Task RemoveTokenFromUserAsync(User user, UserToken? userToken, CancellationToken cancellationToken)
+    {
+        if (userToken is null)
+        {
+            return;
+        }
+
+        user.RemoveUserToken(userToken);
+        userRepository.Update(user);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

@@ -21,6 +21,11 @@ internal class ConfirmEmailResentHandler(IUserRepository userRepository, IUnitOf
             return UserErrors.UserNotFound;
         }
 
+        if (!user.IsActive)
+        {
+            return UserErrors.UserIsNotActive;
+        }
+
         if (user.IsEmailConfirmed)
         {
             return UserErrors.UserAlreadyConfirmedEmail;
