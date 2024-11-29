@@ -1,4 +1,5 @@
-﻿using AgendaManager.Application.Authorization.Queries.GetRolesPaginated;
+﻿using AgendaManager.Application.Authorization.Queries.GetAllRoles;
+using AgendaManager.Application.Authorization.Queries.GetRolesPaginated;
 using AgendaManager.Application.Common.Http;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Infrastructure;
@@ -15,6 +16,14 @@ public class RolesController : ApiControllerBase
         [FromQuery] RequestData request)
     {
         var result = await Sender.Send(new GetRolesPaginatedQuery(request));
+
+        return result.ToActionResult();
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<Result<IEnumerable<GetAllRolesQueryResponse>>>> GetAllRoles()
+    {
+        var result = await Sender.Send(new GetAllRolesQuery());
 
         return result.ToActionResult();
     }
