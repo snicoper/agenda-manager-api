@@ -8,6 +8,11 @@ namespace AgendaManager.Infrastructure.Authorization.Persistence.Repositories;
 
 public class RoleRepository(AppDbContext context) : IRoleRepository
 {
+    public IQueryable<Role> GetQueryAbleRoles()
+    {
+        return context.Roles;
+    }
+
     public async Task<Role?> GetByIdAsync(RoleId roleId, CancellationToken cancellationToken = default)
     {
         var role = await context.Roles.FirstOrDefaultAsync(r => r.Id.Equals(roleId), cancellationToken);

@@ -4,6 +4,8 @@ namespace AgendaManager.Domain.Authorization.Interfaces;
 
 public interface IRoleRepository
 {
+    IQueryable<Role> GetQueryAbleRoles();
+
     Task<Role?> GetByIdAsync(RoleId roleId, CancellationToken cancellationToken = default);
 
     Task<List<Role>> GetByIdsWithPermissionsAsync(
