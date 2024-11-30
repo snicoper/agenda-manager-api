@@ -1,8 +1,10 @@
-﻿using AgendaManager.Application.Authorization.Queries.GetAllRoles;
+﻿using AgendaManager.Application.Authorization.Commands.UpdatePermissionForRole;
+using AgendaManager.Application.Authorization.Queries.GetAllRoles;
 using AgendaManager.Application.Authorization.Queries.GetRolesPaginated;
 using AgendaManager.Application.Authorization.Queries.GetRoleWithPermissionAvailabilityById;
 using AgendaManager.Application.Common.Http;
 using AgendaManager.Domain.Common.Responses;
+using AgendaManager.WebApi.Controllers.Authorization.Contracts;
 using AgendaManager.WebApi.Infrastructure;
 using AgendaManager.WebApi.Infrastructure.Results;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +36,18 @@ public class RolesController : ApiControllerBase
         GetRoleWithPermissionAvailabilityById(Guid roleId)
     {
         var result = await Sender.Send(new GetRoleWithPermissionAvailabilityByIdQuery(roleId));
+
+        return result.ToActionResult();
+    }
+
+    [HttpPut("{roleId:guid}/permissions/{permissionId:guid}")]
+    public async Task<ActionResult<Result>> UpdatePermissionForRole(
+        Guid roleId,
+        Guid permissionId,
+        UpdatePermissionForRoleRequest request)
+    {
+        var command = new UpdatePermissionForRoleCommand(roleId, permissionId, request.IsAssigned);
+        var result = await Sender.Send(command);
 
         return result.ToActionResult();
     }
