@@ -10,7 +10,7 @@ public static class QueryableFilterExtensions
 {
     public static IQueryable<TEntity> Filter<TEntity>(this IQueryable<TEntity> source, RequestData request)
     {
-        if (string.IsNullOrEmpty(request.Filters))
+        if (string.IsNullOrWhiteSpace(request.Filters))
         {
             return source;
         }
@@ -39,7 +39,7 @@ public static class QueryableFilterExtensions
         for (var position = 0; position < itemsFilter.Length; position++)
         {
             var itemFilter = itemsFilter[position];
-            var logicalOperator = !string.IsNullOrEmpty(itemFilter.LogicalOperator)
+            var logicalOperator = !string.IsNullOrWhiteSpace(itemFilter.LogicalOperator)
                 ? FilterOperator.GetLogicalOperator(itemFilter.LogicalOperator)
                 : string.Empty;
 
@@ -67,7 +67,7 @@ public static class QueryableFilterExtensions
         var propertyName = PropertyNameToUpper(filter.PropertyName);
         var relationalOperator = FilterOperator.GetRelationalOperator(filter.RelationalOperator);
 
-        var logicalOperator = !string.IsNullOrEmpty(filter.LogicalOperator)
+        var logicalOperator = !string.IsNullOrWhiteSpace(filter.LogicalOperator)
             ? FilterOperator.GetLogicalOperator(filter.LogicalOperator)
             : string.Empty;
 
@@ -85,7 +85,7 @@ public static class QueryableFilterExtensions
 
     private static string PropertyNameToUpper(string? propertyName)
     {
-        if (string.IsNullOrEmpty(propertyName))
+        if (string.IsNullOrWhiteSpace(propertyName))
         {
             return string.Empty;
         }

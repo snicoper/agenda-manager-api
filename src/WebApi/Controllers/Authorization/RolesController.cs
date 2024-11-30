@@ -1,4 +1,5 @@
-﻿using AgendaManager.Application.Authorization.Commands.UpdatePermissionForRole;
+﻿using AgendaManager.Application.Authorization.Commands.CreateRole;
+using AgendaManager.Application.Authorization.Commands.UpdatePermissionForRole;
 using AgendaManager.Application.Authorization.Queries.GetAllRoles;
 using AgendaManager.Application.Authorization.Queries.GetRolesPaginated;
 using AgendaManager.Application.Authorization.Queries.GetRoleWithPermissionAvailabilityById;
@@ -36,6 +37,15 @@ public class RolesController : ApiControllerBase
         GetRoleWithPermissionAvailabilityById(Guid roleId)
     {
         var result = await Sender.Send(new GetRoleWithPermissionAvailabilityByIdQuery(roleId));
+
+        return result.ToActionResult();
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<Result<CreateRoleCommandResponse>>> CreateRole(CreateRoleRequest request)
+    {
+        var command = new CreateRoleCommand(request.Name, request.Description);
+        var result = await Sender.Send(command);
 
         return result.ToActionResult();
     }

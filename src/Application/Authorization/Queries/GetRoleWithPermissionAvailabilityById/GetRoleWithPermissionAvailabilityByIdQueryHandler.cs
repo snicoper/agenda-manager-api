@@ -27,7 +27,7 @@ internal class GetRoleWithPermissionAvailabilityByIdQueryHandler(
 
         var permissions = await permissionRepository.GetAllAsync(cancellationToken);
 
-        // Agrupar los permisos por módulo
+        // Agrupar los permisos por módulo.
         var modulePermissions = permissions
             .GroupBy(p => p.Name.Split(':')[0])
             .Select(
@@ -41,10 +41,10 @@ internal class GetRoleWithPermissionAvailabilityByIdQueryHandler(
             .ToList();
 
         var response = new GetRoleWithPermissionAvailabilityByIdQueryResponse(
-            role.Id.Value,
-            role.Name,
-            role.Description,
-            modulePermissions);
+            RoleId: role.Id.Value,
+            RoleName: role.Name,
+            RoleDescription: role.Description,
+            Permissions: modulePermissions);
 
         return response;
     }

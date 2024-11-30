@@ -12,7 +12,7 @@ public static class QueryableOrderByExtensions
 {
     public static IQueryable<TEntity> Ordering<TEntity>(this IQueryable<TEntity> source, RequestData request)
     {
-        if (string.IsNullOrEmpty(request.Order))
+        if (string.IsNullOrWhiteSpace(request.Order))
         {
             return OrderByCreatedIfExists(source);
         }

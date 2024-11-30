@@ -76,10 +76,10 @@ public static class SystemPermissions
 
     public static class UsersTokens
     {
-        public const string Create = "user-tokens:create";
-        public const string Read = "user-tokens:read";
-        public const string Update = "user-tokens:update";
-        public const string Delete = "user-tokens:delete";
+        public const string Create = "user-token:create";
+        public const string Read = "user-token:read";
+        public const string Update = "user-token:update";
+        public const string Delete = "user-token:delete";
     }
 
     public static class Roles
