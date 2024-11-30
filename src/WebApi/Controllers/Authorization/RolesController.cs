@@ -42,9 +42,9 @@ public class RolesController : ApiControllerBase
 
     [HttpPut("{roleId:guid}/permissions/{permissionId:guid}")]
     public async Task<ActionResult<Result>> UpdatePermissionForRole(
+        UpdatePermissionForRoleRequest request,
         Guid roleId,
-        Guid permissionId,
-        UpdatePermissionForRoleRequest request)
+        Guid permissionId)
     {
         var command = new UpdatePermissionForRoleCommand(roleId, permissionId, request.IsAssigned);
         var result = await Sender.Send(command);

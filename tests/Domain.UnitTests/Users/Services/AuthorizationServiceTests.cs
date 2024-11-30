@@ -189,8 +189,7 @@ public class AuthorizationServiceTests
     public async Task RemovePermissionFromRole_ShouldSuccess_WhenRoleHavePermission()
     {
         // Arrange
-        _roleRepository.GetByIdAsync(_role.Id).Returns(_role);
-        _permissionRepository.GetByIdAsync(_permission.Id).Returns(_permission);
+        _roleRepository.GetByIdWithPermissionsAsync(_role.Id).Returns(_role);
 
         // Act
         _role.AddPermission(_permission);
@@ -206,8 +205,7 @@ public class AuthorizationServiceTests
     {
         // Arrange
         var descriptionError = RoleErrors.RoleNotFound.FirstError()?.Description;
-        _roleRepository.GetByIdAsync(_role.Id).ReturnsNull();
-        _permissionRepository.GetByIdAsync(_permission.Id).Returns(_permission);
+        _roleRepository.GetByIdWithPermissionsAsync(_role.Id).ReturnsNull();
 
         // Act
         var result = await _sut.RemovePermissionFromRoleAsync(_role.Id, _permission.Id, CancellationToken.None);
@@ -223,8 +221,7 @@ public class AuthorizationServiceTests
     {
         // Arrange
         var descriptionError = PermissionErrors.PermissionNotFound.FirstError()?.Description;
-        _roleRepository.GetByIdAsync(_role.Id).Returns(_role);
-        _permissionRepository.GetByIdAsync(_permission.Id).ReturnsNull();
+        _roleRepository.GetByIdWithPermissionsAsync(_role.Id).Returns(_role);
 
         // Act
         var result = await _sut.RemovePermissionFromRoleAsync(_role.Id, _permission.Id, CancellationToken.None);

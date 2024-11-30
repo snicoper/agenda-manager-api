@@ -1,11 +1,12 @@
-﻿using AgendaManager.Domain.Authorization.Services;
+﻿using AgendaManager.Application.Common.Interfaces.Persistence;
+using AgendaManager.Domain.Authorization.Services;
 using AgendaManager.Domain.Authorization.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
 using MediatR;
 
 namespace AgendaManager.Application.Authorization.Commands.UpdatePermissionForRole;
 
-internal class UpdatePermissionForRoleCommandHandler(AuthorizationService authorizationService)
+internal class UpdatePermissionForRoleCommandHandler(AuthorizationService authorizationService, IUnitOfWork unitOfWork)
     : IRequestHandler<UpdatePermissionForRoleCommand, Result>
 {
     public async Task<Result> Handle(UpdatePermissionForRoleCommand request, CancellationToken cancellationToken)
@@ -13,6 +14,11 @@ internal class UpdatePermissionForRoleCommandHandler(AuthorizationService author
         var result = request.IsAssigned
             ? await AddPermissionToRole(request.RoleId, request.PermissionId, cancellationToken)
             : await RemovePermissionFromRole(request.RoleId, request.PermissionId, cancellationToken);
+
+        if (result.IsSuccess)
+        {
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+        }
 
         return result;
     }

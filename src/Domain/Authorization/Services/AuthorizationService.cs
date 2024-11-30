@@ -92,21 +92,23 @@ public class AuthorizationService(
         PermissionId permissionId,
         CancellationToken cancellationToken)
     {
-        var role = await roleRepository.GetByIdAsync(roleId, cancellationToken);
+        var role = await roleRepository.GetByIdWithPermissionsAsync(roleId, cancellationToken);
 
         if (role is null)
         {
             return RoleErrors.RoleNotFound;
         }
 
-        var permission = await permissionRepository.GetByIdAsync(permissionId, cancellationToken);
+        var hasPermission = role.HasPermission(permissionId);
 
-        if (permission is null)
+        if (!hasPermission)
         {
             return PermissionErrors.PermissionNotFound;
         }
 
-        var result = role.RemovePermission(permission);
+        var permission = role.Permissions.FirstOrDefault(p => p.Id == permissionId);
+
+        var result = role.RemovePermission(permission!);
         roleRepository.Update(role);
 
         return result;
