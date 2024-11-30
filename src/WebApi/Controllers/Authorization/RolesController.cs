@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Application.Authorization.Queries.GetAllRoles;
 using AgendaManager.Application.Authorization.Queries.GetRolesPaginated;
+using AgendaManager.Application.Authorization.Queries.GetRoleWithPermissionAvailabilityById;
 using AgendaManager.Application.Common.Http;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Infrastructure;
@@ -24,6 +25,15 @@ public class RolesController : ApiControllerBase
     public async Task<ActionResult<Result<IEnumerable<GetAllRolesQueryResponse>>>> GetAllRoles()
     {
         var result = await Sender.Send(new GetAllRolesQuery());
+
+        return result.ToActionResult();
+    }
+
+    [HttpGet("{roleId:guid}/permission-availability")]
+    public async Task<ActionResult<Result<GetRoleWithPermissionAvailabilityByIdQueryResponse>>>
+        GetRoleWithPermissionAvailabilityById(Guid roleId)
+    {
+        var result = await Sender.Send(new GetRoleWithPermissionAvailabilityByIdQuery(roleId));
 
         return result.ToActionResult();
     }

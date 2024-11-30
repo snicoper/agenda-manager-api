@@ -8,6 +8,8 @@ public interface IRoleRepository
 
     Task<Role?> GetByIdAsync(RoleId roleId, CancellationToken cancellationToken = default);
 
+    Task<Role?> GetByIdWithPermissionsAsync(RoleId roleId, CancellationToken cancellationToken = default);
+
     Task<ICollection<Role>> GetAllWithPermissionsAsync(CancellationToken cancellationToken = default);
 
     Task<ICollection<Role>> GetByIdsWithPermissionsAsync(
