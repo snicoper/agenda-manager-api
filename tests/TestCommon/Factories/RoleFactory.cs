@@ -8,9 +8,14 @@ public abstract class RoleFactory
 {
     public static Role CreateRole(
         RoleId? roleId = null,
-        string name = SystemRoles.Administrator,
-        string description = "Admin role")
+        string? name = null,
+        string? description = null,
+        bool? isEditable = null)
     {
-        return new Role(roleId ?? RoleId.Create(), name, description);
+        return new Role(
+            roleId ?? RoleId.Create(),
+            name ?? SystemRoles.Administrator,
+            description ?? "Role description",
+            isEditable ?? false);
     }
 }

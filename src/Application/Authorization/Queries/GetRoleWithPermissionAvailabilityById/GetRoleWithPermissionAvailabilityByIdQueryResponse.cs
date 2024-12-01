@@ -4,6 +4,7 @@ public record GetRoleWithPermissionAvailabilityByIdQueryResponse(
     Guid RoleId,
     string RoleName,
     string RoleDescription,
+    bool RoleIsEditable,
     List<GetRoleWithPermissionAvailabilityByIdQueryResponse.ModulePermission> Permissions)
 {
     public record ModulePermission(string ModuleName, List<Permission> Permissions);

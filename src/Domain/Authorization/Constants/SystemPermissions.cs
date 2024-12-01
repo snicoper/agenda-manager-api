@@ -18,6 +18,30 @@ public static class SystemPermissions
         public const string Delete = "appointment-status:delete";
     }
 
+    public static class AuditRecords
+    {
+        public const string Create = "audit-record:create";
+        public const string Read = "audit-record:read";
+        public const string Update = "audit-record:update";
+        public const string Delete = "audit-record:delete";
+    }
+
+    public static class Roles
+    {
+        public const string Create = "role:create";
+        public const string Read = "role:read";
+        public const string Update = "role:update";
+        public const string Delete = "role:delete";
+    }
+
+    public static class Permissions
+    {
+        public const string Create = "permission:create";
+        public const string Read = "permission:read";
+        public const string Update = "permission:update";
+        public const string Delete = "permission:delete";
+    }
+
     public static class Calendars
     {
         public const string Create = "calendar:create";
@@ -32,6 +56,14 @@ public static class SystemPermissions
         public const string Read = "calendar-holiday:read";
         public const string Update = "calendar-holiday:update";
         public const string Delete = "calendar-holiday:delete";
+    }
+
+    public static class CalendarConfigurations
+    {
+        public const string Create = "calendar-configuration:create";
+        public const string Read = "calendar-configuration:read";
+        public const string Update = "calendar-configuration:update";
+        public const string Delete = "calendar-configuration:delete";
     }
 
     public static class Resources
@@ -80,21 +112,5 @@ public static class SystemPermissions
         public const string Read = "user-token:read";
         public const string Update = "user-token:update";
         public const string Delete = "user-token:delete";
-    }
-
-    public static class Roles
-    {
-        public const string Create = "role:create";
-        public const string Read = "role:read";
-        public const string Update = "role:update";
-        public const string Delete = "role:delete";
-    }
-
-    public static class Permissions
-    {
-        public const string Create = "permission:create";
-        public const string Read = "permission:read";
-        public const string Update = "permission:update";
-        public const string Delete = "permission:delete";
     }
 }

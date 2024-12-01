@@ -19,4 +19,8 @@ public static class RoleErrors
     public static Error PermissionNotFoundInRole => Error.Conflict(
         code: "RoleErrors.PermissionNotFoundInRole",
         description: "The permission was not found in the role.");
+
+    public static Error RoleIsNotEditable => Error.Conflict(
+        code: "RoleErrors.RoleIsNotEditable",
+        description: "The role is not editable.");
 }

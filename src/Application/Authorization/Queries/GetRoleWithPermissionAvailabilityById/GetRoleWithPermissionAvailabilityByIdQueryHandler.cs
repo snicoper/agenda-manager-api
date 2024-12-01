@@ -23,7 +23,7 @@ internal class GetRoleWithPermissionAvailabilityByIdQueryHandler(
 
         var permissionIdsFromRole = role.Permissions
             .Select(x => x)
-            .ToList();
+            .ToHashSet();
 
         var permissions = await permissionRepository.GetAllAsync(cancellationToken);
 
@@ -35,15 +35,16 @@ internal class GetRoleWithPermissionAvailabilityByIdQueryHandler(
                     group.Key,
                     group.Select(
                         p => new GetRoleWithPermissionAvailabilityByIdQueryResponse.Permission(
-                            p.Id.Value,
-                            p.Name.Split(':')[1],
-                            permissionIdsFromRole.Any(rp => rp.Id == p.Id))).ToList()))
+                            PermissionId: p.Id.Value,
+                            Action: p.Name.Split(':')[1],
+                            IsAssigned: permissionIdsFromRole.Any(rp => rp.Id == p.Id))).ToList()))
             .ToList();
 
         var response = new GetRoleWithPermissionAvailabilityByIdQueryResponse(
             RoleId: role.Id.Value,
             RoleName: role.Name,
             RoleDescription: role.Description,
+            RoleIsEditable: role.IsEditable,
             Permissions: modulePermissions);
 
         return response;

@@ -33,6 +33,11 @@ public class RoleManager(IRoleRepository roleRepository)
         string description,
         CancellationToken cancellationToken)
     {
+        if (role.IsEditable is false)
+        {
+            return RoleErrors.RoleIsNotEditable;
+        }
+
         var validationResult = await IsValidAsync(role, cancellationToken);
         if (validationResult.IsFailure)
         {

@@ -52,6 +52,11 @@ public static class PermissionSeed
             PermissionId.Create(),
             SystemPermissions.AppointmentStatuses.Delete);
 
+        // AuditRecord permissions.
+        var auditRecordReadPermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            SystemPermissions.AuditRecords.Read);
+
         // Calendar permissions.
         var calendarReadPermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
@@ -79,6 +84,20 @@ public static class PermissionSeed
         var calendarHolidayDeletePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
             SystemPermissions.CalendarHolidays.Delete);
+
+        // CalendarConfiguration permissions.
+        var calendarConfigurationReadPermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            SystemPermissions.CalendarConfigurations.Read);
+        var calendarConfigurationCreatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            SystemPermissions.CalendarConfigurations.Create);
+        var calendarConfigurationUpdatePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            SystemPermissions.CalendarConfigurations.Update);
+        var calendarConfigurationDeletePermission = await permissionManager.CreatePermissionAsync(
+            PermissionId.Create(),
+            SystemPermissions.CalendarConfigurations.Delete);
 
         // Resource permissions.
         var resourceReadPermission = await permissionManager.CreatePermissionAsync(
@@ -150,20 +169,6 @@ public static class PermissionSeed
             PermissionId.Create(),
             SystemPermissions.Users.Delete);
 
-        // UserToken permissions.
-        var userTokenReadPermission = await permissionManager.CreatePermissionAsync(
-            PermissionId.Create(),
-            SystemPermissions.UsersTokens.Read);
-        var userTokenCreatePermission = await permissionManager.CreatePermissionAsync(
-            PermissionId.Create(),
-            SystemPermissions.UsersTokens.Create);
-        var userTokenUpdatePermission = await permissionManager.CreatePermissionAsync(
-            PermissionId.Create(),
-            SystemPermissions.UsersTokens.Update);
-        var userTokenDeletePermission = await permissionManager.CreatePermissionAsync(
-            PermissionId.Create(),
-            SystemPermissions.UsersTokens.Delete);
-
         // Role permissions.
         var roleReadPermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
@@ -204,6 +209,8 @@ public static class PermissionSeed
             appointmentStatusUpdatePermission.Value!,
             appointmentStatusDeletePermission.Value!,
 
+            auditRecordReadPermission.Value!,
+
             calendarReadPermission.Value!,
             calendarCreatePermission.Value!,
             calendarUpdatePermission.Value!,
@@ -213,6 +220,11 @@ public static class PermissionSeed
             calendarHolidayCreatePermission.Value!,
             calendarHolidayUpdatePermission.Value!,
             calendarHolidayDeletePermission.Value!,
+
+            calendarConfigurationReadPermission.Value!,
+            calendarConfigurationCreatePermission.Value!,
+            calendarConfigurationUpdatePermission.Value!,
+            calendarConfigurationDeletePermission.Value!,
 
             resourceReadPermission.Value!,
             resourceCreatePermission.Value!,
@@ -238,11 +250,6 @@ public static class PermissionSeed
             userCreatePermission.Value!,
             userUpdatePermission.Value!,
             userDeletePermission.Value!,
-
-            userTokenReadPermission.Value!,
-            userTokenCreatePermission.Value!,
-            userTokenUpdatePermission.Value!,
-            userTokenDeletePermission.Value!,
 
             roleReadPermission.Value!,
             roleCreatePermission.Value!,
@@ -270,9 +277,9 @@ public static class PermissionSeed
             await authorizationManager.AddPermissionToRoleAsync(adminRole.Id, permission.Id, CancellationToken.None);
         }
 
-        // Asignar todos permisos a role Employee.
+        // Asignar solo permisos de lectura a role Employee.
         var managerRole = roles.First(r => r.Name == SystemRoles.Employee);
-        foreach (var permission in permissions)
+        foreach (var permission in permissions.Where(p => p.Name.Contains("read")))
         {
             await authorizationManager.AddPermissionToRoleAsync(managerRole.Id, permission.Id, CancellationToken.None);
         }

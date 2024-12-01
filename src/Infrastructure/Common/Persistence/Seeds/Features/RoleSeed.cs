@@ -28,7 +28,7 @@ public static class RoleSeed
         var assignableStaff = await roleManager.CreateRoleAsync(
             RoleId.Create(),
             SystemRoles.AssignableStaff,
-            "Assignable staff role");
+            "This role is designated for employees who will serve as resources in services, it doesn't require permission assignments");
 
         List<Role> roles = [adminRole.Value!, employeeRole.Value!, customerRole.Value!, assignableStaff.Value!];
 
