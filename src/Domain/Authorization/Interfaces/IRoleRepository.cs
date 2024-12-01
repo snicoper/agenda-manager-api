@@ -23,4 +23,6 @@ public interface IRoleRepository
     Task AddAsync(Role role, CancellationToken cancellationToken = default);
 
     void Update(Role role);
+
+    void Delete(Role role);
 }

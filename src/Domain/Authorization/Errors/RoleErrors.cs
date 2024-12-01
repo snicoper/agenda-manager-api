@@ -23,4 +23,8 @@ public static class RoleErrors
     public static Error RoleIsNotEditable => Error.Conflict(
         code: "RoleErrors.RoleIsNotEditable",
         description: "The role is not editable.");
+
+    public static Error RoleHasUsersAssigned => Error.Conflict(
+        code: "RoleErrors.RoleHasUsersAssigned",
+        description: "This role has assigned users.");
 }

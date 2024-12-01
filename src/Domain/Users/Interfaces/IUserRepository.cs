@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
+﻿using AgendaManager.Domain.Authorization.ValueObjects;
+using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users.Interfaces;
@@ -18,6 +19,8 @@ public interface IUserRepository
     Task<User?> GetByTokenValueWithTokensAsync(string tokenValue, CancellationToken cancellationToken = default);
 
     Task<bool> EmailExistsAsync(EmailAddress email, CancellationToken cancellationToken = default);
+
+    Task<bool> HasAnyUserWithRole(RoleId roleId, CancellationToken cancellationToken = default);
 
     Task<User?> GetByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default);
 

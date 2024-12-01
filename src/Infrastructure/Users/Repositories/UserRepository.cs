@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
+﻿using AgendaManager.Domain.Authorization.ValueObjects;
+using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
 using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
@@ -61,6 +62,14 @@ public class UserRepository(AppDbContext context) : IUserRepository
         var emailExists = await context.Users.AnyAsync(u => u.Email == email, cancellationToken);
 
         return emailExists;
+    }
+
+    public async Task<bool> HasAnyUserWithRole(RoleId roleId, CancellationToken cancellationToken = default)
+    {
+        var hasAnyUserWithRole = await context.UserRoles
+            .AnyAsync(ur => ur.RoleId == roleId, cancellationToken);
+
+        return hasAnyUserWithRole;
     }
 
     public async Task<User?> GetByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default)

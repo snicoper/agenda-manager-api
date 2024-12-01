@@ -5,6 +5,7 @@ using AgendaManager.Domain.Authorization.Interfaces;
 using AgendaManager.Domain.Authorization.Services;
 using AgendaManager.Domain.Authorization.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
+using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 using NSubstitute;
@@ -19,7 +20,8 @@ public class RoleManagerCreateTests
     public RoleManagerCreateTests()
     {
         _roleRepository = Substitute.For<IRoleRepository>();
-        _sut = new RoleManager(_roleRepository);
+        var userRepository = Substitute.For<IUserRepository>();
+        _sut = new RoleManager(_roleRepository, userRepository);
     }
 
     [Fact]

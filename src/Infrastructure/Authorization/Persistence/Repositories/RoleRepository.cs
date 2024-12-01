@@ -75,4 +75,9 @@ public class RoleRepository(AppDbContext context) : IRoleRepository
     {
         context.Update(role);
     }
+
+    public void Delete(Role role)
+    {
+        context.Remove(role);
+    }
 }

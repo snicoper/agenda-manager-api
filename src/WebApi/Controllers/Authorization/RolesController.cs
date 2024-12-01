@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Application.Authorization.Commands.CreateRole;
+using AgendaManager.Application.Authorization.Commands.DeleteRole;
 using AgendaManager.Application.Authorization.Commands.UpdatePermissionForRole;
 using AgendaManager.Application.Authorization.Queries.GetAllRoles;
 using AgendaManager.Application.Authorization.Queries.GetRolesPaginated;
@@ -57,6 +58,15 @@ public class RolesController : ApiControllerBase
         Guid permissionId)
     {
         var command = new UpdatePermissionForRoleCommand(roleId, permissionId, request.IsAssigned);
+        var result = await Sender.Send(command);
+
+        return result.ToActionResult();
+    }
+
+    [HttpDelete("{roleId:guid}")]
+    public async Task<ActionResult<Result>> DeleteRole(Guid roleId)
+    {
+        var command = new DeleteRoleCommand(roleId);
         var result = await Sender.Send(command);
 
         return result.ToActionResult();
