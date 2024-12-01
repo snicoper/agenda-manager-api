@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Application.Common.Authorization;
 using AgendaManager.Application.Common.Behaviours;
+using AgendaManager.Application.Common.Exceptions;
 using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Application.Users.Models;
 using AgendaManager.Application.Users.Services;
@@ -27,7 +28,7 @@ public class AuthorizationBehaviourTest
     public async Task AuthorizationBehaviour_ShouldReturnSuccess_WhenNotRequiredRolesOrPermissions()
     {
         // Arrange
-        TestRequest request = new();
+        TestAnonymousRequest request = new();
 
         // Act
         var result = await _sut.Handle(request, () => Task.FromResult(Result.Success()), CancellationToken.None);
@@ -35,6 +36,17 @@ public class AuthorizationBehaviourTest
         // Assert
         result.IsSuccess.Should().BeTrue();
         result.Error?.HasErrors.Should().BeFalse();
+    }
+
+    [Fact]
+    public async Task AuthorizationBehaviour_ShouldThrowException_WhenNotHaveDecorators()
+    {
+        // Arrange
+        TestRequest request = new();
+
+        // Assert
+        await Assert.ThrowsAsync<AuthorizationRequiredException>(
+            () => _sut.Handle(request, () => Task.FromResult(Result.Success()), CancellationToken.None));
     }
 
     [Fact]
@@ -149,4 +161,7 @@ public class AuthorizationBehaviourTest
 
     [Authorize(Roles = SystemRoles.Administrator, Permissions = SystemPermissions.Users.Delete)]
     private record TestAdminRequest : IAppBaseRequest;
+
+    [AllowAnonymous]
+    private record TestAnonymousRequest : IAppBaseRequest;
 }
