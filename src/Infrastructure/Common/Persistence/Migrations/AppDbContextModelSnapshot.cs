@@ -678,6 +678,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("IsAssignableResource")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("IsEmailConfirmed")
                         .HasColumnType("boolean");
 

@@ -100,6 +100,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     FirstName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     LastName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
+                    IsAssignableResource = table.Column<bool>(type: "boolean", nullable: false),
                     RefreshToken = table.Column<string>(type: "character varying(200)", unicode: false, maxLength: 200, nullable: true),
                     RefreshTokenExpires = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),

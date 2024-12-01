@@ -75,6 +75,7 @@ public static class UserSeed
             "Bob",
             "Doe",
             active: true,
+            isAssignableResource: false,
             emailConfirmed: true,
             CancellationToken.None);
 
@@ -108,6 +109,7 @@ public static class UserSeed
             "Carol",
             "Doe",
             active: true,
+            isAssignableResource: false,
             emailConfirmed: true,
             CancellationToken.None);
 
@@ -135,6 +137,7 @@ public static class UserSeed
             "Lexi",
             "Doe",
             active: true,
+            isAssignableResource: false,
             emailConfirmed: false,
             CancellationToken.None);
 

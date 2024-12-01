@@ -15,10 +15,19 @@ public class UserManager(IUserRepository userRepository)
         string? firstName,
         string? lastName,
         bool active = true,
+        bool isAssignableResource = false,
         bool emailConfirmed = false,
         CancellationToken cancellationToken = default)
     {
-        User user = new(userId, email, passwordHash, firstName, lastName, active, emailConfirmed);
+        User user = new(
+            userId: userId,
+            email: email,
+            passwordHash: passwordHash,
+            firstName: firstName,
+            lastName: lastName,
+            isActive: active,
+            isAssignableResource: isAssignableResource,
+            emailConfirmed: emailConfirmed);
 
         var validationResult = await IsValidAsync(user, cancellationToken);
         if (validationResult.IsFailure)

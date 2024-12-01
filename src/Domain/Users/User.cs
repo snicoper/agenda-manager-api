@@ -24,6 +24,7 @@ public sealed class User : AggregateRoot
         string? firstName,
         string? lastName,
         bool isActive = true,
+        bool isAssignableResource = false,
         bool emailConfirmed = false)
     {
         GuardAgainstInvalidFirstName(firstName);
@@ -35,6 +36,7 @@ public sealed class User : AggregateRoot
         FirstName = firstName;
         LastName = lastName;
         IsActive = isActive;
+        IsAssignableResource = isAssignableResource;
         IsEmailConfirmed = emailConfirmed;
 
         AddDomainEvent(new UserCreatedDomainEvent(userId));
@@ -57,6 +59,8 @@ public sealed class User : AggregateRoot
     public string? LastName { get; private set; }
 
     public bool IsActive { get; private set; }
+
+    public bool IsAssignableResource { get; private set; }
 
     public Token? RefreshToken { get; private set; }
 
@@ -145,6 +149,18 @@ public sealed class User : AggregateRoot
         IsActive = false;
 
         AddDomainEvent(new UserDeactivatedDomainEvent(Id));
+    }
+
+    public void SetStateAssignableResource(bool newState)
+    {
+        if (IsAssignableResource == newState)
+        {
+            return;
+        }
+
+        IsAssignableResource = newState;
+
+        AddDomainEvent(new UserAssignableResourceUpdatedDomainEvent(Id, newState));
     }
 
     public bool HasUserToken(UserTokenId userTokenId)

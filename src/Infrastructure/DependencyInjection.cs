@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using AgendaManager.Application.Authentication.Interfaces;
+using AgendaManager.Application.Authorization.Interfaces;
 using AgendaManager.Application.Common.Interfaces.Clock;
 using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Application.Users.Interfaces;
@@ -15,6 +16,7 @@ using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Infrastructure.Appointments.Persistence.Repositories;
 using AgendaManager.Infrastructure.AuditRecords.Persistence.Repositories;
 using AgendaManager.Infrastructure.Authorization.Persistence.Repositories;
+using AgendaManager.Infrastructure.Authorization.Services;
 using AgendaManager.Infrastructure.Calendars.Persistence.Repositories;
 using AgendaManager.Infrastructure.Common.Clock;
 using AgendaManager.Infrastructure.Common.Emails;
@@ -95,10 +97,13 @@ public static class DependencyInjection
         // AuditRecords.
         services.AddScoped<IAuditRecordRepository, AuditRecordRepository>();
 
-        // Users.
-        services.AddScoped<IUserRepository, UserRepository>();
+        // Authorization.
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IPermissionRepository, PermissionRepository>();
+        services.AddScoped<IAuthorizationCheckService, AuthorizationCheckService>();
+
+        // Users.
+        services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserTokenRepository, UserTokenRepository>();
         services.AddTransient<ISendRecoveryPasswordService, SendRecoveryPasswordService>();
         services.AddTransient<ISendConfirmEmailResentService, SendConfirmEmailResentService>();

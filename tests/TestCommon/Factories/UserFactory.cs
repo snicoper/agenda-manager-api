@@ -17,6 +17,7 @@ public abstract class UserFactory
         string? firstName = null,
         string? lastName = null,
         bool isActive = true,
+        bool isAssignableResource = true,
         bool emailConfirmed = false)
     {
         User user = new(
@@ -26,6 +27,7 @@ public abstract class UserFactory
             firstName: firstName ?? UserConstants.UserAlice.FirstName,
             lastName: lastName ?? UserConstants.UserAlice.LastName,
             isActive: isActive,
+            isAssignableResource: isAssignableResource,
             emailConfirmed: emailConfirmed);
 
         return user;
