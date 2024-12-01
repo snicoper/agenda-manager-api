@@ -1,5 +1,6 @@
 using System.Reflection;
 using AgendaManager.Application.Common.Authorization;
+using AgendaManager.Application.Common.Exceptions;
 using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Application.Users.Models;
 using AgendaManager.Application.Users.Services;
@@ -18,12 +19,17 @@ public class AuthorizationBehaviour<TRequest, TResponse>(ICurrentUserProvider cu
         RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
+        if (request.GetType().GetCustomAttribute<AllowAnonymousAttribute>() is not null)
+        {
+            return await next();
+        }
+
         var authorizeAttributes = request.GetType().GetCustomAttributes<AuthorizeAttribute>();
         var attributes = authorizeAttributes as AuthorizeAttribute[] ?? authorizeAttributes.ToArray();
 
         if (attributes.Length == 0)
         {
-            return await next();
+            throw new AuthorizationRequiredException();
         }
 
         var currentUser = currentUserProvider.GetCurrentUser();
