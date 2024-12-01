@@ -25,12 +25,12 @@ public static class RoleSeed
         var customerRole = await roleManager.CreateRoleAsync(RoleId.Create(), SystemRoles.Customer, "Customer role");
         var employeeRole = await roleManager.CreateRoleAsync(RoleId.Create(), SystemRoles.Employee, "Employee role");
 
-        var assignableStaff = await roleManager.CreateRoleAsync(
+        var assignableResource = await roleManager.CreateRoleAsync(
             RoleId.Create(),
-            SystemRoles.AssignableStaff,
+            SystemRoles.AssignableResource,
             "This role is designated for employees who will serve as resources in services, it doesn't require permission assignments");
 
-        List<Role> roles = [adminRole.Value!, employeeRole.Value!, customerRole.Value!, assignableStaff.Value!];
+        List<Role> roles = [adminRole.Value!, employeeRole.Value!, customerRole.Value!, assignableResource.Value!];
 
         foreach (var role in roles.Where(role => context.Roles.All(r => r.Name != role.Name)))
         {

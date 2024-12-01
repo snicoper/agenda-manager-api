@@ -21,9 +21,9 @@ public static class SystemRoles
     public const string Customer = nameof(Customer);
 
     /// <summary>
-    /// User who can be assigned as a STAFF type resource.
+    /// User who can be assigned as a type resource.
     /// This role is independent of Employee, allowing both internal employees
     /// and external collaborators to be assigned as resources.
     /// </summary>
-    public const string AssignableStaff = nameof(AssignableStaff);
+    public const string AssignableResource = nameof(AssignableResource);
 }
