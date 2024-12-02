@@ -6,5 +6,5 @@ public record GetAllRolesQueryResponse(
     string Description,
     IReadOnlyList<GetAllRolesQueryResponse.Permission> Permissions)
 {
-    public record Permission(Guid Id, string Name);
+    public record Permission(Guid PermissionId, string Name);
 }

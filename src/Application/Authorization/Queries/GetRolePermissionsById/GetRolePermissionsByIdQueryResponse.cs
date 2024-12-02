@@ -7,7 +7,7 @@ public record GetRolePermissionsByIdQueryResponse(
     bool RoleIsEditable,
     List<GetRolePermissionsByIdQueryResponse.ModulePermission> Permissions)
 {
-    public record ModulePermission(string ModuleName, List<Permission> Permissions);
+    public record ModulePermission(string ModuleName, List<PermissionDetail> Permissions);
 
-    public record Permission(Guid PermissionId, string Action, bool IsAssigned);
+    public record PermissionDetail(Guid PermissionId, string Action, bool IsAssigned);
 }

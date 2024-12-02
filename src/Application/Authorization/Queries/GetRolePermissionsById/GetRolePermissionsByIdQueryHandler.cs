@@ -34,7 +34,7 @@ internal class GetRolePermissionsByIdQueryHandler(
                 group => new GetRolePermissionsByIdQueryResponse.ModulePermission(
                     group.Key,
                     group.Select(
-                        p => new GetRolePermissionsByIdQueryResponse.Permission(
+                        p => new GetRolePermissionsByIdQueryResponse.PermissionDetail(
                             PermissionId: p.Id.Value,
                             Action: p.Name.Split(':')[1],
                             IsAssigned: permissionIdsFromRole.Any(rp => rp.Id == p.Id))).ToList()))
