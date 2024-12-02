@@ -2,8 +2,8 @@
 using AgendaManager.Application.Authorization.Commands.DeleteRole;
 using AgendaManager.Application.Authorization.Commands.UpdatePermissionForRole;
 using AgendaManager.Application.Authorization.Queries.GetAllRoles;
+using AgendaManager.Application.Authorization.Queries.GetRolePermissionsById;
 using AgendaManager.Application.Authorization.Queries.GetRolesPaginated;
-using AgendaManager.Application.Authorization.Queries.GetRoleWithPermissionAvailabilityById;
 using AgendaManager.Application.Common.Http;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Controllers.Authorization.Contracts;
@@ -33,11 +33,10 @@ public class RolesController : ApiControllerBase
         return result.ToActionResult();
     }
 
-    [HttpGet("{roleId:guid}/permission-availability")]
-    public async Task<ActionResult<Result<GetRoleWithPermissionAvailabilityByIdQueryResponse>>>
-        GetRoleWithPermissionAvailabilityById(Guid roleId)
+    [HttpGet("{roleId:guid}/permissions")]
+    public async Task<ActionResult<Result<GetRolePermissionsByIdQueryResponse>>> GetRolePermissionsById(Guid roleId)
     {
-        var result = await Sender.Send(new GetRoleWithPermissionAvailabilityByIdQuery(roleId));
+        var result = await Sender.Send(new GetRolePermissionsByIdQuery(roleId));
 
         return result.ToActionResult();
     }

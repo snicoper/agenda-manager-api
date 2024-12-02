@@ -4,15 +4,15 @@ using AgendaManager.Domain.Authorization.Interfaces;
 using AgendaManager.Domain.Authorization.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
 
-namespace AgendaManager.Application.Authorization.Queries.GetRoleWithPermissionAvailabilityById;
+namespace AgendaManager.Application.Authorization.Queries.GetRolePermissionsById;
 
-internal class GetRoleWithPermissionAvailabilityByIdQueryHandler(
+internal class GetRolePermissionsByIdQueryHandler(
     IRoleRepository repository,
     IPermissionRepository permissionRepository)
-    : IQueryHandler<GetRoleWithPermissionAvailabilityByIdQuery, GetRoleWithPermissionAvailabilityByIdQueryResponse>
+    : IQueryHandler<GetRolePermissionsByIdQuery, GetRolePermissionsByIdQueryResponse>
 {
-    public async Task<Result<GetRoleWithPermissionAvailabilityByIdQueryResponse>> Handle(
-        GetRoleWithPermissionAvailabilityByIdQuery request,
+    public async Task<Result<GetRolePermissionsByIdQueryResponse>> Handle(
+        GetRolePermissionsByIdQuery request,
         CancellationToken cancellationToken)
     {
         var role = await repository.GetByIdWithPermissionsAsync(RoleId.From(request.RoleId), cancellationToken);
@@ -31,16 +31,16 @@ internal class GetRoleWithPermissionAvailabilityByIdQueryHandler(
         var modulePermissions = permissions
             .GroupBy(p => p.Name.Split(':')[0])
             .Select(
-                group => new GetRoleWithPermissionAvailabilityByIdQueryResponse.ModulePermission(
+                group => new GetRolePermissionsByIdQueryResponse.ModulePermission(
                     group.Key,
                     group.Select(
-                        p => new GetRoleWithPermissionAvailabilityByIdQueryResponse.Permission(
+                        p => new GetRolePermissionsByIdQueryResponse.Permission(
                             PermissionId: p.Id.Value,
                             Action: p.Name.Split(':')[1],
                             IsAssigned: permissionIdsFromRole.Any(rp => rp.Id == p.Id))).ToList()))
             .ToList();
 
-        var response = new GetRoleWithPermissionAvailabilityByIdQueryResponse(
+        var response = new GetRolePermissionsByIdQueryResponse(
             RoleId: role.Id.Value,
             RoleName: role.Name,
             RoleDescription: role.Description,

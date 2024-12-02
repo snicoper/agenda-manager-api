@@ -1,11 +1,11 @@
-﻿namespace AgendaManager.Application.Authorization.Queries.GetRoleWithPermissionAvailabilityById;
+﻿namespace AgendaManager.Application.Authorization.Queries.GetRolePermissionsById;
 
-public record GetRoleWithPermissionAvailabilityByIdQueryResponse(
+public record GetRolePermissionsByIdQueryResponse(
     Guid RoleId,
     string RoleName,
     string RoleDescription,
     bool RoleIsEditable,
-    List<GetRoleWithPermissionAvailabilityByIdQueryResponse.ModulePermission> Permissions)
+    List<GetRolePermissionsByIdQueryResponse.ModulePermission> Permissions)
 {
     public record ModulePermission(string ModuleName, List<Permission> Permissions);
 
