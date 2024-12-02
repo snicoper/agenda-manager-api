@@ -17,39 +17,70 @@ namespace AgendaManager.WebApi.Controllers.Authorization;
 [Route("api/v{version:apiVersion}/roles")]
 public class RolesController : ApiControllerBase
 {
+    /// <summary>
+    /// Obtener una lista de roles paginada.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [HttpGet("paginated")]
     public async Task<ActionResult<Result<ResponseData<GetRolesPaginatedQueryResponse>>>> GetRolesPaginated(
         [FromQuery] RequestData request)
     {
-        var result = await Sender.Send(new GetRolesPaginatedQuery(request));
+        var query = new GetRolesPaginatedQuery(request);
+        var result = await Sender.Send(query);
 
         return result.ToActionResult();
     }
 
+    /// <summary>
+    /// Obtener una lista de todos los roles.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [HttpGet]
     public async Task<ActionResult<Result<IEnumerable<GetAllRolesQueryResponse>>>> GetAllRoles()
     {
-        var result = await Sender.Send(new GetAllRolesQuery());
+        var query = new GetAllRolesQuery();
+        var result = await Sender.Send(query);
 
         return result.ToActionResult();
     }
 
+    /// <summary>
+    /// Obtener un rol por su ID.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpGet("{roleId:guid}")]
     public async Task<ActionResult<Result<GetRoleByIdQueryResponse>>> GetRoleById(Guid roleId)
     {
-        var result = await Sender.Send(new GetRoleByIdQuery(roleId));
+        var query = new GetRoleByIdQuery(roleId);
+        var result = await Sender.Send(query);
 
         return result.ToActionResult();
     }
 
+    /// <summary>
+    /// Obtener los permisos de un rol por su ID.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     [HttpGet("{roleId:guid}/permissions")]
     public async Task<ActionResult<Result<GetRolePermissionsByIdQueryResponse>>> GetRolePermissionsById(Guid roleId)
     {
-        var result = await Sender.Send(new GetRolePermissionsByIdQuery(roleId));
+        var query = new GetRolePermissionsByIdQuery(roleId);
+        var result = await Sender.Send(query);
 
         return result.ToActionResult();
     }
 
+    /// <summary>
+    /// Crear un nuevo rol.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     [HttpPost]
     public async Task<ActionResult<Result<CreateRoleCommandResponse>>> CreateRole(CreateRoleRequest request)
     {
@@ -59,6 +90,13 @@ public class RolesController : ApiControllerBase
         return result.ToActionResult();
     }
 
+    /// <summary>
+    /// Actualizar un permiso de un rol.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     [HttpPut("{roleId:guid}/permissions/{permissionId:guid}")]
     public async Task<ActionResult<Result>> UpdatePermissionForRole(
         UpdatePermissionForRoleRequest request,
@@ -71,6 +109,11 @@ public class RolesController : ApiControllerBase
         return result.ToActionResult();
     }
 
+    /// <summary>
+    /// Eliminar un rol.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpDelete("{roleId:guid}")]
     public async Task<ActionResult<Result>> DeleteRole(Guid roleId)
     {
