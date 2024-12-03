@@ -8,6 +8,10 @@ public interface IUserRepository
 {
     IQueryable<User> GetQueryable();
 
+    IQueryable<User> GetQueryableUsersByRoleId(RoleId roleId);
+
+    IQueryable<User> GetQueryableUsersNotInRoleId(RoleId roleId);
+
     Task<User?> GetByIdAsync(UserId userId, CancellationToken cancellationToken = default);
 
     Task<User?> GetByIdWithRolesAsync(UserId userId, CancellationToken cancellationToken = default);

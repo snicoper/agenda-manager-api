@@ -230,7 +230,9 @@ public sealed class User : AggregateRoot
 
     public bool HasRole(UserRole userRole)
     {
-        return _userRoles.Any(ur => ur.RoleId == userRole.RoleId);
+        var exists = _userRoles.Any(ur => ur.RoleId == userRole.RoleId);
+
+        return exists;
     }
 
     internal void Update(string? firstName, string? lastName)

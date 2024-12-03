@@ -24,11 +24,15 @@ public class AccountsController : ApiControllerBase
     [HttpPost("recovery-password")]
     public async Task<ActionResult<Result>> RecoverPassword(RecoveryPasswordRequest request)
     {
-        var result = await Sender.Send(new RecoveryPasswordCommand(request.Email));
+        var command = new RecoveryPasswordCommand(Email: request.Email);
+        var result = await Sender.Send(command);
 
         return result.ToActionResult();
     }
 
+    /// <summary>
+    /// Confirm the recovery password.
+    /// </summary>
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -46,6 +50,9 @@ public class AccountsController : ApiControllerBase
         return result.ToActionResult();
     }
 
+    /// <summary>
+    /// Confirm the email.
+    /// </summary>
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -53,11 +60,15 @@ public class AccountsController : ApiControllerBase
     [HttpPost("confirm-email-resent")]
     public async Task<ActionResult<Result>> ConfirmEmailResent(ConfirmEmailResentRequest request)
     {
-        var result = await Sender.Send(new ConfirmEmailResentCommand(request.Email));
+        var command = new ConfirmEmailResentCommand(request.Email);
+        var result = await Sender.Send(command);
 
         return result.ToActionResult();
     }
 
+    /// <summary>
+    /// Verify the email.
+    /// </summary>
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -65,7 +76,8 @@ public class AccountsController : ApiControllerBase
     [HttpPost("confirm-email-verify")]
     public async Task<ActionResult<Result>> ConfirmEmailVerify(ConfirmEmailVerifyRequest request)
     {
-        var result = await Sender.Send(new ConfirmEmailVerifyCommand(request.Token));
+        var command = new ConfirmEmailVerifyCommand(request.Token);
+        var result = await Sender.Send(command);
 
         return result.ToActionResult();
     }

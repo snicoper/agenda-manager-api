@@ -39,4 +39,8 @@ public static class UserErrors
     public static Error UserAlreadyConfirmedEmail => Error.Conflict(
         code: "UserErrors.EmailIsConfirmed",
         description: "The user has already confirmed their email.");
+
+    public static Error UserRoleNotFound => Error.NotFound(
+        code: "UserErrors.UserRoleNotFound",
+        description: "The user role was not found.");
 }

@@ -15,6 +15,24 @@ public class UserRepository(AppDbContext context) : IUserRepository
         return context.Users.AsQueryable();
     }
 
+    public IQueryable<User> GetQueryableUsersByRoleId(RoleId roleId)
+    {
+        var users = context.Users
+            .Include(u => u.UserRoles)
+            .Where(u => u.UserRoles.Any(ur => ur.RoleId == roleId));
+
+        return users;
+    }
+
+    public IQueryable<User> GetQueryableUsersNotInRoleId(RoleId roleId)
+    {
+        var users = context.Users
+            .Include(u => u.UserRoles)
+            .Where(u => !u.UserRoles.Any(ur => ur.RoleId == roleId));
+
+        return users;
+    }
+
     public async Task<User?> GetByIdAsync(UserId userId, CancellationToken cancellationToken = default)
     {
         return await context.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);

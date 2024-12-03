@@ -54,7 +54,13 @@ public class AuthorizationService(
             return RoleErrors.RoleNotFound;
         }
 
-        var userRole = UserRole.Create(user.Id, role.Id);
+        var userRole = user.UserRoles.FirstOrDefault(ur => ur.RoleId == roleId);
+
+        if (userRole is null)
+        {
+            return UserErrors.UserRoleNotFound;
+        }
+
         var result = user.RemoveRole(userRole);
 
         userRepository.Update(user);
