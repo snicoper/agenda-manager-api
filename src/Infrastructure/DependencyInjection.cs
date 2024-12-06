@@ -104,7 +104,6 @@ public static class DependencyInjection
 
         // Users.
         services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IUserTokenRepository, UserTokenRepository>();
         services.AddTransient<ISendRecoveryPasswordService, SendRecoveryPasswordService>();
         services.AddTransient<ISendConfirmEmailResentService, SendConfirmEmailResentService>();
 
@@ -124,7 +123,6 @@ public static class DependencyInjection
 
         // Appointments.
         services.AddScoped<IAppointmentRepository, AppointmentRepository>();
-        services.AddScoped<IAppointmentStatusHistoryRepository, AppointmentStatusHistoryRepository>();
     }
 
     private static void AddDatabase(
