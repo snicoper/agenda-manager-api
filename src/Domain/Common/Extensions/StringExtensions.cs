@@ -1,6 +1,6 @@
 using System.Globalization;
 using System.Text;
-using DomainRegex = AgendaManager.Domain.Common.Utils.DomainRegex;
+using AgendaManager.Domain.Common.Utils;
 
 namespace AgendaManager.Domain.Common.Extensions;
 
@@ -20,15 +20,21 @@ public static class StringExtensions
         return result;
     }
 
-    public static string ToTile(this string value)
+    public static string ToTitle(this string value)
     {
-        var parts = value.Split()
-            .Select(part => part.ToUpperFirstLetter())
-            .ToList();
-
-        var result = string.IsNullOrWhiteSpace(value) ? value : string.Join(" ", parts);
+        var result = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.Trim().ToLower());
 
         return result;
+    }
+
+    public static string? NullIfEmpty(this string? value)
+    {
+        return string.IsNullOrWhiteSpace(value) ? null : value;
+    }
+
+    public static string EmptyIfNull(this string? value)
+    {
+        return value ?? string.Empty;
     }
 
     public static string Slugify(this string text)
