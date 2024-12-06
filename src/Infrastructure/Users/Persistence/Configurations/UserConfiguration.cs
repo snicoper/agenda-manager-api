@@ -4,7 +4,7 @@ using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AgendaManager.Infrastructure.Users.Persistence.Configruations;
+namespace AgendaManager.Infrastructure.Users.Persistence.Configurations;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {

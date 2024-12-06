@@ -104,6 +104,7 @@ public static class DependencyInjection
 
         // Users.
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUserProfileRepository, UserProfileRepository>();
         services.AddTransient<ISendRecoveryPasswordService, SendRecoveryPasswordService>();
         services.AddTransient<ISendConfirmEmailResentService, SendConfirmEmailResentService>();
 
