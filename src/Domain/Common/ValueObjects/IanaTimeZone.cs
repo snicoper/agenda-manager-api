@@ -1,6 +1,7 @@
-﻿using AgendaManager.Domain.Common.Utils;
+﻿using AgendaManager.Domain.Common.Exceptions;
+using AgendaManager.Domain.Common.Utils;
 
-namespace AgendaManager.Domain.Common.ValueObjects.IanaTimeZone;
+namespace AgendaManager.Domain.Common.ValueObjects;
 
 public sealed record IanaTimeZone
 {
@@ -47,7 +48,7 @@ public sealed record IanaTimeZone
 
         if (timeZoneInfoResult.IsFailure)
         {
-            throw new IanaTimeZoneDomainException(timeZoneInfoResult.Error?.FirstError()?.Description!);
+            throw new DomainException(timeZoneInfoResult.Error?.FirstError()?.Description!);
         }
 
         Info = timeZoneInfoResult.Value!;

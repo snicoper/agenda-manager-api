@@ -1,4 +1,4 @@
-﻿namespace AgendaManager.Domain.Common.ValueObjects.ColorScheme;
+﻿namespace AgendaManager.Domain.Common.ValueObjects;
 
 public sealed record ColorScheme
 {

@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.Common.ValueObjects.Token;
+﻿using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Events;
 using AgendaManager.TestCommon.Factories;

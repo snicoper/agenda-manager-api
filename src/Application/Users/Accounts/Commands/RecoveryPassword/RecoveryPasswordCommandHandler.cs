@@ -1,7 +1,7 @@
 ﻿using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Domain.Common.Responses;
-using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
+using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Users.Enums;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;

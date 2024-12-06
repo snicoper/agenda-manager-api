@@ -1,12 +1,10 @@
 ﻿using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.Responses;
-using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
-using AgendaManager.Domain.Common.ValueObjects.Token;
+using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.Enums;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Events;
-using AgendaManager.Domain.Users.Exceptions;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
 
@@ -21,20 +19,13 @@ public sealed class User : AggregateRoot
         UserId userId,
         EmailAddress email,
         PasswordHash passwordHash,
-        string? firstName,
-        string? lastName,
         bool isActive = true,
         bool isAssignableResource = false,
         bool emailConfirmed = false)
     {
-        GuardAgainstInvalidFirstName(firstName);
-        GuardAgainstInvalidLastName(lastName);
-
         Id = userId;
         Email = email;
         PasswordHash = passwordHash;
-        FirstName = firstName;
-        LastName = lastName;
         IsActive = isActive;
         IsAssignableResource = isAssignableResource;
         IsEmailConfirmed = emailConfirmed;
@@ -48,15 +39,15 @@ public sealed class User : AggregateRoot
 
     public UserId Id { get; } = null!;
 
+    public UserProfileId ProfileId { get; private set; } = null!;
+
+    public UserProfile Profile { get; private set; } = null!;
+
     public PasswordHash PasswordHash { get; private set; } = default!;
 
     public EmailAddress Email { get; private set; } = null!;
 
     public bool IsEmailConfirmed { get; private set; }
-
-    public string? FirstName { get; private set; }
-
-    public string? LastName { get; private set; }
 
     public bool IsActive { get; private set; }
 
@@ -235,19 +226,6 @@ public sealed class User : AggregateRoot
         return exists;
     }
 
-    internal void Update(string? firstName, string? lastName)
-    {
-        if (FirstName == firstName && LastName == lastName)
-        {
-            return;
-        }
-
-        FirstName = firstName;
-        LastName = lastName;
-
-        AddDomainEvent(new UserUpdatedDomainEvent(Id));
-    }
-
     internal Result AddRole(UserRole userRole)
     {
         if (HasRole(userRole))
@@ -274,19 +252,11 @@ public sealed class User : AggregateRoot
         return Result.Success();
     }
 
-    private static void GuardAgainstInvalidFirstName(string? firstName)
+    internal void AddProfile(UserProfile profile)
     {
-        if (!string.IsNullOrWhiteSpace(firstName) && firstName.Length > 256)
-        {
-            throw new UserDomainException("First name exceeds length of 256 characters.");
-        }
-    }
+        ProfileId = profile.Id;
+        Profile = profile;
 
-    private static void GuardAgainstInvalidLastName(string? lastName)
-    {
-        if (!string.IsNullOrWhiteSpace(lastName) && lastName.Length > 256)
-        {
-            throw new UserDomainException("Last name exceeds length of 256 characters.");
-        }
+        AddDomainEvent(new UserProfileAddedDomainEvent(profile.Id));
     }
 }

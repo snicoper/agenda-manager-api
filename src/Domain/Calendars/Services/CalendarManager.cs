@@ -5,7 +5,7 @@ using AgendaManager.Domain.Calendars.Errors;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
-using AgendaManager.Domain.Common.ValueObjects.IanaTimeZone;
+using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Resources.Interfaces;
 using AgendaManager.Domain.Services.Interfaces;
 

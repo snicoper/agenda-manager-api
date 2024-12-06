@@ -3,7 +3,7 @@ using AgendaManager.Application.Authentication.Models;
 using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Domain.Common.Responses;
-using AgendaManager.Domain.Common.ValueObjects.Token;
+using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Users.Interfaces;
 
 namespace AgendaManager.Application.Authentication.Commands.RefreshToken;

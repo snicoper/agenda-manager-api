@@ -1,4 +1,6 @@
-﻿namespace AgendaManager.Domain.Common.ValueObjects.Period;
+﻿using AgendaManager.Domain.Common.Exceptions;
+
+namespace AgendaManager.Domain.Common.ValueObjects;
 
 public sealed record Period
 {
@@ -9,7 +11,7 @@ public sealed record Period
 
         if (Start > End)
         {
-            throw new InvalidPeriodException($"{nameof(start)} cannot be greater than {nameof(end)}");
+            throw new DomainException($"{nameof(start)} cannot be greater than {nameof(end)}");
         }
 
         Start = start;

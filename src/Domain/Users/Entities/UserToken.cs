@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.Responses;
-using AgendaManager.Domain.Common.ValueObjects.Token;
+using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Users.Enums;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.ValueObjects;

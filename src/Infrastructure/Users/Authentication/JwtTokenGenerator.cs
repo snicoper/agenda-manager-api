@@ -7,7 +7,7 @@ using AgendaManager.Application.Common.Exceptions;
 using AgendaManager.Domain.Authorization;
 using AgendaManager.Domain.Authorization.Interfaces;
 using AgendaManager.Domain.Common.Constants;
-using AgendaManager.Domain.Common.ValueObjects.Token;
+using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
@@ -65,7 +65,6 @@ public class JwtTokenGenerator(
         {
             new(JwtRegisteredClaimNames.Sub, user.Id.Value.ToString()),
             new(JwtRegisteredClaimNames.Email, user.Email.Value),
-            new(JwtRegisteredClaimNames.FamilyName, $"{user.FirstName} {user.LastName}"),
             new(CustomClaimType.Id, user.Id.Value.ToString())
         };
 

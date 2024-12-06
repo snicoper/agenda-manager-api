@@ -2,8 +2,7 @@
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.Responses;
-using AgendaManager.Domain.Common.ValueObjects.ColorScheme;
-using AgendaManager.Domain.Common.ValueObjects.Period;
+using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Common.WekDays;
 using AgendaManager.Domain.Resources.Entities;
 using AgendaManager.Domain.Resources.Errors;

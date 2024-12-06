@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
-using AgendaManager.Domain.Common.ValueObjects.ColorScheme;
+using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Resources.Errors;
 using AgendaManager.Domain.Resources.Interfaces;
 using AgendaManager.Domain.Resources.ValueObjects;

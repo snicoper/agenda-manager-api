@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
+﻿using AgendaManager.Domain.Common.Exceptions;
+using AgendaManager.Domain.Common.ValueObjects;
 using FluentAssertions;
 
 namespace AgendaManager.Domain.UnitTests.Common.ValueObjects.EmailAddressTests;
@@ -30,7 +31,7 @@ public class EmailAddressTests
         var action = () => EmailAddress.From(email);
 
         // Assert
-        action.Should().Throw<InvalidEmailAddressException>();
+        action.Should().Throw<DomainException>();
     }
 
     [Fact]
@@ -44,6 +45,6 @@ public class EmailAddressTests
         var action = () => EmailAddress.From(email);
 
         // Assert
-        action.Should().Throw<InvalidEmailAddressException>();
+        action.Should().Throw<DomainException>();
     }
 }

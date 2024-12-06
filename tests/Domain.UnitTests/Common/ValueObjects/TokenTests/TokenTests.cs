@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.Common.ValueObjects.Token;
+﻿using AgendaManager.Domain.Common.ValueObjects;
 using FluentAssertions;
 
 namespace AgendaManager.Domain.UnitTests.Common.ValueObjects.TokenTests;

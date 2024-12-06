@@ -589,6 +589,46 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.ToTable("Services", (string)null);
                 });
 
+            modelBuilder.Entity("AgendaManager.Domain.Users.Entities.UserProfile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTimeOffset>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserProfiles", (string)null);
+                });
+
             modelBuilder.Entity("AgendaManager.Domain.Users.Entities.UserRole", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -671,10 +711,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
-                    b.Property<string>("FirstName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
@@ -691,13 +727,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("LastName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<Guid>("ProfileId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Version")
                         .HasColumnType("integer");
@@ -705,6 +740,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("ProfileId")
                         .IsUnique();
 
                     b.ToTable("Users", (string)null);
@@ -823,7 +861,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Period.Period", "Period", b1 =>
+                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Period", "Period", b1 =>
                         {
                             b1.Property<Guid>("AppointmentId")
                                 .HasColumnType("uuid");
@@ -862,7 +900,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Period.Period", "Period", b1 =>
+                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Period", "Period", b1 =>
                         {
                             b1.Property<Guid>("AppointmentStatusHistoryId")
                                 .HasColumnType("uuid");
@@ -908,7 +946,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Period.Period", "Period", b1 =>
+                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Period", "Period", b1 =>
                         {
                             b1.Property<Guid>("CalendarHolidayId")
                                 .HasColumnType("uuid");
@@ -959,7 +997,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Period.Period", "Period", b1 =>
+                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Period", "Period", b1 =>
                         {
                             b1.Property<Guid>("ResourceScheduleId")
                                 .HasColumnType("uuid");
@@ -1007,7 +1045,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.ColorScheme.ColorScheme", "ColorScheme", b1 =>
+                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.ColorScheme", "ColorScheme", b1 =>
                         {
                             b1.Property<Guid>("ResourceId")
                                 .HasColumnType("uuid");
@@ -1050,7 +1088,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.ColorScheme.ColorScheme", "ColorScheme", b1 =>
+                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.ColorScheme", "ColorScheme", b1 =>
                         {
                             b1.Property<Guid>("ServiceId")
                                 .HasColumnType("uuid");
@@ -1079,6 +1117,112 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("AgendaManager.Domain.Users.Entities.UserProfile", b =>
+                {
+                    b.OwnsOne("AgendaManager.Domain.Users.ValueObjects.Address", "Address", b1 =>
+                        {
+                            b1.Property<Guid>("UserProfileId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("character varying(50)")
+                                .HasColumnName("City");
+
+                            b1.Property<string>("Country")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("character varying(50)")
+                                .HasColumnName("Country");
+
+                            b1.Property<string>("PostalCode")
+                                .IsRequired()
+                                .HasMaxLength(10)
+                                .HasColumnType("character varying(10)")
+                                .HasColumnName("PostalCode");
+
+                            b1.Property<string>("State")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("character varying(50)")
+                                .HasColumnName("State");
+
+                            b1.Property<string>("Street")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("Street");
+
+                            b1.HasKey("UserProfileId");
+
+                            b1.ToTable("UserProfiles");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserProfileId");
+                        });
+
+                    b.OwnsOne("AgendaManager.Domain.Users.ValueObjects.IdentityDocument", "IdentityDocument", b1 =>
+                        {
+                            b1.Property<Guid>("UserProfileId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("CountryCode")
+                                .IsRequired()
+                                .HasMaxLength(2)
+                                .HasColumnType("character varying(2)")
+                                .HasColumnName("IdentityDocumentCountryCode");
+
+                            b1.Property<int>("Type")
+                                .HasColumnType("integer")
+                                .HasColumnName("IdentityDocumentType");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(20)
+                                .HasColumnType("character varying(20)")
+                                .HasColumnName("IdentityDocument");
+
+                            b1.HasKey("UserProfileId");
+
+                            b1.ToTable("UserProfiles");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserProfileId");
+                        });
+
+                    b.OwnsOne("AgendaManager.Domain.Users.ValueObjects.PhoneNumber", "PhoneNumber", b1 =>
+                        {
+                            b1.Property<Guid>("UserProfileId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("CountryCode")
+                                .IsRequired()
+                                .HasMaxLength(4)
+                                .HasColumnType("character varying(4)")
+                                .HasColumnName("PhoneCountryCode");
+
+                            b1.Property<string>("Number")
+                                .IsRequired()
+                                .HasMaxLength(15)
+                                .HasColumnType("character varying(15)")
+                                .HasColumnName("PhoneNumber");
+
+                            b1.HasKey("UserProfileId");
+
+                            b1.ToTable("UserProfiles");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserProfileId");
+                        });
+
+                    b.Navigation("Address");
+
+                    b.Navigation("IdentityDocument");
+
+                    b.Navigation("PhoneNumber");
+                });
+
             modelBuilder.Entity("AgendaManager.Domain.Users.Entities.UserRole", b =>
                 {
                     b.HasOne("AgendaManager.Domain.Users.User", null)
@@ -1096,7 +1240,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Token.Token", "Token", b1 =>
+                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Token", "Token", b1 =>
                         {
                             b1.Property<Guid>("UserTokenId")
                                 .HasColumnType("uuid");
@@ -1129,7 +1273,13 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
             modelBuilder.Entity("AgendaManager.Domain.Users.User", b =>
                 {
-                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Token.Token", "RefreshToken", b1 =>
+                    b.HasOne("AgendaManager.Domain.Users.Entities.UserProfile", "Profile")
+                        .WithOne("User")
+                        .HasForeignKey("AgendaManager.Domain.Users.User", "ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("AgendaManager.Domain.Common.ValueObjects.Token", "RefreshToken", b1 =>
                         {
                             b1.Property<Guid>("UserId")
                                 .HasColumnType("uuid");
@@ -1155,6 +1305,8 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
                         });
+
+                    b.Navigation("Profile");
 
                     b.Navigation("RefreshToken");
                 });
@@ -1224,6 +1376,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
             modelBuilder.Entity("AgendaManager.Domain.Resources.Resource", b =>
                 {
                     b.Navigation("Schedules");
+                });
+
+            modelBuilder.Entity("AgendaManager.Domain.Users.Entities.UserProfile", b =>
+                {
+                    b.Navigation("User")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("AgendaManager.Domain.Users.User", b =>

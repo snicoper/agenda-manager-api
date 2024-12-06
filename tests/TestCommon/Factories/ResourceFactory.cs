@@ -1,5 +1,5 @@
 ﻿using AgendaManager.Domain.Calendars.ValueObjects;
-using AgendaManager.Domain.Common.ValueObjects.ColorScheme;
+using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Resources;
 using AgendaManager.Domain.Resources.ValueObjects;
 using AgendaManager.Domain.ResourceTypes.ValueObjects;

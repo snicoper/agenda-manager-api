@@ -5,7 +5,7 @@ using AgendaManager.Domain.Calendars.Entities;
 using AgendaManager.Domain.Calendars.Errors;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
-using AgendaManager.Domain.Common.ValueObjects.Period;
+using AgendaManager.Domain.Common.ValueObjects;
 
 namespace AgendaManager.Domain.Appointments.Policies;
 

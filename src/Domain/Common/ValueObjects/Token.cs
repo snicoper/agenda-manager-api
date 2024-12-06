@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Common.Utils;
 
-namespace AgendaManager.Domain.Common.ValueObjects.Token;
+namespace AgendaManager.Domain.Common.ValueObjects;
 
 public sealed record Token
 {

@@ -1,7 +1,6 @@
-﻿using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
+﻿using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.Policies;
-using AgendaManager.Domain.Users.Services;
 using AgendaManager.TestCommon.Constants;
 using FluentAssertions;
 using NSubstitute;

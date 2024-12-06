@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
+﻿using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Users;
 using AgendaManager.Domain.Users.Events;
 using AgendaManager.Domain.Users.Interfaces;

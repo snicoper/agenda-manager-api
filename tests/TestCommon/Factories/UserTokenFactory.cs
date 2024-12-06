@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.Common.ValueObjects.Token;
+﻿using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.Enums;
 using AgendaManager.Domain.Users.ValueObjects;

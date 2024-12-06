@@ -1,5 +1,4 @@
-﻿using AgendaManager.Domain.Common.ValueObjects.ColorScheme;
-using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
+﻿using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Resources.Services;
 using AgendaManager.Domain.Resources.ValueObjects;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,7 +1,7 @@
 ﻿using AgendaManager.Domain.Appointments;
 using AgendaManager.Domain.Appointments.Interfaces;
 using AgendaManager.Domain.Calendars.Interfaces;
-using AgendaManager.Domain.Common.ValueObjects.Period;
+using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Services;
 using AgendaManager.Domain.Services.Errors;
 using AgendaManager.Domain.Services.Interfaces;

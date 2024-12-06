@@ -1,4 +1,6 @@
-﻿namespace AgendaManager.Domain.Common.ValueObjects.Duration;
+﻿using AgendaManager.Domain.Common.Exceptions;
+
+namespace AgendaManager.Domain.Common.ValueObjects;
 
 public sealed record Duration
 {
@@ -32,7 +34,7 @@ public sealed record Duration
 
         if (duration <= TimeSpan.Zero)
         {
-            throw new DurationException("Duration cannot be zero or negative.");
+            throw new DomainException("Duration cannot be zero or negative.");
         }
     }
 }

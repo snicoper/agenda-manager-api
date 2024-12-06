@@ -1,7 +1,7 @@
 ﻿using AgendaManager.Domain.Calendars.Configurations;
 using AgendaManager.Domain.Calendars.Errors;
 using AgendaManager.Domain.Calendars.ValueObjects;
-using AgendaManager.Domain.Common.ValueObjects.Period;
+using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Resources;
 using AgendaManager.Domain.Resources.Interfaces;
 using AgendaManager.Domain.Resources.Policies;

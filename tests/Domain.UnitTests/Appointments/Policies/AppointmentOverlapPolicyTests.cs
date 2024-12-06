@@ -4,7 +4,7 @@ using AgendaManager.Domain.Calendars.Configurations;
 using AgendaManager.Domain.Calendars.Entities;
 using AgendaManager.Domain.Calendars.Errors;
 using AgendaManager.Domain.Calendars.ValueObjects;
-using AgendaManager.Domain.Common.ValueObjects.Period;
+using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.TestCommon.Factories;
 using AgendaManager.TestCommon.Factories.ValueObjects;
 using FluentAssertions;

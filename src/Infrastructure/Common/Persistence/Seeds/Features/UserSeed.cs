@@ -1,7 +1,7 @@
 ﻿using AgendaManager.Domain.Authorization;
 using AgendaManager.Domain.Authorization.Constants;
 using AgendaManager.Domain.Authorization.Services;
-using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
+using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.Services;
 using AgendaManager.Domain.Users.ValueObjects;
@@ -36,7 +36,7 @@ public static class UserSeed
             email: EmailAddress.From("alice@example.com"),
             passwordHash: PasswordHash.FromHashed(passwordHash),
             firstName: "Alice",
-            lastName: "Doe",
+            lastName: "Smith",
             active: true,
             emailConfirmed: true,
             cancellationToken: CancellationToken.None);
@@ -72,8 +72,8 @@ public static class UserSeed
             UserId.Create(),
             EmailAddress.From("bob@example.com"),
             passwordHash: PasswordHash.FromHashed(passwordHash),
-            "Bob",
-            "Doe",
+            firstName: "Bob",
+            lastName: "Smith",
             active: true,
             isAssignableResource: false,
             emailConfirmed: true,
@@ -106,8 +106,8 @@ public static class UserSeed
             UserId.Create(),
             EmailAddress.From("carol@example.com"),
             passwordHash: PasswordHash.FromHashed(passwordHash),
-            "Carol",
-            "Doe",
+            firstName: "Carol",
+            lastName: "Smith",
             active: true,
             isAssignableResource: false,
             emailConfirmed: true,
@@ -134,8 +134,8 @@ public static class UserSeed
             UserId.Create(),
             EmailAddress.From("lexi@example.com"),
             passwordHash: PasswordHash.FromHashed(passwordHash),
-            "Lexi",
-            "Doe",
+            firstName: "Lexi",
+            lastName: "Smith",
             active: true,
             isAssignableResource: false,
             emailConfirmed: false,

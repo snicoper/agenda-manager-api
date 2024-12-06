@@ -9,10 +9,12 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="9.4.9"/>
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0"/>
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0"/>
+    <!-- Awesome libraries -->
     <PackageVersion Include="BCrypt.Net-Next" Version="4.0.3"/>
     <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0"/>
     <PackageVersion Include="MediatR" Version="12.4.1"/>
     <PackageVersion Include="MediatR.Contracts" Version="2.0.1"/>
+    <PackageVersion Include="libphonenumber-csharp" Version="8.13.51"/>
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.10.0"/>
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.10.0"/>
     <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.9.0"/>

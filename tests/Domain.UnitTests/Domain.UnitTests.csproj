@@ -26,8 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Authorization\Entities\" />
-    <Folder Include="Authorization\Services\" />
+    <Folder Include="Authorization\Entities\"/>
+    <Folder Include="Authorization\Services\"/>
   </ItemGroup>
 
 </Project>

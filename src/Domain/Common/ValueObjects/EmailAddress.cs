@@ -1,6 +1,7 @@
-﻿using DomainRegex = AgendaManager.Domain.Common.Utils.DomainRegex;
+﻿using AgendaManager.Domain.Common.Exceptions;
+using DomainRegex = AgendaManager.Domain.Common.Utils.DomainRegex;
 
-namespace AgendaManager.Domain.Common.ValueObjects.EmailAddress;
+namespace AgendaManager.Domain.Common.ValueObjects;
 
 public sealed record EmailAddress
 {
@@ -12,7 +13,7 @@ public sealed record EmailAddress
 
         if (!IsValid())
         {
-            throw new InvalidEmailAddressException();
+            throw new DomainException("Email address is invalid.");
         }
     }
 

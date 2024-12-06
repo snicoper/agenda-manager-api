@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Calendars.Entities;
 using AgendaManager.Domain.Calendars.Events;
-using AgendaManager.Domain.Common.ValueObjects.Period;
+using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Common.WekDays;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;

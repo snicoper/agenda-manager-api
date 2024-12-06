@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.Common.ValueObjects.Duration;
+﻿using AgendaManager.Domain.Common.ValueObjects;
 using FluentAssertions;
 
 namespace AgendaManager.Domain.UnitTests.Common.ValueObjects.DurationTests;

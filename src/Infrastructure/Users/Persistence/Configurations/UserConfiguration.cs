@@ -1,5 +1,6 @@
-﻿using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
+﻿using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Users;
+using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -20,6 +21,17 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 value => UserId.From(value))
             .IsRequired();
 
+        builder.Property(u => u.ProfileId)
+            .HasConversion(
+                id => id.Value,
+                value => UserProfileId.From(value))
+            .IsRequired();
+
+        builder.HasOne(u => u.Profile)
+            .WithOne(up => up.User)
+            .HasForeignKey<UserProfile>(up => up.Id)
+            .OnDelete(DeleteBehavior.Cascade);
+
         builder.Property(u => u.PasswordHash)
             .HasConversion(
                 password => password.HashedValue,
@@ -38,12 +50,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.IsEmailConfirmed)
             .IsRequired();
-
-        builder.Property(u => u.FirstName)
-            .HasMaxLength(256);
-
-        builder.Property(u => u.LastName)
-            .HasMaxLength(256);
 
         builder.Property(u => u.IsActive)
             .IsRequired();

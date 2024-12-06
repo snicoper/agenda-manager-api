@@ -1,7 +1,7 @@
 ﻿using AgendaManager.Domain.Appointments.Exceptions;
 using AgendaManager.Domain.Appointments.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Common.ValueObjects.Period;
+using AgendaManager.Domain.Common.ValueObjects;
 
 namespace AgendaManager.Domain.Appointments.Entities;
 

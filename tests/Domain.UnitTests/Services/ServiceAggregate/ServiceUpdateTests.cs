@@ -1,5 +1,4 @@
-﻿using AgendaManager.Domain.Common.ValueObjects.ColorScheme;
-using AgendaManager.Domain.Common.ValueObjects.Duration;
+﻿using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Services.Events;
 using AgendaManager.Domain.Services.Exceptions;
 using AgendaManager.TestCommon.Factories;

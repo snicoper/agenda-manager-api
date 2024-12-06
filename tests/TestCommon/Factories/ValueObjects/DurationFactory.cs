@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.Common.ValueObjects.Duration;
+﻿using AgendaManager.Domain.Common.ValueObjects;
 
 namespace AgendaManager.TestCommon.Factories.ValueObjects;
 

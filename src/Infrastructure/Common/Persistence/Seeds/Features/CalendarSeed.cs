@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Calendars.Services;
 using AgendaManager.Domain.Calendars.ValueObjects;
-using AgendaManager.Domain.Common.ValueObjects.IanaTimeZone;
+using AgendaManager.Domain.Common.ValueObjects;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AgendaManager.Infrastructure.Common.Persistence.Seeds.Features;

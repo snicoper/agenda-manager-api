@@ -3,7 +3,7 @@ using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.Policies;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
-using AgendaManager.Domain.Common.ValueObjects.Period;
+using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.TestCommon.Factories.ValueObjects;
 using FluentAssertions;
 using NSubstitute;

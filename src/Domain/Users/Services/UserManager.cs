@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Domain.Common.Responses;
-using AgendaManager.Domain.Common.ValueObjects.EmailAddress;
+using AgendaManager.Domain.Common.ValueObjects;
+using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
@@ -12,8 +13,8 @@ public class UserManager(IUserRepository userRepository)
         UserId userId,
         EmailAddress email,
         PasswordHash passwordHash,
-        string? firstName,
-        string? lastName,
+        string firstName,
+        string lastName,
         bool active = true,
         bool isAssignableResource = false,
         bool emailConfirmed = false,
@@ -23,8 +24,6 @@ public class UserManager(IUserRepository userRepository)
             userId: userId,
             email: email,
             passwordHash: passwordHash,
-            firstName: firstName,
-            lastName: lastName,
             isActive: active,
             isAssignableResource: isAssignableResource,
             emailConfirmed: emailConfirmed);
@@ -35,29 +34,18 @@ public class UserManager(IUserRepository userRepository)
             return validationResult.MapToValue<User>();
         }
 
+        // Create user profile.
+        CreateUserProfile(user, firstName, lastName);
+
         await userRepository.AddAsync(user, cancellationToken);
 
         return Result.Create(user);
     }
 
-    public async Task<Result> UpdateUserAsync(
-        User user,
-        string firstName,
-        string lastName,
-        CancellationToken cancellationToken)
+    private static void CreateUserProfile(User user, string firstName, string lastName)
     {
-        user.Update(firstName, lastName);
-        var validationResult = await IsValidAsync(user, cancellationToken);
-
-        if (validationResult.IsFailure)
-        {
-            return validationResult;
-        }
-
-        user.Update(user.FirstName, user.LastName);
-        userRepository.Update(user);
-
-        return Result.Success();
+        var userProfile = UserProfile.Create(UserProfileId.Create(), user.Id, firstName, lastName);
+        user.AddProfile(userProfile);
     }
 
     private async Task<Result> IsValidAsync(User user, CancellationToken cancellationToken)
