@@ -88,6 +88,10 @@ public class UserProfileConfiguration : IEntityTypeConfiguration<UserProfile>
             up => up.IdentityDocument,
             identityDocumentBuilder =>
             {
+                identityDocumentBuilder
+                    .HasIndex(id => new { id.Value, id.CountryCode, id.Type })
+                    .IsUnique();
+
                 identityDocumentBuilder.Property(identityDocument => identityDocument.Value)
                     .HasColumnName("IdentityDocument")
                     .HasMaxLength(20)

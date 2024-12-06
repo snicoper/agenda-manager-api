@@ -54,9 +54,9 @@ public sealed class UserProfile : AuditableEntity
         UserId userId,
         string firstName,
         string lastName,
-        PhoneNumber? phoneNumber = null,
-        Address? address = null,
-        IdentityDocument? identityDocument = null)
+        PhoneNumber? phoneNumber,
+        Address? address,
+        IdentityDocument? identityDocument)
     {
         ArgumentNullException.ThrowIfNull(userProfileId);
         ArgumentNullException.ThrowIfNull(userId);
@@ -96,8 +96,6 @@ public sealed class UserProfile : AuditableEntity
         PhoneNumber = phoneNumber;
         Address = address;
         IdentityDocument = identityDocument;
-
-        AddDomainEvent(new UserProfileUpdatedDomainEvent(UserId));
     }
 
     internal bool HasChanges(

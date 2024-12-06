@@ -655,6 +655,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 column: "CalendarId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserProfiles_IdentityDocument_IdentityDocumentCountryCode_I~",
+                table: "UserProfiles",
+                columns: new[] { "IdentityDocument", "IdentityDocumentCountryCode", "IdentityDocumentType" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
                 table: "Users",
                 column: "Email",

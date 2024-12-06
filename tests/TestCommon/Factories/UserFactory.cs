@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Users;
+using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.ValueObjects;
 using AgendaManager.Infrastructure.Users.Authentication;
 using AgendaManager.TestCommon.Constants;
@@ -14,6 +15,8 @@ public abstract class UserFactory
         UserId? id = null,
         EmailAddress? email = null,
         PasswordHash? passwordHash = null,
+        string? firstName = null,
+        string? lastName = null,
         bool isActive = true,
         bool isAssignableResource = true,
         bool emailConfirmed = false)
@@ -25,6 +28,18 @@ public abstract class UserFactory
             isActive: isActive,
             isAssignableResource: isAssignableResource,
             emailConfirmed: emailConfirmed);
+
+        // Create user profile.
+        var userProfile = UserProfile.Create(
+            userProfileId: UserProfileId.Create(),
+            userId: user.Id,
+            firstName: firstName ?? UserConstants.UserAlice.FirstName,
+            lastName: lastName ?? UserConstants.UserAlice.LastName,
+            phoneNumber: null,
+            address: null,
+            identityDocument: null);
+
+        user.AddProfile(userProfile);
 
         return user;
     }

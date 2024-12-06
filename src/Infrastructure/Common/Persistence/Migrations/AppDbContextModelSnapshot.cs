@@ -1185,6 +1185,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
                             b1.HasKey("UserProfileId");
 
+                            b1.HasIndex("Value", "CountryCode", "Type")
+                                .IsUnique();
+
                             b1.ToTable("UserProfiles");
 
                             b1.WithOwner()

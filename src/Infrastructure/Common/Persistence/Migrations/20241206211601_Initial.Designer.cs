@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241206180610_Initial")]
+    [Migration("20241206211601_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -1187,6 +1187,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                                 .HasColumnName("IdentityDocument");
 
                             b1.HasKey("UserProfileId");
+
+                            b1.HasIndex("Value", "CountryCode", "Type")
+                                .IsUnique();
 
                             b1.ToTable("UserProfiles");
 

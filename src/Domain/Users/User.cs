@@ -259,4 +259,21 @@ public sealed class User : AggregateRoot
 
         AddDomainEvent(new UserProfileAddedDomainEvent(profile.Id));
     }
+
+    internal void UpdateProfile(
+        string firstName,
+        string lastName,
+        PhoneNumber? phoneNumber = null,
+        Address? address = null,
+        IdentityDocument? identityDocument = null)
+    {
+        if (!Profile.HasChanges(firstName, lastName, phoneNumber, address, identityDocument))
+        {
+            return;
+        }
+
+        Profile.Update(firstName, lastName, phoneNumber, address, identityDocument);
+
+        AddDomainEvent(new UserProfileUpdatedDomainEvent(Id));
+    }
 }

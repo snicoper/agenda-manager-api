@@ -42,6 +42,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
 
     public DbSet<UserRole> UserRoles => Set<UserRole>();
 
+    public DbSet<UserProfile> UserProfiles => Set<UserProfile>();
+
     public DbSet<Role> Roles => Set<Role>();
 
     public DbSet<Permission> Permissions => Set<Permission>();

@@ -7,7 +7,7 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users.Services;
 
-public class UserManager(IUserRepository userRepository)
+public sealed class UserManager(IUserRepository userRepository)
 {
     public async Task<Result<User>> CreateUserAsync(
         UserId userId,
@@ -44,7 +44,15 @@ public class UserManager(IUserRepository userRepository)
 
     private static void CreateUserProfile(User user, string firstName, string lastName)
     {
-        var userProfile = UserProfile.Create(UserProfileId.Create(), user.Id, firstName, lastName);
+        var userProfile = UserProfile.Create(
+            userProfileId: UserProfileId.Create(),
+            userId: user.Id,
+            firstName: firstName,
+            lastName: lastName,
+            phoneNumber: null,
+            address: null,
+            identityDocument: null);
+
         user.AddProfile(userProfile);
     }
 
