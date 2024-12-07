@@ -39,13 +39,14 @@ public class RoleManager(IRoleRepository roleRepository, IUserRepository userRep
             return RoleErrors.RoleIsNotEditable;
         }
 
+        role.Update(name, description);
+
         var validationResult = await IsValidAsync(role, cancellationToken);
         if (validationResult.IsFailure)
         {
             return validationResult;
         }
 
-        role.Update(name, description);
         roleRepository.Update(role);
 
         return Result.Success();

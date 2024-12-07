@@ -59,11 +59,10 @@ public class RoleRepository(AppDbContext context) : IRoleRepository
 
     public async Task<bool> ExistsByNameAsync(Role role, CancellationToken cancellationToken = default)
     {
-        var nameIsUnique = await context
-            .Roles
-            .AnyAsync(r => r.Name == role.Name && r.Id != role.Id, cancellationToken);
+        var exists = await context.Roles
+            .AnyAsync(r => r.Name.ToLower() == role.Name.ToLower() && r.Id != role.Id, cancellationToken);
 
-        return nameIsUnique;
+        return exists;
     }
 
     public async Task AddAsync(Role role, CancellationToken cancellationToken = default)
