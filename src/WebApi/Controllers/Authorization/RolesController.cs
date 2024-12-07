@@ -1,6 +1,7 @@
 ﻿using AgendaManager.Application.Authorization.Commands.CreateRole;
 using AgendaManager.Application.Authorization.Commands.DeleteRole;
 using AgendaManager.Application.Authorization.Commands.UpdatePermissionForRole;
+using AgendaManager.Application.Authorization.Commands.UpdateRole;
 using AgendaManager.Application.Authorization.Queries.GetAllRoles;
 using AgendaManager.Application.Authorization.Queries.GetRoleById;
 using AgendaManager.Application.Authorization.Queries.GetRolePermissionsById;
@@ -85,6 +86,22 @@ public class RolesController : ApiControllerBase
     public async Task<ActionResult<Result<CreateRoleCommandResponse>>> CreateRole(CreateRoleRequest request)
     {
         var command = new CreateRoleCommand(request.Name, request.Description);
+        var result = await Sender.Send(command);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Actualizar un rol.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [HttpPut("{roleId:guid}")]
+    public async Task<ActionResult<Result>> UpdateRole(UpdateRoleRequest request, Guid roleId)
+    {
+        var command = new UpdateRoleCommand(roleId, request.Name, request.Description);
         var result = await Sender.Send(command);
 
         return result.ToActionResult();
