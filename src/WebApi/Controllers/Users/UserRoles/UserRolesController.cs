@@ -1,8 +1,8 @@
 ﻿using AgendaManager.Application.Common.Http;
 using AgendaManager.Application.Users.UserRoles.Commands.AssignUserToRole;
 using AgendaManager.Application.Users.UserRoles.Commands.UnAssignedUserFromRole;
-using AgendaManager.Application.Users.UserRoles.Queries.GetUsersByRoleId;
-using AgendaManager.Application.Users.UserRoles.Queries.GetUsersNotInRoleId;
+using AgendaManager.Application.Users.UserRoles.Queries.GetUsersByRoleIdPaginated;
+using AgendaManager.Application.Users.UserRoles.Queries.GetUsersNotInRoleIdPaginated;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Infrastructure;
 using AgendaManager.WebApi.Infrastructure.Results;
@@ -18,12 +18,13 @@ public class UserRolesController : ApiControllerBase
     /// </summary>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [HttpGet("{roleId:guid}/users")]
-    public async Task<ActionResult<Result<ResponseData<GetUsersByRoleIdQueryResponse>>>> GetUsersByRoleId(
-        Guid roleId,
-        [FromQuery] RequestData requestData)
+    [HttpGet("{roleId:guid}/users/paginated")]
+    public async Task<ActionResult<Result<ResponseData<GetUsersByRoleIdPaginatedQueryResponse>>>>
+        GetUsersByRoleIdPaginated(
+            Guid roleId,
+            [FromQuery] RequestData requestData)
     {
-        var query = new GetUsersByRoleIdQuery(roleId, requestData);
+        var query = new GetUsersByRoleIdPaginatedQuery(roleId, requestData);
         var result = await Sender.Send(query);
 
         return result.ToActionResult();
@@ -34,12 +35,11 @@ public class UserRolesController : ApiControllerBase
     /// </summary>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [HttpGet("{roleId:guid}/exclude-users")]
-    public async Task<ActionResult<Result<ResponseData<GetUsersNotInRoleIdCommandResponse>>>> GetUsersNotInRoleId(
-        Guid roleId,
-        [FromQuery] RequestData requestData)
+    [HttpGet("{roleId:guid}/exclude-users/paginated")]
+    public async Task<ActionResult<Result<ResponseData<GetUsersNotInRoleIdPaginatedCommandResponse>>>>
+        GetUsersNotInRoleIdPaginated(Guid roleId, [FromQuery] RequestData requestData)
     {
-        var command = new GetUsersNotInRoleIdCommand(roleId, requestData);
+        var command = new GetUsersNotInRoleIdPaginatedCommand(roleId, requestData);
         var result = await Sender.Send(command);
 
         return result.ToActionResult();

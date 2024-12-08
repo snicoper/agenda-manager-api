@@ -5,22 +5,22 @@ using AgendaManager.Domain.Authorization.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users.Interfaces;
 
-namespace AgendaManager.Application.Users.UserRoles.Queries.GetUsersNotInRoleId;
+namespace AgendaManager.Application.Users.UserRoles.Queries.GetUsersNotInRoleIdPaginated;
 
-internal class GetUsersNotInRoleIdCommandHandler(IUserRepository userRepository)
-    : IQueryHandler<GetUsersNotInRoleIdCommand, ResponseData<GetUsersNotInRoleIdCommandResponse>>
+internal class GetUsersNotInRoleIdPaginatedCommandHandler(IUserRepository userRepository)
+    : IQueryHandler<GetUsersNotInRoleIdPaginatedCommand, ResponseData<GetUsersNotInRoleIdPaginatedCommandResponse>>
 {
-    public async Task<Result<ResponseData<GetUsersNotInRoleIdCommandResponse>>> Handle(
-        GetUsersNotInRoleIdCommand request,
+    public async Task<Result<ResponseData<GetUsersNotInRoleIdPaginatedCommandResponse>>> Handle(
+        GetUsersNotInRoleIdPaginatedCommand request,
         CancellationToken cancellationToken)
     {
         var users = userRepository.GetQueryableUsersNotInRoleId(RoleId.From(request.RoleId));
 
         users = UserFilter.ApplyFilters(users, request.RequestData);
 
-        var responseData = await ResponseData<GetUsersNotInRoleIdCommandResponse>.CreateAsync(
+        var responseData = await ResponseData<GetUsersNotInRoleIdPaginatedCommandResponse>.CreateAsync(
             source: users,
-            projection: u => new GetUsersNotInRoleIdCommandResponse(u.Id.Value, u.Email.Value),
+            projection: u => new GetUsersNotInRoleIdPaginatedCommandResponse(u.Id.Value, u.Email.Value),
             request: request.RequestData,
             cancellationToken: cancellationToken);
 
