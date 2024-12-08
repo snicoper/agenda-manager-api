@@ -3,4 +3,4 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users.Events;
 
-public record UserAssignableResourceUpdatedDomainEvent(UserId Id, bool IsAssignableResource) : IDomainEvent;
+public record UserCollaboratorUpdatedDomainEvent(UserId Id, bool IsCollaborator) : IDomainEvent;

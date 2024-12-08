@@ -20,7 +20,7 @@ public static class QueryableFilterExtensions
             .Deserialize<List<ItemFilter>>(request.Filters, CustomJsonSerializerOptions.Default())?
             .ToArray() ?? [];
 
-        // Filtramos los Value Objects
+        // Filtramos los Value Objects.
         var validFilters = itemsFilter
             .Where(
                 filter =>

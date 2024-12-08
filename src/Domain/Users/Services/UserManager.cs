@@ -16,7 +16,7 @@ public sealed class UserManager(IUserRepository userRepository)
         string firstName,
         string lastName,
         bool active = true,
-        bool isAssignableResource = false,
+        bool isCollaborator = false,
         bool emailConfirmed = false,
         CancellationToken cancellationToken = default)
     {
@@ -25,7 +25,7 @@ public sealed class UserManager(IUserRepository userRepository)
             email: email,
             passwordHash: passwordHash,
             isActive: active,
-            isAssignableResource: isAssignableResource,
+            isCollaborator: isCollaborator,
             emailConfirmed: emailConfirmed);
 
         var validationResult = await IsValidAsync(user, cancellationToken);

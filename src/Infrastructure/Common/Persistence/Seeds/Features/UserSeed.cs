@@ -75,7 +75,7 @@ public static class UserSeed
             firstName: "Bob",
             lastName: "Smith",
             active: true,
-            isAssignableResource: false,
+            isCollaborator: false,
             emailConfirmed: true,
             CancellationToken.None);
 
@@ -109,7 +109,7 @@ public static class UserSeed
             firstName: "Carol",
             lastName: "Smith",
             active: true,
-            isAssignableResource: false,
+            isCollaborator: false,
             emailConfirmed: true,
             CancellationToken.None);
 
@@ -137,7 +137,7 @@ public static class UserSeed
             firstName: "Lexi",
             lastName: "Smith",
             active: true,
-            isAssignableResource: false,
+            isCollaborator: false,
             emailConfirmed: false,
             CancellationToken.None);
 
