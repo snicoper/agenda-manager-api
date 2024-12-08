@@ -19,6 +19,11 @@ public sealed record EmailAddress
 
     public string Value { get; }
 
+    public static explicit operator string(EmailAddress emailAddress)
+    {
+        return emailAddress.Value;
+    }
+
     public static EmailAddress From(string value)
     {
         return new EmailAddress(value);
@@ -26,7 +31,8 @@ public sealed record EmailAddress
 
     private bool IsValid()
     {
-        return !(string.IsNullOrWhiteSpace(Value) || Value.Length > 256 ||
-                 DomainRegex.ValidEmail().IsMatch(Value) is false);
+        return !(string.IsNullOrWhiteSpace(Value)
+                 || Value.Length > 256
+                 || DomainRegex.ValidEmail().IsMatch(Value) is false);
     }
 }

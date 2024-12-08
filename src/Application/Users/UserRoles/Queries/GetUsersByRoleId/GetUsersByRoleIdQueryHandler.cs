@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Application.Common.Http;
 using AgendaManager.Application.Common.Interfaces.Messaging;
+using AgendaManager.Application.Users.Services;
 using AgendaManager.Domain.Authorization.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users.Interfaces;
@@ -14,12 +15,14 @@ internal class GetUsersByRoleIdQueryHandler(IUserRepository userRepository)
         CancellationToken cancellationToken)
     {
         var users = userRepository.GetQueryableUsersByRoleId(RoleId.From(request.RoleId));
+        users = UserFilter.ApplyFilters(users, request.RequestData);
 
         var responseData = await ResponseData<GetUsersByRoleIdQueryResponse>.CreateAsync(
-            users,
-            u => new GetUsersByRoleIdQueryResponse(u.Id.Value, u.Email.Value),
-            request.RequestData,
-            cancellationToken);
+            source: users,
+            projection: u => new GetUsersByRoleIdQueryResponse(u.Id.Value, u.Email.Value),
+            request: request.RequestData,
+            cancellationToken: cancellationToken,
+            filtering: false);
 
         return Result.Success(responseData);
     }

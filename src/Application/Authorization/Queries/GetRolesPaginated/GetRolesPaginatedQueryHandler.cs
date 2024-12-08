@@ -15,10 +15,10 @@ internal class GetRolesPaginatedQueryHandler(IRoleRepository roleRepository)
         var roles = roleRepository.GetQueryAbleRoles();
 
         var responseData = await ResponseData<GetRolesPaginatedQueryResponse>.CreateAsync(
-            roles,
-            r => new GetRolesPaginatedQueryResponse(r.Id.Value, r.Name, r.Description, r.IsEditable),
-            request.RequestData,
-            cancellationToken);
+            source: roles,
+            projection: r => new GetRolesPaginatedQueryResponse(r.Id.Value, r.Name, r.Description, r.IsEditable),
+            request: request.RequestData,
+            cancellationToken: cancellationToken);
 
         return responseData;
     }

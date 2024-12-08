@@ -27,7 +27,7 @@ public static class QueryableFilterExtensions
         var filterValues = itemsFilter
             .Select(
                 filter => filter.RelationalOperator == FilterOperator.Contains
-                    ? filter.Value?.ToLower()
+                    ? filter.Value.ToLower()
                     : filter.Value)
             .ToDynamicArray();
 
