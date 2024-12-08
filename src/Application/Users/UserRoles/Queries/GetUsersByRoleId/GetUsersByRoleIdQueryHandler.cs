@@ -21,8 +21,7 @@ internal class GetUsersByRoleIdQueryHandler(IUserRepository userRepository)
             source: users,
             projection: u => new GetUsersByRoleIdQueryResponse(u.Id.Value, u.Email.Value),
             request: request.RequestData,
-            cancellationToken: cancellationToken,
-            filtering: false);
+            cancellationToken: cancellationToken);
 
         return Result.Success(responseData);
     }

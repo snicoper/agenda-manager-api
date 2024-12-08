@@ -1,9 +1,10 @@
 ﻿using AgendaManager.Domain.Common.Exceptions;
+using AgendaManager.Domain.Common.Interfaces;
 using DomainRegex = AgendaManager.Domain.Common.Utils.DomainRegex;
 
 namespace AgendaManager.Domain.Common.ValueObjects;
 
-public sealed record EmailAddress
+public sealed record EmailAddress : IValueObject
 {
     private EmailAddress(string value)
     {

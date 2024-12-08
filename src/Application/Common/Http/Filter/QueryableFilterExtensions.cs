@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using AgendaManager.Application.Common.Serializers;
 using AgendaManager.Domain.Common.Extensions;
+using AgendaManager.Domain.Common.Interfaces;
 
 namespace AgendaManager.Application.Common.Http.Filter;
 
@@ -19,12 +20,23 @@ public static class QueryableFilterExtensions
             .Deserialize<List<ItemFilter>>(request.Filters, CustomJsonSerializerOptions.Default())?
             .ToArray() ?? [];
 
-        if (itemsFilter.Length == 0)
+        // Filtramos los Value Objects
+        var validFilters = itemsFilter
+            .Where(
+                filter =>
+                {
+                    var propertyInfo = typeof(TEntity).GetProperty(PropertyNameToUpper(filter.PropertyName));
+
+                    return propertyInfo != null && !IsValueObject(propertyInfo.PropertyType);
+                })
+            .ToArray();
+
+        if (validFilters.Length == 0)
         {
             return source;
         }
 
-        var filterValues = itemsFilter
+        var filterValues = validFilters
             .Select(
                 filter => filter.RelationalOperator == FilterOperator.Contains
                     ? filter.Value.ToLower()
@@ -96,5 +108,14 @@ public static class QueryableFilterExtensions
             .Aggregate(string.Empty, (current, part) => current + $"{part.ToUpperFirstLetter()}.");
 
         return propertyNameResult.TrimEnd('.');
+    }
+
+    /// <summary>
+    /// Mientras EF Core no soporte Contains con los ValueObject,
+    /// omitir filtros que contengan ValueObject.
+    /// </summary>
+    private static bool IsValueObject(Type type)
+    {
+        return typeof(IValueObject).IsAssignableFrom(type);
     }
 }

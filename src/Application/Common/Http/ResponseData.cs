@@ -17,16 +17,11 @@ public class ResponseData<T> : RequestData
         IQueryable<TEntity> source,
         Func<TEntity, T> projection,
         RequestData request,
-        CancellationToken cancellationToken,
-        bool filtering = true)
+        CancellationToken cancellationToken)
     {
-        var query = source.Ordering(request);
-
-        // Mientras no funcionen con los Value Objects.
-        if (filtering)
-        {
-            query = query.Filter(request);
-        }
+        var query = source
+            .Filter(request)
+            .Ordering(request);
 
         var totalItems = await query
             .CountAsync(cancellationToken);
