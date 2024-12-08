@@ -2,6 +2,7 @@
 using AgendaManager.Application.Common.Http;
 using AgendaManager.Application.Common.Http.Filter;
 using AgendaManager.Application.Common.Serializers;
+using AgendaManager.Domain.Common.Extensions;
 using AgendaManager.Domain.Users;
 
 namespace AgendaManager.Application.Users.Services;
@@ -24,7 +25,7 @@ public static class UserFilter
 
     private static IQueryable<User> ApplyFilter(IQueryable<User> query, ItemFilter filter)
     {
-        return filter.PropertyName switch
+        return filter.PropertyName.ToTitle() switch
         {
             nameof(User.Email) => ApplyEmailFilter(query, filter),
             _ => query
