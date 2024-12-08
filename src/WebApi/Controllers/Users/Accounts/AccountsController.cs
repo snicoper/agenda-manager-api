@@ -1,7 +1,9 @@
-﻿using AgendaManager.Application.Users.Accounts.Commands.ConfirmEmailResent;
+﻿using AgendaManager.Application.Common.Http;
+using AgendaManager.Application.Users.Accounts.Commands.ConfirmEmailResent;
 using AgendaManager.Application.Users.Accounts.Commands.ConfirmEmailVerify;
 using AgendaManager.Application.Users.Accounts.Commands.ConfirmRecoveryPassword;
 using AgendaManager.Application.Users.Accounts.Commands.RecoveryPassword;
+using AgendaManager.Application.Users.Accounts.Queries.GetAccountsPaginated;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Controllers.Users.Accounts.Contracts;
 using AgendaManager.WebApi.Infrastructure;
@@ -14,6 +16,20 @@ namespace AgendaManager.WebApi.Controllers.Users.Accounts;
 [Route("api/v{version:apiVersion}/accounts")]
 public class AccountsController : ApiControllerBase
 {
+    /// <summary>
+    /// Get a paginated list of accounts.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [HttpGet("paginated")]
+    public async Task<ActionResult<Result<ResponseData<GetAccountsPaginatedQueryResponse>>>> GetAccountsPaginated(
+        [FromQuery] RequestData requestData)
+    {
+        var query = new GetAccountsPaginatedQuery(requestData);
+        var result = await Sender.Send(query);
+
+        return result.ToActionResult();
+    }
+
     /// <summary>
     /// Send a recovery password email to the user.
     /// </summary>
