@@ -30,6 +30,7 @@ using AgendaManager.Infrastructure.Resources.Persistence.Repositories;
 using AgendaManager.Infrastructure.ResourceTypes.Repositories;
 using AgendaManager.Infrastructure.Services.Persistence.Repositories;
 using AgendaManager.Infrastructure.Users.Authentication;
+using AgendaManager.Infrastructure.Users.Emails.AccountConfirmation;
 using AgendaManager.Infrastructure.Users.Emails.ConfirmEmailResent;
 using AgendaManager.Infrastructure.Users.Emails.SendRecoveryPassword;
 using AgendaManager.Infrastructure.Users.Repositories;
@@ -107,6 +108,7 @@ public static class DependencyInjection
         services.AddScoped<IUserProfileRepository, UserProfileRepository>();
         services.AddTransient<ISendRecoveryPasswordService, SendRecoveryPasswordService>();
         services.AddTransient<ISendConfirmEmailResentService, SendConfirmEmailResentService>();
+        services.AddTransient<ISendAccountConfirmationService, SendAccountConfirmationService>();
 
         // Calendars.
         services.AddScoped<ICalendarRepository, CalendarRepository>();

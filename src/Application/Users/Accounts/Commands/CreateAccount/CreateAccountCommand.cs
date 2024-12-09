@@ -10,6 +10,4 @@ public record CreateAccountCommand(
     string FirstName,
     string LastName,
     List<Guid> Roles,
-    bool IsActive,
-    bool IsEmailConfirmed,
     bool IsCollaborator) : ICommand<CreateAccountCommandResponse>;

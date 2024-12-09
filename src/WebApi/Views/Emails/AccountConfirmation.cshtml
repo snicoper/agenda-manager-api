@@ -1,0 +1,25 @@
+﻿@model AgendaManager.Infrastructure.Users.Emails.AccountConfirmation.AccountConfirmationViewModel
+
+@{
+  ViewData["Title"] = "Bienvenido a la plataforma";
+  ViewData["SiteName"] = Model.SiteName;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>Hola @Model.Email,</p>
+
+<p>Te damos la bienvenida a @Model.SiteName. Se ha creado una cuenta para ti con el correo electrónico @Model.Email.</p>
+
+<div class="highlight">
+  <p>Para comenzar a utilizar tu cuenta, necesitas establecer una contraseña segura. Por favor, haz clic en el siguiente
+    enlace:</p>
+</div>
+
+<a href="@Model.SetPasswordLink" class="button">Establecer Contraseña</a>
+
+<p>Por motivos de seguridad, este enlace caducará en @Model.ExpirationDays días. Si el enlace ha expirado, podrás
+  solicitar uno nuevo desde la página de inicio de sesión usando la opción "¿Has olvidado tu contraseña?"</p>
+
+<p>Si no esperabas recibir este correo o crees que se ha producido un error, por favor, ignora este mensaje y contacta
+  con el equipo de soporte.</p>

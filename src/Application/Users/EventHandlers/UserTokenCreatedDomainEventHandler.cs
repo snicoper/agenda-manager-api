@@ -14,6 +14,7 @@ public class UserTokenCreatedDomainEventHandler(
     IUserRepository userRepository,
     ISendRecoveryPasswordService recoveryPasswordService,
     ISendConfirmEmailResentService confirmEmailResentService,
+    ISendAccountConfirmationService accountConfirmationService,
     ILogger<BaseEventHandler<UserTokenCreatedDomainEvent>> logger)
     : BaseEventHandler<UserTokenCreatedDomainEvent>(logger)
 {
@@ -36,6 +37,9 @@ public class UserTokenCreatedDomainEventHandler(
             case UserTokenType.PasswordReset:
                 await SendRecoveryPasswordAsync(user, notification, cancellationToken);
                 break;
+            case UserTokenType.AdminCreatedAccount:
+                await SendAccountConfirmationEmailAsync(user, notification, cancellationToken);
+                break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
@@ -55,5 +59,13 @@ public class UserTokenCreatedDomainEventHandler(
         CancellationToken cancellationToken)
     {
         await recoveryPasswordService.SendAsync(user, notification.UserToken.Token.Value, cancellationToken);
+    }
+
+    private async Task SendAccountConfirmationEmailAsync(
+        User user,
+        UserTokenCreatedDomainEvent notification,
+        CancellationToken cancellationToken)
+    {
+        await accountConfirmationService.SendAsync(user, notification.UserToken.Token.Value, cancellationToken);
     }
 }

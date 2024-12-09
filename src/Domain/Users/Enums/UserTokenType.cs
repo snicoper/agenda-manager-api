@@ -3,5 +3,6 @@
 public enum UserTokenType
 {
     EmailConfirmation = 1,
-    PasswordReset = 2
+    PasswordReset = 2,
+    AdminCreatedAccount = 3
 }

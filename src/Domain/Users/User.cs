@@ -165,6 +165,7 @@ public sealed class User : AggregateRoot
         {
             UserTokenType.EmailConfirmation => TimeSpan.FromMinutes(10),
             UserTokenType.PasswordReset => TimeSpan.FromDays(7),
+            UserTokenType.AdminCreatedAccount => TimeSpan.FromDays(7),
             _ => throw new InvalidOperationException()
         };
 

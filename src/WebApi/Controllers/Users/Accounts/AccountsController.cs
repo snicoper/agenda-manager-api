@@ -45,8 +45,6 @@ public class AccountsController : ApiControllerBase
             FirstName: request.FirstName,
             LastName: request.LastName,
             Roles: request.Roles,
-            IsActive: request.IsActive,
-            IsEmailConfirmed: request.IsEmailConfirmed,
             IsCollaborator: request.IsCollaborator);
 
         var result = await Sender.Send(command);

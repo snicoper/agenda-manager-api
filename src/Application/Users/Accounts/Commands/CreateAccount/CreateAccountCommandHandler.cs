@@ -5,6 +5,7 @@ using AgendaManager.Domain.Authorization.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.Utils;
 using AgendaManager.Domain.Common.ValueObjects;
+using AgendaManager.Domain.Users.Enums;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.Services;
 using AgendaManager.Domain.Users.ValueObjects;
@@ -42,9 +43,7 @@ internal class CreateAccountCommandHandler(
             passwordHash: passwordHash.Value!,
             firstName: request.FirstName,
             lastName: request.LastName,
-            active: request.IsActive,
             isCollaborator: request.IsCollaborator,
-            emailConfirmed: request.IsEmailConfirmed,
             cancellationToken: cancellationToken);
 
         if (userResultCreated.IsFailure)
@@ -52,9 +51,17 @@ internal class CreateAccountCommandHandler(
             return userResultCreated.MapTo<CreateAccountCommandResponse>();
         }
 
+        // 3. Create user token.
+        var tokenResult = userResultCreated.Value?.CreateUserToken(UserTokenType.AdminCreatedAccount);
+
+        if (tokenResult!.IsFailure)
+        {
+            return tokenResult.MapTo<CreateAccountCommandResponse>();
+        }
+
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        // 3. Add roles to user.
+        // 4. Add roles to user.
         foreach (var roleId in request.Roles)
         {
             var addRoleResult = await authorizationService.AddRoleToUserAsync(
@@ -68,7 +75,7 @@ internal class CreateAccountCommandHandler(
             }
         }
 
-        // 4. Save changes.
+        // 5. Save changes.
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         var resultResponse = new CreateAccountCommandResponse(userId.Value);
