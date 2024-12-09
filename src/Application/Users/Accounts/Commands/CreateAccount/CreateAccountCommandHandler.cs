@@ -16,23 +16,25 @@ internal class CreateAccountCommandHandler(
     UserManager userManager,
     AuthorizationService authorizationService,
     IUnitOfWork unitOfWork)
-    : ICommandHandler<CreateAccountCommand>
+    : ICommandHandler<CreateAccountCommand, CreateAccountCommandResponse>
 {
-    public async Task<Result> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
+    public async Task<Result<CreateAccountCommandResponse>> Handle(
+        CreateAccountCommand request,
+        CancellationToken cancellationToken)
     {
         // 1. Password hasher.
         var passwordHash = PasswordHash.FromRaw(request.Password, passwordHasher, passwordPolicy);
 
         if (passwordHash.IsFailure)
         {
-            return passwordHash;
+            return passwordHash.MapTo<CreateAccountCommandResponse>();
         }
 
         // 2. Create user.
         var email = EmailAddress.From(request.Email);
         var userId = UserId.Create();
 
-        var resultCreated = await userManager.CreateUserAsync(
+        var userResultCreated = await userManager.CreateUserAsync(
             userId: userId,
             email: email,
             passwordHash: passwordHash.Value!,
@@ -43,9 +45,9 @@ internal class CreateAccountCommandHandler(
             emailConfirmed: request.IsEmailConfirmed,
             cancellationToken: cancellationToken);
 
-        if (resultCreated.IsFailure)
+        if (userResultCreated.IsFailure)
         {
-            return resultCreated;
+            return userResultCreated.MapTo<CreateAccountCommandResponse>();
         }
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
@@ -54,19 +56,21 @@ internal class CreateAccountCommandHandler(
         foreach (var roleId in request.Roles)
         {
             var addRoleResult = await authorizationService.AddRoleToUserAsync(
-                userId: resultCreated.Value?.Id!,
+                userId: userId,
                 roleId: RoleId.From(roleId),
                 cancellationToken: cancellationToken);
 
             if (addRoleResult.IsFailure)
             {
-                return addRoleResult;
+                return addRoleResult.MapToValue<CreateAccountCommandResponse>();
             }
         }
 
         // 4. Save changes.
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Create();
+        var resultResponse = new CreateAccountCommandResponse(userId.Value);
+
+        return Result.Create(resultResponse);
     }
 }

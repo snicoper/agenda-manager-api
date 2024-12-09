@@ -38,7 +38,7 @@ public class AccountsController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [HttpPost]
-    public async Task<ActionResult<Result>> CreateAccount(CreateAccountRequest request)
+    public async Task<ActionResult<Result<CreateAccountCommandResponse>>> CreateAccount(CreateAccountRequest request)
     {
         var command = new CreateAccountCommand(
             Email: request.Email,

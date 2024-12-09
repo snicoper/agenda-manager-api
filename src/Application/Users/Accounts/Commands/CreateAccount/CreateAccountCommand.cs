@@ -14,4 +14,4 @@ public record CreateAccountCommand(
     List<Guid> Roles,
     bool IsActive,
     bool IsEmailConfirmed,
-    bool IsCollaborator) : ICommand;
+    bool IsCollaborator) : ICommand<CreateAccountCommandResponse>;
