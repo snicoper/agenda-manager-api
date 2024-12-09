@@ -3,6 +3,7 @@ using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Domain.Authorization.Services;
 using AgendaManager.Domain.Authorization.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
+using AgendaManager.Domain.Common.Utils;
 using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.Services;
@@ -23,7 +24,8 @@ internal class CreateAccountCommandHandler(
         CancellationToken cancellationToken)
     {
         // 1. Password hasher.
-        var passwordHash = PasswordHash.FromRaw(request.Password, passwordHasher, passwordPolicy);
+        var passwordRaw = PasswordGenerator.GeneratePassword();
+        var passwordHash = PasswordHash.FromRaw(passwordRaw, passwordHasher, passwordPolicy);
 
         if (passwordHash.IsFailure)
         {
