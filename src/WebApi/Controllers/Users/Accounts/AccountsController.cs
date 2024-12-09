@@ -2,6 +2,7 @@
 using AgendaManager.Application.Users.Accounts.Commands.ConfirmEmailResent;
 using AgendaManager.Application.Users.Accounts.Commands.ConfirmEmailVerify;
 using AgendaManager.Application.Users.Accounts.Commands.ConfirmRecoveryPassword;
+using AgendaManager.Application.Users.Accounts.Commands.CreateAccount;
 using AgendaManager.Application.Users.Accounts.Commands.RecoveryPassword;
 using AgendaManager.Application.Users.Accounts.Queries.GetAccountsPaginated;
 using AgendaManager.Domain.Common.Responses;
@@ -26,6 +27,31 @@ public class AccountsController : ApiControllerBase
     {
         var query = new GetAccountsPaginatedQuery(requestData);
         var result = await Sender.Send(query);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Create a new account.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [HttpPost]
+    public async Task<ActionResult<Result>> CreateAccount(CreateAccountRequest request)
+    {
+        var command = new CreateAccountCommand(
+            Email: request.Email,
+            FirstName: request.FirstName,
+            LastName: request.LastName,
+            Password: request.Password,
+            PasswordConfirmation: request.PasswordConfirmation,
+            Roles: request.Roles,
+            IsActive: request.IsActive,
+            IsEmailConfirmed: request.IsEmailConfirmed,
+            IsCollaborator: request.IsCollaborator);
+
+        var result = await Sender.Send(command);
 
         return result.ToActionResult();
     }

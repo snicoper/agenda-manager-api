@@ -31,11 +31,16 @@ public class AuthorizationService(
         }
 
         var userRole = UserRole.Create(user.Id, role.Id);
-        var result = user.AddRole(userRole);
+        var addRoleResult = user.AddRole(userRole);
+
+        if (addRoleResult.IsFailure)
+        {
+            return addRoleResult;
+        }
 
         userRepository.Update(user);
 
-        return result;
+        return addRoleResult;
     }
 
     public async Task<Result> RemoveRoleFromUserAsync(UserId userId, RoleId roleId, CancellationToken cancellationToken)

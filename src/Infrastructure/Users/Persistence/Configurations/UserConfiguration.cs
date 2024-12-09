@@ -72,7 +72,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasMany(x => x.UserRoles)
             .WithOne()
-            .HasForeignKey(ur => ur.UserId);
+            .HasForeignKey(ur => ur.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.Navigation(u => u.Tokens)
             .HasField("_userTokens")
