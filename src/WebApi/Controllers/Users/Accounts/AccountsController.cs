@@ -44,8 +44,6 @@ public class AccountsController : ApiControllerBase
             Email: request.Email,
             FirstName: request.FirstName,
             LastName: request.LastName,
-            Password: request.Password,
-            PasswordConfirmation: request.PasswordConfirmation,
             Roles: request.Roles,
             IsActive: request.IsActive,
             IsEmailConfirmed: request.IsEmailConfirmed,
