@@ -108,7 +108,7 @@ public static class DependencyInjection
         services.AddScoped<IUserProfileRepository, UserProfileRepository>();
         services.AddTransient<ISendRecoveryPasswordService, SendRecoveryPasswordService>();
         services.AddTransient<ISendConfirmEmailResentService, SendConfirmEmailResentService>();
-        services.AddTransient<ISendAccountConfirmationService, SendAccountConfirmationService>();
+        services.AddTransient<ISendConfirmAccountService, SendConfirmAccountService>();
 
         // Calendars.
         services.AddScoped<ICalendarRepository, CalendarRepository>();

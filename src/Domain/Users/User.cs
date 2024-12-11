@@ -191,6 +191,8 @@ public sealed class User : AggregateRoot
             return UserTokenErrors.UserTokenNotFound;
         }
 
+        RemoveUserToken(userToken);
+
         userToken.AddDomainEvent(new UserTokenConsumedDomainEvent(userToken.Id));
 
         return userToken.Consume(tokenValue);

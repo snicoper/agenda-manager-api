@@ -2,7 +2,7 @@
 
 namespace AgendaManager.Application.Users.Interfaces;
 
-public interface ISendAccountConfirmationService
+public interface ISendConfirmAccountService
 {
     Task SendAsync(User user, string token, CancellationToken cancellationToken = default);
 }

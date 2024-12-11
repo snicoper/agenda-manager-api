@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace AgendaManager.Application.Users.Accounts.Commands.AccountConfirmation;
+namespace AgendaManager.Application.Users.Accounts.Commands.ConfirmAccount;
 
-public class AccountConfirmationCommandValidator : AbstractValidator<AccountConfirmationCommand>
+public class ConfirmAccountCommandValidator : AbstractValidator<ConfirmAccountCommand>
 {
-    public AccountConfirmationCommandValidator()
+    public ConfirmAccountCommandValidator()
     {
         RuleFor(x => x.Token)
             .NotEmpty().WithMessage("Token is required.");

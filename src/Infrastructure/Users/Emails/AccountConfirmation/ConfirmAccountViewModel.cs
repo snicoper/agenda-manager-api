@@ -1,6 +1,6 @@
 ﻿namespace AgendaManager.Infrastructure.Users.Emails.AccountConfirmation;
 
-public record AccountConfirmationViewModel(
+public record ConfirmAccountViewModel(
     string SiteName,
     string Email,
     string SetPasswordLink,

@@ -1,21 +1,23 @@
 ﻿using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Domain.Common.Responses;
+using AgendaManager.Domain.Users.Enums;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.Application.Users.Accounts.Commands.AccountConfirmation;
+namespace AgendaManager.Application.Users.Accounts.Commands.ConfirmAccount;
 
-internal class AccountConfirmationCommandHandler(
+internal class ConfirmAccountCommandHandler(
     IUserRepository userRepository,
     IPasswordHasher passwordHasher,
     IPasswordPolicy passwordPolicy,
     IUnitOfWork unitOfWork)
-    : ICommandHandler<AccountConfirmationCommand>
+    : ICommandHandler<ConfirmAccountCommand>
 {
-    public async Task<Result> Handle(AccountConfirmationCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(ConfirmAccountCommand request, CancellationToken cancellationToken)
     {
+        // 1. Check if user exists.
         var user = await userRepository.GetByTokenValueWithTokensAsync(request.Token, cancellationToken);
 
         if (user == null)
@@ -23,6 +25,7 @@ internal class AccountConfirmationCommandHandler(
             return UserTokenErrors.UserTokenNotFoundOrExpired;
         }
 
+        // 2. Hash and update the password.
         var passwordHashResult = PasswordHash.FromRaw(request.NewPassword, passwordHasher, passwordPolicy);
 
         if (passwordHashResult.IsFailure)
@@ -32,6 +35,10 @@ internal class AccountConfirmationCommandHandler(
 
         user.UpdatePassword(passwordHashResult.Value!);
 
+        // 3. Remove the token.
+        user.ConsumeUserToken(user.Tokens.First(t => t.Type == UserTokenType.AdminCreatedAccount).Id, request.Token);
+
+        // 4. Save changes.
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();

@@ -1,5 +1,5 @@
 ﻿using AgendaManager.Application.Common.Http;
-using AgendaManager.Application.Users.Accounts.Commands.AccountConfirmation;
+using AgendaManager.Application.Users.Accounts.Commands.ConfirmAccount;
 using AgendaManager.Application.Users.Accounts.Commands.ConfirmEmailResent;
 using AgendaManager.Application.Users.Accounts.Commands.ConfirmEmailVerify;
 using AgendaManager.Application.Users.Accounts.Commands.ConfirmRecoveryPassword;
@@ -54,16 +54,16 @@ public class AccountsController : ApiControllerBase
     }
 
     /// <summary>
-    /// Change the password of an account created by an administrator.
+    /// Confirm the user account.
     /// </summary>
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [HttpPost("account-confirmation")]
-    public async Task<ActionResult<Result>> AccountConfirmation(AccountConfirmationRequest request)
+    [HttpPost("confirm-account")]
+    public async Task<ActionResult<Result>> ConfirmAccount(ConfirmAccountRequest request)
     {
-        var command = new AccountConfirmationCommand(request.Token, request.NewPassword, request.ConfirmNewPassword);
+        var command = new ConfirmAccountCommand(request.Token, request.NewPassword, request.ConfirmNewPassword);
         var result = await Sender.Send(command);
 
         return result.ToActionResult();
