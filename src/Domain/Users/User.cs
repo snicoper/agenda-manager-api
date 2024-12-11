@@ -61,7 +61,7 @@ public sealed class User : AggregateRoot
 
     public Result UpdatePassword(PasswordHash newPasswordHash)
     {
-        if (PasswordHash.Equals(newPasswordHash))
+        if (PasswordHash == newPasswordHash)
         {
             return Result.Success();
         }

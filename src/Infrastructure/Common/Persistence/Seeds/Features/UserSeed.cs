@@ -2,7 +2,6 @@
 using AgendaManager.Domain.Authorization.Constants;
 using AgendaManager.Domain.Authorization.Services;
 using AgendaManager.Domain.Common.ValueObjects;
-using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.Services;
 using AgendaManager.Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -25,16 +24,13 @@ public static class UserSeed
         }
 
         var userManager = serviceProvider.GetRequiredService<UserManager>();
-        var passwordHasher = serviceProvider.GetRequiredService<IPasswordHasher>();
         var authorizationManager = serviceProvider.GetRequiredService<AuthorizationService>();
-
-        var passwordHash = passwordHasher.HashPassword("Password4!");
 
         // Admin user.
         var adminResult = await userManager.CreateUserAsync(
             userId: UserId.Create(),
             email: EmailAddress.From("alice@example.com"),
-            passwordHash: PasswordHash.FromHashed(passwordHash),
+            passwordRaw: "Password4!",
             firstName: "Alice",
             lastName: "Smith",
             active: true,
@@ -71,7 +67,7 @@ public static class UserSeed
         var managerResult = await userManager.CreateUserAsync(
             UserId.Create(),
             EmailAddress.From("bob@example.com"),
-            passwordHash: PasswordHash.FromHashed(passwordHash),
+            passwordRaw: "Password4!",
             firstName: "Bob",
             lastName: "Smith",
             active: true,
@@ -105,7 +101,7 @@ public static class UserSeed
         var clientResult = await userManager.CreateUserAsync(
             UserId.Create(),
             EmailAddress.From("carol@example.com"),
-            passwordHash: PasswordHash.FromHashed(passwordHash),
+            passwordRaw: "Password4!",
             firstName: "Carol",
             lastName: "Smith",
             active: true,
@@ -133,7 +129,7 @@ public static class UserSeed
         var client2Result = await userManager.CreateUserAsync(
             UserId.Create(),
             EmailAddress.From("lexi@example.com"),
-            passwordHash: PasswordHash.FromHashed(passwordHash),
+            passwordRaw: "Password4!",
             firstName: "Lexi",
             lastName: "Smith",
             active: true,

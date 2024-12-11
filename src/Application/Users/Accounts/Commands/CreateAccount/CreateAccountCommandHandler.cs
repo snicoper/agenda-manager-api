@@ -6,15 +6,12 @@ using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.Utils;
 using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Users.Enums;
-using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.Services;
 using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Application.Users.Accounts.Commands.CreateAccount;
 
 internal class CreateAccountCommandHandler(
-    IPasswordHasher passwordHasher,
-    IPasswordPolicy passwordPolicy,
     UserManager userManager,
     AuthorizationService authorizationService,
     IUnitOfWork unitOfWork)
@@ -24,14 +21,8 @@ internal class CreateAccountCommandHandler(
         CreateAccountCommand request,
         CancellationToken cancellationToken)
     {
-        // 1. Password hasher.
+        // 1. Generate the raw password.
         var passwordRaw = PasswordGenerator.GeneratePassword();
-        var passwordHash = PasswordHash.FromRaw(passwordRaw, passwordHasher, passwordPolicy);
-
-        if (passwordHash.IsFailure)
-        {
-            return passwordHash.MapTo<CreateAccountCommandResponse>();
-        }
 
         // 2. Create user.
         var email = EmailAddress.From(request.Email);
@@ -40,7 +31,7 @@ internal class CreateAccountCommandHandler(
         var userResultCreated = await userManager.CreateUserAsync(
             userId: userId,
             email: email,
-            passwordHash: passwordHash.Value!,
+            passwordRaw: passwordRaw,
             firstName: request.FirstName,
             lastName: request.LastName,
             isCollaborator: request.IsCollaborator,

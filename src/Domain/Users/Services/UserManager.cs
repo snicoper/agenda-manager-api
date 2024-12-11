@@ -7,12 +7,15 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users.Services;
 
-public sealed class UserManager(IUserRepository userRepository)
+public sealed class UserManager(
+    IUserRepository userRepository,
+    IPasswordHasher passwordHasher,
+    IPasswordPolicy passwordPolicy)
 {
     public async Task<Result<User>> CreateUserAsync(
         UserId userId,
         EmailAddress email,
-        PasswordHash passwordHash,
+        string passwordRaw,
         string firstName,
         string lastName,
         bool active = true,
@@ -20,10 +23,17 @@ public sealed class UserManager(IUserRepository userRepository)
         bool emailConfirmed = false,
         CancellationToken cancellationToken = default)
     {
+        var passwordHash = PasswordHash.FromRaw(passwordRaw, passwordHasher, passwordPolicy);
+
+        if (passwordHash.IsFailure)
+        {
+            return passwordHash.MapTo<User>();
+        }
+
         User user = new(
             userId: userId,
             email: email,
-            passwordHash: passwordHash,
+            passwordHash: passwordHash.Value!,
             isActive: active,
             isCollaborator: isCollaborator,
             emailConfirmed: emailConfirmed);
