@@ -1,11 +1,11 @@
 ﻿using AgendaManager.Domain.Common.Utils;
 using FluentValidation;
 
-namespace AgendaManager.Application.Users.Accounts.Commands.RecoveryPassword;
+namespace AgendaManager.Application.Users.Accounts.Commands.RequestPasswordReset;
 
-public class RecoveryPasswordCommandValidator : AbstractValidator<RecoveryPasswordCommand>
+public class RequestPasswordResetCommandValidator : AbstractValidator<RequestPasswordResetCommand>
 {
-    public RecoveryPasswordCommandValidator()
+    public RequestPasswordResetCommandValidator()
     {
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("Email address is required")

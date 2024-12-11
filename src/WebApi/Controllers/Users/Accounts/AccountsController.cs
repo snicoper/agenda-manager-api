@@ -4,7 +4,7 @@ using AgendaManager.Application.Users.Accounts.Commands.ConfirmEmailResent;
 using AgendaManager.Application.Users.Accounts.Commands.ConfirmEmailVerify;
 using AgendaManager.Application.Users.Accounts.Commands.ConfirmRecoveryPassword;
 using AgendaManager.Application.Users.Accounts.Commands.CreateAccount;
-using AgendaManager.Application.Users.Accounts.Commands.RecoveryPassword;
+using AgendaManager.Application.Users.Accounts.Commands.RequestPasswordReset;
 using AgendaManager.Application.Users.Accounts.Queries.GetAccountsPaginated;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Controllers.Users.Accounts.Contracts;
@@ -76,10 +76,10 @@ public class AccountsController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [HttpPost("recovery-password")]
-    public async Task<ActionResult<Result>> RecoverPassword(RecoveryPasswordRequest request)
+    [HttpPost("request-password-reset")]
+    public async Task<ActionResult<Result>> RequestPasswordReset(RequestPasswordResetRequest resetRequest)
     {
-        var command = new RecoveryPasswordCommand(Email: request.Email);
+        var command = new RequestPasswordResetCommand(Email: resetRequest.Email);
         var result = await Sender.Send(command);
 
         return result.ToActionResult();

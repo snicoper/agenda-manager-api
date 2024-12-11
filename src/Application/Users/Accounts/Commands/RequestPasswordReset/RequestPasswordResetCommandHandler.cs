@@ -6,12 +6,12 @@ using AgendaManager.Domain.Users.Enums;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
 
-namespace AgendaManager.Application.Users.Accounts.Commands.RecoveryPassword;
+namespace AgendaManager.Application.Users.Accounts.Commands.RequestPasswordReset;
 
-internal class RecoveryPasswordCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
-    : ICommandHandler<RecoveryPasswordCommand>
+internal class RequestPasswordResetCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
+    : ICommandHandler<RequestPasswordResetCommand>
 {
-    public async Task<Result> Handle(RecoveryPasswordCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(RequestPasswordResetCommand request, CancellationToken cancellationToken)
     {
         var email = EmailAddress.From(request.Email);
         var user = await userRepository.GetByEmailAsync(email, cancellationToken);
