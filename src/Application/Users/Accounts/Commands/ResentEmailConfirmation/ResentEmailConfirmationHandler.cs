@@ -7,12 +7,12 @@ using AgendaManager.Domain.Users.Enums;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
 
-namespace AgendaManager.Application.Users.Accounts.Commands.ConfirmEmailResent;
+namespace AgendaManager.Application.Users.Accounts.Commands.ResentEmailConfirmation;
 
-internal class ConfirmEmailResentHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
-    : ICommandHandler<ConfirmEmailResentCommand>
+internal class ResentEmailConfirmationHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
+    : ICommandHandler<ResentEmailConfirmationCommand>
 {
-    public async Task<Result> Handle(ConfirmEmailResentCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(ResentEmailConfirmationCommand request, CancellationToken cancellationToken)
     {
         var user = await userRepository.GetByEmailWithTokensAsync(EmailAddress.From(request.Email), cancellationToken);
 

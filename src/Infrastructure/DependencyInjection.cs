@@ -31,8 +31,8 @@ using AgendaManager.Infrastructure.ResourceTypes.Repositories;
 using AgendaManager.Infrastructure.Services.Persistence.Repositories;
 using AgendaManager.Infrastructure.Users.Authentication;
 using AgendaManager.Infrastructure.Users.Emails.AccountConfirmation;
-using AgendaManager.Infrastructure.Users.Emails.ConfirmEmailResent;
 using AgendaManager.Infrastructure.Users.Emails.RequestPasswordReset;
+using AgendaManager.Infrastructure.Users.Emails.ResentEmailConfirmation;
 using AgendaManager.Infrastructure.Users.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
@@ -107,7 +107,7 @@ public static class DependencyInjection
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserProfileRepository, UserProfileRepository>();
         services.AddTransient<ISendRequestPasswordResetService, SendRequestPasswordResetService>();
-        services.AddTransient<ISendConfirmEmailResentService, SendConfirmEmailResentService>();
+        services.AddTransient<ISendResentEmailConfirmationService, SendResentEmailConfirmationService>();
         services.AddTransient<ISendConfirmAccountService, SendConfirmAccountService>();
 
         // Calendars.

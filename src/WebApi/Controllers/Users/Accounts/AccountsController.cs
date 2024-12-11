@@ -1,9 +1,9 @@
 ﻿using AgendaManager.Application.Common.Http;
 using AgendaManager.Application.Users.Accounts.Commands.ConfirmAccount;
-using AgendaManager.Application.Users.Accounts.Commands.ConfirmEmailResent;
 using AgendaManager.Application.Users.Accounts.Commands.ConfirmEmailVerify;
 using AgendaManager.Application.Users.Accounts.Commands.CreateAccount;
 using AgendaManager.Application.Users.Accounts.Commands.RequestPasswordReset;
+using AgendaManager.Application.Users.Accounts.Commands.ResentEmailConfirmation;
 using AgendaManager.Application.Users.Accounts.Commands.ResetPassword;
 using AgendaManager.Application.Users.Accounts.Queries.GetAccountsPaginated;
 using AgendaManager.Domain.Common.Responses;
@@ -112,10 +112,10 @@ public class AccountsController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [HttpPost("confirm-email-resent")]
-    public async Task<ActionResult<Result>> ConfirmEmailResent(ConfirmEmailResentRequest request)
+    [HttpPost("resend-email-confirmation")]
+    public async Task<ActionResult<Result>> ResentEmailConfirmation(ResentEmailConfirmationRequest request)
     {
-        var command = new ConfirmEmailResentCommand(request.Email);
+        var command = new ResentEmailConfirmationCommand(request.Email);
         var result = await Sender.Send(command);
 
         return result.ToActionResult();

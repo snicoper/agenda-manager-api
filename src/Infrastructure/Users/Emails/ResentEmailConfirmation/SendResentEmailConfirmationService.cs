@@ -6,32 +6,32 @@ using AgendaManager.Infrastructure.Common.Emails.Models;
 using AgendaManager.Infrastructure.Common.Options;
 using Microsoft.Extensions.Options;
 
-namespace AgendaManager.Infrastructure.Users.Emails.ConfirmEmailResent;
+namespace AgendaManager.Infrastructure.Users.Emails.ResentEmailConfirmation;
 
-public sealed class SendConfirmEmailResentService(
+public sealed class SendResentEmailConfirmationService(
     IEmailService emailService,
     IOptions<ClientApiSettings> apiSettings,
     IOptions<ClientAppSettings> appSettings)
-    : ISendConfirmEmailResentService
+    : ISendResentEmailConfirmationService
 {
     public async Task SendAsync(User user, string token, CancellationToken cancellationToken = default)
     {
         var siteName = apiSettings.Value.SiteName;
         var resetLink =
-            $"{appSettings.Value.BaseUrl}/accounts/confirm-email-verify?token={Uri.EscapeDataString(token)}";
+            $"{appSettings.Value.BaseUrl}/accounts/verify-email?token={Uri.EscapeDataString(token)}";
 
         // ViewModel.
-        var model = new SendConfirmEmailResentViewModel(
+        var model = new SendResentEmailConfirmationViewModel(
             SiteName: siteName,
             Email: user.Email.Value,
             ConfirmationLink: resetLink,
             ExpirationDays: 7);
 
         // Send email.
-        var emailTempate = new EmailTemplate<SendConfirmEmailResentViewModel>(
+        var emailTempate = new EmailTemplate<SendResentEmailConfirmationViewModel>(
             To: [user.Email.Value],
             Subject: $"Confirmación de correo electrónico - {siteName}",
-            TemplateName: EmailViewNames.ConfirmEmailResent,
+            TemplateName: EmailViewNames.ResentEmailConfirmation,
             model);
 
         await emailService.SendTemplatedEmailAsync(emailTempate);
