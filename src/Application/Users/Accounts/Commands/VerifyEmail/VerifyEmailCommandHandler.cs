@@ -6,12 +6,12 @@ using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
 
-namespace AgendaManager.Application.Users.Accounts.Commands.ConfirmEmailVerify;
+namespace AgendaManager.Application.Users.Accounts.Commands.VerifyEmail;
 
-internal class ConfirmEmailVerifyCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
-    : ICommandHandler<ConfirmEmailVerifyCommand>
+internal class VerifyEmailCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
+    : ICommandHandler<VerifyEmailCommand>
 {
-    public async Task<Result> Handle(ConfirmEmailVerifyCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(VerifyEmailCommand request, CancellationToken cancellationToken)
     {
         var user = await userRepository.GetByTokenValueWithTokensAsync(request.Token, cancellationToken);
 

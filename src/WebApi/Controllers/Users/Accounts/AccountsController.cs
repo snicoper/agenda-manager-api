@@ -1,10 +1,10 @@
 ﻿using AgendaManager.Application.Common.Http;
 using AgendaManager.Application.Users.Accounts.Commands.ConfirmAccount;
-using AgendaManager.Application.Users.Accounts.Commands.ConfirmEmailVerify;
 using AgendaManager.Application.Users.Accounts.Commands.CreateAccount;
 using AgendaManager.Application.Users.Accounts.Commands.RequestPasswordReset;
 using AgendaManager.Application.Users.Accounts.Commands.ResentEmailConfirmation;
 using AgendaManager.Application.Users.Accounts.Commands.ResetPassword;
+using AgendaManager.Application.Users.Accounts.Commands.VerifyEmail;
 using AgendaManager.Application.Users.Accounts.Queries.GetAccountsPaginated;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Controllers.Users.Accounts.Contracts;
@@ -70,7 +70,7 @@ public class AccountsController : ApiControllerBase
     }
 
     /// <summary>
-    /// Send a recovery password email to the user.
+    /// Request a password reset.
     /// </summary>
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -86,7 +86,7 @@ public class AccountsController : ApiControllerBase
     }
 
     /// <summary>
-    /// Confirm the recovery password.
+    /// Reset the user password.
     /// </summary>
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -106,7 +106,7 @@ public class AccountsController : ApiControllerBase
     }
 
     /// <summary>
-    /// Confirm the email.
+    /// Resend the email confirmation.
     /// </summary>
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -128,10 +128,10 @@ public class AccountsController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [HttpPost("confirm-email-verify")]
-    public async Task<ActionResult<Result>> ConfirmEmailVerify(ConfirmEmailVerifyRequest request)
+    [HttpPost("verify-email")]
+    public async Task<ActionResult<Result>> VerifyEmail(VerifyEmailRequest request)
     {
-        var command = new ConfirmEmailVerifyCommand(request.Token);
+        var command = new VerifyEmailCommand(request.Token);
         var result = await Sender.Send(command);
 
         return result.ToActionResult();
