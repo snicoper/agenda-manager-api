@@ -1,11 +1,11 @@
 ﻿using AgendaManager.Domain.Common.Utils;
 using FluentValidation;
 
-namespace AgendaManager.Application.Users.Accounts.Commands.ConfirmRecoveryPassword;
+namespace AgendaManager.Application.Users.Accounts.Commands.ResetPassword;
 
-public class ConfirmRecoveryPasswordCommandValidator : AbstractValidator<ConfirmRecoveryPasswordCommand>
+public class ResetPasswordCommandValidator : AbstractValidator<ResetPasswordCommand>
 {
-    public ConfirmRecoveryPasswordCommandValidator()
+    public ResetPasswordCommandValidator()
     {
         RuleFor(x => x.Token)
             .NotEmpty().WithMessage("The token is invalid or expired.");

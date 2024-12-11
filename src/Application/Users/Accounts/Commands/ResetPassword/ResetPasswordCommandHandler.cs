@@ -7,16 +7,16 @@ using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.Application.Users.Accounts.Commands.ConfirmRecoveryPassword;
+namespace AgendaManager.Application.Users.Accounts.Commands.ResetPassword;
 
-internal class ConfirmRecoveryPasswordCommandHandler(
+internal class ResetPasswordCommandHandler(
     IUserRepository userRepository,
     IPasswordHasher passwordHasher,
     IPasswordPolicy passwordPolicy,
     IUnitOfWork unitOfWork)
-    : ICommandHandler<ConfirmRecoveryPasswordCommand>
+    : ICommandHandler<ResetPasswordCommand>
 {
-    public async Task<Result> Handle(ConfirmRecoveryPasswordCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
     {
         var user = await userRepository.GetByTokenValueWithTokensAsync(request.Token, cancellationToken);
 
