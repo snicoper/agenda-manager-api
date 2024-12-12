@@ -1,8 +1,8 @@
 ﻿using AgendaManager.Domain.Users.Enums;
 
-namespace AgendaManager.Application.Users.Accounts.Queries.GetAccountInfo;
+namespace AgendaManager.Application.Users.Accounts.Queries.GetAccountDetails;
 
-public record GetAccountInfoQueryResponse(
+public record GetAccountDetailsQueryResponse(
     Guid UserId,
     string Email,
     string FirstName,

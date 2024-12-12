@@ -4,13 +4,13 @@ using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.Application.Users.Accounts.Queries.GetAccountInfo;
+namespace AgendaManager.Application.Users.Accounts.Queries.GetAccountDetails;
 
-internal class GetAccountInfoQueryHandler(IUserRepository userRepository)
-    : IQueryHandler<GetAccountInfoQuery, GetAccountInfoQueryResponse>
+internal class GetAccountDetailsQueryHandler(IUserRepository userRepository)
+    : IQueryHandler<GetAccountDetailsQuery, GetAccountDetailsQueryResponse>
 {
-    public async Task<Result<GetAccountInfoQueryResponse>> Handle(
-        GetAccountInfoQuery request,
+    public async Task<Result<GetAccountDetailsQueryResponse>> Handle(
+        GetAccountDetailsQuery request,
         CancellationToken cancellationToken)
     {
         var user = await userRepository.GetAllInfoByIdAsync(UserId.From(request.UserId), cancellationToken);
@@ -20,7 +20,7 @@ internal class GetAccountInfoQueryHandler(IUserRepository userRepository)
             return UserErrors.UserNotFound;
         }
 
-        var response = new GetAccountInfoQueryResponse(
+        var response = new GetAccountDetailsQueryResponse(
             UserId: user.Id.Value,
             Email: user.Email.Value,
             FirstName: user.Profile.FirstName,
