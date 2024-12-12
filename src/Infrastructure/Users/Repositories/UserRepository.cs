@@ -47,6 +47,16 @@ public class UserRepository(AppDbContext context) : IUserRepository
         return user;
     }
 
+    public Task<User?> GetAllInfoByIdAsync(UserId userId, CancellationToken cancellationToken = default)
+    {
+        var user = context.Users
+            .Include(u => u.UserRoles)
+            .Include(u => u.Profile)
+            .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+
+        return user;
+    }
+
     public async Task<User?> GetByEmailAsync(EmailAddress email, CancellationToken cancellationToken = default)
     {
         return await context.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);

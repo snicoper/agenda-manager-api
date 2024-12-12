@@ -16,6 +16,8 @@ public interface IUserRepository
 
     Task<User?> GetByIdWithRolesAsync(UserId userId, CancellationToken cancellationToken = default);
 
+    Task<User?> GetAllInfoByIdAsync(UserId userId, CancellationToken cancellationToken = default);
+
     Task<User?> GetByEmailAsync(EmailAddress email, CancellationToken cancellationToken = default);
 
     Task<User?> GetByEmailWithTokensAsync(EmailAddress email, CancellationToken cancellationToken = default);

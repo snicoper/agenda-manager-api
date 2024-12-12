@@ -5,6 +5,7 @@ using AgendaManager.Application.Users.Accounts.Commands.RequestPasswordReset;
 using AgendaManager.Application.Users.Accounts.Commands.ResentEmailConfirmation;
 using AgendaManager.Application.Users.Accounts.Commands.ResetPassword;
 using AgendaManager.Application.Users.Accounts.Commands.VerifyEmail;
+using AgendaManager.Application.Users.Accounts.Queries.GetAccountInfo;
 using AgendaManager.Application.Users.Accounts.Queries.GetAccountsPaginated;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Controllers.Users.Accounts.Contracts;
@@ -27,6 +28,17 @@ public class AccountsController : ApiControllerBase
         [FromQuery] RequestData requestData)
     {
         var query = new GetAccountsPaginatedQuery(requestData);
+        var result = await Sender.Send(query);
+
+        return result.ToActionResult();
+    }
+
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpGet("{userId:guid}")]
+    public async Task<ActionResult<Result<GetAccountInfoQueryResponse>>> GetAccountInfo(Guid userId)
+    {
+        var query = new GetAccountInfoQuery(userId);
         var result = await Sender.Send(query);
 
         return result.ToActionResult();
