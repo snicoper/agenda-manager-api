@@ -4,14 +4,13 @@ using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Users.Enums;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
-using AgendaManager.Domain.Users.ValueObjects;
+using AgendaManager.Domain.Users.Services;
 
 namespace AgendaManager.Application.Users.Accounts.Commands.ConfirmAccount;
 
 internal class ConfirmAccountCommandHandler(
     IUserRepository userRepository,
-    IPasswordHasher passwordHasher,
-    IPasswordPolicy passwordPolicy,
+    UserManager userManager,
     IUnitOfWork unitOfWork)
     : ICommandHandler<ConfirmAccountCommand>
 {
@@ -26,14 +25,7 @@ internal class ConfirmAccountCommandHandler(
         }
 
         // 2. Hash and update the password.
-        var passwordHashResult = PasswordHash.FromRaw(request.NewPassword, passwordHasher, passwordPolicy);
-
-        if (passwordHashResult.IsFailure)
-        {
-            return passwordHashResult;
-        }
-
-        user.UpdatePassword(passwordHashResult.Value!);
+        userManager.UpdatePassword(user, request.NewPassword);
 
         // 3. Remove the token.
         user.ConsumeUserToken(user.Tokens.First(t => t.Type == UserTokenType.AdminCreatedAccount).Id, request.Token);

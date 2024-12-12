@@ -59,20 +59,6 @@ public sealed class User : AggregateRoot
 
     public IReadOnlyList<UserToken> Tokens => _userTokens.AsReadOnly();
 
-    public Result UpdatePassword(PasswordHash newPasswordHash)
-    {
-        if (PasswordHash == newPasswordHash)
-        {
-            return Result.Success();
-        }
-
-        PasswordHash = newPasswordHash;
-
-        AddDomainEvent(new UserPasswordUpdatedDomainEvent(Id));
-
-        return Result.Success();
-    }
-
     public async Task<Result> UpdateEmail(
         EmailAddress newEmail,
         IEmailUniquenessPolicy emailUniquenessPolicy,
@@ -251,6 +237,20 @@ public sealed class User : AggregateRoot
 
         _userRoles.Remove(userRole);
         AddDomainEvent(new UserRoleRemovedDomainEvent(userRole));
+
+        return Result.Success();
+    }
+
+    internal Result UpdatePassword(PasswordHash newPasswordHash)
+    {
+        if (PasswordHash == newPasswordHash)
+        {
+            return Result.Success();
+        }
+
+        PasswordHash = newPasswordHash;
+
+        AddDomainEvent(new UserPasswordUpdatedDomainEvent(Id));
 
         return Result.Success();
     }

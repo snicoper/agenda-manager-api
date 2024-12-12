@@ -52,6 +52,20 @@ public sealed class UserManager(
         return Result.Create(user);
     }
 
+    public Result UpdatePassword(User user, string newPasswordRaw)
+    {
+        var passwordHash = PasswordHash.FromRaw(newPasswordRaw, passwordHasher, passwordPolicy);
+
+        if (passwordHash.IsFailure)
+        {
+            return passwordHash;
+        }
+
+        var updatePasswordResult = user.UpdatePassword(passwordHash.Value!);
+
+        return updatePasswordResult;
+    }
+
     private static void CreateUserProfile(User user, string firstName, string lastName)
     {
         var userProfile = UserProfile.Create(
