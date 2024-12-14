@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Application.Common.Http;
 using AgendaManager.Application.Users.Accounts.Commands.ConfirmAccount;
+using AgendaManager.Application.Users.Accounts.Commands.ConfirmEmail;
 using AgendaManager.Application.Users.Accounts.Commands.CreateAccount;
 using AgendaManager.Application.Users.Accounts.Commands.RequestPasswordReset;
 using AgendaManager.Application.Users.Accounts.Commands.ResentEmailConfirmation;
@@ -153,6 +154,9 @@ public class AccountsController : ApiControllerBase
         return result.ToActionResult();
     }
 
+    /// <summary>
+    /// Toggle the user is active.
+    /// </summary>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -160,6 +164,21 @@ public class AccountsController : ApiControllerBase
     public async Task<ActionResult<Result>> ToggleIsActive(Guid userId)
     {
         var command = new ToggleIsActiveCommand(userId);
+        var result = await Sender.Send(command);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Confirm the email if email is not confirmed.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpPut("{userId:guid}/confirm-email")]
+    public async Task<ActionResult<Result>> ConfirmEmail(Guid userId)
+    {
+        var command = new ConfirmEmailCommand(userId);
         var result = await Sender.Send(command);
 
         return result.ToActionResult();

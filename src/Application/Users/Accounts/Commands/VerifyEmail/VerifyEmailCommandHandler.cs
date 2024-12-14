@@ -13,6 +13,7 @@ internal class VerifyEmailCommandHandler(IUserRepository userRepository, IUnitOf
 {
     public async Task<Result> Handle(VerifyEmailCommand request, CancellationToken cancellationToken)
     {
+        // 1. Get user by token and check if it exists.
         var user = await userRepository.GetByTokenValueWithTokensAsync(request.Token, cancellationToken);
 
         if (user is null)
@@ -20,8 +21,10 @@ internal class VerifyEmailCommandHandler(IUserRepository userRepository, IUnitOf
             return UserErrors.UserNotFound;
         }
 
+        // 2. Get UserToken.
         var userToken = user.Tokens.First(x => x.Token.Value == request.Token);
 
+        // 3. Check if user is active.
         if (!user.IsActive)
         {
             await RemoveTokenFromUserAsync(user, userToken, cancellationToken);
@@ -29,6 +32,7 @@ internal class VerifyEmailCommandHandler(IUserRepository userRepository, IUnitOf
             return UserErrors.UserIsNotActive;
         }
 
+        // 4. Check if user is already confirmed email.
         if (user.IsEmailConfirmed)
         {
             await RemoveTokenFromUserAsync(user, userToken, cancellationToken);
@@ -36,6 +40,7 @@ internal class VerifyEmailCommandHandler(IUserRepository userRepository, IUnitOf
             return UserErrors.UserAlreadyConfirmedEmail;
         }
 
+        // 5. Check if token has expired.
         if (userToken.Token.IsExpired)
         {
             await RemoveTokenFromUserAsync(user, userToken, cancellationToken);
@@ -43,6 +48,7 @@ internal class VerifyEmailCommandHandler(IUserRepository userRepository, IUnitOf
             return UserTokenErrors.TokenHasExpired;
         }
 
+        // 6. Confirm email.
         user.ConfirmEmail();
         await RemoveTokenFromUserAsync(user, userToken, cancellationToken);
 

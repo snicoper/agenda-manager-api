@@ -47,6 +47,15 @@ public class UserRepository(AppDbContext context) : IUserRepository
         return user;
     }
 
+    public async Task<User?> GetByIdWithTokensAsync(UserId userId, CancellationToken cancellationToken = default)
+    {
+        var user = await context.Users
+            .Include(u => u.Tokens)
+            .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+
+        return user;
+    }
+
     public Task<User?> GetAllInfoByIdAsync(UserId userId, CancellationToken cancellationToken = default)
     {
         var user = context.Users

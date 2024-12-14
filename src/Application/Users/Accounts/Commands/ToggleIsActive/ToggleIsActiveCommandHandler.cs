@@ -12,6 +12,7 @@ internal class ToggleIsActiveCommandHandler(IUserRepository userRepository, IUni
 {
     public async Task<Result> Handle(ToggleIsActiveCommand request, CancellationToken cancellationToken)
     {
+        // 1. Get user by id and check if it exists.
         var user = await userRepository.GetByIdAsync(UserId.From(request.UserId), cancellationToken);
 
         if (user is null)
@@ -19,6 +20,7 @@ internal class ToggleIsActiveCommandHandler(IUserRepository userRepository, IUni
             return UserErrors.UserNotFound;
         }
 
+        // 2. Toggle user active status.
         if (user.IsActive)
         {
             user.Deactivate();
@@ -28,6 +30,7 @@ internal class ToggleIsActiveCommandHandler(IUserRepository userRepository, IUni
             user.Activate();
         }
 
+        // 3. Save changes.
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
