@@ -4,6 +4,7 @@ using AgendaManager.Application.Users.Accounts.Commands.CreateAccount;
 using AgendaManager.Application.Users.Accounts.Commands.RequestPasswordReset;
 using AgendaManager.Application.Users.Accounts.Commands.ResentEmailConfirmation;
 using AgendaManager.Application.Users.Accounts.Commands.ResetPassword;
+using AgendaManager.Application.Users.Accounts.Commands.ToggleIsActive;
 using AgendaManager.Application.Users.Accounts.Commands.VerifyEmail;
 using AgendaManager.Application.Users.Accounts.Queries.GetAccountDetails;
 using AgendaManager.Application.Users.Accounts.Queries.GetAccountsPaginated;
@@ -147,6 +148,18 @@ public class AccountsController : ApiControllerBase
     public async Task<ActionResult<Result>> VerifyEmail(VerifyEmailRequest request)
     {
         var command = new VerifyEmailCommand(request.Token);
+        var result = await Sender.Send(command);
+
+        return result.ToActionResult();
+    }
+
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpPut("{userId:guid}/toggle-is-active")]
+    public async Task<ActionResult<Result>> ToggleIsActive(Guid userId)
+    {
+        var command = new ToggleIsActiveCommand(userId);
         var result = await Sender.Send(command);
 
         return result.ToActionResult();
