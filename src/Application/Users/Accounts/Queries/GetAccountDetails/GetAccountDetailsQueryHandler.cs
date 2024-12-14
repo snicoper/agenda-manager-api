@@ -37,7 +37,8 @@ internal class GetAccountDetailsQueryHandler(IUserRepository userRepository)
             IdentityDocumentType: user.Profile.IdentityDocument?.Type,
             IsEmailConfirmed: user.IsEmailConfirmed,
             IsActive: user.IsActive,
-            IsCollaborator: user.IsCollaborator);
+            IsCollaborator: user.IsCollaborator,
+            CreatedAt: user.CreatedAt);
 
         return response;
     }

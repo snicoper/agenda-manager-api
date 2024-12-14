@@ -5,23 +5,23 @@ namespace AgendaManager.Domain.Users.Enums;
 public enum IdentityDocumentType
 {
     [Display(Name = "D.N.I.")]
-    NationalId,
+    NationalId = 1,
 
     [Display(Name = "N.I.E.")]
-    ForeignerId,
+    ForeignerId = 2,
 
     [Display(Name = "Passport")]
-    Passport,
+    Passport = 3,
 
     [Display(Name = "Residence Permit")]
-    ResidencePermit,
+    ResidencePermit = 4,
 
     [Display(Name = "Driver's License")]
-    DriversLicense,
+    DriversLicense = 5,
 
     [Display(Name = "Health Card")]
-    HealthCard,
+    HealthCard = 6,
 
     [Display(Name = "Social Security Number")]
-    SocialSecurityNumber
+    SocialSecurityNumber = 7
 }

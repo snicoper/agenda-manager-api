@@ -19,4 +19,5 @@ public record GetAccountDetailsQueryResponse(
     IdentityDocumentType? IdentityDocumentType,
     bool IsEmailConfirmed,
     bool IsActive,
-    bool IsCollaborator);
+    bool IsCollaborator,
+    DateTimeOffset CreatedAt);
