@@ -24,6 +24,7 @@ public static class DependencyInjection
     public static IServiceCollection AddDomain(this IServiceCollection services)
     {
         services.AddUsersDomain();
+        services.AddAuthorizationDomain();
         services.AddCalendarsDomain();
         services.AddResourceTypesDomain();
         services.AddResourcesDomain();
@@ -36,11 +37,15 @@ public static class DependencyInjection
     private static void AddUsersDomain(this IServiceCollection services)
     {
         services.AddScoped<UserManager>();
-        services.AddScoped<RoleManager>();
-        services.AddScoped<PermissionManager>();
-
+        services.AddScoped<UserProfileManager>();
         services.AddTransient<IPasswordPolicy, PasswordPolicy>();
         services.AddTransient<AuthenticationService>();
+    }
+
+    private static void AddAuthorizationDomain(this IServiceCollection services)
+    {
+        services.AddScoped<RoleManager>();
+        services.AddScoped<PermissionManager>();
         services.AddTransient<AuthorizationService>();
     }
 

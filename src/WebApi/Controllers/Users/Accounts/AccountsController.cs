@@ -7,6 +7,7 @@ using AgendaManager.Application.Users.Accounts.Commands.ResentEmailConfirmation;
 using AgendaManager.Application.Users.Accounts.Commands.ResetPassword;
 using AgendaManager.Application.Users.Accounts.Commands.ToggleIsActive;
 using AgendaManager.Application.Users.Accounts.Commands.ToggleIsCollaborator;
+using AgendaManager.Application.Users.Accounts.Commands.UpdateAccount;
 using AgendaManager.Application.Users.Accounts.Commands.VerifyEmail;
 using AgendaManager.Application.Users.Accounts.Queries.GetAccountDetails;
 using AgendaManager.Application.Users.Accounts.Queries.GetAccountsPaginated;
@@ -150,6 +151,36 @@ public class AccountsController : ApiControllerBase
     public async Task<ActionResult<Result>> VerifyEmail(VerifyEmailRequest request)
     {
         var command = new VerifyEmailCommand(request.Token);
+        var result = await Sender.Send(command);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Update the account.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpPut("{userId:guid}")]
+    public async Task<ActionResult<Result>> UpdateAccount(Guid userId, UpdateAccountRequest request)
+    {
+        var command = new UpdateAccountCommand(
+            UserId: userId,
+            FirstName: request.FirstName,
+            LastName: request.LastName,
+            Phone: new UpdateAccountCommand.PhoneCommand(request.Phone.Number, request.Phone.CountryCode),
+            Address: new UpdateAccountCommand.AddressCommand(
+                Street: request.Address.Street,
+                City: request.Address.City,
+                Country: request.Address.Country,
+                State: request.Address.State,
+                PostalCode: request.Address.PostalCode),
+            IdentityDocument: new UpdateAccountCommand.IdentityDocumentCommand(
+                Number: request.IdentityDocument.Number,
+                CountryCode: request.IdentityDocument.CountryCode,
+                Type: request.IdentityDocument.Type));
+
         var result = await Sender.Send(command);
 
         return result.ToActionResult();

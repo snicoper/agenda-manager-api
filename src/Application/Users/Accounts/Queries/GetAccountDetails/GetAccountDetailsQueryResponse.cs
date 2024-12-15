@@ -7,17 +7,25 @@ public record GetAccountDetailsQueryResponse(
     string Email,
     string FirstName,
     string LastName,
-    string? PhoneNumber,
-    string? PhoneNumberCountryCode,
-    string? AddressStreet,
-    string? AddressCity,
-    string? AddressState,
-    string? AddressCountry,
-    string? AddressPostalCode,
-    string? IdentityDocument,
-    string? IdentityDocumentCountryCode,
-    IdentityDocumentType? IdentityDocumentType,
     bool IsEmailConfirmed,
     bool IsActive,
     bool IsCollaborator,
-    DateTimeOffset CreatedAt);
+    DateTimeOffset CreatedAt,
+    GetAccountDetailsQueryResponse.PhoneNumberResponse? PhoneNumber,
+    GetAccountDetailsQueryResponse.AddressResponse? Address,
+    GetAccountDetailsQueryResponse.IdentityDocumentResponse? IdentityDocument)
+{
+    public record PhoneNumberResponse(string? Number, string? CountryCode);
+
+    public record AddressResponse(
+        string? Street,
+        string? City,
+        string? State,
+        string? Country,
+        string? PostalCode);
+
+    public record IdentityDocumentResponse(
+        string? Number,
+        string? CountryCode,
+        IdentityDocumentType? Type);
+}
