@@ -10,11 +10,15 @@ public interface IRoleRepository
 
     Task<Role?> GetByIdWithPermissionsAsync(RoleId roleId, CancellationToken cancellationToken = default);
 
+    Task<ICollection<Role>> GetAllRolesAsync(CancellationToken cancellationToken);
+
     Task<ICollection<Role>> GetAllWithPermissionsAsync(CancellationToken cancellationToken = default);
 
     Task<ICollection<Role>> GetByIdsWithPermissionsAsync(
         List<RoleId> roleIds,
         CancellationToken cancellationToken);
+
+    Task<ICollection<Role>> GetRolesByIdsAsync(List<RoleId> rolesIds, CancellationToken cancellationToken);
 
     Task<bool> ExistsByIdAsync(RoleId roleId, CancellationToken cancellationToken);
 

@@ -1,6 +1,8 @@
 ﻿using AgendaManager.Application.Common.Http;
 using AgendaManager.Application.Users.UserRoles.Commands.AssignUserToRole;
 using AgendaManager.Application.Users.UserRoles.Commands.UnAssignedUserFromRole;
+using AgendaManager.Application.Users.UserRoles.Queries.GetAvailableRolesByUserId;
+using AgendaManager.Application.Users.UserRoles.Queries.GetRolesByUserId;
 using AgendaManager.Application.Users.UserRoles.Queries.GetUsersByRoleIdPaginated;
 using AgendaManager.Application.Users.UserRoles.Queries.GetUsersNotInRoleIdPaginated;
 using AgendaManager.Domain.Common.Responses;
@@ -41,6 +43,34 @@ public class UserRolesController : ApiControllerBase
     {
         var command = new GetUsersNotInRoleIdPaginatedCommand(roleId, requestData);
         var result = await Sender.Send(command);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Obtener lista de roles de un usuario por su id.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [HttpGet("{userId:guid}/roles")]
+    public async Task<ActionResult<Result<List<GetRolesByUserIdQueryResponse>>>> GetRolesByUserId(Guid userId)
+    {
+        var query = new GetRolesByUserIdQuery(userId);
+        var result = await Sender.Send(query);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Obtener lista de roles disponibles para asignar a un usuario por su id,
+    /// indicando cuáles ya están asignados.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [HttpGet("{userId:guid}/available-roles")]
+    public async Task<ActionResult<Result<List<GetAvailableRolesByUserIdQueryResponse>>>> GetAvailableRolesByUserId(
+        Guid userId)
+    {
+        var query = new GetAvailableRolesByUserIdQuery(userId);
+        var result = await Sender.Send(query);
 
         return result.ToActionResult();
     }

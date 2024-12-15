@@ -29,6 +29,13 @@ public class RoleRepository(AppDbContext context) : IRoleRepository
         return role;
     }
 
+    public async Task<ICollection<Role>> GetAllRolesAsync(CancellationToken cancellationToken)
+    {
+        var roles = await context.Roles.ToListAsync(cancellationToken);
+
+        return roles;
+    }
+
     public async Task<ICollection<Role>> GetAllWithPermissionsAsync(CancellationToken cancellationToken = default)
     {
         var roles = await context.Roles
@@ -45,6 +52,15 @@ public class RoleRepository(AppDbContext context) : IRoleRepository
         var roles = await context.Roles
             .Include(r => r.Permissions)
             .Where(r => roleIds.Contains(r.Id))
+            .ToListAsync(cancellationToken);
+
+        return roles;
+    }
+
+    public async Task<ICollection<Role>> GetRolesByIdsAsync(List<RoleId> rolesIds, CancellationToken cancellationToken)
+    {
+        var roles = await context.Roles
+            .Where(r => rolesIds.Contains(r.Id))
             .ToListAsync(cancellationToken);
 
         return roles;
