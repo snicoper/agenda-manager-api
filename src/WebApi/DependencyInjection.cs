@@ -2,6 +2,7 @@
 using AgendaManager.Application.Common.Localization;
 using AgendaManager.Application.Users.Services;
 using AgendaManager.WebApi.Infrastructure;
+using AgendaManager.WebApi.Options;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc.Razor;
 using OpenTelemetry.Resources;
@@ -11,13 +12,16 @@ namespace AgendaManager.WebApi;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddWebApi(this IServiceCollection services, IWebHostEnvironment environment)
+    public static IServiceCollection AddWebApi(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        IWebHostEnvironment environment)
     {
         services.AddDatabaseDeveloperPageExceptionFilter();
         services.AddHttpContextAccessor();
 
         AddGlobalInjections(services);
-        services.AddCustomCors(environment);
+        AddCustomCors(services, configuration);
 
         services.AddControllersWithViews()
             .AddJsonOptions(
@@ -97,45 +101,37 @@ public static class DependencyInjection
             });
     }
 
-    private static void AddCustomCors(this IServiceCollection services, IWebHostEnvironment environment)
+    private static void AddCustomCors(
+        this IServiceCollection services,
+        IConfiguration configuration)
     {
+        var corsSettings = configuration.GetSection(CorsSettings.SectionName).Get<CorsSettings>();
+
+        if (corsSettings is null)
+        {
+            throw new InvalidOperationException("Cors settings are not configured");
+        }
+
+        // Añadimos logging para debug
+        var allowedDomains = corsSettings.AllowedDomains;
+        foreach (var domain in allowedDomains)
+        {
+            Console.WriteLine($"Allowed domain: {domain}");
+        }
+
         services.AddCors(
             options =>
             {
                 options.AddPolicy(
-                    "DefaultCors",
+                    corsSettings.DefaultPolicyName,
                     builder =>
                     {
-                        if (!environment.IsProduction())
-                        {
-                            builder
-                                .SetIsOriginAllowed(_ => true)
-                                .AllowAnyHeader()
-                                .AllowAnyMethod()
-                                .AllowCredentials();
-                        }
-                        else
-                        {
-                            // Dominios base permitidos
-                            var allowedDomains = new[] { "tudominio.com", "otro-dominio.com" };
-
-                            builder
-                                .SetIsOriginAllowed(
-                                    origin =>
-                                    {
-                                        var host = new Uri(origin).Host;
-                                        return allowedDomains.Any(
-                                            domain =>
-                                                host.Equals(domain) || // Dominio exacto
-                                                host.EndsWith($".{domain}")); // Subdominio
-                                    })
-                                .WithMethods("GET", "POST", "PUT", "DELETE")
-                                .WithHeaders(
-                                    "Authorization",
-                                    "Content-Type",
-                                    "Accept")
-                                .AllowCredentials();
-                        }
+                        builder
+                            .WithOrigins(corsSettings.AllowedDomains.ToArray()) // Cambiamos a WithOrigins
+                            .WithMethods(corsSettings.AllowedMethods)
+                            .WithHeaders(corsSettings.AllowedHeaders)
+                            .WithExposedHeaders(corsSettings.ExposedHeaders)
+                            .AllowCredentials();
                     });
             });
     }

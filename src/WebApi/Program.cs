@@ -15,7 +15,7 @@ builder.Host.UseSerilog(
 builder.Services.AddDomain();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
-builder.Services.AddWebApi(builder.Environment);
+builder.Services.AddWebApi(builder.Configuration, builder.Environment);
 
 var app = builder.Build();
 
@@ -33,7 +33,13 @@ else
     app.UseHsts();
 }
 
-app.UseCors("DefaultCors");
+var defaultPolicyName = builder.Configuration["Cors:DefaultPolicyName"];
+
+if (!string.IsNullOrWhiteSpace(defaultPolicyName))
+{
+    app.UseCors(defaultPolicyName);
+}
+
 app.UseHttpsRedirection();
 
 app.UseExceptionHandler(_ => { });
