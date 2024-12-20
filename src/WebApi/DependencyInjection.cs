@@ -12,10 +12,7 @@ namespace AgendaManager.WebApi;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddWebApi(
-        this IServiceCollection services,
-        IConfiguration configuration,
-        IWebHostEnvironment environment)
+    public static IServiceCollection AddWebApi(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDatabaseDeveloperPageExceptionFilter();
         services.AddHttpContextAccessor();

@@ -15,7 +15,7 @@ builder.Host.UseSerilog(
 builder.Services.AddDomain();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
-builder.Services.AddWebApi(builder.Configuration, builder.Environment);
+builder.Services.AddWebApi(builder.Configuration);
 
 var app = builder.Build();
 
