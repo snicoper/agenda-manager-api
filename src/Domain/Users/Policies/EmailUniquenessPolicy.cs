@@ -7,7 +7,7 @@ public class EmailUniquenessPolicy(IUserRepository userRepository) : IEmailUniqu
 {
     public async Task<bool> IsUnique(EmailAddress email, CancellationToken cancellationToken = default)
     {
-        var emailExists = await userRepository.EmailExistsAsync(email, cancellationToken);
+        var emailExists = await userRepository.ExistsEmailAsync(email, cancellationToken);
 
         return !emailExists;
     }

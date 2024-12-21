@@ -18,7 +18,9 @@ public interface IUserRepository
 
     Task<User?> GetByIdWithTokensAsync(UserId userId, CancellationToken cancellationToken = default);
 
-    Task<User?> GetAllInfoByIdAsync(UserId userId, CancellationToken cancellationToken = default);
+    Task<User?> GetByIdWithProfileAsync(UserId from, CancellationToken cancellationToken);
+
+    Task<User?> GetByIdWithAllInfoAsync(UserId userId, CancellationToken cancellationToken = default);
 
     Task<User?> GetByEmailAsync(EmailAddress email, CancellationToken cancellationToken = default);
 
@@ -26,11 +28,11 @@ public interface IUserRepository
 
     Task<User?> GetByTokenValueWithTokensAsync(string tokenValue, CancellationToken cancellationToken = default);
 
-    Task<bool> EmailExistsAsync(EmailAddress email, CancellationToken cancellationToken = default);
+    Task<User?> GetByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default);
+
+    Task<bool> ExistsEmailAsync(EmailAddress email, CancellationToken cancellationToken = default);
 
     Task<bool> HasAnyUserWithRole(RoleId roleId, CancellationToken cancellationToken = default);
-
-    Task<User?> GetByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default);
 
     Task AddAsync(User newUser, CancellationToken cancellationToken = default);
 

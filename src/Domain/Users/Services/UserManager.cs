@@ -92,7 +92,7 @@ public sealed class UserManager(
 
     private async Task<bool> EmailExistsAsync(EmailAddress email, CancellationToken cancellationToken)
     {
-        var emailIsUnique = await userRepository.EmailExistsAsync(email, cancellationToken);
+        var emailIsUnique = await userRepository.ExistsEmailAsync(email, cancellationToken);
 
         return emailIsUnique;
     }

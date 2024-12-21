@@ -62,7 +62,7 @@ public class UserManagerCreateTests
         // Arrange
         SetupPasswordPolicyValidatePassword(Result.Success());
         SetupPasswordHasherHashPassword();
-        _userRepository.EmailExistsAsync(Arg.Any<EmailAddress>(), Arg.Any<CancellationToken>()).Returns(true);
+        _userRepository.ExistsEmailAsync(Arg.Any<EmailAddress>(), Arg.Any<CancellationToken>()).Returns(true);
 
         // Act
         var userResult = await _sut.CreateUserAsync(

@@ -23,27 +23,48 @@ public sealed class UserProfileManager(IUserProfileRepository userProfileReposit
         }
 
         // 2. Check uniqueness of IdentityDocument if exists.
-        if (identityDocument is not null
-            && user.Profile.IdentityDocument != identityDocument
-            && await IdentityDocumentExistsAsync(identityDocument, cancellationToken))
+        if (identityDocument is not null &&
+            await ExistsIdentityDocumentAsync(user.Id, identityDocument, cancellationToken))
         {
             return UserProfileErrors.IdentityDocumentAlreadyExists;
         }
 
-        // 3. Update user profile.
+        // 3. Check uniqueness of PhoneNumber if exists.
+        if (phoneNumber is not null &&
+            await ExistsPhoneNumberAsync(user.Id, phoneNumber, cancellationToken))
+        {
+            return UserProfileErrors.PhoneNumberAlreadyExists;
+        }
+
+        // 4. Update user profile.
         user.UpdateProfile(firstName, lastName, phoneNumber, address, identityDocument);
 
-        // 4. Save changes.
+        // 5. Save changes.
         userRepository.Update(user);
 
         return Result.Success();
     }
 
-    private async Task<bool> IdentityDocumentExistsAsync(
+    private async Task<bool> ExistsPhoneNumberAsync(
+        UserId userId,
+        PhoneNumber phoneNumber,
+        CancellationToken cancellationToken)
+    {
+        var phoneNumberExists = await userProfileRepository.ExistsPhoneNumberAsync(
+            userId,
+            phoneNumber,
+            cancellationToken);
+
+        return phoneNumberExists;
+    }
+
+    private async Task<bool> ExistsIdentityDocumentAsync(
+        UserId userId,
         IdentityDocument identityDocument,
         CancellationToken cancellationToken)
     {
-        var identityDocumentExists = await userProfileRepository.IdentityDocumentExistsAsync(
+        var identityDocumentExists = await userProfileRepository.ExistsIdentityDocumentAsync(
+            userId,
             identityDocument,
             cancellationToken);
 

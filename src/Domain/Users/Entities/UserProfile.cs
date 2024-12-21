@@ -107,9 +107,9 @@ public sealed class UserProfile : AuditableEntity
     {
         return firstName != FirstName
                || lastName != LastName
-               || phoneNumber != PhoneNumber
-               || address != Address
-               || identityDocument != IdentityDocument;
+               || !Equals(phoneNumber, PhoneNumber)
+               || !Equals(address, Address)
+               || !Equals(identityDocument, IdentityDocument);
     }
 
     private static void GuardAgainstInvalidFirstName(string firstName)

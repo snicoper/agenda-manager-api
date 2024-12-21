@@ -17,7 +17,7 @@ internal class UpdateAccountCommandHandler(
     public async Task<Result> Handle(UpdateAccountCommand request, CancellationToken cancellationToken)
     {
         // 1. Get user by id and check if it exists.
-        var user = await userRepository.GetByIdAsync(UserId.From(request.UserId), cancellationToken);
+        var user = await userRepository.GetByIdWithProfileAsync(UserId.From(request.UserId), cancellationToken);
 
         if (user is null)
         {
@@ -26,21 +26,13 @@ internal class UpdateAccountCommandHandler(
 
         // 2. Update user profile.
         var updateUserProfileResult = await userProfileManager.UpdateUserProfile(
-            user,
-            request.FirstName,
-            request.LastName,
-            PhoneNumber.From(request.Phone.Number, request.Phone.CountryCode),
-            Address.From(
-                request.Address.Street,
-                request.Address.City,
-                request.Address.Country,
-                request.Address.State,
-                request.Address.PostalCode),
-            IdentityDocument.From(
-                request.IdentityDocument.Number,
-                request.IdentityDocument.CountryCode,
-                request.IdentityDocument.Type),
-            cancellationToken);
+            user: user,
+            firstName: request.FirstName,
+            lastName: request.LastName,
+            phoneNumber: MapPhoneNumber(request.Phone),
+            address: MapAddress(request.Address),
+            identityDocument: MapIdentityDocument(request.IdentityDocument),
+            cancellationToken: cancellationToken);
 
         if (updateUserProfileResult.IsFailure)
         {
@@ -52,5 +44,50 @@ internal class UpdateAccountCommandHandler(
 
         // 4. Return success.
         return Result.Success();
+    }
+
+    private static PhoneNumber? MapPhoneNumber(UpdateAccountCommand.PhoneCommand? phone)
+    {
+        var mapPhoneNumber = phone is not null
+            && !string.IsNullOrEmpty(phone.Number)
+            && !string.IsNullOrEmpty(phone.CountryCode)
+                ? PhoneNumber.From(phone.Number, phone.CountryCode)
+                : null;
+
+        return mapPhoneNumber;
+    }
+
+    private static Address? MapAddress(UpdateAccountCommand.AddressCommand? address)
+    {
+        var mapAddress = address is not null
+            && !string.IsNullOrEmpty(address.Street)
+            && !string.IsNullOrEmpty(address.City)
+            && !string.IsNullOrEmpty(address.Country)
+            && !string.IsNullOrEmpty(address.State)
+            && !string.IsNullOrEmpty(address.PostalCode)
+                ? Address.From(
+                    address.Street,
+                    address.City,
+                    address.Country,
+                    address.State,
+                    address.PostalCode)
+                : null;
+
+        return mapAddress;
+    }
+
+    private static IdentityDocument? MapIdentityDocument(UpdateAccountCommand.IdentityDocumentCommand? identityDocument)
+    {
+        var mapIdentityDocument = identityDocument is not null
+            && !string.IsNullOrEmpty(identityDocument.Number)
+            && !string.IsNullOrEmpty(identityDocument.CountryCode)
+            && identityDocument.Type is not null
+                ? IdentityDocument.From(
+                    identityDocument.Number,
+                    identityDocument.CountryCode,
+                    identityDocument.Type.Value)
+                : null;
+
+        return mapIdentityDocument;
     }
 }

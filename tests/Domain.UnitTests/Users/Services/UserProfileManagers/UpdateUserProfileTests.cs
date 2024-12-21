@@ -61,7 +61,10 @@ public class UpdateUserProfileTests
         var user = UserFactory.CreateUser();
         var userProfile = UserProfileFactory.CreateUserProfile();
 
-        _userProfileRepository.IdentityDocumentExistsAsync(userProfile.IdentityDocument!, CancellationToken.None)
+        _userProfileRepository.ExistsIdentityDocumentAsync(
+                user.Id,
+                userProfile.IdentityDocument!,
+                CancellationToken.None)
             .Returns(true);
 
         // Act
@@ -77,5 +80,33 @@ public class UpdateUserProfileTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error?.FirstError().Should().Be(UserProfileErrors.IdentityDocumentAlreadyExists.FirstError());
+    }
+
+    [Fact]
+    public async Task Update_ShouldNotUpdate_WhenPhoneNumberExists()
+    {
+        // Arrange
+        var user = UserFactory.CreateUser();
+        var userProfile = UserProfileFactory.CreateUserProfile();
+
+        _userProfileRepository.ExistsPhoneNumberAsync(
+                user.Id,
+                userProfile.PhoneNumber!,
+                CancellationToken.None)
+            .Returns(true);
+
+        // Act
+        var result = await _sut.UpdateUserProfile(
+            user: user,
+            firstName: "John",
+            lastName: "Doe",
+            phoneNumber: userProfile.PhoneNumber,
+            address: null,
+            identityDocument: null,
+            cancellationToken: CancellationToken.None);
+
+        // Assert
+        result.IsFailure.Should().BeTrue();
+        result.Error?.FirstError().Should().Be(UserProfileErrors.PhoneNumberAlreadyExists.FirstError());
     }
 }

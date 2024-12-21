@@ -15,11 +15,11 @@ public sealed record IdentityDocument
         Type = type;
     }
 
-    public string Value { get; }
+    public string Value { get; private set; }
 
-    public string CountryCode { get; }
+    public string CountryCode { get; private set; }
 
-    public IdentityDocumentType Type { get; }
+    public IdentityDocumentType Type { get; private set; }
 
     public static IdentityDocument From(string value, string countryCode, IdentityDocumentType type)
     {

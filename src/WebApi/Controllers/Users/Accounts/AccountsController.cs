@@ -169,17 +169,17 @@ public class AccountsController : ApiControllerBase
             UserId: userId,
             FirstName: request.FirstName,
             LastName: request.LastName,
-            Phone: new UpdateAccountCommand.PhoneCommand(request.Phone.Number, request.Phone.CountryCode),
+            Phone: new UpdateAccountCommand.PhoneCommand(request.Phone?.Number, request.Phone?.CountryCode),
             Address: new UpdateAccountCommand.AddressCommand(
-                Street: request.Address.Street,
-                City: request.Address.City,
-                Country: request.Address.Country,
-                State: request.Address.State,
-                PostalCode: request.Address.PostalCode),
+                Street: request.Address?.Street,
+                City: request.Address?.City,
+                Country: request.Address?.Country,
+                State: request.Address?.State,
+                PostalCode: request.Address?.PostalCode),
             IdentityDocument: new UpdateAccountCommand.IdentityDocumentCommand(
-                Number: request.IdentityDocument.Number,
-                CountryCode: request.IdentityDocument.CountryCode,
-                Type: request.IdentityDocument.Type));
+                Number: request.IdentityDocument?.Number,
+                CountryCode: request.IdentityDocument?.CountryCode,
+                Type: request.IdentityDocument?.Type));
 
         var result = await Sender.Send(command);
 

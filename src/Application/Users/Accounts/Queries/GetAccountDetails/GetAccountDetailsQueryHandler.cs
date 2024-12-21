@@ -13,36 +13,66 @@ internal class GetAccountDetailsQueryHandler(IUserRepository userRepository)
         GetAccountDetailsQuery request,
         CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetAllInfoByIdAsync(UserId.From(request.UserId), cancellationToken);
+        // 1. Get user by id and check if it exists.
+        var user = await userRepository.GetByIdWithAllInfoAsync(UserId.From(request.UserId), cancellationToken);
 
         if (user is null)
         {
             return UserErrors.UserNotFound;
         }
 
+        // 2. Map user to response.
         var response = new GetAccountDetailsQueryResponse(
             UserId: user.Id.Value,
             Email: user.Email.Value,
             FirstName: user.Profile.FirstName,
             LastName: user.Profile.LastName,
-            PhoneNumber: new GetAccountDetailsQueryResponse.PhoneNumberResponse(
-                user.Profile.PhoneNumber?.Number,
-                user.Profile.PhoneNumber?.CountryCode),
-            Address: new GetAccountDetailsQueryResponse.AddressResponse(
-                user.Profile.Address?.Street,
-                user.Profile.Address?.City,
-                user.Profile.Address?.State,
-                user.Profile.Address?.Country,
-                user.Profile.Address?.PostalCode),
-            IdentityDocument: new GetAccountDetailsQueryResponse.IdentityDocumentResponse(
-                user.Profile.IdentityDocument?.Value,
-                user.Profile.IdentityDocument?.CountryCode,
-                user.Profile.IdentityDocument?.Type),
+            PhoneNumber: MapPhoneNumber(user.Profile.PhoneNumber),
+            Address: MapAddress(user.Profile.Address),
+            IdentityDocument: MapIdentityDocument(user.Profile.IdentityDocument),
             IsEmailConfirmed: user.IsEmailConfirmed,
             IsActive: user.IsActive,
             IsCollaborator: user.IsCollaborator,
             CreatedAt: user.CreatedAt);
 
         return response;
+    }
+
+    private static GetAccountDetailsQueryResponse.PhoneNumberResponse? MapPhoneNumber(PhoneNumber? phone)
+    {
+        var mapPhoneNumber = phone is not null
+            ? new GetAccountDetailsQueryResponse.PhoneNumberResponse(
+                Number: phone.Number,
+                CountryCode: phone.CountryCode)
+            : null;
+
+        return mapPhoneNumber;
+    }
+
+    private static GetAccountDetailsQueryResponse.AddressResponse? MapAddress(Address? address)
+    {
+        var mapAddress = address is not null
+            ? new GetAccountDetailsQueryResponse.AddressResponse(
+                Street: address?.Street,
+                City: address?.City,
+                State: address?.State,
+                Country: address?.Country,
+                PostalCode: address?.PostalCode)
+            : null;
+
+        return mapAddress;
+    }
+
+    private static GetAccountDetailsQueryResponse.IdentityDocumentResponse? MapIdentityDocument(
+        IdentityDocument? identityDocument)
+    {
+        var mapIdentityDocument = identityDocument is not null
+            ? new GetAccountDetailsQueryResponse.IdentityDocumentResponse(
+                Number: identityDocument?.Value,
+                CountryCode: identityDocument?.CountryCode,
+                Type: identityDocument?.Type)
+            : null;
+
+        return mapIdentityDocument;
     }
 }

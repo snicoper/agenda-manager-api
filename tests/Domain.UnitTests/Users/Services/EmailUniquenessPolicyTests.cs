@@ -21,7 +21,7 @@ public class EmailUniquenessPolicyTests
     public async Task EmailUniquenessChecker_IsUnique_ShouldReturnSuccess_WhenEmailIsNotInUse()
     {
         // Arrange
-        _userRepository.EmailExistsAsync(Arg.Any<EmailAddress>(), Arg.Any<CancellationToken>()).Returns(false);
+        _userRepository.ExistsEmailAsync(Arg.Any<EmailAddress>(), Arg.Any<CancellationToken>()).Returns(false);
 
         // Act
         var result = await _sut.IsUnique(UserConstants.UserBob.Email);
@@ -34,7 +34,7 @@ public class EmailUniquenessPolicyTests
     public async Task EmailUniquenessChecker_IsUnique_ShouldReturnFailure_WhenEmailIsInUse()
     {
         // Arrange
-        _userRepository.EmailExistsAsync(Arg.Any<EmailAddress>(), Arg.Any<CancellationToken>()).Returns(true);
+        _userRepository.ExistsEmailAsync(Arg.Any<EmailAddress>(), Arg.Any<CancellationToken>()).Returns(true);
 
         // Act
         var result = await _sut.IsUnique(UserConstants.UserBob.Email);

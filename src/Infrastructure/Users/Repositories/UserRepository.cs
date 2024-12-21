@@ -28,14 +28,16 @@ public class UserRepository(AppDbContext context) : IUserRepository
     {
         var users = context.Users
             .Include(u => u.UserRoles)
-            .Where(u => !u.UserRoles.Any(ur => ur.RoleId == roleId));
+            .Where(u => u.UserRoles.All(ur => ur.RoleId != roleId));
 
         return users;
     }
 
     public async Task<User?> GetByIdAsync(UserId userId, CancellationToken cancellationToken = default)
     {
-        return await context.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+        var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+
+        return user;
     }
 
     public async Task<User?> GetByIdWithRolesAsync(UserId userId, CancellationToken cancellationToken = default)
@@ -56,7 +58,16 @@ public class UserRepository(AppDbContext context) : IUserRepository
         return user;
     }
 
-    public Task<User?> GetAllInfoByIdAsync(UserId userId, CancellationToken cancellationToken = default)
+    public Task<User?> GetByIdWithProfileAsync(UserId from, CancellationToken cancellationToken)
+    {
+        var user = context.Users
+            .Include(u => u.Profile)
+            .FirstOrDefaultAsync(u => u.Id == from, cancellationToken);
+
+        return user;
+    }
+
+    public Task<User?> GetByIdWithAllInfoAsync(UserId userId, CancellationToken cancellationToken = default)
     {
         var user = context.Users
             .Include(u => u.UserRoles)
@@ -94,7 +105,16 @@ public class UserRepository(AppDbContext context) : IUserRepository
         return user;
     }
 
-    public async Task<bool> EmailExistsAsync(EmailAddress email, CancellationToken cancellationToken = default)
+    public async Task<User?> GetByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
+    {
+        var user = await context.Users.FirstOrDefaultAsync(
+            u => u.RefreshToken != null && u.RefreshToken.Value == refreshToken,
+            cancellationToken);
+
+        return user;
+    }
+
+    public async Task<bool> ExistsEmailAsync(EmailAddress email, CancellationToken cancellationToken = default)
     {
         var emailExists = await context.Users.AnyAsync(u => u.Email == email, cancellationToken);
 
@@ -107,13 +127,6 @@ public class UserRepository(AppDbContext context) : IUserRepository
             .AnyAsync(ur => ur.RoleId == roleId, cancellationToken);
 
         return hasAnyUserWithRole;
-    }
-
-    public async Task<User?> GetByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
-    {
-        return await context.Users.FirstOrDefaultAsync(
-            u => u.RefreshToken != null && u.RefreshToken.Value == refreshToken,
-            cancellationToken);
     }
 
     public async Task AddAsync(User newUser, CancellationToken cancellationToken = default)
