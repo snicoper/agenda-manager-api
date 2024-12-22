@@ -15,7 +15,7 @@ cd src/WebApi
 
 dotnet ef migrations add Initial -p ../Infrastructure/Infrastructure.csproj  -c AppDbContext  -o ../Infrastructure/Common/Persistence/Migrations
 
-dotnet ef database update -c AppDbContext
+#dotnet ef database update -c AppDbContext
 ```
 
 ## UserSecrets
