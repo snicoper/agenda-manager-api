@@ -33,7 +33,7 @@ public class CalendarRepository(AppDbContext context) : ICalendarRepository
         CancellationToken cancellationToken = default)
     {
         var exists = await context.Calendars
-            .AnyAsync(c => c.Id == calendarId && c.Name == name, cancellationToken);
+            .AnyAsync(c => c.Id != calendarId && c.Name == name, cancellationToken);
 
         return exists;
     }

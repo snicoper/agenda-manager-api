@@ -1,7 +1,9 @@
-﻿using AgendaManager.Application.Calendars.Queries.GetCalendarById;
+﻿using AgendaManager.Application.Calendars.Commands.CreateCalendar;
+using AgendaManager.Application.Calendars.Queries.GetCalendarById;
 using AgendaManager.Application.Calendars.Queries.GetCalendarsPaginated;
 using AgendaManager.Application.Common.Http;
 using AgendaManager.Domain.Common.Responses;
+using AgendaManager.WebApi.Controllers.Calendars.Contracts;
 using AgendaManager.WebApi.Infrastructure;
 using AgendaManager.WebApi.Infrastructure.Results;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +37,19 @@ public class CalendarsController : ApiControllerBase
     {
         var query = new GetCalendarByIdQuery(id);
         var result = await Sender.Send(query);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Create a new calendar.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [HttpPost]
+    public async Task<ActionResult<Result<CreateCalendarCommandResponse>>> CreateCalendar(CreateCalendarRequest request)
+    {
+        var command = new CreateCalendarCommand(request.Name, request.Description, request.IanaTimeZone);
+        var result = await Sender.Send(command);
 
         return result.ToActionResult();
     }

@@ -13,6 +13,8 @@ public class CalendarConfiguration : IEntityTypeConfiguration<Calendar>
 
         builder.HasKey(c => c.Id);
 
+        // builder.HasIndex(c => c.Name)
+        //     .IsUnique();
         builder.Property(c => c.Id)
             .HasConversion(
                 id => id.Value,
