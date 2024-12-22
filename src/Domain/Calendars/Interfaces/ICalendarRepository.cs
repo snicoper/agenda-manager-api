@@ -4,6 +4,8 @@ namespace AgendaManager.Domain.Calendars.Interfaces;
 
 public interface ICalendarRepository
 {
+    IQueryable<Calendar> GetQueryable();
+
     Task<Calendar?> GetByIdAsync(CalendarId id, CancellationToken cancellationToken = default);
 
     Task<bool> ExistsByCalendarIdAsync(CalendarId calendarId, CancellationToken cancellationToken = default);

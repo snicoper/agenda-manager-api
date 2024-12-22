@@ -8,6 +8,11 @@ namespace AgendaManager.Infrastructure.Calendars.Persistence.Repositories;
 
 public class CalendarRepository(AppDbContext context) : ICalendarRepository
 {
+    public IQueryable<Calendar> GetQueryable()
+    {
+        return context.Calendars.AsQueryable();
+    }
+
     public async Task<Calendar?> GetByIdAsync(CalendarId id, CancellationToken cancellationToken = default)
     {
         var calendar = await context.Calendars.FirstOrDefaultAsync(c => c.Id.Equals(id), cancellationToken);

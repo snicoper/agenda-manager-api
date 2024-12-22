@@ -14,12 +14,15 @@ internal class GetAccountsPaginatedQueryHandler(IUserRepository userRepository)
         GetAccountsPaginatedQuery request,
         CancellationToken cancellationToken)
     {
+        // 1. Get the users queryable from the repository.
         var users = userRepository.GetQueryable()
             .Include(u => u.Profile)
             .AsQueryable();
 
+        // 2. Apply filters to the users queryable.
         users = UserFilter.ApplyFilters(users, request.RequestData);
 
+        // 3. Create the response data.
         var responseData = await ResponseData<GetAccountsPaginatedQueryResponse>.CreateAsync(
             source: users,
             projection: u => new GetAccountsPaginatedQueryResponse(
@@ -34,6 +37,7 @@ internal class GetAccountsPaginatedQueryHandler(IUserRepository userRepository)
             request: request.RequestData,
             cancellationToken: cancellationToken);
 
+        // 4. Return the response data.
         return Result.Success(responseData);
     }
 }
