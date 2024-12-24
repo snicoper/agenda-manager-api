@@ -94,7 +94,7 @@ public class RolesController : ApiControllerBase
     /// <summary>
     /// Actualizar un rol.
     /// </summary>
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -110,7 +110,7 @@ public class RolesController : ApiControllerBase
     /// <summary>
     /// Actualizar un permiso de un rol.
     /// </summary>
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -129,7 +129,7 @@ public class RolesController : ApiControllerBase
     /// <summary>
     /// Eliminar un rol.
     /// </summary>
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpDelete("{roleId:guid}")]
     public async Task<ActionResult<Result>> DeleteRole(Guid roleId)

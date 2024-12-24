@@ -94,7 +94,7 @@ public class UserRolesController : ApiControllerBase
     /// <summary>
     /// Des asignar un usuario de un rol.
     /// </summary>
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]

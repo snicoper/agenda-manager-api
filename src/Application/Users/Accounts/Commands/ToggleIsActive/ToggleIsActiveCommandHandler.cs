@@ -33,6 +33,6 @@ internal class ToggleIsActiveCommandHandler(IUserRepository userRepository, IUni
         // 3. Save changes.
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Success();
+        return Result.NoContent();
     }
 }

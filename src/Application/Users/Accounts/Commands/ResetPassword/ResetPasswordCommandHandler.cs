@@ -47,7 +47,7 @@ internal class ResetPasswordCommandHandler(
         // 3. Remove the token.
         await RemoveTokenFromUserAsync(user, userToken, cancellationToken);
 
-        return Result.Success();
+        return Result.NoContent();
     }
 
     private async Task RemoveTokenFromUserAsync(User user, UserToken? userToken, CancellationToken cancellationToken)

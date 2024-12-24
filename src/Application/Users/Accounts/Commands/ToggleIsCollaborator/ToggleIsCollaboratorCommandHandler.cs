@@ -26,6 +26,6 @@ public class ToggleIsCollaboratorCommandHandler(IUserRepository userRepository, 
         // 3. Save changes.
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Success();
+        return Result.NoContent();
     }
 }

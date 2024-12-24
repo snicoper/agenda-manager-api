@@ -73,22 +73,6 @@ public class AccountsController : ApiControllerBase
     }
 
     /// <summary>
-    /// Confirm the user account.
-    /// </summary>
-    [AllowAnonymous]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [HttpPost("confirm-account")]
-    public async Task<ActionResult<Result>> ConfirmAccount(ConfirmAccountRequest request)
-    {
-        var command = new ConfirmAccountCommand(request.Token, request.NewPassword, request.ConfirmNewPassword);
-        var result = await Sender.Send(command);
-
-        return result.ToActionResult();
-    }
-
-    /// <summary>
     /// Request a password reset.
     /// </summary>
     [AllowAnonymous]
@@ -99,26 +83,6 @@ public class AccountsController : ApiControllerBase
     public async Task<ActionResult<Result>> RequestPasswordReset(RequestPasswordResetRequest resetRequest)
     {
         var command = new RequestPasswordResetCommand(Email: resetRequest.Email);
-        var result = await Sender.Send(command);
-
-        return result.ToActionResult();
-    }
-
-    /// <summary>
-    /// Reset the user password.
-    /// </summary>
-    [AllowAnonymous]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status409Conflict)]
-    [HttpPost("reset-password")]
-    public async Task<ActionResult<Result>> ResetPassword(ResetPasswordRequest request)
-    {
-        var command = new ResetPasswordCommand(
-            Token: request.Token,
-            NewPassword: request.NewPassword,
-            ConfirmNewPassword: request.ConfirmNewPassword);
-
         var result = await Sender.Send(command);
 
         return result.ToActionResult();
@@ -141,13 +105,49 @@ public class AccountsController : ApiControllerBase
     }
 
     /// <summary>
+    /// Confirm the user account.
+    /// </summary>
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpPut("confirm-account")]
+    public async Task<ActionResult<Result>> ConfirmAccount(ConfirmAccountRequest request)
+    {
+        var command = new ConfirmAccountCommand(request.Token, request.NewPassword, request.ConfirmNewPassword);
+        var result = await Sender.Send(command);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Reset the user password.
+    /// </summary>
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [HttpPut("reset-password")]
+    public async Task<ActionResult<Result>> ResetPassword(ResetPasswordRequest request)
+    {
+        var command = new ResetPasswordCommand(
+            Token: request.Token,
+            NewPassword: request.NewPassword,
+            ConfirmNewPassword: request.ConfirmNewPassword);
+
+        var result = await Sender.Send(command);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
     /// Verify the email.
     /// </summary>
     [AllowAnonymous]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [HttpPost("verify-email")]
+    [HttpPut("verify-email")]
     public async Task<ActionResult<Result>> VerifyEmail(VerifyEmailRequest request)
     {
         var command = new VerifyEmailCommand(request.Token);
@@ -159,7 +159,7 @@ public class AccountsController : ApiControllerBase
     /// <summary>
     /// Update the account.
     /// </summary>
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpPut("{userId:guid}")]
@@ -189,7 +189,7 @@ public class AccountsController : ApiControllerBase
     /// <summary>
     /// Toggle the user is active.
     /// </summary>
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpPut("{userId:guid}/toggle-is-active")]
@@ -204,7 +204,7 @@ public class AccountsController : ApiControllerBase
     /// <summary>
     /// Confirm the email if email is not confirmed.
     /// </summary>
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpPut("{userId:guid}/confirm-email")]
@@ -216,7 +216,7 @@ public class AccountsController : ApiControllerBase
         return result.ToActionResult();
     }
 
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpPut("{userId:guid}/toggle-is-collaborator")]

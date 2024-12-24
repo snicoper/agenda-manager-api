@@ -31,6 +31,6 @@ internal class UpdateRoleCommandHandler(RoleManager roleManager, IRoleRepository
             await unitOfWork.SaveChangesAsync(cancellationToken);
         }
 
-        return result;
+        return Result.NoContent();
     }
 }

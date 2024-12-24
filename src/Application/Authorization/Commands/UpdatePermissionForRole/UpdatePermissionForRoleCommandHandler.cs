@@ -20,7 +20,7 @@ internal class UpdatePermissionForRoleCommandHandler(AuthorizationService author
             await unitOfWork.SaveChangesAsync(cancellationToken);
         }
 
-        return result;
+        return Result.NoContent();
     }
 
     private async Task<Result> AddPermissionToRole(Guid roleId, Guid permissionId, CancellationToken cancellationToken)

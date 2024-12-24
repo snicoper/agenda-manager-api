@@ -22,6 +22,6 @@ internal class UnAssignedUserFromRoleCommandHandler(AuthorizationService authori
             await unitOfWork.SaveChangesAsync(cancellationToken);
         }
 
-        return result;
+        return Result.NoContent();
     }
 }

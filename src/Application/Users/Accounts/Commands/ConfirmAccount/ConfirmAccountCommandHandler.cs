@@ -33,6 +33,6 @@ internal class ConfirmAccountCommandHandler(
         // 4. Save changes.
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Success();
+        return Result.NoContent();
     }
 }

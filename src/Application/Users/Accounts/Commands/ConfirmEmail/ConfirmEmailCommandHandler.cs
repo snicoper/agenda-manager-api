@@ -38,6 +38,6 @@ internal class ConfirmEmailCommandHandler(IUserRepository userRepository, IUnitO
         user.ConfirmEmail();
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Success();
+        return Result.NoContent();
     }
 }

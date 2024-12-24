@@ -52,7 +52,7 @@ internal class VerifyEmailCommandHandler(IUserRepository userRepository, IUnitOf
         user.ConfirmEmail();
         await RemoveTokenFromUserAsync(user, userToken, cancellationToken);
 
-        return Result.Create();
+        return Result.NoContent();
     }
 
     private async Task RemoveTokenFromUserAsync(User user, UserToken? userToken, CancellationToken cancellationToken)

@@ -18,6 +18,6 @@ internal class DeleteRoleCommandHandler(RoleManager roleManager, IUnitOfWork uni
             await unitOfWork.SaveChangesAsync(cancellationToken);
         }
 
-        return result;
+        return Result.NoContent();
     }
 }

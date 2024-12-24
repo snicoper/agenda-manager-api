@@ -43,7 +43,7 @@ internal class UpdateAccountCommandHandler(
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         // 4. Return success.
-        return Result.Success();
+        return Result.NoContent();
     }
 
     private static PhoneNumber? MapPhoneNumber(UpdateAccountCommand.PhoneCommand? phone)
