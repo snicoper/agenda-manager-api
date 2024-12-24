@@ -25,7 +25,8 @@ public class CalendarManager(
         CancellationToken cancellationToken)
     {
         var calendar = Calendar.Create(calendarId, name, description);
-        var validationResult = await ValidateCalendarAsync(calendar, cancellationToken);
+
+        var validationResult = await ValidateCalendarAsync(calendarId, calendar.Name, cancellationToken);
 
         if (validationResult.IsFailure)
         {
@@ -47,16 +48,27 @@ public class CalendarManager(
         return Result.Create(calendar);
     }
 
-    public async Task<Result<Calendar>> UpdateCalendarAsync(Calendar calendar, CancellationToken cancellationToken)
+    public async Task<Result<Calendar>> UpdateCalendarAsync(
+        CalendarId calendarId,
+        string name,
+        string description,
+        CancellationToken cancellationToken)
     {
-        var validationResult = await ValidateCalendarAsync(calendar, cancellationToken);
+        var calendar = await calendarRepository.GetByIdAsync(calendarId, cancellationToken);
+
+        if (calendar == null)
+        {
+            return CalendarErrors.CalendarNotFound;
+        }
+
+        var validationResult = await ValidateCalendarAsync(calendarId, name, cancellationToken);
 
         if (validationResult.IsFailure)
         {
             return validationResult.MapToValue<Calendar>();
         }
 
-        calendar.Update(calendar.Name, calendar.Description);
+        calendar.Update(name, description);
         calendarRepository.Update(calendar);
 
         return Result.Success(calendar);
@@ -118,9 +130,12 @@ public class CalendarManager(
         return Result.Success(calendar);
     }
 
-    private async Task<Result> ValidateCalendarAsync(Calendar calendar, CancellationToken cancellationToken)
+    private async Task<Result> ValidateCalendarAsync(
+        CalendarId calendarId,
+        string name,
+        CancellationToken cancellationToken)
     {
-        if (await calendarRepository.ExistsByNameAsync(calendar.Id, calendar.Name, cancellationToken))
+        if (await calendarRepository.ExistsByNameAsync(calendarId, name, cancellationToken))
         {
             return CalendarErrors.NameAlreadyExists;
         }

@@ -10,7 +10,7 @@ public sealed record EmailAddress : IValueObject
     {
         ArgumentNullException.ThrowIfNull(value);
 
-        Value = value;
+        Value = value.ToLower();
 
         if (!IsValid())
         {
@@ -33,7 +33,7 @@ public sealed record EmailAddress : IValueObject
     private bool IsValid()
     {
         return !(string.IsNullOrWhiteSpace(Value)
-                 || Value.Length > 256
-                 || DomainRegex.ValidEmail().IsMatch(Value) is false);
+            || Value.Length > 256
+            || DomainRegex.ValidEmail().IsMatch(Value) is false);
     }
 }

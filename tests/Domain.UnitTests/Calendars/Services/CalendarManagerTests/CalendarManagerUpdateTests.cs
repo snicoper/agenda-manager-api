@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Calendars.ValueObjects;
+﻿using AgendaManager.Domain.Calendars;
+using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 using NSubstitute;
@@ -12,10 +13,15 @@ public class CalendarManagerUpdateTests : CalendarManagerTestsBase
     {
         // Arrange
         var calendar = CalendarFactory.CreateCalendar();
+        SetupCalendarRepositoryGetByIdAsync(calendar);
         SetupExistsByNameInCalendarRepositoryAsync(false);
 
         // Act
-        var result = await Sut.UpdateCalendarAsync(calendar, CancellationToken.None);
+        var result = await Sut.UpdateCalendarAsync(
+            calendarId: calendar.Id,
+            name: calendar.Name,
+            description: calendar.Description,
+            cancellationToken: CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -29,10 +35,22 @@ public class CalendarManagerUpdateTests : CalendarManagerTestsBase
         SetupExistsByNameInCalendarRepositoryAsync(true);
 
         // Act
-        var result = await Sut.UpdateCalendarAsync(calendar, CancellationToken.None);
+        var result = await Sut.UpdateCalendarAsync(
+            calendarId: calendar.Id,
+            name: calendar.Name,
+            description: calendar.Description,
+            cancellationToken: CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
+    }
+
+    private void SetupCalendarRepositoryGetByIdAsync(Calendar returnValue)
+    {
+        CalendarRepository.GetByIdAsync(
+                Arg.Any<CalendarId>(),
+                Arg.Any<CancellationToken>())
+            .Returns(returnValue);
     }
 
     private void SetupExistsByNameInCalendarRepositoryAsync(bool returnValue)

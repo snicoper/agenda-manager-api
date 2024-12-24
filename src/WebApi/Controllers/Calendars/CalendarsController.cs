@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Application.Calendars.Commands.CreateCalendar;
 using AgendaManager.Application.Calendars.Commands.ToggleIsActive;
+using AgendaManager.Application.Calendars.Commands.UpdateCalendar;
 using AgendaManager.Application.Calendars.Queries.GetCalendarById;
 using AgendaManager.Application.Calendars.Queries.GetCalendarsPaginated;
 using AgendaManager.Application.Common.Http;
@@ -50,6 +51,21 @@ public class CalendarsController : ApiControllerBase
     public async Task<ActionResult<Result<CreateCalendarCommandResponse>>> CreateCalendar(CreateCalendarRequest request)
     {
         var command = new CreateCalendarCommand(request.Name, request.Description, request.IanaTimeZone);
+        var result = await Sender.Send(command);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Update a calendar.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpPut("{calendarId:guid}")]
+    public async Task<ActionResult<Result>> UpdateCalendar(Guid calendarId, UpdateCalendarRequest request)
+    {
+        var command = new UpdateCalendarCommand(calendarId, request.Name, request.Description);
         var result = await Sender.Send(command);
 
         return result.ToActionResult();
