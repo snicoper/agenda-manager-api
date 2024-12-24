@@ -93,4 +93,17 @@ public class ResultTests
         result.ResultType.Should().Be(ResultType.Created);
         result.Value.Should().Be("test");
     }
+
+    [Fact]
+    public void Result_ShouldReturnNoContent()
+    {
+        // Arrange
+
+        // Act
+        var result = Result.NoContent();
+
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+        result.ResultType.Should().Be(ResultType.NoContent);
+    }
 }

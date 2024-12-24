@@ -56,7 +56,7 @@ public record Result
 
     public static Result<TValue> Success<TValue>(TValue? value, ResultType status = ResultType.Succeeded)
     {
-        return new Result<TValue>(value, default) { ResultType = status };
+        return new Result<TValue>(value, null) { ResultType = status };
     }
 
     public static Result Failure(ResultType status = ResultType.Conflict)
@@ -66,7 +66,7 @@ public record Result
 
     public static Result<TValue> Failure<TValue>(ResultType status = ResultType.Conflict)
     {
-        return new Result<TValue>(default, status);
+        return new Result<TValue>(false, status);
     }
 
     public static Result Failure(Error? error)
@@ -77,6 +77,16 @@ public record Result
     public static Result<TValue> Failure<TValue>(Error? error)
     {
         return new Result<TValue>(default, error);
+    }
+
+    public static Result NoContent()
+    {
+        return new Result(true, ResultType.NoContent);
+    }
+
+    public static Result<TValue> NoContent<TValue>()
+    {
+        return new Result<TValue>(true, ResultType.NoContent);
     }
 
     public Result<TValue> MapToValue<TValue>(TValue? value = default)
@@ -105,7 +115,7 @@ public record Result<TValue> : Result
 
     public static implicit operator Result<TValue>(TValue? value)
     {
-        return new Result<TValue>(value, default);
+        return new Result<TValue>(value, null);
     }
 
     public static implicit operator Result<TValue>(Error error)

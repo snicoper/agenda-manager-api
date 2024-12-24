@@ -88,8 +88,24 @@ public class ResultGenericTests
 
         // Assert
         resultChanged.IsSuccess.Should().BeTrue();
-        resultChanged.Value.GetType().Should().Be(typeof(int));
+        resultChanged.Value.GetType().Should().Be<int>();
         resultChanged.ResultType.Should().Be(resultType);
         resultChanged.HasValue.Should().BeFalse();
+    }
+
+    [Fact]
+    public void ResultGeneric_ShouldReturnNotContent()
+    {
+        // Arrange
+        var error = Result.NoContent<string>();
+
+        // Act
+        var result = error.MapToValue<string>();
+
+        // Assert
+        result.Should().BeOfType<Result<string>>();
+        result.IsSuccess.Should().BeTrue();
+        result.ResultType.Should().Be(ResultType.NoContent);
+        result.HasValue.Should().BeFalse();
     }
 }

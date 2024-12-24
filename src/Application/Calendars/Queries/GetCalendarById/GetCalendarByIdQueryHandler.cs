@@ -23,10 +23,11 @@ internal class GetCalendarByIdQueryHandler(ICalendarRepository calendarRepositor
 
         // 2. Map the calendar to the response.
         var response = new GetCalendarByIdQueryResponse(
-            calendar.Id.Value,
-            calendar.Name,
-            calendar.Description,
-            calendar.IsActive);
+            CalendarId: calendar.Id.Value,
+            Name: calendar.Name,
+            Description: calendar.Description,
+            IsActive: calendar.IsActive,
+            CreatedAt: calendar.CreatedAt);
 
         return Result.Success(response);
     }

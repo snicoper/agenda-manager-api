@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Application.Calendars.Commands.CreateCalendar;
+using AgendaManager.Application.Calendars.Commands.ToggleIsActive;
 using AgendaManager.Application.Calendars.Queries.GetCalendarById;
 using AgendaManager.Application.Calendars.Queries.GetCalendarsPaginated;
 using AgendaManager.Application.Common.Http;
@@ -32,10 +33,10 @@ public class CalendarsController : ApiControllerBase
     /// </summary>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [HttpGet("{id:guid}")]
-    public async Task<ActionResult<Result<GetCalendarByIdQueryResponse>>> GetCalendarById(Guid id)
+    [HttpGet("{calendarId:guid}")]
+    public async Task<ActionResult<Result<GetCalendarByIdQueryResponse>>> GetCalendarById(Guid calendarId)
     {
-        var query = new GetCalendarByIdQuery(id);
+        var query = new GetCalendarByIdQuery(calendarId);
         var result = await Sender.Send(query);
 
         return result.ToActionResult();
@@ -49,6 +50,21 @@ public class CalendarsController : ApiControllerBase
     public async Task<ActionResult<Result<CreateCalendarCommandResponse>>> CreateCalendar(CreateCalendarRequest request)
     {
         var command = new CreateCalendarCommand(request.Name, request.Description, request.IanaTimeZone);
+        var result = await Sender.Send(command);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Toggle the IsActive property of a calendar.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpPut("{calendarId:guid}/toggle-is-active")]
+    public async Task<ActionResult<Result>> ToggleIsActive(Guid calendarId)
+    {
+        var command = new ToggleIsActiveCommand(calendarId);
         var result = await Sender.Send(command);
 
         return result.ToActionResult();
