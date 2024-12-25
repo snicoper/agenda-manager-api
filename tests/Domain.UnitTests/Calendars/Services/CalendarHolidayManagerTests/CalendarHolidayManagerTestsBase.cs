@@ -7,21 +7,17 @@ namespace AgendaManager.Domain.UnitTests.Calendars.Services.CalendarHolidayManag
 
 public class CalendarHolidayManagerTestsBase
 {
-    public CalendarHolidayManagerTestsBase()
+    protected CalendarHolidayManagerTestsBase()
     {
         CalendarRepository = Substitute.For<ICalendarRepository>();
-        CalendarConfigurationRepository = Substitute.For<ICalendarConfigurationRepository>();
         AppointmentRepository = Substitute.For<IAppointmentRepository>();
 
         Sut = new CalendarHolidayManager(
             calendarRepository: CalendarRepository,
-            calendarConfigurationRepository: CalendarConfigurationRepository,
             appointmentRepository: AppointmentRepository);
     }
 
     protected ICalendarRepository CalendarRepository { get; }
-
-    protected ICalendarConfigurationRepository CalendarConfigurationRepository { get; }
 
     protected IAppointmentRepository AppointmentRepository { get; }
 

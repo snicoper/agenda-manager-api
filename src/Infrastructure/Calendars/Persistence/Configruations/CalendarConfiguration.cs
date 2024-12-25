@@ -13,13 +13,24 @@ public class CalendarConfiguration : IEntityTypeConfiguration<Calendar>
 
         builder.HasKey(c => c.Id);
 
-        // builder.HasIndex(c => c.Name)
-        //     .IsUnique();
+        builder.HasIndex(c => c.Name)
+            .IsUnique();
+
         builder.Property(c => c.Id)
             .HasConversion(
                 id => id.Value,
                 value => CalendarId.From(value))
             .IsRequired();
+
+        builder.Property(c => c.SettingsId)
+            .HasConversion(
+                settingsId => settingsId.Value,
+                value => CalendarSettingsId.From(value))
+            .IsRequired();
+
+        builder.HasOne(c => c.Settings)
+            .WithOne()
+            .HasForeignKey<Calendar>(c => c.SettingsId);
 
         builder.Property(c => c.Name)
             .HasMaxLength(50)
@@ -32,11 +43,6 @@ public class CalendarConfiguration : IEntityTypeConfiguration<Calendar>
         builder.Property(c => c.IsActive);
 
         builder.HasMany(c => c.Holidays)
-            .WithOne(ch => ch.Calendar)
-            .HasForeignKey(c => c.CalendarId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasMany(c => c.Configurations)
             .WithOne(ch => ch.Calendar)
             .HasForeignKey(c => c.CalendarId)
             .OnDelete(DeleteBehavior.Cascade);

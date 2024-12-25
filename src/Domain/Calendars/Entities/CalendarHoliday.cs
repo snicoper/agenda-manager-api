@@ -7,7 +7,7 @@ using AgendaManager.Domain.Common.WekDays;
 
 namespace AgendaManager.Domain.Calendars.Entities;
 
-public sealed class CalendarHoliday : AggregateRoot
+public sealed class CalendarHoliday : AuditableEntity
 {
     private CalendarHoliday()
     {
@@ -55,12 +55,12 @@ public sealed class CalendarHoliday : AggregateRoot
         GuardAgainstInvalidDescription(description);
 
         CalendarHoliday calendarHoliday = new(
-            calendarHolidayId,
-            calendarId,
-            period,
-            weekDays,
-            name,
-            description);
+            calendarHolidayId: calendarHolidayId,
+            calendarId: calendarId,
+            period: period,
+            weekDays: weekDays,
+            name: name,
+            description: description);
 
         calendarHoliday.AddDomainEvent(new CalendarHolidayCreatedDomainEvent(calendarHolidayId));
 

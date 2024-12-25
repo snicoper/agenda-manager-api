@@ -8,6 +8,8 @@ public interface ICalendarRepository
 
     Task<Calendar?> GetByIdAsync(CalendarId id, CancellationToken cancellationToken = default);
 
+    Task<Calendar?> GetByIdWithSettingsAsync(CalendarId calendarId, CancellationToken cancellationToken = default);
+
     Task<bool> ExistsByCalendarIdAsync(CalendarId calendarId, CancellationToken cancellationToken = default);
 
     Task<bool> ExistsByNameAsync(CalendarId calendarId, string name, CancellationToken cancellationToken = default);

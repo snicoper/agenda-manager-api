@@ -1,8 +1,6 @@
 ﻿using AgendaManager.Domain.Appointments.Interfaces;
 using AgendaManager.Domain.Appointments.Policies;
-using AgendaManager.Domain.Calendars.Configurations;
-using AgendaManager.Domain.Calendars.Entities;
-using AgendaManager.Domain.Calendars.Errors;
+using AgendaManager.Domain.Calendars.Enums;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.TestCommon.Factories;
@@ -24,14 +22,13 @@ public class AppointmentOverlapPolicyTests
     }
 
     [Fact]
-    public async Task IsOverlapping_ShouldReturnTrue_WhenOverlappingStrategyIsAllow()
+    public async Task IsOverlapping_ShouldReturnTrue_WhenAppointmentOverlappingTypeIsAllow()
     {
         // Arrange
-        var configuration = CalendarConfigurationFactory.CreateCalendarConfiguration(
-            category: CalendarConfigurationKeys.Appointments.OverlappingStrategy,
-            selectedKey: CalendarConfigurationKeys.Appointments.OverlappingOptions.AllowOverlapping);
-
-        List<CalendarConfiguration> configurations = [configuration];
+        var settings =
+            CalendarSettingsFactory.CreateCalendarSettings(
+                appointmentOverlapping: AppointmentOverlappingStrategy.Allow);
+        var calendar = CalendarFactory.CreateCalendar(settings: settings);
 
         _appointmentsRepository.IsOverlappingAppointmentsAsync(
                 Arg.Any<CalendarId>(),
@@ -41,9 +38,8 @@ public class AppointmentOverlapPolicyTests
 
         // Act
         var result = await _sut.IsOverlappingAsync(
-            CalendarId.Create(),
+            calendar,
             PeriodFactory.Create(),
-            configurations,
             CancellationToken.None);
 
         // Assert
@@ -51,14 +47,13 @@ public class AppointmentOverlapPolicyTests
     }
 
     [Fact]
-    public async Task IsOverlapping_ShouldFailure_WhenOverlappingStrategyKeyNotFound()
+    public async Task IsOverlapping_ShouldReturnTrue_WhenAppointmentOverlappingTypeIsReject()
     {
         // Arrange
-        var configuration = CalendarConfigurationFactory.CreateCalendarConfiguration(
-            category: CalendarConfigurationKeys.Appointments.ConfirmationStrategy,
-            selectedKey: CalendarConfigurationKeys.Appointments.ConfirmationOptions.RequireConfirmation);
-
-        List<CalendarConfiguration> configurations = [configuration];
+        var settings =
+            CalendarSettingsFactory.CreateCalendarSettings(
+                appointmentOverlapping: AppointmentOverlappingStrategy.Reject);
+        var calendar = CalendarFactory.CreateCalendar(settings: settings);
 
         _appointmentsRepository.IsOverlappingAppointmentsAsync(
                 Arg.Any<CalendarId>(),
@@ -68,37 +63,8 @@ public class AppointmentOverlapPolicyTests
 
         // Act
         var result = await _sut.IsOverlappingAsync(
-            CalendarId.Create(),
+            calendar,
             PeriodFactory.Create(),
-            configurations,
-            CancellationToken.None);
-
-        // Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error?.FirstError().Should().Be(CalendarConfigurationErrors.KeyNotFound.FirstError());
-    }
-
-    [Fact]
-    public async Task IsOverlapping_ShouldReturnTrue_WhenOverlappingStrategyRejectIfOverlapping()
-    {
-        // Arrange
-        var configuration = CalendarConfigurationFactory.CreateCalendarConfiguration(
-            category: CalendarConfigurationKeys.Appointments.OverlappingStrategy,
-            selectedKey: CalendarConfigurationKeys.Appointments.OverlappingOptions.RejectIfOverlapping);
-
-        List<CalendarConfiguration> configurations = [configuration];
-
-        _appointmentsRepository.IsOverlappingAppointmentsAsync(
-                Arg.Any<CalendarId>(),
-                Arg.Any<Period>(),
-                Arg.Any<CancellationToken>())
-            .Returns(false);
-
-        // Act
-        var result = await _sut.IsOverlappingAsync(
-            CalendarId.Create(),
-            PeriodFactory.Create(),
-            configurations,
             CancellationToken.None);
 
         // Assert

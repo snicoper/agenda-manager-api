@@ -3,7 +3,7 @@ using AgendaManager.Domain.Appointments.Enums;
 using AgendaManager.Domain.Appointments.Interfaces;
 using AgendaManager.Domain.Appointments.Services;
 using AgendaManager.Domain.Appointments.ValueObjects;
-using AgendaManager.Domain.Calendars.Entities;
+using AgendaManager.Domain.Calendars;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
@@ -19,8 +19,8 @@ namespace AgendaManager.Domain.UnitTests.Appointments.Services.AppointmentManage
 
 public abstract class AppointmentManagerTestsBase
 {
-    private readonly ICalendarConfigurationRepository _configurationRepository;
     private readonly IAppointmentRepository _appointmentRepository;
+    private readonly ICalendarRepository _calendarRepository;
     private readonly ICalendarHolidayAvailabilityPolicy _holidayAvailabilityPolicy;
     private readonly IAppointmentConfirmationStrategyPolicy _confirmationStrategyPolicy;
     private readonly IAppointmentOverlapPolicy _overlapPolicy;
@@ -29,8 +29,8 @@ public abstract class AppointmentManagerTestsBase
 
     protected AppointmentManagerTestsBase()
     {
-        _configurationRepository = Substitute.For<ICalendarConfigurationRepository>();
         _appointmentRepository = Substitute.For<IAppointmentRepository>();
+        _calendarRepository = Substitute.For<ICalendarRepository>();
         _holidayAvailabilityPolicy = Substitute.For<ICalendarHolidayAvailabilityPolicy>();
         _confirmationStrategyPolicy = Substitute.For<IAppointmentConfirmationStrategyPolicy>();
         _overlapPolicy = Substitute.For<IAppointmentOverlapPolicy>();
@@ -38,8 +38,8 @@ public abstract class AppointmentManagerTestsBase
         _serviceRequirementsPolicy = Substitute.For<IServiceRequirementsPolicy>();
 
         Sut = new AppointmentManager(
-            _configurationRepository,
             _appointmentRepository,
+            _calendarRepository,
             _holidayAvailabilityPolicy,
             _confirmationStrategyPolicy,
             _overlapPolicy,
@@ -49,21 +49,19 @@ public abstract class AppointmentManagerTestsBase
 
     protected AppointmentManager Sut { get; }
 
-    protected void SetupConfigurationRepositoryGetConfigurationsByCalendarIdAsync(
-        List<CalendarConfiguration>? configurationsResult = null)
-    {
-        configurationsResult ??= [];
-
-        _configurationRepository.GetConfigurationsByCalendarIdAsync(Arg.Any<CalendarId>(), Arg.Any<CancellationToken>())
-            .Returns(configurationsResult);
-    }
-
     protected void SetupCreationStrategyPolicyDetermineInitialStatus(Result<AppointmentStatus>? result = null)
     {
         result ??= Result.Success(AppointmentStatus.Accepted);
 
-        _confirmationStrategyPolicy.DetermineInitialStatus(Arg.Any<List<CalendarConfiguration>>())
+        _confirmationStrategyPolicy.DetermineInitialStatus(Arg.Any<Calendar>())
             .Returns(result);
+    }
+
+    protected void SetupCalendarRepositoryGetByIdWithSettingsAsync(Calendar? calendarResult = null)
+    {
+        _calendarRepository
+            .GetByIdWithSettingsAsync(Arg.Any<CalendarId>(), Arg.Any<CancellationToken>())
+            .Returns(calendarResult);
     }
 
     protected void SetupOverlapPolicyIsOverlapping(Result? result = null)
@@ -72,9 +70,8 @@ public abstract class AppointmentManagerTestsBase
 
         _overlapPolicy
             .IsOverlappingAsync(
-                Arg.Any<CalendarId>(),
+                Arg.Any<Calendar>(),
                 Arg.Any<Period>(),
-                Arg.Any<List<CalendarConfiguration>>(),
                 Arg.Any<CancellationToken>())
             .Returns(result);
     }
@@ -94,10 +91,9 @@ public abstract class AppointmentManagerTestsBase
 
         _resourceAvailabilityPolicy
             .IsAvailableAsync(
-                Arg.Any<CalendarId>(),
+                Arg.Any<Calendar>(),
                 Arg.Any<List<Resource>>(),
                 Arg.Any<Period>(),
-                Arg.Any<List<CalendarConfiguration>>(),
                 Arg.Any<CancellationToken>())
             .Returns(result);
     }

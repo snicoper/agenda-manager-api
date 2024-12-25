@@ -20,8 +20,9 @@ public class AppointmentManagerUpdateTests : AppointmentManagerTestsBase
     public async Task Update_ShouldSuccess_WhenValidValuesAreProvided()
     {
         // Arrange
+        var calendar = CalendarFactory.CreateCalendar();
+        SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
         SetupAppointmentRepositoryGetByIdAsync();
-        SetupConfigurationRepositoryGetConfigurationsByCalendarIdAsync();
         SetupCreationStrategyPolicyDetermineInitialStatus();
         SetupHolidayAvailabilityPolicyIsAvailable(Result.Success());
         SetupOverlapPolicyIsOverlapping(Result.Success());
@@ -39,6 +40,8 @@ public class AppointmentManagerUpdateTests : AppointmentManagerTestsBase
     public async Task Update_ShouldFailure_WhenAppointmentNotFound()
     {
         // Arrange
+        var calendar = CalendarFactory.CreateCalendar();
+        SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
         SetupAppointmentRepositoryGetByIdAsync(createAppointment: false);
 
         // Act
@@ -57,10 +60,11 @@ public class AppointmentManagerUpdateTests : AppointmentManagerTestsBase
     public async Task Update_ShouldFailure_WhenCurrentValueAreNotValid(AppointmentStatus status)
     {
         // Arrange
-        var appointment = AppointmentFactory.CreateAppointmentForTesting(status: status).Value;
+        var calendar = CalendarFactory.CreateCalendar();
+        SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
 
+        var appointment = AppointmentFactory.CreateAppointmentForTesting(status: status).Value;
         SetupAppointmentRepositoryGetByIdAsync(appointment);
-        SetupConfigurationRepositoryGetConfigurationsByCalendarIdAsync();
 
         // Act
         var result = await UpdateAppointmentManagerFactory();
@@ -74,8 +78,9 @@ public class AppointmentManagerUpdateTests : AppointmentManagerTestsBase
     public async Task Update_ShouldFailure_WhenHolidayAvailabilityPolicyIsNotAvailable()
     {
         // Arrange
+        var calendar = CalendarFactory.CreateCalendar();
+        SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
         SetupAppointmentRepositoryGetByIdAsync();
-        SetupConfigurationRepositoryGetConfigurationsByCalendarIdAsync();
         SetupCreationStrategyPolicyDetermineInitialStatus();
         SetupHolidayAvailabilityPolicyIsAvailable(Result.Failure());
 
@@ -91,8 +96,9 @@ public class AppointmentManagerUpdateTests : AppointmentManagerTestsBase
     public async Task Update_ShouldFailure_WhenOverlapPolicyIsOverlappingIsTrue()
     {
         // Arrange
+        var calendar = CalendarFactory.CreateCalendar();
+        SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
         SetupAppointmentRepositoryGetByIdAsync();
-        SetupConfigurationRepositoryGetConfigurationsByCalendarIdAsync();
         SetupCreationStrategyPolicyDetermineInitialStatus();
         SetupHolidayAvailabilityPolicyIsAvailable(Result.Success());
         SetupOverlapPolicyIsOverlapping(Result.Failure());
@@ -109,8 +115,9 @@ public class AppointmentManagerUpdateTests : AppointmentManagerTestsBase
     public async Task Update_ShouldFailure_WhenResourceAvailabilityPolicyIsNotAvailable()
     {
         // Arrange
+        var calendar = CalendarFactory.CreateCalendar();
+        SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
         SetupAppointmentRepositoryGetByIdAsync();
-        SetupConfigurationRepositoryGetConfigurationsByCalendarIdAsync();
         SetupCreationStrategyPolicyDetermineInitialStatus();
         SetupHolidayAvailabilityPolicyIsAvailable(Result.Success());
         SetupOverlapPolicyIsOverlapping(Result.Failure());
@@ -128,8 +135,9 @@ public class AppointmentManagerUpdateTests : AppointmentManagerTestsBase
     public async Task Update_ShouldFailure_WhenServiceRequirementsPolicyIsNotSatisfied()
     {
         // Arrange
+        var calendar = CalendarFactory.CreateCalendar();
+        SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
         SetupAppointmentRepositoryGetByIdAsync();
-        SetupConfigurationRepositoryGetConfigurationsByCalendarIdAsync();
         SetupCreationStrategyPolicyDetermineInitialStatus();
         SetupHolidayAvailabilityPolicyIsAvailable(Result.Success());
         SetupOverlapPolicyIsOverlapping(Result.Failure());

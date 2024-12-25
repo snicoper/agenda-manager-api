@@ -113,7 +113,6 @@ public static class DependencyInjection
         // Calendars.
         services.AddScoped<ICalendarRepository, CalendarRepository>();
         services.AddScoped<ICalendarHolidayRepository, CalendarHolidayRepository>();
-        services.AddScoped<ICalendarConfigurationRepository, CalendarConfigurationRepository>();
 
         // ResourceTypes.
         services.AddScoped<IResourceTypeRepository, ResourceTypeRepository>();
@@ -139,7 +138,7 @@ public static class DependencyInjection
             (provider, options) =>
             {
                 var connectionString = configuration.GetConnectionString("DefaultConnection") ??
-                                       throw new NullReferenceException("No connection string found in configuration");
+                    throw new NullReferenceException("No connection string found in configuration");
 
                 options.AddInterceptors(provider.GetServices<ISaveChangesInterceptor>());
                 options.UseNpgsql(connectionString);

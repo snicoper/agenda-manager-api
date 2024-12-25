@@ -20,7 +20,8 @@ public class AppointmentManagerCreateTests : AppointmentManagerTestsBase
     public async Task Create_ShouldSuccess_WhenValidValuesAreProvided()
     {
         // Arrange
-        SetupConfigurationRepositoryGetConfigurationsByCalendarIdAsync();
+        var calendar = CalendarFactory.CreateCalendar();
+        SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
         SetupCreationStrategyPolicyDetermineInitialStatus();
         SetupHolidayAvailabilityPolicyIsAvailable(Result.Success());
         SetupOverlapPolicyIsOverlapping(Result.Success());
@@ -35,10 +36,25 @@ public class AppointmentManagerCreateTests : AppointmentManagerTestsBase
     }
 
     [Fact]
+    public async Task Create_ShouldFailure_WhenCalendarNotFound()
+    {
+        // Arrange
+        SetupCalendarRepositoryGetByIdWithSettingsAsync();
+
+        // Act
+        var result = await CreateAppointmentManagerFactory();
+
+        // Assert
+        result.IsFailure.Should().BeTrue();
+        result.Error?.FirstError().Should().Be(CalendarErrors.CalendarNotFound.FirstError());
+    }
+
+    [Fact]
     public async Task Create_ShouldFailure_WhenHolidayAvailabilityPolicyIsNotAvailable()
     {
         // Arrange
-        SetupConfigurationRepositoryGetConfigurationsByCalendarIdAsync();
+        var calendar = CalendarFactory.CreateCalendar();
+        SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
         SetupCreationStrategyPolicyDetermineInitialStatus();
         SetupHolidayAvailabilityPolicyIsAvailable(Result.Failure());
 
@@ -54,7 +70,8 @@ public class AppointmentManagerCreateTests : AppointmentManagerTestsBase
     public async Task Create_ShouldFailure_WhenOverlapPolicyIsOverlappingIsTrue()
     {
         // Arrange
-        SetupConfigurationRepositoryGetConfigurationsByCalendarIdAsync();
+        var calendar = CalendarFactory.CreateCalendar();
+        SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
         SetupCreationStrategyPolicyDetermineInitialStatus();
         SetupHolidayAvailabilityPolicyIsAvailable(Result.Success());
         SetupCreationStrategyPolicyDetermineInitialStatus();
@@ -72,7 +89,8 @@ public class AppointmentManagerCreateTests : AppointmentManagerTestsBase
     public async Task Create_ShouldFailure_WhenResourceAvailabilityPolicyIsNotAvailable()
     {
         // Arrange
-        SetupConfigurationRepositoryGetConfigurationsByCalendarIdAsync();
+        var calendar = CalendarFactory.CreateCalendar();
+        SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
         SetupCreationStrategyPolicyDetermineInitialStatus();
         SetupHolidayAvailabilityPolicyIsAvailable(Result.Success());
         SetupCreationStrategyPolicyDetermineInitialStatus();
@@ -91,7 +109,8 @@ public class AppointmentManagerCreateTests : AppointmentManagerTestsBase
     public async Task Create_ShouldFailure_WhenServiceRequirementsPolicyIsNotSatisfied()
     {
         // Arrange
-        SetupConfigurationRepositoryGetConfigurationsByCalendarIdAsync();
+        var calendar = CalendarFactory.CreateCalendar();
+        SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
         SetupCreationStrategyPolicyDetermineInitialStatus();
         SetupHolidayAvailabilityPolicyIsAvailable(Result.Success());
         SetupCreationStrategyPolicyDetermineInitialStatus();

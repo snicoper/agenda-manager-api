@@ -23,4 +23,8 @@
     <InternalsVisibleTo Include="AgendaManager.Application.UnitTests"/>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Calendars\Queries\GetCalendarByIdWithConfigurations\" />
+  </ItemGroup>
+
 </Project>

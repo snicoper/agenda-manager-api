@@ -287,54 +287,18 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<Guid>("SettingsId")
+                        .HasColumnType("uuid");
+
                     b.Property<int>("Version")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Calendars", (string)null);
-                });
-
-            modelBuilder.Entity("AgendaManager.Domain.Calendars.Entities.CalendarConfiguration", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("CalendarId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTimeOffset>("LastModifiedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("SelectedKey")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<int>("Version")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CalendarId", "Category");
-
-                    b.ToTable("CalendarConfigurations", (string)null);
                 });
 
             modelBuilder.Entity("AgendaManager.Domain.Calendars.Entities.CalendarHoliday", b =>
@@ -380,6 +344,56 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.HasIndex("CalendarId");
 
                     b.ToTable("CalendarHolidays", (string)null);
+                });
+
+            modelBuilder.Entity("AgendaManager.Domain.Calendars.Entities.CalendarSettings", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CalendarId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("ConfirmationRequirement")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("HolidayAppointmentHandling")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("OverlapBehavior")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ScheduleValidation")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("TimeZone")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CalendarId")
+                        .IsUnique();
+
+                    b.ToTable("CalendarSettings", (string)null);
                 });
 
             modelBuilder.Entity("AgendaManager.Domain.ResourceTypes.ResourceType", b =>
@@ -927,17 +941,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Calendars.Entities.CalendarConfiguration", b =>
-                {
-                    b.HasOne("AgendaManager.Domain.Calendars.Calendar", "Calendar")
-                        .WithMany("Configurations")
-                        .HasForeignKey("CalendarId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Calendar");
-                });
-
             modelBuilder.Entity("AgendaManager.Domain.Calendars.Entities.CalendarHoliday", b =>
                 {
                     b.HasOne("AgendaManager.Domain.Calendars.Calendar", "Calendar")
@@ -971,6 +974,17 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
                     b.Navigation("Period")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AgendaManager.Domain.Calendars.Entities.CalendarSettings", b =>
+                {
+                    b.HasOne("AgendaManager.Domain.Calendars.Calendar", "Calendar")
+                        .WithOne("Settings")
+                        .HasForeignKey("AgendaManager.Domain.Calendars.Entities.CalendarSettings", "CalendarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Calendar");
                 });
 
             modelBuilder.Entity("AgendaManager.Domain.ResourceTypes.ResourceType", b =>
@@ -1366,9 +1380,10 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
             modelBuilder.Entity("AgendaManager.Domain.Calendars.Calendar", b =>
                 {
-                    b.Navigation("Configurations");
-
                     b.Navigation("Holidays");
+
+                    b.Navigation("Settings")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("AgendaManager.Domain.ResourceTypes.ResourceType", b =>

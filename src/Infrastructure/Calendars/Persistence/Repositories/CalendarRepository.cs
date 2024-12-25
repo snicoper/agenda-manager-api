@@ -20,6 +20,17 @@ public class CalendarRepository(AppDbContext context) : ICalendarRepository
         return calendar;
     }
 
+    public async Task<Calendar?> GetByIdWithSettingsAsync(
+        CalendarId calendarId,
+        CancellationToken cancellationToken = default)
+    {
+        var calendar = await context.Calendars
+            .Include(c => c.Settings)
+            .FirstOrDefaultAsync(c => c.Id == calendarId, cancellationToken);
+
+        return calendar;
+    }
+
     public Task<bool> ExistsByCalendarIdAsync(CalendarId calendarId, CancellationToken cancellationToken = default)
     {
         var exists = context.Calendars.AnyAsync(c => c.Id.Equals(calendarId), cancellationToken);

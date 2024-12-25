@@ -1,28 +1,19 @@
 ﻿using AgendaManager.Domain.Appointments.Enums;
-using AgendaManager.Domain.Appointments.Errors;
 using AgendaManager.Domain.Appointments.Interfaces;
-using AgendaManager.Domain.Calendars.Configurations;
-using AgendaManager.Domain.Calendars.Entities;
+using AgendaManager.Domain.Calendars;
+using AgendaManager.Domain.Calendars.Enums;
 using AgendaManager.Domain.Common.Responses;
 
 namespace AgendaManager.Domain.Appointments.Policies;
 
 public class AppointmentConfirmationStrategyPolicy : IAppointmentConfirmationStrategyPolicy
 {
-    public Result<AppointmentStatus> DetermineInitialStatus(List<CalendarConfiguration> configurations)
+    public Result<AppointmentStatus> DetermineInitialStatus(Calendar calendar)
     {
-        var creationStrategy = configurations.SingleOrDefault(
-            cc => cc.Category == CalendarConfigurationKeys.Appointments.ConfirmationStrategy);
-
-        if (creationStrategy is null)
-        {
-            return AppointmentErrors.MissingCreationStrategy;
-        }
-
-        var defaultStatus = creationStrategy.SelectedKey
-            is CalendarConfigurationKeys.Appointments.ConfirmationOptions.RequireConfirmation
-            ? AppointmentStatus.Pending
-            : AppointmentStatus.Accepted;
+        var defaultStatus =
+            calendar.Settings.ConfirmationRequirement is AppointmentConfirmationRequirementStrategy.Require
+                ? AppointmentStatus.Pending
+                : AppointmentStatus.Accepted;
 
         return Result.Success(defaultStatus);
     }

@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Appointments.Interfaces;
-using AgendaManager.Domain.Calendars.Configurations;
 using AgendaManager.Domain.Calendars.Entities;
+using AgendaManager.Domain.Calendars.Enums;
 using AgendaManager.Domain.Calendars.Errors;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.ValueObjects;
@@ -24,8 +24,18 @@ public class CalendarManager(
         string description,
         CancellationToken cancellationToken)
     {
-        var calendar = Calendar.Create(calendarId, name, description);
+        // Create calendar settings.
+        var settings = CalendarSettings.Create(
+            calendarSettingsId: CalendarSettingsId.Create(),
+            calendarId: calendarId,
+            timeZone: ianaTimeZone,
+            confirmationRequirement: AppointmentConfirmationRequirementStrategy.Require,
+            overlapBehavior: AppointmentOverlappingStrategy.Reject,
+            holidayAppointmentHandling: HolidayConflictStrategy.Reject,
+            scheduleValidation: ResourceScheduleValidationStrategy.Validate);
 
+        // Create calendar and validate.
+        var calendar = Calendar.Create(calendarId, settings, name, description);
         var validationResult = await ValidateCalendarAsync(calendarId, calendar.Name, cancellationToken);
 
         if (validationResult.IsFailure)
@@ -33,17 +43,7 @@ public class CalendarManager(
             return validationResult.MapToValue<Calendar>();
         }
 
-        var calendarResult = AddDefaultConfigurationsAsync(
-            calendar: calendar,
-            calendarId: calendarId,
-            ianaTimeZone: ianaTimeZone);
-
-        if (calendarResult.IsFailure)
-        {
-            return calendarResult;
-        }
-
-        await calendarRepository.AddAsync(calendarResult.Value!, cancellationToken);
+        await calendarRepository.AddAsync(calendar, cancellationToken);
 
         return Result.Create(calendar);
     }
@@ -103,31 +103,6 @@ public class CalendarManager(
         calendarRepository.Delete(calendar);
 
         return Result.Success();
-    }
-
-    private static Result<Calendar> AddDefaultConfigurationsAsync(
-        Calendar calendar,
-        CalendarId calendarId,
-        IanaTimeZone ianaTimeZone)
-    {
-        foreach (var config in CalendarConfigurationKeys.Metadata.Options.Values.Where(o => !o.IsUnitValue))
-        {
-            calendar.AddConfiguration(
-                CalendarConfiguration.Create(
-                    id: CalendarConfigurationId.Create(),
-                    calendarId: calendarId,
-                    category: config.Category,
-                    selectedKey: config.DefaultKey!));
-        }
-
-        calendar.AddConfiguration(
-            CalendarConfiguration.Create(
-                id: CalendarConfigurationId.Create(),
-                calendarId: calendarId,
-                category: CalendarConfigurationKeys.TimeZone.Category,
-                selectedKey: ianaTimeZone.Value));
-
-        return Result.Success(calendar);
     }
 
     private async Task<Result> ValidateCalendarAsync(

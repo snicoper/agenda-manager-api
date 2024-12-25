@@ -9,14 +9,15 @@ namespace AgendaManager.Domain.Calendars;
 public sealed class Calendar : AggregateRoot
 {
     private readonly List<CalendarHoliday> _holidays = [];
-    private readonly List<CalendarConfiguration> _configurations = [];
 
-    private Calendar(CalendarId id, string name, string description, bool isActive)
+    private Calendar(CalendarId id, CalendarSettings settings, string name, string description, bool isActive)
     {
         GuardAgainstInvalidName(name);
         GuardAgainstInvalidDescription(description);
 
         Id = id;
+        Settings = settings;
+        SettingsId = settings.Id;
         Name = name;
         Description = description;
         IsActive = isActive;
@@ -28,6 +29,10 @@ public sealed class Calendar : AggregateRoot
 
     public CalendarId Id { get; } = null!;
 
+    public CalendarSettingsId SettingsId { get; private set; } = null!;
+
+    public CalendarSettings Settings { get; private set; } = null!;
+
     public string Name { get; private set; } = default!;
 
     public string Description { get; private set; } = default!;
@@ -35,8 +40,6 @@ public sealed class Calendar : AggregateRoot
     public bool IsActive { get; private set; }
 
     public IReadOnlyList<CalendarHoliday> Holidays => _holidays.AsReadOnly();
-
-    public IReadOnlyList<CalendarConfiguration> Configurations => _configurations.AsReadOnly();
 
     public void Activate()
     {
@@ -61,35 +64,6 @@ public sealed class Calendar : AggregateRoot
         AddDomainEvent(new CalendarDeactivatedDomainEvent(Id));
     }
 
-    public void AddConfiguration(CalendarConfiguration configuration)
-    {
-        _configurations.Add(configuration);
-
-        AddDomainEvent(new CalendarConfigurationAddedDomainEvent(Id, configuration.Id));
-    }
-
-    public void RemoveConfiguration(CalendarConfiguration configuration)
-    {
-        _configurations.Remove(configuration);
-
-        AddDomainEvent(new CalendarConfigurationRemovedDomainEvent(Id, configuration.Id));
-    }
-
-    public void UpdateConfiguration(CalendarConfigurationId configurationId, string category, string selectedKey)
-    {
-        var configuration = _configurations.FirstOrDefault(x => x.Id == configurationId);
-
-        if (configuration is null)
-        {
-            throw new CalendarConfigurationDomainException("Invalid calendar configuration option.");
-        }
-
-        if (configuration.Update(category, selectedKey))
-        {
-            AddDomainEvent(new CalendarConfigurationUpdatedDomainEvent(Id, configuration.Id));
-        }
-    }
-
     public void AddHoliday(CalendarHoliday holiday)
     {
         _holidays.Add(holiday);
@@ -104,9 +78,26 @@ public sealed class Calendar : AggregateRoot
         AddDomainEvent(new CalendarHolidayRemovedDomainEvent(Id, holiday.Id));
     }
 
-    internal static Calendar Create(CalendarId id, string name, string description, bool active = true)
+    public void UpdateSettings(CalendarSettings settings)
     {
-        Calendar calendar = new(id, name, description, active);
+        if (!Settings.HasChanges(settings))
+        {
+            return;
+        }
+
+        Settings = settings;
+
+        AddDomainEvent(new CalendarSettingsUpdatedDomainEvent(Id));
+    }
+
+    internal static Calendar Create(
+        CalendarId id,
+        CalendarSettings settings,
+        string name,
+        string description,
+        bool isActive = true)
+    {
+        Calendar calendar = new(id, settings, name, description, isActive);
 
         calendar.AddDomainEvent(new CalendarCreatedDomainEvent(id));
 

@@ -29,8 +29,8 @@ public class AppointmentRepository(AppDbContext context) : IAppointmentRepositor
         var overlappingAppointments = context.Appointments
             .Where(
                 a => a.CalendarId == calendarId
-                     && a.Period.Start < period.End
-                     && a.Period.End > period.Start)
+                    && a.Period.Start < period.End
+                    && a.Period.End > period.Start)
             .ToListAsync(cancellationToken);
 
         return overlappingAppointments;
@@ -44,8 +44,8 @@ public class AppointmentRepository(AppDbContext context) : IAppointmentRepositor
         var overlappingAppointments = await context.Appointments
             .AnyAsync(
                 a => a.CalendarId == calendarId
-                     && a.Period.Start < period.End
-                     && a.Period.End > period.Start,
+                    && a.Period.Start < period.End
+                    && a.Period.End > period.Start,
                 cancellationToken);
 
         return overlappingAppointments;

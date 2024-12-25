@@ -1,5 +1,4 @@
-﻿using AgendaManager.Domain.Calendars.Configurations;
-using AgendaManager.Domain.Calendars.Errors;
+﻿using AgendaManager.Domain.Calendars.Enums;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Resources;
@@ -24,15 +23,13 @@ public class ResourceAvailabilityPolicyTests
     }
 
     [Fact]
-    public async Task IsAvailableAsync_ShouldSuccess_WhenAllResourcesAreAvailable()
+    public async Task IsAvailable_ShouldSuccess_WhenResourceSchedulesAvailabilityTypeAreValidate()
     {
         // Arrange
         List<Resource> resources = [ResourceFactory.CreateResource()];
-        var calendarConfiguration = CalendarConfigurationFactory.CreateCalendarConfiguration(
-            category: CalendarConfigurationKeys.ResourcesSchedules.AvailabilityStrategy,
-            selectedKey: CalendarConfigurationKeys.ResourcesSchedules.AvailabilityOptions.IgnoreSchedules);
-
-        var calendarId = CalendarId.Create();
+        var settings = CalendarSettingsFactory.CreateCalendarSettings(
+            resourceSchedulesAvailability: ResourceScheduleValidationStrategy.Validate);
+        var calendar = CalendarFactory.CreateCalendar(settings: settings);
         var period = PeriodFactory.Create();
 
         _resourceRepository.AreResourcesAvailableInPeriodAsync(
@@ -44,37 +41,34 @@ public class ResourceAvailabilityPolicyTests
 
         // Act
         var result = await _sut.IsAvailableAsync(
-            calendarId,
-            resources,
-            period,
-            [calendarConfiguration],
-            CancellationToken.None);
+            calendar: calendar,
+            resources: resources,
+            period: period,
+            cancellationToken: CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
-    public async Task IsAvailableAsync_ShouldFailure_WhenConfigurationIsNotDefined()
+    public async Task IsAvailableAsync_ShouldSuccess_WhenResourceSchedulesAvailabilityTypeAreIgnore()
     {
         // Arrange
         List<Resource> resources = [ResourceFactory.CreateResource()];
-        var calendarConfiguration = CalendarConfigurationFactory.CreateCalendarConfiguration();
-
-        var calendarId = CalendarId.Create();
+        var settings = CalendarSettingsFactory.CreateCalendarSettings(
+            resourceSchedulesAvailability: ResourceScheduleValidationStrategy.Ignore);
+        var calendar = CalendarFactory.CreateCalendar(settings: settings);
         var period = PeriodFactory.Create();
 
         // Act
         var result = await _sut.IsAvailableAsync(
-            calendarId,
-            resources,
-            period,
-            [calendarConfiguration],
-            CancellationToken.None);
+            calendar: calendar,
+            resources: resources,
+            period: period,
+            cancellationToken: CancellationToken.None);
 
         // Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error?.FirstError().Should().Be(CalendarConfigurationErrors.KeyNotFound.FirstError());
+        result.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
@@ -82,8 +76,9 @@ public class ResourceAvailabilityPolicyTests
     {
         // Arrange
         List<Resource> resources = [ResourceFactory.CreateResource()];
-        var calendarConfiguration = CalendarConfigurationFactory.CreateCalendarConfiguration();
-        var calendarId = CalendarId.Create();
+        var settings = CalendarSettingsFactory.CreateCalendarSettings(
+            resourceSchedulesAvailability: ResourceScheduleValidationStrategy.Validate);
+        var calendar = CalendarFactory.CreateCalendar(settings: settings);
         var period = PeriodFactory.Create();
 
         _resourceRepository.AreResourcesAvailableInPeriodAsync(
@@ -95,11 +90,10 @@ public class ResourceAvailabilityPolicyTests
 
         // Act
         var result = await _sut.IsAvailableAsync(
-            calendarId,
-            resources,
-            period,
-            [calendarConfiguration],
-            CancellationToken.None);
+            calendar: calendar,
+            resources: resources,
+            period: period,
+            cancellationToken: CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();

@@ -39,6 +39,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    SettingsId = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
@@ -119,31 +120,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CalendarConfigurations",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CalendarId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Category = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    SelectedKey = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: false),
-                    LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    Version = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CalendarConfigurations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CalendarConfigurations_Calendars_CalendarId",
-                        column: x => x.CalendarId,
-                        principalTable: "Calendars",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CalendarHolidays",
                 columns: table => new
                 {
@@ -165,6 +141,34 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     table.PrimaryKey("PK_CalendarHolidays", x => x.Id);
                     table.ForeignKey(
                         name: "FK_CalendarHolidays_Calendars_CalendarId",
+                        column: x => x.CalendarId,
+                        principalTable: "Calendars",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CalendarSettings",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CalendarId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TimeZone = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    ConfirmationRequirement = table.Column<int>(type: "integer", nullable: false),
+                    OverlapBehavior = table.Column<int>(type: "integer", nullable: false),
+                    HolidayAppointmentHandling = table.Column<int>(type: "integer", nullable: false),
+                    ScheduleValidation = table.Column<int>(type: "integer", nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: false),
+                    LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    Version = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CalendarSettings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CalendarSettings_Calendars_CalendarId",
                         column: x => x.CalendarId,
                         principalTable: "Calendars",
                         principalColumn: "Id",
@@ -582,14 +586,21 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 columns: new[] { "AggregateName", "AggregateId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CalendarConfigurations_CalendarId_Category",
-                table: "CalendarConfigurations",
-                columns: new[] { "CalendarId", "Category" });
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CalendarHolidays_CalendarId",
                 table: "CalendarHolidays",
                 column: "CalendarId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Calendars_Name",
+                table: "Calendars",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CalendarSettings_CalendarId",
+                table: "CalendarSettings",
+                column: "CalendarId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Permissions_Name",
@@ -703,10 +714,10 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 name: "AuditRecords");
 
             migrationBuilder.DropTable(
-                name: "CalendarConfigurations");
+                name: "CalendarHolidays");
 
             migrationBuilder.DropTable(
-                name: "CalendarHolidays");
+                name: "CalendarSettings");
 
             migrationBuilder.DropTable(
                 name: "ResourceSchedules");
