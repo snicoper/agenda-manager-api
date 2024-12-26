@@ -58,12 +58,12 @@ public static class SystemPermissions
         public const string Delete = "calendar-holiday:delete";
     }
 
-    public static class CalendarConfigurations
+    public static class CalendarSettings
     {
-        public const string Create = "calendar-configuration:create";
-        public const string Read = "calendar-configuration:read";
-        public const string Update = "calendar-configuration:update";
-        public const string Delete = "calendar-configuration:delete";
+        public const string Create = "calendar-settings:create";
+        public const string Read = "calendar-settings:read";
+        public const string Update = "calendar-settings:update";
+        public const string Delete = "calendar-settings:delete";
     }
 
     public static class Resources

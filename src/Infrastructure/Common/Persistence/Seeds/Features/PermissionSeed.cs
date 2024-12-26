@@ -88,16 +88,16 @@ public static class PermissionSeed
         // CalendarConfiguration permissions.
         var calendarConfigurationReadPermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            SystemPermissions.CalendarConfigurations.Read);
+            SystemPermissions.CalendarSettings.Read);
         var calendarConfigurationCreatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            SystemPermissions.CalendarConfigurations.Create);
+            SystemPermissions.CalendarSettings.Create);
         var calendarConfigurationUpdatePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            SystemPermissions.CalendarConfigurations.Update);
+            SystemPermissions.CalendarSettings.Update);
         var calendarConfigurationDeletePermission = await permissionManager.CreatePermissionAsync(
             PermissionId.Create(),
-            SystemPermissions.CalendarConfigurations.Delete);
+            SystemPermissions.CalendarSettings.Delete);
 
         // Resource permissions.
         var resourceReadPermission = await permissionManager.CreatePermissionAsync(

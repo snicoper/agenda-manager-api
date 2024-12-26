@@ -2,6 +2,7 @@
 using AgendaManager.Application.Calendars.Commands.ToggleIsActive;
 using AgendaManager.Application.Calendars.Commands.UpdateCalendar;
 using AgendaManager.Application.Calendars.Queries.GetCalendarById;
+using AgendaManager.Application.Calendars.Queries.GetCalendarSettings;
 using AgendaManager.Application.Calendars.Queries.GetCalendarsPaginated;
 using AgendaManager.Application.Common.Http;
 using AgendaManager.Domain.Common.Responses;
@@ -38,6 +39,18 @@ public class CalendarsController : ApiControllerBase
     public async Task<ActionResult<Result<GetCalendarByIdQueryResponse>>> GetCalendarById(Guid calendarId)
     {
         var query = new GetCalendarByIdQuery(calendarId);
+        var result = await Sender.Send(query);
+
+        return result.ToActionResult();
+    }
+
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpGet("{calendarId:guid}/settings")]
+    public async Task<ActionResult<Result<GetCalendarSettingsQueryResponse>>> GetCalendarSettings(Guid calendarId)
+    {
+        var query = new GetCalendarSettingsQuery(calendarId);
         var result = await Sender.Send(query);
 
         return result.ToActionResult();

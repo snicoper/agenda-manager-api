@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Appointments;
+using AgendaManager.Domain.Appointments.Errors;
 using AgendaManager.Domain.Calendars.Errors;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
@@ -75,14 +76,14 @@ public class AppointmentManagerCreateTests : AppointmentManagerTestsBase
         SetupCreationStrategyPolicyDetermineInitialStatus();
         SetupHolidayAvailabilityPolicyIsAvailable(Result.Success());
         SetupCreationStrategyPolicyDetermineInitialStatus();
-        SetupOverlapPolicyIsOverlapping(Result.Failure(CalendarConfigurationErrors.KeyNotFound));
+        SetupOverlapPolicyIsOverlapping(Result.Failure(AppointmentErrors.AppointmentsOverlapping));
 
         // Act
         var result = await CreateAppointmentManagerFactory();
 
         // Assert
         result.IsFailure.Should().BeTrue();
-        result.Error?.FirstError().Should().Be(CalendarConfigurationErrors.KeyNotFound.FirstError());
+        result.Error?.FirstError().Should().Be(AppointmentErrors.AppointmentsOverlapping.FirstError());
     }
 
     [Fact]
