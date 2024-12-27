@@ -18,10 +18,11 @@ public class CalendarUpdateSettingsTests
 
         // Act
         var updatedSettings = CalendarSettingsFactory.CreateCalendarSettings();
-        calendar.UpdateSettings(updatedSettings);
+        var result = calendar.UpdateSettings(updatedSettings);
 
         // Assert
         calendar.Settings.Should().Be(updatedSettings);
+        result.Should().BeTrue();
     }
 
     [Fact]
@@ -33,9 +34,10 @@ public class CalendarUpdateSettingsTests
         var calendar = CalendarFactory.CreateCalendar();
 
         // Act
-        calendar.UpdateSettings(settings);
+        var result = calendar.UpdateSettings(settings);
 
         // Assert
+        result.Should().BeTrue();
         calendar.DomainEvents.Should().ContainSingle(e => e is CalendarSettingsUpdatedDomainEvent);
     }
 
@@ -49,9 +51,10 @@ public class CalendarUpdateSettingsTests
         calendar.UpdateSettings(settings);
 
         // Act
-        calendar.UpdateSettings(settings);
+        var result = calendar.UpdateSettings(settings);
 
         // Assert
+        result.Should().BeFalse();
         calendar.DomainEvents.Should().NotContain(e => e is CalendarSettingsUpdatedDomainEvent);
     }
 }
