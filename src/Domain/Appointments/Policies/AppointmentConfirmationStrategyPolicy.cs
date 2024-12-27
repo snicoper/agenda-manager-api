@@ -11,7 +11,7 @@ public class AppointmentConfirmationStrategyPolicy : IAppointmentConfirmationStr
     public Result<AppointmentStatus> DetermineInitialStatus(Calendar calendar)
     {
         var defaultStatus =
-            calendar.Settings.ConfirmationRequirement is AppointmentConfirmationRequirementStrategy.Require
+            calendar.Settings.AppointmentConfirmationRequirement is AppointmentConfirmationRequirementStrategy.Require
                 ? AppointmentStatus.Pending
                 : AppointmentStatus.Accepted;
 

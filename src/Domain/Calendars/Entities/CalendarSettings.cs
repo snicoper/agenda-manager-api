@@ -16,18 +16,18 @@ public sealed class CalendarSettings : AuditableEntity
         CalendarSettingsId calendarSettingsId,
         CalendarId calendarId,
         IanaTimeZone timeZone,
-        AppointmentConfirmationRequirementStrategy confirmationRequirement,
-        AppointmentOverlappingStrategy overlapBehavior,
-        HolidayConflictStrategy holidayAppointmentHandling,
-        ResourceScheduleValidationStrategy scheduleValidation)
+        AppointmentConfirmationRequirementStrategy appointmentConfirmationRequirement,
+        AppointmentOverlappingStrategy appointmentOverlapping,
+        HolidayConflictStrategy holidayConflict,
+        ResourceScheduleValidationStrategy resourceScheduleValidation)
     {
         Id = calendarSettingsId;
         CalendarId = calendarId;
         TimeZone = timeZone;
-        ConfirmationRequirement = confirmationRequirement;
-        OverlapBehavior = overlapBehavior;
-        HolidayAppointmentHandling = holidayAppointmentHandling;
-        ScheduleValidation = scheduleValidation;
+        AppointmentConfirmationRequirement = appointmentConfirmationRequirement;
+        AppointmentOverlapping = appointmentOverlapping;
+        HolidayConflict = holidayConflict;
+        ResourceScheduleValidation = resourceScheduleValidation;
     }
 
     public CalendarSettingsId Id { get; } = null!;
@@ -38,31 +38,31 @@ public sealed class CalendarSettings : AuditableEntity
 
     public IanaTimeZone TimeZone { get; } = null!;
 
-    public AppointmentConfirmationRequirementStrategy ConfirmationRequirement { get; }
+    public AppointmentConfirmationRequirementStrategy AppointmentConfirmationRequirement { get; }
 
-    public AppointmentOverlappingStrategy OverlapBehavior { get; }
+    public AppointmentOverlappingStrategy AppointmentOverlapping { get; }
 
-    public HolidayConflictStrategy HolidayAppointmentHandling { get; }
+    public HolidayConflictStrategy HolidayConflict { get; }
 
-    public ResourceScheduleValidationStrategy ScheduleValidation { get; }
+    public ResourceScheduleValidationStrategy ResourceScheduleValidation { get; }
 
     internal static CalendarSettings Create(
         CalendarSettingsId calendarSettingsId,
         CalendarId calendarId,
         IanaTimeZone timeZone,
-        AppointmentConfirmationRequirementStrategy confirmationRequirement,
-        AppointmentOverlappingStrategy overlapBehavior,
-        HolidayConflictStrategy holidayAppointmentHandling,
-        ResourceScheduleValidationStrategy scheduleValidation)
+        AppointmentConfirmationRequirementStrategy appointmentConfirmationRequirement,
+        AppointmentOverlappingStrategy appointmentOverlapping,
+        HolidayConflictStrategy holidayConflict,
+        ResourceScheduleValidationStrategy resourceScheduleValidation)
     {
         CalendarSettings settings = new(
             calendarSettingsId: calendarSettingsId,
             calendarId: calendarId,
             timeZone: timeZone,
-            confirmationRequirement: confirmationRequirement,
-            overlapBehavior: overlapBehavior,
-            holidayAppointmentHandling: holidayAppointmentHandling,
-            scheduleValidation: scheduleValidation);
+            appointmentConfirmationRequirement: appointmentConfirmationRequirement,
+            appointmentOverlapping: appointmentOverlapping,
+            holidayConflict: holidayConflict,
+            resourceScheduleValidation: resourceScheduleValidation);
 
         settings.AddDomainEvent(new CalendarSettingsCreatedDomainEvent(calendarSettingsId));
 
@@ -72,9 +72,9 @@ public sealed class CalendarSettings : AuditableEntity
     internal bool HasChanges(CalendarSettings settings)
     {
         return TimeZone != settings.TimeZone ||
-            ConfirmationRequirement != settings.ConfirmationRequirement ||
-            OverlapBehavior != settings.OverlapBehavior ||
-            HolidayAppointmentHandling != settings.HolidayAppointmentHandling ||
-            ScheduleValidation != settings.ScheduleValidation;
+            AppointmentConfirmationRequirement != settings.AppointmentConfirmationRequirement ||
+            AppointmentOverlapping != settings.AppointmentOverlapping ||
+            HolidayConflict != settings.HolidayConflict ||
+            ResourceScheduleValidation != settings.ResourceScheduleValidation;
     }
 }

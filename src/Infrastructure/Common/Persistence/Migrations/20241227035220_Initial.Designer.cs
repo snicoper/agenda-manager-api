@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241225190739_Initial")]
+    [Migration("20241227035220_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -354,11 +354,14 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
+                    b.Property<int>("AppointmentConfirmationRequirement")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("AppointmentOverlapping")
+                        .HasColumnType("integer");
+
                     b.Property<Guid>("CalendarId")
                         .HasColumnType("uuid");
-
-                    b.Property<int>("ConfirmationRequirement")
-                        .HasColumnType("integer");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -367,7 +370,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("HolidayAppointmentHandling")
+                    b.Property<int>("HolidayConflict")
                         .HasColumnType("integer");
 
                     b.Property<DateTimeOffset>("LastModifiedAt")
@@ -377,10 +380,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("OverlapBehavior")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ScheduleValidation")
+                    b.Property<int>("ResourceScheduleValidation")
                         .HasColumnType("integer");
 
                     b.Property<string>("TimeZone")

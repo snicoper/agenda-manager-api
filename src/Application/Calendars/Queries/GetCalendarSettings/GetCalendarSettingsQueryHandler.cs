@@ -27,10 +27,10 @@ internal class GetCalendarSettingsQueryHandler(ICalendarRepository calendarRepos
         var response = new GetCalendarSettingsQueryResponse(
             CalendarId: calendar.Id.Value,
             TimeZone: calendar.Settings.TimeZone.Value,
-            ConfirmationRequirement: calendar.Settings.ConfirmationRequirement,
-            OverlapBehavior: calendar.Settings.OverlapBehavior,
-            HolidayAppointmentHandling: calendar.Settings.HolidayAppointmentHandling,
-            ScheduleValidation: calendar.Settings.ScheduleValidation);
+            AppointmentConfirmationRequirement: calendar.Settings.AppointmentConfirmationRequirement,
+            AppointmentOverlapping: calendar.Settings.AppointmentOverlapping,
+            HolidayConflict: calendar.Settings.HolidayConflict,
+            ResourceScheduleValidation: calendar.Settings.ResourceScheduleValidation);
 
         // 3. Return the response.
         return Result.Success(response);

@@ -29,10 +29,10 @@ public class CalendarManager(
             calendarSettingsId: CalendarSettingsId.Create(),
             calendarId: calendarId,
             timeZone: ianaTimeZone,
-            confirmationRequirement: AppointmentConfirmationRequirementStrategy.Require,
-            overlapBehavior: AppointmentOverlappingStrategy.Reject,
-            holidayAppointmentHandling: HolidayConflictStrategy.Reject,
-            scheduleValidation: ResourceScheduleValidationStrategy.Validate);
+            appointmentConfirmationRequirement: AppointmentConfirmationRequirementStrategy.Require,
+            appointmentOverlapping: AppointmentOverlappingStrategy.Reject,
+            holidayConflict: HolidayConflictStrategy.Reject,
+            resourceScheduleValidation: ResourceScheduleValidationStrategy.Validate);
 
         // Create calendar and validate.
         var calendar = Calendar.Create(calendarId, settings, name, description);

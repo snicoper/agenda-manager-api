@@ -38,6 +38,7 @@ public static class DependencyInjection
     {
         services.AddScoped<UserManager>();
         services.AddScoped<UserProfileManager>();
+
         services.AddTransient<IPasswordPolicy, PasswordPolicy>();
         services.AddTransient<AuthenticationService>();
     }
@@ -46,12 +47,15 @@ public static class DependencyInjection
     {
         services.AddScoped<RoleManager>();
         services.AddScoped<PermissionManager>();
+
         services.AddTransient<AuthorizationService>();
     }
 
     private static void AddCalendarsDomain(this IServiceCollection services)
     {
         services.AddScoped<CalendarManager>();
+        services.AddScoped<CalendarSettingsManager>();
+        services.AddScoped<CalendarHolidayManager>();
 
         services.AddTransient<ICalendarHolidayAvailabilityPolicy, CalendarHolidayAvailabilityPolicy>();
     }

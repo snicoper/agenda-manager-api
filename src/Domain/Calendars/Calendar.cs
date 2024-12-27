@@ -78,16 +78,18 @@ public sealed class Calendar : AggregateRoot
         AddDomainEvent(new CalendarHolidayRemovedDomainEvent(Id, holiday.Id));
     }
 
-    public void UpdateSettings(CalendarSettings settings)
+    public bool UpdateSettings(CalendarSettings settings)
     {
         if (!Settings.HasChanges(settings))
         {
-            return;
+            return false;
         }
 
         Settings = settings;
 
         AddDomainEvent(new CalendarSettingsUpdatedDomainEvent(Id));
+
+        return true;
     }
 
     internal static Calendar Create(

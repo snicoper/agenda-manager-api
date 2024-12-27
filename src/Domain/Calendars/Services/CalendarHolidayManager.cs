@@ -41,7 +41,7 @@ public sealed class CalendarHolidayManager(
         // 3. Check if there are overlapping appointments and use strategy.
         if (overlappingAppointments.Count != 0)
         {
-            switch (calendar.Settings.HolidayAppointmentHandling)
+            switch (calendar.Settings.HolidayConflict)
             {
                 case HolidayConflictStrategy.Reject:
                     return CalendarHolidayErrors.CreateOverlappingReject;

@@ -37,16 +37,16 @@ public class CalendarSettingsConfiguration : IEntityTypeConfiguration<CalendarSe
             .HasMaxLength(50)
             .IsRequired();
 
-        builder.Property(x => x.ConfirmationRequirement)
+        builder.Property(x => x.AppointmentConfirmationRequirement)
             .IsRequired();
 
-        builder.Property(x => x.OverlapBehavior)
+        builder.Property(x => x.AppointmentOverlapping)
             .IsRequired();
 
-        builder.Property(x => x.HolidayAppointmentHandling)
+        builder.Property(x => x.HolidayConflict)
             .IsRequired();
 
-        builder.Property(x => x.ScheduleValidation)
+        builder.Property(x => x.ResourceScheduleValidation)
             .IsRequired();
     }
 }

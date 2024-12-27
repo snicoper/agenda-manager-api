@@ -1,6 +1,7 @@
 ﻿using AgendaManager.Application.Calendars.Commands.CreateCalendar;
 using AgendaManager.Application.Calendars.Commands.ToggleIsActive;
 using AgendaManager.Application.Calendars.Commands.UpdateCalendar;
+using AgendaManager.Application.Calendars.Commands.UpdateCalendarSettings;
 using AgendaManager.Application.Calendars.Queries.GetCalendarById;
 using AgendaManager.Application.Calendars.Queries.GetCalendarSettings;
 using AgendaManager.Application.Calendars.Queries.GetCalendarsPaginated;
@@ -79,6 +80,29 @@ public class CalendarsController : ApiControllerBase
     public async Task<ActionResult<Result>> UpdateCalendar(Guid calendarId, UpdateCalendarRequest request)
     {
         var command = new UpdateCalendarCommand(calendarId, request.Name, request.Description);
+        var result = await Sender.Send(command);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Update the settings of a calendar.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpPut("{calendarId:guid}/settings")]
+    public async Task<ActionResult<Result>> UpdateCalendarSettings(
+        Guid calendarId,
+        UpdateCalendarSettingsRequest request)
+    {
+        var command = new UpdateCalendarSettingsCommand(
+            CalendarId: calendarId,
+            TimeZone: request.TimeZone,
+            AppointmentConfirmationRequirement: request.AppointmentConfirmationRequirement,
+            AppointmentOverlapping: request.AppointmentOverlapping,
+            HolidayConflict: request.HolidayConflict,
+            ResourceScheduleValidation: request.ResourceScheduleValidation);
         var result = await Sender.Send(command);
 
         return result.ToActionResult();

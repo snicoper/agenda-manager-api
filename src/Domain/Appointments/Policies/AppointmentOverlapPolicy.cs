@@ -16,7 +16,7 @@ public class AppointmentOverlapPolicy(IAppointmentRepository appointmentReposito
         CancellationToken cancellationToken = default)
     {
         // 1. Allow overlapping.
-        if (calendar.Settings.OverlapBehavior is AppointmentOverlappingStrategy.Allow)
+        if (calendar.Settings.AppointmentOverlapping is AppointmentOverlappingStrategy.Allow)
         {
             return Result.Success();
         }

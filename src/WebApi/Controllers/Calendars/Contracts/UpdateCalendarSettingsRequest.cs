@@ -1,9 +1,8 @@
 ﻿using AgendaManager.Domain.Calendars.Enums;
 
-namespace AgendaManager.Application.Calendars.Queries.GetCalendarSettings;
+namespace AgendaManager.WebApi.Controllers.Calendars.Contracts;
 
-public record GetCalendarSettingsQueryResponse(
-    Guid CalendarId,
+public record UpdateCalendarSettingsRequest(
     string TimeZone,
     AppointmentConfirmationRequirementStrategy AppointmentConfirmationRequirement,
     AppointmentOverlappingStrategy AppointmentOverlapping,

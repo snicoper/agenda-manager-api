@@ -17,7 +17,7 @@ public class ResourceAvailabilityPolicy(IResourceRepository resourceRepository)
         CancellationToken cancellationToken = default)
     {
         // If not required validate availability, return success.
-        if (calendar.Settings.ScheduleValidation != ResourceScheduleValidationStrategy.Validate)
+        if (calendar.Settings.ResourceScheduleValidation != ResourceScheduleValidationStrategy.Validate)
         {
             return Result.Success();
         }
