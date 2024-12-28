@@ -1,6 +1,6 @@
-﻿using AgendaManager.Domain.Authorization.ValueObjects;
-using AgendaManager.Domain.ResourceTypes;
-using AgendaManager.Domain.ResourceTypes.ValueObjects;
+﻿using AgendaManager.Domain.ResourceManagement.ResourceTypes;
+using AgendaManager.Domain.ResourceManagement.ResourceTypes.ValueObjects;
+using AgendaManager.Domain.ResourceManagement.Shared.Enums;
 
 namespace AgendaManager.TestCommon.Factories;
 
@@ -10,13 +10,13 @@ public static class ResourceTypeFactory
         ResourceTypeId? resourceTypeId = null,
         string? name = null,
         string? description = null,
-        RoleId? roleId = null)
+        ResourceCategory? category = null)
     {
         var resourceType = ResourceType.Create(
             id: resourceTypeId ?? ResourceTypeId.Create(),
             name: name ?? "Resource test",
             description: description ?? "Description resource test",
-            roleId: roleId);
+            category: category ?? ResourceCategory.Staff);
 
         return resourceType;
     }

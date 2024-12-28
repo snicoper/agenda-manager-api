@@ -396,7 +396,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.ToTable("CalendarSettings", (string)null);
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.ResourceTypes.ResourceType", b =>
+            modelBuilder.Entity("AgendaManager.Domain.ResourceManagement.ResourceTypes.ResourceType", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -425,9 +425,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<Guid?>("RoleId")
-                        .HasColumnType("uuid");
-
                     b.Property<int>("Version")
                         .HasColumnType("integer");
 
@@ -436,12 +433,10 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.HasIndex("RoleId");
-
                     b.ToTable("ResourceTypes", (string)null);
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Resources.Entities.ResourceSchedule", b =>
+            modelBuilder.Entity("AgendaManager.Domain.ResourceManagement.Resources.Entities.ResourceSchedule", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -496,7 +491,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.ToTable("ResourceSchedules", (string)null);
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Resources.Resource", b =>
+            modelBuilder.Entity("AgendaManager.Domain.ResourceManagement.Resources.Resource", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -984,17 +979,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Navigation("Calendar");
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.ResourceTypes.ResourceType", b =>
-                {
-                    b.HasOne("AgendaManager.Domain.Authorization.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("AgendaManager.Domain.Resources.Entities.ResourceSchedule", b =>
+            modelBuilder.Entity("AgendaManager.Domain.ResourceManagement.Resources.Entities.ResourceSchedule", b =>
                 {
                     b.HasOne("AgendaManager.Domain.Calendars.Calendar", "Calendar")
                         .WithMany()
@@ -1002,7 +987,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("AgendaManager.Domain.Resources.Resource", "Resource")
+                    b.HasOne("AgendaManager.Domain.ResourceManagement.Resources.Resource", "Resource")
                         .WithMany("Schedules")
                         .HasForeignKey("ResourceId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1037,7 +1022,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Navigation("Resource");
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Resources.Resource", b =>
+            modelBuilder.Entity("AgendaManager.Domain.ResourceManagement.Resources.Resource", b =>
                 {
                     b.HasOne("AgendaManager.Domain.Calendars.Calendar", "Calendar")
                         .WithMany()
@@ -1045,7 +1030,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("AgendaManager.Domain.ResourceTypes.ResourceType", "Type")
+                    b.HasOne("AgendaManager.Domain.ResourceManagement.ResourceTypes.ResourceType", "Type")
                         .WithMany("Resources")
                         .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1333,7 +1318,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AgendaManager.Domain.Resources.Resource", null)
+                    b.HasOne("AgendaManager.Domain.ResourceManagement.Resources.Resource", null)
                         .WithMany()
                         .HasForeignKey("ResourceId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1357,7 +1342,7 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
             modelBuilder.Entity("ResourceTypeService", b =>
                 {
-                    b.HasOne("AgendaManager.Domain.ResourceTypes.ResourceType", null)
+                    b.HasOne("AgendaManager.Domain.ResourceManagement.ResourceTypes.ResourceType", null)
                         .WithMany()
                         .HasForeignKey("ResourceTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1383,12 +1368,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.ResourceTypes.ResourceType", b =>
+            modelBuilder.Entity("AgendaManager.Domain.ResourceManagement.ResourceTypes.ResourceType", b =>
                 {
                     b.Navigation("Resources");
                 });
 
-            modelBuilder.Entity("AgendaManager.Domain.Resources.Resource", b =>
+            modelBuilder.Entity("AgendaManager.Domain.ResourceManagement.Resources.Resource", b =>
                 {
                     b.Navigation("Schedules");
                 });

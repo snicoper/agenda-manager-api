@@ -2,7 +2,7 @@
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.ValueObjects;
-using AgendaManager.Domain.ResourceTypes;
+using AgendaManager.Domain.ResourceManagement.ResourceTypes;
 using AgendaManager.Domain.Services.Events;
 using AgendaManager.Domain.Services.Exceptions;
 using AgendaManager.Domain.Services.ValueObjects;
@@ -133,8 +133,8 @@ public sealed class Service : AggregateRoot
     private bool HasChanges(Duration duration, string name, string description, ColorScheme colorScheme)
     {
         return !(Duration == duration
-                 && Name == name
-                 && Description == description
-                 && ColorScheme == colorScheme);
+            && Name == name
+            && Description == description
+            && ColorScheme == colorScheme);
     }
 }

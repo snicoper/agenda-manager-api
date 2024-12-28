@@ -1,5 +1,5 @@
 ﻿using AgendaManager.Domain.Common.Responses;
-using AgendaManager.Domain.Resources;
+using AgendaManager.Domain.ResourceManagement.Resources;
 using AgendaManager.Domain.Services.ValueObjects;
 
 namespace AgendaManager.Domain.Services.Interfaces;

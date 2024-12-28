@@ -1,8 +1,8 @@
 ﻿using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.ValueObjects;
-using AgendaManager.Domain.Resources;
-using AgendaManager.Domain.Resources.ValueObjects;
-using AgendaManager.Domain.ResourceTypes.ValueObjects;
+using AgendaManager.Domain.ResourceManagement.Resources;
+using AgendaManager.Domain.ResourceManagement.Resources.ValueObjects;
+using AgendaManager.Domain.ResourceManagement.ResourceTypes.ValueObjects;
 using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.TestCommon.Factories;

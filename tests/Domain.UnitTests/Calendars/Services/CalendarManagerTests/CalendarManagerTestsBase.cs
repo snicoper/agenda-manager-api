@@ -1,7 +1,7 @@
 ﻿using AgendaManager.Domain.Appointments.Interfaces;
 using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.Services;
-using AgendaManager.Domain.Resources.Interfaces;
+using AgendaManager.Domain.ResourceManagement.Resources.Interfaces;
 using AgendaManager.Domain.Services.Interfaces;
 using NSubstitute;
 

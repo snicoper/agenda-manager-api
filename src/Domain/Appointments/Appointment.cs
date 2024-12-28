@@ -9,7 +9,7 @@ using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects;
-using AgendaManager.Domain.Resources;
+using AgendaManager.Domain.ResourceManagement.Resources;
 using AgendaManager.Domain.Services;
 using AgendaManager.Domain.Services.ValueObjects;
 using AgendaManager.Domain.Users;

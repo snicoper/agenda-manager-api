@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.Resources;
+﻿using AgendaManager.Domain.ResourceManagement.Resources;
 using AgendaManager.Domain.Services;
 using AgendaManager.Domain.Services.Errors;
 using AgendaManager.Domain.Services.Interfaces;

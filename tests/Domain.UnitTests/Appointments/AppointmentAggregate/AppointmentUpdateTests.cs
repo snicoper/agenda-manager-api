@@ -1,7 +1,7 @@
 ﻿using AgendaManager.Domain.Appointments.Enums;
 using AgendaManager.Domain.Appointments.Errors;
 using AgendaManager.Domain.Appointments.Events;
-using AgendaManager.Domain.Resources;
+using AgendaManager.Domain.ResourceManagement.Resources;
 using AgendaManager.TestCommon.Factories;
 using AgendaManager.TestCommon.Factories.ValueObjects;
 using FluentAssertions;

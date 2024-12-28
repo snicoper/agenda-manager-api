@@ -6,7 +6,7 @@ using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects;
-using AgendaManager.Domain.Resources.Interfaces;
+using AgendaManager.Domain.ResourceManagement.Resources.Interfaces;
 using AgendaManager.Domain.Services.Interfaces;
 
 namespace AgendaManager.Domain.Calendars.Services;

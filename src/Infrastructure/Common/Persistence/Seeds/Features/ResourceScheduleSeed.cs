@@ -1,8 +1,8 @@
 ﻿using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Common.WekDays;
-using AgendaManager.Domain.Resources.Entities;
-using AgendaManager.Domain.Resources.Enums;
-using AgendaManager.Domain.Resources.ValueObjects;
+using AgendaManager.Domain.ResourceManagement.Resources.Entities;
+using AgendaManager.Domain.ResourceManagement.Resources.Enums;
+using AgendaManager.Domain.ResourceManagement.Resources.ValueObjects;
 
 namespace AgendaManager.Infrastructure.Common.Persistence.Seeds.Features;
 

@@ -1,7 +1,7 @@
 ﻿using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.ValueObjects;
-using AgendaManager.Domain.ResourceTypes.ValueObjects;
+using AgendaManager.Domain.ResourceManagement.ResourceTypes.ValueObjects;
 using AgendaManager.Domain.Services;
 using AgendaManager.Domain.Services.ValueObjects;
 using Microsoft.EntityFrameworkCore;

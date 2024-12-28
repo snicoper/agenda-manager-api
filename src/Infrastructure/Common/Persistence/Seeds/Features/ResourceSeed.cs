@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Common.ValueObjects;
-using AgendaManager.Domain.Resources.Services;
-using AgendaManager.Domain.Resources.ValueObjects;
+using AgendaManager.Domain.ResourceManagement.Resources.Services;
+using AgendaManager.Domain.ResourceManagement.Resources.ValueObjects;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AgendaManager.Infrastructure.Common.Persistence.Seeds.Features;
