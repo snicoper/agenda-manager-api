@@ -1,11 +1,14 @@
 ﻿using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.ResourceManagement.Resources.ValueObjects;
+using AgendaManager.Domain.ResourceManagement.ResourceTypes;
 
 namespace AgendaManager.Domain.ResourceManagement.Resources.Interfaces;
 
 public interface IResourceRepository
 {
+    IQueryable<ResourceType> GetQueryable();
+
     Task<Resource?> GetByIdAsync(ResourceId resourceId, CancellationToken cancellationToken = default);
 
     Task<bool> ExistsByNameAsync(ResourceId resourceId, string name, CancellationToken cancellationToken = default);

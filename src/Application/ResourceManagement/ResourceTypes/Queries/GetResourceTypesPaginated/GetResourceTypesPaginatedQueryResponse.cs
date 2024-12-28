@@ -1,7 +1,9 @@
-﻿namespace AgendaManager.Application.ResourceManagement.ResourceTypes.Queries.GetResourceTypesPaginated;
+﻿using AgendaManager.Domain.ResourceManagement.Shared.Enums;
+
+namespace AgendaManager.Application.ResourceManagement.ResourceTypes.Queries.GetResourceTypesPaginated;
 
 public record GetResourceTypesPaginatedQueryResponse(
-    Guid ResponseTypeId,
-    Guid? RoleId,
+    Guid ResourceTypeId,
     string Name,
-    string Description);
+    string Description,
+    ResourceCategory Category);
