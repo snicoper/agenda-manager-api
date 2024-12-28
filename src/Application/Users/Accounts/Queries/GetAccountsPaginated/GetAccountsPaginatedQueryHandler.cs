@@ -32,7 +32,6 @@ internal class GetAccountsPaginatedQueryHandler(IUserRepository userRepository)
                 LastName: u.Profile.LastName,
                 IsActive: u.IsActive,
                 IsEmailConfirmed: u.IsEmailConfirmed,
-                IsCollaborator: u.IsCollaborator,
                 DateJoined: u.CreatedAt),
             request: request.RequestData,
             cancellationToken: cancellationToken);

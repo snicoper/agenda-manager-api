@@ -6,7 +6,6 @@ using AgendaManager.Application.Users.Accounts.Commands.RequestPasswordReset;
 using AgendaManager.Application.Users.Accounts.Commands.ResentEmailConfirmation;
 using AgendaManager.Application.Users.Accounts.Commands.ResetPassword;
 using AgendaManager.Application.Users.Accounts.Commands.ToggleIsActive;
-using AgendaManager.Application.Users.Accounts.Commands.ToggleIsCollaborator;
 using AgendaManager.Application.Users.Accounts.Commands.UpdateAccount;
 using AgendaManager.Application.Users.Accounts.Commands.VerifyEmail;
 using AgendaManager.Application.Users.Accounts.Queries.GetAccountDetails;
@@ -64,8 +63,7 @@ public class AccountsController : ApiControllerBase
             Email: request.Email,
             FirstName: request.FirstName,
             LastName: request.LastName,
-            Roles: request.Roles,
-            IsCollaborator: request.IsCollaborator);
+            Roles: request.Roles);
 
         var result = await Sender.Send(command);
 
@@ -211,18 +209,6 @@ public class AccountsController : ApiControllerBase
     public async Task<ActionResult<Result>> ConfirmEmail(Guid userId)
     {
         var command = new ConfirmEmailCommand(userId);
-        var result = await Sender.Send(command);
-
-        return result.ToActionResult();
-    }
-
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [HttpPut("{userId:guid}/toggle-is-collaborator")]
-    public async Task<ActionResult<Result>> ToggleIsCollaborator(Guid userId)
-    {
-        var command = new ToggleIsCollaboratorCommand(userId);
         var result = await Sender.Send(command);
 
         return result.ToActionResult();

@@ -9,7 +9,6 @@ public record GetAccountDetailsQueryResponse(
     string LastName,
     bool IsEmailConfirmed,
     bool IsActive,
-    bool IsCollaborator,
     DateTimeOffset CreatedAt,
     GetAccountDetailsQueryResponse.PhoneNumberResponse? PhoneNumber,
     GetAccountDetailsQueryResponse.AddressResponse? Address,

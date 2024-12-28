@@ -18,7 +18,6 @@ public abstract class UserFactory
         string? firstName = null,
         string? lastName = null,
         bool isActive = true,
-        bool isCollaborator = true,
         bool emailConfirmed = false)
     {
         User user = new(
@@ -26,7 +25,6 @@ public abstract class UserFactory
             email: email ?? UserConstants.UserAlice.Email,
             passwordHash: passwordHash ?? PasswordHash.FromHashed(BcryptPasswordHasher.HashPassword("Password4!")),
             isActive: isActive,
-            isCollaborator: isCollaborator,
             emailConfirmed: emailConfirmed);
 
         // Create user profile.

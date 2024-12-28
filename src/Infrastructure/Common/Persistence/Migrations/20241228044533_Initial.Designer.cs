@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241227035220_Initial")]
+    [Migration("20241228044533_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -729,9 +729,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .HasColumnType("character varying(256)");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsCollaborator")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("IsEmailConfirmed")

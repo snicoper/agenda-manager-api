@@ -7,5 +7,4 @@ public record GetAccountsPaginatedQueryResponse(
     string LastName,
     bool IsActive,
     bool IsEmailConfirmed,
-    bool IsCollaborator,
     DateTimeOffset DateJoined);

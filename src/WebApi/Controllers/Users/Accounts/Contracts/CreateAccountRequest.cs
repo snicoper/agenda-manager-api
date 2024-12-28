@@ -4,5 +4,4 @@ public record CreateAccountRequest(
     string Email,
     string FirstName,
     string LastName,
-    List<Guid> Roles,
-    bool IsCollaborator);
+    List<Guid> Roles);

@@ -9,5 +9,4 @@ public record CreateAccountCommand(
     string Email,
     string FirstName,
     string LastName,
-    List<Guid> Roles,
-    bool IsCollaborator) : ICommand<CreateAccountCommandResponse>;
+    List<Guid> Roles) : ICommand<CreateAccountCommandResponse>;

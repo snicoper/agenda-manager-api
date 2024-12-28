@@ -20,15 +20,13 @@ public sealed class User : AggregateRoot
         EmailAddress email,
         PasswordHash passwordHash,
         bool emailConfirmed = false,
-        bool isActive = true,
-        bool isCollaborator = false)
+        bool isActive = true)
     {
         Id = userId;
         Email = email;
         PasswordHash = passwordHash;
         IsEmailConfirmed = emailConfirmed;
         IsActive = isActive;
-        IsCollaborator = isCollaborator;
 
         AddDomainEvent(new UserCreatedDomainEvent(userId));
     }
@@ -50,8 +48,6 @@ public sealed class User : AggregateRoot
     public bool IsEmailConfirmed { get; private set; }
 
     public bool IsActive { get; private set; }
-
-    public bool IsCollaborator { get; private set; }
 
     public Token? RefreshToken { get; private set; }
 
@@ -126,18 +122,6 @@ public sealed class User : AggregateRoot
         IsActive = false;
 
         AddDomainEvent(new UserDeactivatedDomainEvent(Id));
-    }
-
-    public void SetStateCollaborator(bool newState)
-    {
-        if (IsCollaborator == newState)
-        {
-            return;
-        }
-
-        IsCollaborator = newState;
-
-        AddDomainEvent(new UserCollaboratorUpdatedDomainEvent(Id, newState));
     }
 
     public bool HasUserToken(UserTokenId userTokenId)

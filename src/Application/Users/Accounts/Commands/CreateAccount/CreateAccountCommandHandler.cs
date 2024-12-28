@@ -34,7 +34,6 @@ internal class CreateAccountCommandHandler(
             passwordRaw: passwordRaw,
             firstName: request.FirstName,
             lastName: request.LastName,
-            isCollaborator: request.IsCollaborator,
             cancellationToken: cancellationToken);
 
         if (userResultCreated.IsFailure)

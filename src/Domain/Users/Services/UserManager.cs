@@ -19,7 +19,6 @@ public sealed class UserManager(
         string firstName,
         string lastName,
         bool active = true,
-        bool isCollaborator = false,
         bool emailConfirmed = false,
         CancellationToken cancellationToken = default)
     {
@@ -35,7 +34,6 @@ public sealed class UserManager(
             email: email,
             passwordHash: passwordHash.Value!,
             isActive: active,
-            isCollaborator: isCollaborator,
             emailConfirmed: emailConfirmed);
 
         var validationResult = await IsValidAsync(user, cancellationToken);
