@@ -35,10 +35,10 @@ public sealed class ResourceTypeManager(
         }
 
         var resourceType = ResourceType.Create(
-            resourceTypeId,
-            name,
-            description,
-            roleId);
+            id: resourceTypeId,
+            name: name,
+            description: description,
+            roleId: roleId);
 
         await resourceTypeRepository.CreateAsync(resourceType, cancellationToken);
 
@@ -91,9 +91,9 @@ public sealed class ResourceTypeManager(
         CancellationToken cancellationToken)
     {
         var exists = await resourceTypeRepository.ExistsByDescriptionAsync(
-            resourceTypeId,
-            description,
-            cancellationToken);
+            resourceTypeId: resourceTypeId,
+            description: description,
+            cancellationToken: cancellationToken);
 
         return exists;
     }

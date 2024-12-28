@@ -35,9 +35,9 @@ public sealed class ResourceType : AggregateRoot
 
     public Role Role { get; private set; } = null!;
 
-    public string Name { get; private set; } = default!;
+    public string Name { get; private set; } = null!;
 
-    public string Description { get; private set; } = default!;
+    public string Description { get; private set; } = null!;
 
     public IReadOnlyList<Resource> Resources => _resources.AsReadOnly();
 
