@@ -1,0 +1,3 @@
+﻿namespace AgendaManager.Application.ResourceManagement.ResourceTypes.Commands.CreateResourceType;
+
+public record CreateResourceTypeCommandResponse(Guid ResourceTypeId);

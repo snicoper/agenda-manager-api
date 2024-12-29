@@ -33,7 +33,8 @@ public class ResourceTypesController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpPost]
-    public async Task<ActionResult<Result>> CreateResourceType(CreateResourceTypeRequest request)
+    public async Task<ActionResult<Result<CreateResourceTypeCommandResponse>>> CreateResourceType(
+        CreateResourceTypeRequest request)
     {
         var command = new CreateResourceTypeCommand(
             Name: request.Name,
