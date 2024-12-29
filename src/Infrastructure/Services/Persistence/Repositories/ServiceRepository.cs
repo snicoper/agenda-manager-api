@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Domain.Calendars.ValueObjects;
+using AgendaManager.Domain.ResourceManagement.ResourceTypes.ValueObjects;
 using AgendaManager.Domain.Services;
 using AgendaManager.Domain.Services.Interfaces;
 using AgendaManager.Domain.Services.ValueObjects;
@@ -25,6 +26,17 @@ public class ServiceRepository(AppDbContext context) : IServiceRepository
             .FirstOrDefaultAsync(s => s.Id == serviceId, cancellationToken);
 
         return calendar;
+    }
+
+    public async Task<bool> AnyByResourceTypeIdAsync(
+        ResourceTypeId resourceTypeId,
+        CancellationToken cancellationToken = default)
+    {
+        var anyService = await context.Services.AnyAsync(
+            s => s.ResourceTypes.Any(rt => rt.Id == resourceTypeId),
+            cancellationToken);
+
+        return anyService;
     }
 
     public async Task<bool> ExistsByNameAsync(string name, CancellationToken cancellationToken = default)

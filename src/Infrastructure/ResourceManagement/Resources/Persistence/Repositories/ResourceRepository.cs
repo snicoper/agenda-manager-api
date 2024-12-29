@@ -6,6 +6,7 @@ using AgendaManager.Domain.ResourceManagement.Resources.Enums;
 using AgendaManager.Domain.ResourceManagement.Resources.Interfaces;
 using AgendaManager.Domain.ResourceManagement.Resources.ValueObjects;
 using AgendaManager.Domain.ResourceManagement.ResourceTypes;
+using AgendaManager.Domain.ResourceManagement.ResourceTypes.ValueObjects;
 using AgendaManager.Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,15 @@ public class ResourceRepository(AppDbContext context) : IResourceRepository
         var resource = await context.Resources.FirstOrDefaultAsync(r => r.Id == resourceId, cancellationToken);
 
         return resource;
+    }
+
+    public async Task<bool> AnyByTypeIdAsync(
+        ResourceTypeId resourceTypeId,
+        CancellationToken cancellationToken = default)
+    {
+        var any = await context.Resources.AnyAsync(r => r.TypeId == resourceTypeId, cancellationToken);
+
+        return any;
     }
 
     public async Task<bool> ExistsByNameAsync(

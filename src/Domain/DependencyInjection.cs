@@ -8,6 +8,7 @@ using AgendaManager.Domain.Calendars.Services;
 using AgendaManager.Domain.ResourceManagement.Resources.Interfaces;
 using AgendaManager.Domain.ResourceManagement.Resources.Policies;
 using AgendaManager.Domain.ResourceManagement.Resources.Services;
+using AgendaManager.Domain.ResourceManagement.ResourceTypes.Interfaces;
 using AgendaManager.Domain.ResourceManagement.ResourceTypes.Services;
 using AgendaManager.Domain.Services.Interfaces;
 using AgendaManager.Domain.Services.Policies;
@@ -65,6 +66,7 @@ public static class DependencyInjection
         services.AddScoped<ResourceTypeManager>();
 
         services.AddTransient<IResourceAvailabilityPolicy, ResourceAvailabilityPolicy>();
+        services.AddTransient<ICanDeleteResourceTypePolicy, CanDeleteResourceTypePolicy>();
     }
 
     private static void AddResourcesDomain(this IServiceCollection services)

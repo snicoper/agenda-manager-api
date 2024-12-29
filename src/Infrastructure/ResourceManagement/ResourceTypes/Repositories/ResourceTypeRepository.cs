@@ -49,4 +49,9 @@ public class ResourceTypeRepository(AppDbContext context) : IResourceTypeReposit
     {
         context.ResourceTypes.Update(resourceType);
     }
+
+    public void Delete(ResourceType resourceType)
+    {
+        context.ResourceTypes.Remove(resourceType);
+    }
 }

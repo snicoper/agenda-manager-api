@@ -16,4 +16,6 @@ public interface IResourceTypeRepository
     Task CreateAsync(ResourceType resourceType, CancellationToken cancellationToken = default);
 
     void Update(ResourceType resourceType);
+
+    void Delete(ResourceType resourceType);
 }

@@ -6,7 +6,9 @@ using AgendaManager.Domain.ResourceManagement.Shared.Enums;
 
 namespace AgendaManager.Domain.ResourceManagement.ResourceTypes.Services;
 
-public sealed class ResourceTypeManager(IResourceTypeRepository resourceTypeRepository)
+public sealed class ResourceTypeManager(
+    IResourceTypeRepository resourceTypeRepository,
+    ICanDeleteResourceTypePolicy canDeleteResourceTypePolicy)
 {
     public async Task<Result<ResourceType>> CreateResourceTypeAsync(
         ResourceTypeId resourceTypeId,
@@ -64,6 +66,29 @@ public sealed class ResourceTypeManager(IResourceTypeRepository resourceTypeRepo
         resourceTypeRepository.Update(resourceType);
 
         return Result.Success(resourceType);
+    }
+
+    public async Task<Result> DeleteResourceTypeAsync(
+        ResourceTypeId resourceTypeId,
+        CancellationToken cancellationToken)
+    {
+        var resourceType = await resourceTypeRepository.GetByIdAsync(resourceTypeId, cancellationToken);
+
+        if (resourceType is null)
+        {
+            return ResourceTypeErrors.ResourceTypeNotFound;
+        }
+
+        var canDelete = await canDeleteResourceTypePolicy.CanDeleteAsync(resourceType, cancellationToken);
+
+        if (!canDelete)
+        {
+            return ResourceTypeErrors.CannotDeleteResourceType;
+        }
+
+        resourceTypeRepository.Delete(resourceType);
+
+        return Result.Success();
     }
 
     private async Task<bool> ExistsByNameAsync(

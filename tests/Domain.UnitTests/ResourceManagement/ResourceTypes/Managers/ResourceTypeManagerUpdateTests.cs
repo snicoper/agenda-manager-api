@@ -23,8 +23,9 @@ public class ResourceTypeManagerUpdateTests
     public ResourceTypeManagerUpdateTests()
     {
         _resourceTypeRepository = Substitute.For<IResourceTypeRepository>();
+        var canDeleteResourceTypePolicy = Substitute.For<ICanDeleteResourceTypePolicy>();
 
-        _sut = new ResourceTypeManager(_resourceTypeRepository);
+        _sut = new ResourceTypeManager(_resourceTypeRepository, canDeleteResourceTypePolicy);
     }
 
     [Fact]

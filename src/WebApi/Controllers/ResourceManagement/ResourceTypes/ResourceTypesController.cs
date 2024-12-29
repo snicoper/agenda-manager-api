@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Application.Common.Http;
 using AgendaManager.Application.ResourceManagement.ResourceTypes.Commands.CreateResourceType;
+using AgendaManager.Application.ResourceManagement.ResourceTypes.Commands.DeleteResourceType;
 using AgendaManager.Application.ResourceManagement.ResourceTypes.Queries.GetResourceTypesPaginated;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Controllers.ResourceManagement.ResourceTypes.Contracts;
@@ -32,16 +33,29 @@ public class ResourceTypesController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpPost]
-    public async Task<ActionResult<Result>> CreateResourceType(
-        [FromBody] CreateResourceTypeRequest request,
-        CancellationToken cancellationToken)
+    public async Task<ActionResult<Result>> CreateResourceType(CreateResourceTypeRequest request)
     {
         var command = new CreateResourceTypeCommand(
             Name: request.Name,
             Description: request.Description,
             Category: request.Category);
 
-        var result = await Sender.Send(command, cancellationToken);
+        var result = await Sender.Send(command);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Delete a resource type.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpDelete("{resourceTypeId:guid}")]
+    public async Task<ActionResult<Result>> DeleteResourceType(Guid resourceTypeId)
+    {
+        var command = new DeleteResourceTypeCommand(resourceTypeId);
+        var result = await Sender.Send(command);
 
         return result.ToActionResult();
     }

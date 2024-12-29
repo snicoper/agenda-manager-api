@@ -15,4 +15,8 @@ public static class ResourceTypeErrors
     public static Error ResourceTypeNotFound => Error.NotFound(
         code: "ResourceTypeErrors.ResourceTypeNotFound",
         description: "Resource type not found.");
+
+    public static Error CannotDeleteResourceType => Error.Conflict(
+        code: "ResourceTypeErrors.CannotDeleteResourceType",
+        description: "Cannot delete the resource type.");
 }
