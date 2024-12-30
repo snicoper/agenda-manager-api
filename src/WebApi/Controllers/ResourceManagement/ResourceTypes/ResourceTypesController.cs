@@ -1,6 +1,7 @@
 ﻿using AgendaManager.Application.Common.Http;
 using AgendaManager.Application.ResourceManagement.ResourceTypes.Commands.CreateResourceType;
 using AgendaManager.Application.ResourceManagement.ResourceTypes.Commands.DeleteResourceType;
+using AgendaManager.Application.ResourceManagement.ResourceTypes.Commands.UpdateResourceType;
 using AgendaManager.Application.ResourceManagement.ResourceTypes.Queries.GetResourceTypeById;
 using AgendaManager.Application.ResourceManagement.ResourceTypes.Queries.GetResourceTypesPaginated;
 using AgendaManager.Domain.Common.Responses;
@@ -56,6 +57,25 @@ public class ResourceTypesController : ApiControllerBase
             Name: request.Name,
             Description: request.Description,
             Category: request.Category);
+
+        var result = await Sender.Send(command);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Update a resource type.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpPut("{resourceTypeId:guid}")]
+    public async Task<ActionResult<Result>> UpdateResourceType(Guid resourceTypeId, UpdateResourceTypeRequest request)
+    {
+        var command = new UpdateResourceTypeCommand(
+            ResourceTypeId: resourceTypeId,
+            Name: request.Name,
+            Description: request.Description);
 
         var result = await Sender.Send(command);
 

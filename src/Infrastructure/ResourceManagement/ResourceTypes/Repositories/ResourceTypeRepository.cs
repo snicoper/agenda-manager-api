@@ -29,17 +29,6 @@ public class ResourceTypeRepository(AppDbContext context) : IResourceTypeReposit
         return exists;
     }
 
-    public async Task<bool> ExistsByDescriptionAsync(
-        ResourceTypeId resourceTypeId,
-        string description,
-        CancellationToken cancellationToken)
-    {
-        var exists = await context.ResourceTypes
-            .AnyAsync(rt => rt.Description == description && rt.Id.Equals(resourceTypeId), cancellationToken);
-
-        return exists;
-    }
-
     public async Task CreateAsync(ResourceType resourceType, CancellationToken cancellationToken = default)
     {
         await context.ResourceTypes.AddAsync(resourceType, cancellationToken);

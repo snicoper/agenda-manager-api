@@ -22,11 +22,6 @@ public sealed class ResourceTypeManager(
             return ResourceTypeErrors.NameAlreadyExists;
         }
 
-        if (await ExistsByDescriptionAsync(resourceTypeId, description, cancellationToken))
-        {
-            return ResourceTypeErrors.DescriptionExists;
-        }
-
         var resourceType = ResourceType.Create(
             id: resourceTypeId,
             name: name,
@@ -47,11 +42,6 @@ public sealed class ResourceTypeManager(
         if (await ExistsByNameAsync(resourceTypeId, name, cancellationToken))
         {
             return ResourceTypeErrors.NameAlreadyExists;
-        }
-
-        if (await ExistsByDescriptionAsync(resourceTypeId, description, cancellationToken))
-        {
-            return ResourceTypeErrors.DescriptionExists;
         }
 
         var resourceType = await resourceTypeRepository.GetByIdAsync(resourceTypeId, cancellationToken);
@@ -97,19 +87,6 @@ public sealed class ResourceTypeManager(
         CancellationToken cancellationToken)
     {
         var exists = await resourceTypeRepository.ExistsByNameAsync(resourceTypeId, name, cancellationToken);
-
-        return exists;
-    }
-
-    private async Task<bool> ExistsByDescriptionAsync(
-        ResourceTypeId resourceTypeId,
-        string description,
-        CancellationToken cancellationToken)
-    {
-        var exists = await resourceTypeRepository.ExistsByDescriptionAsync(
-            resourceTypeId: resourceTypeId,
-            description: description,
-            cancellationToken: cancellationToken);
 
         return exists;
     }

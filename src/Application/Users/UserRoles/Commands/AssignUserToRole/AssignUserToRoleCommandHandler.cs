@@ -22,6 +22,6 @@ internal class AssignUserToRoleCommandHandler(AuthorizationService authorization
             await unitOfWork.SaveChangesAsync(cancellationToken);
         }
 
-        return result;
+        return Result.NoContent();
     }
 }

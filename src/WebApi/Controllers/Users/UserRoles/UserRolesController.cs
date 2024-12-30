@@ -82,7 +82,7 @@ public class UserRolesController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    [HttpPost("{roleId:guid}/assign-user/{userId:guid}")]
+    [HttpPut("{roleId:guid}/assign-user/{userId:guid}")]
     public async Task<ActionResult<Result>> AssignUserToRole(Guid roleId, Guid userId)
     {
         var command = new AssignUserToRoleCommand(roleId, userId);

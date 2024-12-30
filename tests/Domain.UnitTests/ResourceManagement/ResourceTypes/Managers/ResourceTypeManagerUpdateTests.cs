@@ -33,7 +33,6 @@ public class ResourceTypeManagerUpdateTests
     {
         // Arrange
         SetupExistsByNameResourceTypeRepository(false);
-        SetupExistsDescriptionResourceTypeRepository(false);
         SetupGetByIdAsyncResourceTypeRepository(_resourceType);
 
         // Act
@@ -49,7 +48,6 @@ public class ResourceTypeManagerUpdateTests
     {
         // Arrange
         SetupExistsByNameResourceTypeRepository(false);
-        SetupExistsDescriptionResourceTypeRepository(false);
         SetupGetByIdAsyncResourceTypeRepository();
 
         // Act
@@ -75,22 +73,6 @@ public class ResourceTypeManagerUpdateTests
         result.Error?.FirstError().Should().Be(errorExpected);
     }
 
-    [Fact]
-    public async Task Update_ShouldFailure_WhenExistsDescription()
-    {
-        // Arrange
-        var errorExpected = ResourceTypeErrors.DescriptionExists.FirstError();
-        SetupExistsByNameResourceTypeRepository(false);
-        SetupExistsDescriptionResourceTypeRepository(true);
-
-        // Act
-        var result = await UpdateResourceTypeAsync();
-
-        // Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error?.FirstError().Should().Be(errorExpected);
-    }
-
     private void SetupGetByIdAsyncResourceTypeRepository(ResourceType? returnValue = null)
     {
         _resourceTypeRepository.GetByIdAsync(Arg.Any<ResourceTypeId>(), Arg.Any<CancellationToken>())
@@ -100,15 +82,6 @@ public class ResourceTypeManagerUpdateTests
     private void SetupExistsByNameResourceTypeRepository(bool returnValue)
     {
         _resourceTypeRepository.ExistsByNameAsync(
-                Arg.Any<ResourceTypeId>(),
-                Arg.Any<string>(),
-                Arg.Any<CancellationToken>())
-            .Returns(returnValue);
-    }
-
-    private void SetupExistsDescriptionResourceTypeRepository(bool returnValue)
-    {
-        _resourceTypeRepository.ExistsByDescriptionAsync(
                 Arg.Any<ResourceTypeId>(),
                 Arg.Any<string>(),
                 Arg.Any<CancellationToken>())
