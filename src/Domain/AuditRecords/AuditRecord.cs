@@ -43,19 +43,19 @@ public sealed class AuditRecord : AggregateRoot
 
     public AuditRecordId Id { get; } = null!;
 
-    public string AggregateId { get; private set; } = default!;
+    public string AggregateId { get; private set; } = null!;
 
-    public string NamespaceName { get; private set; } = default!;
+    public string NamespaceName { get; private set; } = null!;
 
-    public string AggregateName { get; private set; } = default!;
+    public string AggregateName { get; private set; } = null!;
 
-    public string PropertyName { get; private set; } = default!;
+    public string PropertyName { get; private set; } = null!;
 
-    public string OldValue { get; private set; } = default!;
+    public string OldValue { get; private set; } = null!;
 
-    public string NewValue { get; private set; } = default!;
+    public string NewValue { get; private set; } = null!;
 
-    public AuditRecordActionType ActionType { get; set; }
+    public AuditRecordActionType ActionType { get; private set; }
 
     public static AuditRecord Create(
         AuditRecordId id,

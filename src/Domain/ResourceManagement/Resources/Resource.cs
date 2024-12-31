@@ -53,7 +53,7 @@ public sealed class Resource : AggregateRoot
 
     public User? User { get; private set; }
 
-    public CalendarId CalendarId { get; } = default!;
+    public CalendarId CalendarId { get; } = null!;
 
     public Calendar Calendar { get; private set; } = null!;
 
@@ -61,9 +61,9 @@ public sealed class Resource : AggregateRoot
 
     public ResourceType Type { get; private set; } = null!;
 
-    public string Name { get; private set; } = default!;
+    public string Name { get; private set; } = null!;
 
-    public string Description { get; private set; } = default!;
+    public string Description { get; private set; } = null!;
 
     public ColorScheme ColorScheme { get; private set; } = null!;
 

@@ -31,9 +31,9 @@ public sealed class Role : AggregateRoot
 
     public RoleId Id { get; } = null!;
 
-    public string Name { get; private set; } = default!;
+    public string Name { get; private set; } = null!;
 
-    public string Description { get; private set; } = default!;
+    public string Description { get; private set; } = null!;
 
     public bool IsEditable { get; private set; }
 

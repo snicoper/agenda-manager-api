@@ -33,9 +33,9 @@ public sealed class Calendar : AggregateRoot
 
     public CalendarSettings Settings { get; private set; } = null!;
 
-    public string Name { get; private set; } = default!;
+    public string Name { get; private set; } = null!;
 
-    public string Description { get; private set; } = default!;
+    public string Description { get; private set; } = null!;
 
     public bool IsActive { get; private set; }
 

@@ -41,7 +41,7 @@ public sealed class User : AggregateRoot
 
     public UserProfile Profile { get; private set; } = null!;
 
-    public PasswordHash PasswordHash { get; private set; } = default!;
+    public PasswordHash PasswordHash { get; private set; } = null!;
 
     public EmailAddress Email { get; private set; } = null!;
 

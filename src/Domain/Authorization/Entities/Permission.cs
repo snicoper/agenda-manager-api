@@ -23,7 +23,7 @@ public sealed class Permission : AuditableEntity
 
     public PermissionId Id { get; } = null!;
 
-    public string Name { get; private set; } = default!;
+    public string Name { get; private set; } = null!;
 
     private static void GuardAgainstInvalidName(string name)
     {

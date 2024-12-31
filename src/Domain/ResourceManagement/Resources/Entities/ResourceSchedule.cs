@@ -53,7 +53,7 @@ public sealed class ResourceSchedule : AuditableEntity
 
     public WeekDays AvailableDays { get; private set; } = WeekDays.None;
 
-    public string Name { get; private set; } = default!;
+    public string Name { get; private set; } = null!;
 
     public string? Description { get; private set; }
 

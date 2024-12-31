@@ -39,9 +39,9 @@ public sealed class CalendarHoliday : AuditableEntity
 
     public WeekDays AvailableDays { get; private set; }
 
-    public string Name { get; private set; } = default!;
+    public string Name { get; private set; } = null!;
 
-    public string Description { get; private set; } = default!;
+    public string Description { get; private set; } = null!;
 
     internal static CalendarHoliday Create(
         CalendarHolidayId calendarHolidayId,
