@@ -7,7 +7,6 @@ using AgendaManager.Domain.Calendars.Errors;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects;
-using AgendaManager.Domain.Common.WekDays;
 using AgendaManager.TestCommon.Factories;
 using AgendaManager.TestCommon.Factories.ValueObjects;
 using FluentAssertions;
@@ -105,9 +104,7 @@ public class CreateHolidayTests : CalendarHolidayManagerTestsBase
         var result = await Sut.CreateHolidayAsync(
             calendarId: calendarId,
             period: PeriodFactory.Create(),
-            weekDays: WeekDays.All,
             name: "Holiday",
-            description: "Holiday description",
             cancellationToken: CancellationToken.None);
 
         return result;

@@ -1,6 +1,7 @@
 ﻿using AgendaManager.Domain.Calendars;
 using AgendaManager.Domain.Calendars.Entities;
 using AgendaManager.Domain.Calendars.ValueObjects;
+using AgendaManager.Domain.Common.WekDays;
 
 namespace AgendaManager.TestCommon.Factories;
 
@@ -11,7 +12,8 @@ public abstract class CalendarFactory
         CalendarSettings? settings = null,
         string? name = null,
         string? description = null,
-        bool? isActive = null)
+        bool? isActive = null,
+        WeekDays? availableDays = null)
     {
         calendarId ??= CalendarId.Create();
 
@@ -20,7 +22,8 @@ public abstract class CalendarFactory
             settings: settings ?? CalendarSettingsFactory.CreateCalendarSettings(),
             name: name ?? "My calendar",
             description: description ?? "Description of my calendar",
-            isActive: isActive ?? true);
+            isActive: isActive ?? true,
+            availableDays: availableDays ?? WeekDays.All);
 
         return calendar;
     }

@@ -28,6 +28,7 @@ public class AppointmentManagerCreateTests : AppointmentManagerTestsBase
         SetupOverlapPolicyIsOverlapping(Result.Success());
         SetupResourceAvailabilityPolicyIsAvailableAsync(Result.Success());
         SetupServiceRequirementsPolicyIsSatisfiedAsync(Result.Success());
+        SetupWeekDayAvailabilityPolicyIsAvailable(Result.Success());
 
         // Act
         var result = await CreateAppointmentManagerFactory();
@@ -51,12 +52,31 @@ public class AppointmentManagerCreateTests : AppointmentManagerTestsBase
     }
 
     [Fact]
+    public async Task Create_ShouldFailure_WhenWeekDayAvailabilityPolicyIsNotAvailable()
+    {
+        // Arrange
+        var calendar = CalendarFactory.CreateCalendar();
+        SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
+        SetupCreationStrategyPolicyDetermineInitialStatus();
+        SetupHolidayAvailabilityPolicyIsAvailable(Result.Success());
+        SetupWeekDayAvailabilityPolicyIsAvailable(Result.Failure());
+
+        // Act
+        var result = await CreateAppointmentManagerFactory();
+
+        // Assert
+        result.IsFailure.Should().BeTrue();
+        result.Error?.FirstError().Should().Be(CalendarErrors.WeekDayNotAvailable.FirstError());
+    }
+
+    [Fact]
     public async Task Create_ShouldFailure_WhenHolidayAvailabilityPolicyIsNotAvailable()
     {
         // Arrange
         var calendar = CalendarFactory.CreateCalendar();
         SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
         SetupCreationStrategyPolicyDetermineInitialStatus();
+        SetupWeekDayAvailabilityPolicyIsAvailable(Result.Success());
         SetupHolidayAvailabilityPolicyIsAvailable(Result.Failure());
 
         // Act
@@ -75,6 +95,7 @@ public class AppointmentManagerCreateTests : AppointmentManagerTestsBase
         SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
         SetupCreationStrategyPolicyDetermineInitialStatus();
         SetupHolidayAvailabilityPolicyIsAvailable(Result.Success());
+        SetupWeekDayAvailabilityPolicyIsAvailable(Result.Success());
         SetupCreationStrategyPolicyDetermineInitialStatus();
         SetupOverlapPolicyIsOverlapping(Result.Failure(AppointmentErrors.AppointmentsOverlapping));
 
@@ -94,6 +115,7 @@ public class AppointmentManagerCreateTests : AppointmentManagerTestsBase
         SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
         SetupCreationStrategyPolicyDetermineInitialStatus();
         SetupHolidayAvailabilityPolicyIsAvailable(Result.Success());
+        SetupWeekDayAvailabilityPolicyIsAvailable(Result.Success());
         SetupCreationStrategyPolicyDetermineInitialStatus();
         SetupOverlapPolicyIsOverlapping(Result.Success());
         SetupResourceAvailabilityPolicyIsAvailableAsync(Result.Failure(ResourceErrors.ResourceNotAvailable));
@@ -114,6 +136,7 @@ public class AppointmentManagerCreateTests : AppointmentManagerTestsBase
         SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
         SetupCreationStrategyPolicyDetermineInitialStatus();
         SetupHolidayAvailabilityPolicyIsAvailable(Result.Success());
+        SetupWeekDayAvailabilityPolicyIsAvailable(Result.Success());
         SetupCreationStrategyPolicyDetermineInitialStatus();
         SetupOverlapPolicyIsOverlapping(Result.Success());
         SetupResourceAvailabilityPolicyIsAvailableAsync(Result.Success());

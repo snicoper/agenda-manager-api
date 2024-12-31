@@ -1,7 +1,6 @@
 ﻿using AgendaManager.Domain.Calendars.Entities;
 using AgendaManager.Domain.Calendars.Events;
 using AgendaManager.Domain.Common.ValueObjects;
-using AgendaManager.Domain.Common.WekDays;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
@@ -18,14 +17,12 @@ public class CalendarHolidayUpdateTests
         const string newName = "New Holiday Name";
         var newDate = new DateTime(2023, 1, 1);
         var newPeriod = Period.From(newDate, newDate);
-        const WeekDays newWeekDays = WeekDays.Friday;
 
         // Act
-        _holiday.Update(newPeriod, newWeekDays, newName);
+        _holiday.Update(newPeriod, newName);
 
         // Assert
         _holiday.Period.Should().Be(newPeriod);
-        _holiday.AvailableDays.Should().Be(newWeekDays);
         _holiday.Name.Should().Be(newName);
     }
 
@@ -36,10 +33,9 @@ public class CalendarHolidayUpdateTests
         const string newName = "New Holiday Name";
         var newDate = new DateTime(2023, 1, 1);
         var newPeriod = Period.From(newDate, newDate);
-        const WeekDays newWeekDays = WeekDays.Friday;
 
         // Act
-        _holiday.Update(newPeriod, newWeekDays, newName);
+        _holiday.Update(newPeriod, newName);
 
         // Assert
         _holiday.DomainEvents.Should().Contain(x => x is CalendarHolidayUpdatedDomainEvent);

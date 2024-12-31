@@ -42,6 +42,9 @@ public class CalendarConfiguration : IEntityTypeConfiguration<Calendar>
 
         builder.Property(c => c.IsActive);
 
+        builder.Property(ch => ch.AvailableDays)
+            .IsRequired();
+
         builder.HasMany(c => c.Holidays)
             .WithOne(ch => ch.Calendar)
             .HasForeignKey(c => c.CalendarId)

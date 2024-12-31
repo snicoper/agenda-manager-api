@@ -8,7 +8,6 @@ using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects;
-using AgendaManager.Domain.Common.WekDays;
 
 namespace AgendaManager.Domain.Calendars.Services;
 
@@ -19,9 +18,7 @@ public sealed class CalendarHolidayManager(
     public async Task<Result<CalendarHoliday>> CreateHolidayAsync(
         CalendarId calendarId,
         Period period,
-        WeekDays weekDays,
         string name,
-        string description,
         CancellationToken cancellationToken)
     {
         // 1. Get calendar and check if exists.
@@ -61,9 +58,7 @@ public sealed class CalendarHolidayManager(
             calendarHolidayId: CalendarHolidayId.Create(),
             calendarId: calendar.Id,
             period: period,
-            weekDays: weekDays,
-            name: name,
-            description: description);
+            name: name);
 
         calendar.AddHoliday(holiday);
         calendarRepository.Update(calendar);

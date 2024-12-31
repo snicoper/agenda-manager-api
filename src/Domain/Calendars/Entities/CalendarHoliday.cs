@@ -3,7 +3,6 @@ using AgendaManager.Domain.Calendars.Exceptions;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
 using AgendaManager.Domain.Common.ValueObjects;
-using AgendaManager.Domain.Common.WekDays;
 
 namespace AgendaManager.Domain.Calendars.Entities;
 
@@ -17,13 +16,11 @@ public sealed class CalendarHoliday : AuditableEntity
         CalendarHolidayId calendarHolidayId,
         CalendarId calendarId,
         Period period,
-        WeekDays weekDays,
         string name)
     {
         Id = calendarHolidayId;
         CalendarId = calendarId;
         Period = period;
-        AvailableDays = weekDays;
         Name = name;
     }
 
@@ -35,17 +32,13 @@ public sealed class CalendarHoliday : AuditableEntity
 
     public Period Period { get; private set; } = null!;
 
-    public WeekDays AvailableDays { get; private set; }
-
     public string Name { get; private set; } = null!;
 
     internal static CalendarHoliday Create(
         CalendarHolidayId calendarHolidayId,
         CalendarId calendarId,
         Period period,
-        WeekDays weekDays,
-        string name,
-        string description)
+        string name)
     {
         GuardAgainstInvalidName(name);
 
@@ -53,7 +46,6 @@ public sealed class CalendarHoliday : AuditableEntity
             calendarHolidayId: calendarHolidayId,
             calendarId: calendarId,
             period: period,
-            weekDays: weekDays,
             name: name);
 
         calendarHoliday.AddDomainEvent(new CalendarHolidayCreatedDomainEvent(calendarHolidayId));
@@ -61,12 +53,11 @@ public sealed class CalendarHoliday : AuditableEntity
         return calendarHoliday;
     }
 
-    internal void Update(Period period, WeekDays weekDays, string name)
+    internal void Update(Period period, string name)
     {
         GuardAgainstInvalidName(name);
 
         Period = period;
-        AvailableDays = weekDays;
         Name = name;
 
         AddDomainEvent(new CalendarHolidayUpdatedDomainEvent(Id));

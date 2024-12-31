@@ -23,4 +23,8 @@ public static class CalendarErrors
     public static Error CannotDeleteCalendarWithResources => Error.Conflict(
         code: "CalendarErrors.CannotDeleteCalendarWithResources",
         description: "The calendar cannot be deleted because it has resources.");
+
+    public static Error WeekDayNotAvailable => Error.Conflict(
+        code: "CalendarErrors.WeekDayNotAvailable",
+        description: "The holiday cannot be added because the day is not available in the calendar.");
 }

@@ -22,6 +22,7 @@ public abstract class AppointmentManagerTestsBase
     private readonly IAppointmentRepository _appointmentRepository;
     private readonly ICalendarRepository _calendarRepository;
     private readonly ICalendarHolidayAvailabilityPolicy _holidayAvailabilityPolicy;
+    private readonly ICalendarWeekDayAvailabilityPolicy _weekDayAvailabilityPolicy;
     private readonly IAppointmentConfirmationStrategyPolicy _confirmationStrategyPolicy;
     private readonly IAppointmentOverlapPolicy _overlapPolicy;
     private readonly IResourceAvailabilityPolicy _resourceAvailabilityPolicy;
@@ -32,6 +33,7 @@ public abstract class AppointmentManagerTestsBase
         _appointmentRepository = Substitute.For<IAppointmentRepository>();
         _calendarRepository = Substitute.For<ICalendarRepository>();
         _holidayAvailabilityPolicy = Substitute.For<ICalendarHolidayAvailabilityPolicy>();
+        _weekDayAvailabilityPolicy = Substitute.For<ICalendarWeekDayAvailabilityPolicy>();
         _confirmationStrategyPolicy = Substitute.For<IAppointmentConfirmationStrategyPolicy>();
         _overlapPolicy = Substitute.For<IAppointmentOverlapPolicy>();
         _resourceAvailabilityPolicy = Substitute.For<IResourceAvailabilityPolicy>();
@@ -41,6 +43,7 @@ public abstract class AppointmentManagerTestsBase
             _appointmentRepository,
             _calendarRepository,
             _holidayAvailabilityPolicy,
+            _weekDayAvailabilityPolicy,
             _confirmationStrategyPolicy,
             _overlapPolicy,
             _resourceAvailabilityPolicy,
@@ -73,6 +76,15 @@ public abstract class AppointmentManagerTestsBase
                 Arg.Any<Calendar>(),
                 Arg.Any<Period>(),
                 Arg.Any<CancellationToken>())
+            .Returns(result);
+    }
+
+    protected void SetupWeekDayAvailabilityPolicyIsAvailable(Result? result = null)
+    {
+        result ??= Result.Success();
+
+        _weekDayAvailabilityPolicy
+            .IsAvailable(Arg.Any<Calendar>(), Arg.Any<Period>())
             .Returns(result);
     }
 

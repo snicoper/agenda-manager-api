@@ -3,6 +3,7 @@ using AgendaManager.Domain.Calendars.Events;
 using AgendaManager.Domain.Calendars.Exceptions;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.WekDays;
 
 namespace AgendaManager.Domain.Calendars;
 
@@ -10,7 +11,13 @@ public sealed class Calendar : AggregateRoot
 {
     private readonly List<CalendarHoliday> _holidays = [];
 
-    private Calendar(CalendarId id, CalendarSettings settings, string name, string description, bool isActive)
+    private Calendar(
+        CalendarId id,
+        CalendarSettings settings,
+        string name,
+        string description,
+        bool isActive,
+        WeekDays availableDays)
     {
         GuardAgainstInvalidName(name);
         GuardAgainstInvalidDescription(description);
@@ -21,6 +28,7 @@ public sealed class Calendar : AggregateRoot
         Name = name;
         Description = description;
         IsActive = isActive;
+        AvailableDays = availableDays;
     }
 
     private Calendar()
@@ -39,7 +47,26 @@ public sealed class Calendar : AggregateRoot
 
     public bool IsActive { get; private set; }
 
+    public WeekDays AvailableDays { get; private set; }
+
     public IReadOnlyList<CalendarHoliday> Holidays => _holidays.AsReadOnly();
+
+    public bool IsAvailableDay(DayOfWeek day)
+    {
+        return (AvailableDays & (WeekDays)(1 << (int)day)) != 0;
+    }
+
+    public void UpdateAvailableDays(WeekDays availableDays)
+    {
+        if (AvailableDays == availableDays)
+        {
+            return;
+        }
+
+        AvailableDays = availableDays;
+
+        AddDomainEvent(new CalendarAvailableDaysUpdatedDomainEvent(Id));
+    }
 
     public void Activate()
     {
@@ -97,9 +124,16 @@ public sealed class Calendar : AggregateRoot
         CalendarSettings settings,
         string name,
         string description,
-        bool isActive = true)
+        bool isActive = true,
+        WeekDays availableDays = WeekDays.All)
     {
-        Calendar calendar = new(id, settings, name, description, isActive);
+        Calendar calendar = new(
+            id: id,
+            settings: settings,
+            name: name,
+            description: description,
+            isActive: isActive,
+            availableDays: availableDays);
 
         calendar.AddDomainEvent(new CalendarCreatedDomainEvent(id));
 

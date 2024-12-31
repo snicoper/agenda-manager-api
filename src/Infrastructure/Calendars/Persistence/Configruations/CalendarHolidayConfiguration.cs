@@ -40,9 +40,6 @@ public class CalendarHolidayConfiguration : IEntityTypeConfiguration<CalendarHol
                     .HasColumnName("End");
             });
 
-        builder.Property(ch => ch.AvailableDays)
-            .IsRequired();
-
         builder.Property(ch => ch.Name)
             .HasMaxLength(50)
             .IsRequired();
