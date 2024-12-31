@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Application.Calendars.Commands.CreateCalendar;
 using AgendaManager.Application.Calendars.Commands.ToggleIsActive;
+using AgendaManager.Application.Calendars.Commands.UpdateAvailableDays;
 using AgendaManager.Application.Calendars.Commands.UpdateCalendar;
 using AgendaManager.Application.Calendars.Commands.UpdateCalendarSettings;
 using AgendaManager.Application.Calendars.Queries.GetCalendarById;
@@ -80,6 +81,23 @@ public class CalendarsController : ApiControllerBase
     public async Task<ActionResult<Result>> UpdateCalendar(Guid calendarId, UpdateCalendarRequest request)
     {
         var command = new UpdateCalendarCommand(calendarId, request.Name, request.Description);
+        var result = await Sender.Send(command);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Update the AvailableDays of a calendar.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpPut("{calendarId:guid}/available-days")]
+    public async Task<ActionResult<Result>> UpdateAvailableDays(
+        Guid calendarId,
+        UpdateAvailableDaysRequest request)
+    {
+        var command = new UpdateAvailableDaysCommand(calendarId, request.AvailableDays);
         var result = await Sender.Send(command);
 
         return result.ToActionResult();

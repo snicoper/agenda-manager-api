@@ -27,6 +27,7 @@ internal class GetCalendarByIdQueryHandler(ICalendarRepository calendarRepositor
             Name: calendar.Name,
             Description: calendar.Description,
             IsActive: calendar.IsActive,
+            AvailableDays: calendar.AvailableDays,
             CreatedAt: calendar.CreatedAt);
 
         return Result.Success(response);
