@@ -18,15 +18,13 @@ public sealed class CalendarHoliday : AuditableEntity
         CalendarId calendarId,
         Period period,
         WeekDays weekDays,
-        string name,
-        string description)
+        string name)
     {
         Id = calendarHolidayId;
         CalendarId = calendarId;
         Period = period;
         AvailableDays = weekDays;
         Name = name;
-        Description = description;
     }
 
     public CalendarHolidayId Id { get; } = null!;
@@ -41,8 +39,6 @@ public sealed class CalendarHoliday : AuditableEntity
 
     public string Name { get; private set; } = null!;
 
-    public string Description { get; private set; } = null!;
-
     internal static CalendarHoliday Create(
         CalendarHolidayId calendarHolidayId,
         CalendarId calendarId,
@@ -52,30 +48,26 @@ public sealed class CalendarHoliday : AuditableEntity
         string description)
     {
         GuardAgainstInvalidName(name);
-        GuardAgainstInvalidDescription(description);
 
         CalendarHoliday calendarHoliday = new(
             calendarHolidayId: calendarHolidayId,
             calendarId: calendarId,
             period: period,
             weekDays: weekDays,
-            name: name,
-            description: description);
+            name: name);
 
         calendarHoliday.AddDomainEvent(new CalendarHolidayCreatedDomainEvent(calendarHolidayId));
 
         return calendarHoliday;
     }
 
-    internal void Update(Period period, WeekDays weekDays, string name, string description)
+    internal void Update(Period period, WeekDays weekDays, string name)
     {
         GuardAgainstInvalidName(name);
-        GuardAgainstInvalidDescription(description);
 
         Period = period;
         AvailableDays = weekDays;
         Name = name;
-        Description = description;
 
         AddDomainEvent(new CalendarHolidayUpdatedDomainEvent(Id));
     }
@@ -87,16 +79,6 @@ public sealed class CalendarHoliday : AuditableEntity
         if (string.IsNullOrWhiteSpace(name) || name.Length > 50)
         {
             throw new CalendarHolidayDomainException("Name is invalid or exceeds length of 50 characters.");
-        }
-    }
-
-    private static void GuardAgainstInvalidDescription(string description)
-    {
-        ArgumentNullException.ThrowIfNull(description);
-
-        if (string.IsNullOrWhiteSpace(description) || description.Length > 500)
-        {
-            throw new CalendarHolidayDomainException("Description is invalid or exceeds length of 500 characters.");
         }
     }
 }

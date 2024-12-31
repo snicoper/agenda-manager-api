@@ -148,7 +148,6 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     End = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     AvailableDays = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: false),

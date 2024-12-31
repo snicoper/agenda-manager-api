@@ -16,19 +16,17 @@ public class CalendarHolidayUpdateTests
     {
         // Arrange
         const string newName = "New Holiday Name";
-        const string newDescription = "New Holiday Description";
         var newDate = new DateTime(2023, 1, 1);
         var newPeriod = Period.From(newDate, newDate);
         const WeekDays newWeekDays = WeekDays.Friday;
 
         // Act
-        _holiday.Update(newPeriod, newWeekDays, newName, newDescription);
+        _holiday.Update(newPeriod, newWeekDays, newName);
 
         // Assert
         _holiday.Period.Should().Be(newPeriod);
         _holiday.AvailableDays.Should().Be(newWeekDays);
         _holiday.Name.Should().Be(newName);
-        _holiday.Description.Should().Be(newDescription);
     }
 
     [Fact]
@@ -36,13 +34,12 @@ public class CalendarHolidayUpdateTests
     {
         // Arrange
         const string newName = "New Holiday Name";
-        const string newDescription = "New Holiday Description";
         var newDate = new DateTime(2023, 1, 1);
         var newPeriod = Period.From(newDate, newDate);
         const WeekDays newWeekDays = WeekDays.Friday;
 
         // Act
-        _holiday.Update(newPeriod, newWeekDays, newName, newDescription);
+        _holiday.Update(newPeriod, newWeekDays, newName);
 
         // Assert
         _holiday.DomainEvents.Should().Contain(x => x is CalendarHolidayUpdatedDomainEvent);

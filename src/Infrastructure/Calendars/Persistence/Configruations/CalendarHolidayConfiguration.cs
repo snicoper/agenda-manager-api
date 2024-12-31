@@ -46,9 +46,5 @@ public class CalendarHolidayConfiguration : IEntityTypeConfiguration<CalendarHol
         builder.Property(ch => ch.Name)
             .HasMaxLength(50)
             .IsRequired();
-
-        builder.Property(ch => ch.Description)
-            .HasMaxLength(500)
-            .IsRequired();
     }
 }
