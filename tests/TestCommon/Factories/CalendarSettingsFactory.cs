@@ -21,8 +21,8 @@ public abstract class CalendarSettingsFactory
             calendarId ?? CalendarId.Create(),
             timeZone ?? IanaTimeZone.FromIana("Europe/Madrid"),
             appointmentConfirmation ?? AppointmentConfirmationRequirementStrategy.Require,
-            appointmentOverlapping ?? AppointmentOverlappingStrategy.Allow,
-            holidayConflict ?? HolidayConflictStrategy.Allow,
+            appointmentOverlapping ?? AppointmentOverlappingStrategy.Reject,
+            holidayConflict ?? HolidayConflictStrategy.Reject,
             resourceSchedulesAvailability ?? ResourceScheduleValidationStrategy.Validate);
 
         return calendarSettings;

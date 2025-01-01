@@ -4,5 +4,5 @@ namespace AgendaManager.Domain.Appointments.Interfaces;
 
 public interface IHasAppointmentsInCalendarPolicy
 {
-    Task<bool> IsSatisfiedByAsync(CalendarId calendarId, CancellationToken cancellationToken);
+    Task<bool> HasAppointmentsAsync(CalendarId calendarId, CancellationToken cancellationToken);
 }

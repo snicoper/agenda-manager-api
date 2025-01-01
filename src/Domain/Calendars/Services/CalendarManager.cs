@@ -1,4 +1,6 @@
-﻿using AgendaManager.Domain.Appointments.Interfaces;
+﻿using AgendaManager.Domain.Appointments;
+using AgendaManager.Domain.Appointments.Enums;
+using AgendaManager.Domain.Appointments.Interfaces;
 using AgendaManager.Domain.Calendars.Entities;
 using AgendaManager.Domain.Calendars.Enums;
 using AgendaManager.Domain.Calendars.Errors;
@@ -14,6 +16,7 @@ namespace AgendaManager.Domain.Calendars.Services;
 
 public class CalendarManager(
     ICalendarRepository calendarRepository,
+    IAppointmentRepository appointmentRepository,
     IHasAppointmentsInCalendarPolicy appointmentsInCalendarPolicy,
     IHasResourcesInCalendarPolicy resourcesInCalendarPolicy,
     IHasServicesInCalendarPolicy servicesInCalendarPolicy)
@@ -78,15 +81,39 @@ public class CalendarManager(
         WeekDays availableDays,
         CancellationToken cancellationToken)
     {
-        var calendar = await calendarRepository.GetByIdAsync(calendarId, cancellationToken);
+        // 1. Get calendar and check if exists.
+        var calendar = await calendarRepository.GetByIdWithSettingsAsync(calendarId, cancellationToken);
         if (calendar == null)
         {
             return CalendarErrors.CalendarNotFound;
         }
 
-        // TODO: Validate available days.
-        // Se ha de comprobar si los días pasados existe citas en los días que se quieren marcar como no disponibles.
-        // Actuar en consecuencia según la política de negocio.
+        // 2. Get future appointments overlapping.
+        var addedDays = availableDays & ~calendar.AvailableDays;
+        var overlappingAppointments = await appointmentRepository.GetOverlappingAppointmentsByWeekDaysAsync(
+            calendar.Id,
+            addedDays,
+            cancellationToken);
+
+        // 3. Check if there are overlapping appointments and use strategy.
+        if (overlappingAppointments.Count != 0)
+        {
+            switch (calendar.Settings.HolidayConflict)
+            {
+                case HolidayConflictStrategy.Reject:
+                    return CalendarHolidayErrors.CreateOverlappingReject;
+                case HolidayConflictStrategy.Cancel:
+                    CancelOverlappingAppointments(overlappingAppointments);
+                    break;
+                case HolidayConflictStrategy.Allow:
+                    // Continue with the update of available days.
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException($"{nameof(HolidayConflictStrategy)} is not a valid value.");
+            }
+        }
+
+        // 4. Update available days.
         calendar.UpdateAvailableDays(availableDays);
         calendarRepository.Update(calendar);
 
@@ -96,7 +123,7 @@ public class CalendarManager(
     public async Task<Result> DeleteCalendarAsync(Calendar calendar, CancellationToken cancellationToken)
     {
         // 1. Check if calendar has appointments.
-        var hasAppointments = await appointmentsInCalendarPolicy.IsSatisfiedByAsync(calendar.Id, cancellationToken);
+        var hasAppointments = await appointmentsInCalendarPolicy.HasAppointmentsAsync(calendar.Id, cancellationToken);
         if (hasAppointments)
         {
             return CalendarErrors.CannotDeleteCalendarWithAppointments;
@@ -132,5 +159,15 @@ public class CalendarManager(
         }
 
         return Result.Success();
+    }
+
+    private void CancelOverlappingAppointments(List<Appointment> overlappingAppointments)
+    {
+        foreach (var appointment in overlappingAppointments)
+        {
+            appointment.ChangeState(AppointmentStatus.Cancelled, "Cancelled by holiday creation.");
+        }
+
+        appointmentRepository.UpdateRange(overlappingAppointments);
     }
 }

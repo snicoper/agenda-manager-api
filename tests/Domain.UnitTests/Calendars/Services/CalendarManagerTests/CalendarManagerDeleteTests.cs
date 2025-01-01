@@ -70,7 +70,7 @@ public class CalendarManagerDeleteTests : CalendarManagerTestsBase
 
     private void SetupHasAppointmentsInCalendarPolicyIsSatisfiedBy(bool exists)
     {
-        AppointmentsInCalendarPolicy.IsSatisfiedByAsync(Arg.Any<CalendarId>(), Arg.Any<CancellationToken>())
+        AppointmentsInCalendarPolicy.HasAppointmentsAsync(Arg.Any<CalendarId>(), Arg.Any<CancellationToken>())
             .Returns(exists);
     }
 

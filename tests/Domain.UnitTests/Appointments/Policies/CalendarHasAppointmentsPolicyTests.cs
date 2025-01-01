@@ -26,7 +26,7 @@ public class CalendarHasAppointmentsPolicyTests
             .Returns(Task.FromResult(true));
 
         // Act
-        var result = await _sut.IsSatisfiedByAsync(calendarId, CancellationToken.None);
+        var result = await _sut.HasAppointmentsAsync(calendarId, CancellationToken.None);
 
         // Assert
         result.Should().BeTrue();
@@ -41,7 +41,7 @@ public class CalendarHasAppointmentsPolicyTests
             .Returns(Task.FromResult(false));
 
         // Act
-        var result = await _sut.IsSatisfiedByAsync(calendarId, CancellationToken.None);
+        var result = await _sut.HasAppointmentsAsync(calendarId, CancellationToken.None);
 
         // Assert
         result.Should().BeFalse();

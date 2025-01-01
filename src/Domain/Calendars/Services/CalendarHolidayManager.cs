@@ -23,7 +23,6 @@ public sealed class CalendarHolidayManager(
     {
         // 1. Get calendar and check if exists.
         var calendar = await calendarRepository.GetByIdWithSettingsAsync(calendarId, cancellationToken);
-
         if (calendar is null)
         {
             return CalendarErrors.CalendarNotFound;

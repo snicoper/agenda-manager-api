@@ -6,7 +6,7 @@ namespace AgendaManager.Domain.Appointments.Policies;
 public class HasAppointmentsInCalendarPolicy(IAppointmentRepository appointmentRepository)
     : IHasAppointmentsInCalendarPolicy
 {
-    public async Task<bool> IsSatisfiedByAsync(CalendarId calendarId, CancellationToken cancellationToken)
+    public async Task<bool> HasAppointmentsAsync(CalendarId calendarId, CancellationToken cancellationToken)
     {
         var hasAppointments = await appointmentRepository.HasAppointmentsInCalendarAsync(calendarId, cancellationToken);
 
