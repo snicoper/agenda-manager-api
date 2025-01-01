@@ -55,14 +55,12 @@ public class CalendarManager(
         CancellationToken cancellationToken)
     {
         var calendar = await calendarRepository.GetByIdAsync(calendarId, cancellationToken);
-
         if (calendar == null)
         {
             return CalendarErrors.CalendarNotFound;
         }
 
         var validationResult = await ValidateCalendarAsync(calendarId, name, cancellationToken);
-
         if (validationResult.IsFailure)
         {
             return validationResult.MapToValue<Calendar>();
@@ -78,7 +76,6 @@ public class CalendarManager(
     {
         // 1. Check if calendar has appointments.
         var hasAppointments = await appointmentsInCalendarPolicy.IsSatisfiedByAsync(calendar.Id, cancellationToken);
-
         if (hasAppointments)
         {
             return CalendarErrors.CannotDeleteCalendarWithAppointments;
@@ -86,7 +83,6 @@ public class CalendarManager(
 
         // 2. Check if calendar has resources.
         var hasResources = await resourcesInCalendarPolicy.IsSatisfiedByAsync(calendar.Id, cancellationToken);
-
         if (hasResources)
         {
             return CalendarErrors.CannotDeleteCalendarWithResources;
@@ -94,7 +90,6 @@ public class CalendarManager(
 
         // 3. Check if calendar has services.
         var hasServices = await servicesInCalendarPolicy.IsSatisfiedByAsync(calendar.Id, cancellationToken);
-
         if (hasServices)
         {
             return CalendarErrors.CannotDeleteCalendarWithServices;
