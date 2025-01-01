@@ -56,18 +56,6 @@ public sealed class Calendar : AggregateRoot
         return (AvailableDays & (WeekDays)(1 << (int)day)) != 0;
     }
 
-    public void UpdateAvailableDays(WeekDays availableDays)
-    {
-        if (AvailableDays == availableDays)
-        {
-            return;
-        }
-
-        AvailableDays = availableDays;
-
-        AddDomainEvent(new CalendarAvailableDaysUpdatedDomainEvent(Id));
-    }
-
     public void Activate()
     {
         if (IsActive)
@@ -157,6 +145,18 @@ public sealed class Calendar : AggregateRoot
         Description = description;
 
         AddDomainEvent(new CalendarUpdatedDomainEvent(Id));
+    }
+
+    internal void UpdateAvailableDays(WeekDays availableDays)
+    {
+        if (AvailableDays == availableDays)
+        {
+            return;
+        }
+
+        AvailableDays = availableDays;
+
+        AddDomainEvent(new CalendarAvailableDaysUpdatedDomainEvent(Id));
     }
 
     private static void GuardAgainstInvalidName(string name)

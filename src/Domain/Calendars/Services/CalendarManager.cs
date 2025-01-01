@@ -6,6 +6,7 @@ using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects;
+using AgendaManager.Domain.Common.WekDays;
 using AgendaManager.Domain.ResourceManagement.Resources.Interfaces;
 using AgendaManager.Domain.Services.Interfaces;
 
@@ -70,6 +71,26 @@ public class CalendarManager(
         calendarRepository.Update(calendar);
 
         return Result.Success(calendar);
+    }
+
+    public async Task<Result> UpdateAvailableDaysAsync(
+        CalendarId calendarId,
+        WeekDays availableDays,
+        CancellationToken cancellationToken)
+    {
+        var calendar = await calendarRepository.GetByIdAsync(calendarId, cancellationToken);
+        if (calendar == null)
+        {
+            return CalendarErrors.CalendarNotFound;
+        }
+
+        // TODO: Validate available days.
+        // Se ha de comprobar si los días pasados existe citas en los días que se quieren marcar como no disponibles.
+        // Actuar en consecuencia según la política de negocio.
+        calendar.UpdateAvailableDays(availableDays);
+        calendarRepository.Update(calendar);
+
+        return Result.Success();
     }
 
     public async Task<Result> DeleteCalendarAsync(Calendar calendar, CancellationToken cancellationToken)
