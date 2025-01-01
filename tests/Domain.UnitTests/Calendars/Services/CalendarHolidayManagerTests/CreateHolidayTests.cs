@@ -22,7 +22,7 @@ public class CreateHolidayTests : CalendarHolidayManagerTestsBase
         // Arrange
         var calendar = CalendarFactory.CreateCalendar();
         SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
-        SetupAppointmentRepositoryGetOverlappingAppointments();
+        SetupAppointmentRepositoryGetOverlappingAppointments([]);
 
         // Act
         var result = await SutCreateHolidayAsync(calendar.Id);
