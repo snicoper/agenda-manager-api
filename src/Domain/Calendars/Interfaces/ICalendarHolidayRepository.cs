@@ -10,4 +10,10 @@ public interface ICalendarHolidayRepository
         CalendarId calendarId,
         Period period,
         CancellationToken cancellationToken = default);
+
+    Task<bool> ExistsHolidayNameAsync(
+        CalendarId calendarId,
+        CalendarHolidayId calendarHolidayId,
+        string name,
+        CancellationToken cancellationToken = default);
 }

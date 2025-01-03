@@ -578,9 +578,10 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 columns: new[] { "AggregateName", "AggregateId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CalendarHolidays_CalendarId",
+                name: "IX_CalendarHolidays_CalendarId_Name",
                 table: "CalendarHolidays",
-                column: "CalendarId");
+                columns: new[] { "CalendarId", "Name" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Calendars_Name",

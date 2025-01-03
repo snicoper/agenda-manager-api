@@ -13,6 +13,7 @@ namespace AgendaManager.Domain.Calendars.Services;
 
 public sealed class CalendarHolidayManager(
     ICalendarRepository calendarRepository,
+    ICalendarHolidayRepository calendarHolidayRepository,
     IAppointmentRepository appointmentRepository)
 {
     public async Task<Result<CalendarHoliday>> CreateHolidayAsync(
@@ -21,20 +22,27 @@ public sealed class CalendarHolidayManager(
         string name,
         CancellationToken cancellationToken)
     {
-        // 1. Get calendar and check if exists.
+        // 1. Check if holiday name already exists.
+        var calendarHolidayId = CalendarHolidayId.Create();
+        if (await ExistsHolidayName(calendarId, calendarHolidayId, name, cancellationToken))
+        {
+            return CalendarHolidayErrors.NameAlreadyExists;
+        }
+
+        // 2. Get calendar and check if exists.
         var calendar = await calendarRepository.GetByIdWithSettingsAsync(calendarId, cancellationToken);
         if (calendar is null)
         {
             return CalendarErrors.CalendarNotFound;
         }
 
-        // 2. Get appointments overlapping.
+        // 3. Get appointments overlapping.
         var overlappingAppointments = await appointmentRepository.GetOverlappingAppointmentsAsync(
             calendarId: calendarId,
             period: period,
             cancellationToken: cancellationToken);
 
-        // 3. Check if there are overlapping appointments and use strategy.
+        // 4. Check if there are overlapping appointments and use strategy.
         if (overlappingAppointments.Count != 0)
         {
             switch (calendar.Settings.HolidayConflict)
@@ -52,9 +60,9 @@ public sealed class CalendarHolidayManager(
             }
         }
 
-        // 4. Create holiday and add to calendar.
+        // 5. Create holiday and add to calendar.
         var holiday = CalendarHoliday.Create(
-            calendarHolidayId: CalendarHolidayId.Create(),
+            calendarHolidayId: calendarHolidayId,
             calendarId: calendar.Id,
             period: period,
             name: name);
@@ -62,8 +70,23 @@ public sealed class CalendarHolidayManager(
         calendar.AddHoliday(holiday);
         calendarRepository.Update(calendar);
 
-        // 5. Return holiday.
+        // 6. Return holiday.
         return Result.Success(holiday);
+    }
+
+    private async Task<bool> ExistsHolidayName(
+        CalendarId calendarId,
+        CalendarHolidayId calendarHolidayId,
+        string name,
+        CancellationToken cancellationToken)
+    {
+        var exists = await calendarHolidayRepository.ExistsHolidayNameAsync(
+            calendarId: calendarId,
+            calendarHolidayId: calendarHolidayId,
+            name: name,
+            cancellationToken: cancellationToken);
+
+        return exists;
     }
 
     private void CancelOverlappingAppointments(List<Appointment> overlappingAppointments)

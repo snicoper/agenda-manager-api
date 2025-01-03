@@ -24,4 +24,20 @@ public class CalendarHolidayRepository(AppDbContext context) : ICalendarHolidayR
 
         return holidays ? CalendarHolidayErrors.HolidaysOverlap : Result.Success();
     }
+
+    public async Task<bool> ExistsHolidayNameAsync(
+        CalendarId calendarId,
+        CalendarHolidayId calendarHolidayId,
+        string name,
+        CancellationToken cancellationToken = default)
+    {
+        var exists = await context.CalendarHolidays
+            .AnyAsync(
+                ch => ch.CalendarId == calendarId
+                    && ch.Id != calendarHolidayId
+                    && ch.Name == name,
+                cancellationToken);
+
+        return exists;
+    }
 }

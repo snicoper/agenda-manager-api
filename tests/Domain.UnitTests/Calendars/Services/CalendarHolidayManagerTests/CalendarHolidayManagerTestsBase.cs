@@ -10,14 +10,18 @@ public class CalendarHolidayManagerTestsBase
     protected CalendarHolidayManagerTestsBase()
     {
         CalendarRepository = Substitute.For<ICalendarRepository>();
+        CalendarHolidayRepository = Substitute.For<ICalendarHolidayRepository>();
         AppointmentRepository = Substitute.For<IAppointmentRepository>();
 
         Sut = new CalendarHolidayManager(
             calendarRepository: CalendarRepository,
+            calendarHolidayRepository: CalendarHolidayRepository,
             appointmentRepository: AppointmentRepository);
     }
 
     protected ICalendarRepository CalendarRepository { get; }
+
+    protected ICalendarHolidayRepository CalendarHolidayRepository { get; }
 
     protected IAppointmentRepository AppointmentRepository { get; }
 

@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Application.Calendars.Commands.CreateCalendar;
+using AgendaManager.Application.Calendars.Commands.CreateCalendarHoliday;
 using AgendaManager.Application.Calendars.Commands.ToggleIsActive;
 using AgendaManager.Application.Calendars.Commands.UpdateAvailableDays;
 using AgendaManager.Application.Calendars.Commands.UpdateCalendar;
@@ -46,6 +47,9 @@ public class CalendarsController : ApiControllerBase
         return result.ToActionResult();
     }
 
+    /// <summary>
+    /// Get the settings of a calendar.
+    /// </summary>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -62,10 +66,27 @@ public class CalendarsController : ApiControllerBase
     /// Create a new calendar.
     /// </summary>
     [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpPost]
     public async Task<ActionResult<Result<CreateCalendarCommandResponse>>> CreateCalendar(CreateCalendarRequest request)
     {
         var command = new CreateCalendarCommand(request.Name, request.Description, request.IanaTimeZone);
+        var result = await Sender.Send(command);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Create a new holiday for a calendar.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [HttpPost("{calendarId:guid}/holidays")]
+    public async Task<ActionResult<Result<CreateCalendarHolidayCommandResponse>>> CreateCalendarHoliday(
+        Guid calendarId,
+        CreateCalendarHolidayCommandRequest request)
+    {
+        var command = new CreateCalendarHolidayCommand(calendarId, request.Start, request.End, request.Name);
         var result = await Sender.Send(command);
 
         return result.ToActionResult();

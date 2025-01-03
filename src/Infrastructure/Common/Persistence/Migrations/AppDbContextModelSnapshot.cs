@@ -336,7 +336,8 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CalendarId");
+                    b.HasIndex("CalendarId", "Name")
+                        .IsUnique();
 
                     b.ToTable("CalendarHolidays", (string)null);
                 });

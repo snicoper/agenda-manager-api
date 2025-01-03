@@ -11,7 +11,10 @@ public class CalendarHolidayConfiguration : IEntityTypeConfiguration<CalendarHol
     {
         builder.ToTable("CalendarHolidays");
 
-        builder.HasKey(x => x.Id);
+        builder.HasKey(ch => ch.Id);
+
+        builder.HasIndex(ch => new { ch.CalendarId, ch.Name })
+            .IsUnique();
 
         builder.Property(ch => ch.Id)
             .HasConversion(
