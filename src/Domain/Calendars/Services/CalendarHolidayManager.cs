@@ -22,27 +22,38 @@ public sealed class CalendarHolidayManager(
         string name,
         CancellationToken cancellationToken)
     {
-        // 1. Check if holiday name already exists.
+        // Check if holiday name already exists.
         var calendarHolidayId = CalendarHolidayId.Create();
         if (await ExistsHolidayName(calendarId, calendarHolidayId, name, cancellationToken))
         {
             return CalendarHolidayErrors.NameAlreadyExists;
         }
 
-        // 2. Get calendar and check if exists.
+        // Check if holiday overlaps with another holiday.
+        var overlappingHoliday = await calendarHolidayRepository.IsOverlappingInPeriodByCalendarIdAsync(
+            calendarId: calendarId,
+            period: period,
+            cancellationToken: cancellationToken);
+
+        if (overlappingHoliday.IsFailure)
+        {
+            return overlappingHoliday.MapToValue<CalendarHoliday>();
+        }
+
+        // Get calendar and check if exists.
         var calendar = await calendarRepository.GetByIdWithSettingsAsync(calendarId, cancellationToken);
         if (calendar is null)
         {
             return CalendarErrors.CalendarNotFound;
         }
 
-        // 3. Get appointments overlapping.
+        // Get appointments overlapping.
         var overlappingAppointments = await appointmentRepository.GetOverlappingAppointmentsAsync(
             calendarId: calendarId,
             period: period,
             cancellationToken: cancellationToken);
 
-        // 4. Check if there are overlapping appointments and use strategy.
+        // Check if there are overlapping appointments and use strategy.
         if (overlappingAppointments.Count != 0)
         {
             switch (calendar.Settings.HolidayConflict)
@@ -60,7 +71,7 @@ public sealed class CalendarHolidayManager(
             }
         }
 
-        // 5. Create holiday and add to calendar.
+        // Create holiday and add to calendar.
         var holiday = CalendarHoliday.Create(
             calendarHolidayId: calendarHolidayId,
             calendarId: calendar.Id,
@@ -70,7 +81,7 @@ public sealed class CalendarHolidayManager(
         calendar.AddHoliday(holiday);
         calendarRepository.Update(calendar);
 
-        // 6. Return holiday.
+        // Return holiday.
         return Result.Success(holiday);
     }
 
