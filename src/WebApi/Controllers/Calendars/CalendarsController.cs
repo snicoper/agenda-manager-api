@@ -5,7 +5,7 @@ using AgendaManager.Application.Calendars.Commands.UpdateAvailableDays;
 using AgendaManager.Application.Calendars.Commands.UpdateCalendar;
 using AgendaManager.Application.Calendars.Commands.UpdateCalendarSettings;
 using AgendaManager.Application.Calendars.Queries.GetCalendarById;
-using AgendaManager.Application.Calendars.Queries.GetCalendarHolidays;
+using AgendaManager.Application.Calendars.Queries.GetCalendarHolidaysInYear;
 using AgendaManager.Application.Calendars.Queries.GetCalendarSettings;
 using AgendaManager.Application.Calendars.Queries.GetCalendarsPaginated;
 using AgendaManager.Application.Common.Http;
@@ -71,11 +71,11 @@ public class CalendarsController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet("{calendarId:guid}/holidays/year/{year:int}")]
-    public async Task<ActionResult<Result<List<GetCalendarHolidaysQueryResponse>>>> GetCalendarHolidaysInYear(
+    public async Task<ActionResult<Result<List<GetCalendarHolidaysInYearQueryResponse>>>> GetCalendarHolidaysInYear(
         Guid calendarId,
         int year)
     {
-        var query = new GetCalendarHolidaysQuery(calendarId, year);
+        var query = new GetCalendarHolidaysInYearQuery(calendarId, year);
         var result = await Sender.Send(query);
 
         return result.ToActionResult();

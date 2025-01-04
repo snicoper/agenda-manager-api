@@ -4,20 +4,20 @@ using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
 
-namespace AgendaManager.Application.Calendars.Queries.GetCalendarHolidays;
+namespace AgendaManager.Application.Calendars.Queries.GetCalendarHolidaysInYear;
 
-internal class GetCalendarHolidaysQueryHandler
-    : IQueryHandler<GetCalendarHolidaysQuery, List<GetCalendarHolidaysQueryResponse>>
+internal class GetCalendarHolidaysInYearHandler
+    : IQueryHandler<GetCalendarHolidaysInYearQuery, List<GetCalendarHolidaysInYearQueryResponse>>
 {
     private readonly ICalendarRepository _calendarRepository;
 
-    public GetCalendarHolidaysQueryHandler(ICalendarRepository calendarRepository)
+    public GetCalendarHolidaysInYearHandler(ICalendarRepository calendarRepository)
     {
         _calendarRepository = calendarRepository;
     }
 
-    public async Task<Result<List<GetCalendarHolidaysQueryResponse>>> Handle(
-        GetCalendarHolidaysQuery request,
+    public async Task<Result<List<GetCalendarHolidaysInYearQueryResponse>>> Handle(
+        GetCalendarHolidaysInYearQuery request,
         CancellationToken cancellationToken)
     {
         var calendar = await _calendarRepository.GetByIdWithHolidaysAsync(
@@ -33,7 +33,7 @@ internal class GetCalendarHolidaysQueryHandler
             .Where(holiday => holiday.Period.Start.Year == request.Year || holiday.Period.End.Year == request.Year);
 
         var response = holidays.Select(
-            holiday => new GetCalendarHolidaysQueryResponse(
+            holiday => new GetCalendarHolidaysInYearQueryResponse(
                 CalendarHolidayId: holiday.Id.Value,
                 Name: holiday.Name,
                 Start: holiday.Period.Start,

@@ -2,7 +2,7 @@
 using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Domain.Authorization.Constants;
 
-namespace AgendaManager.Application.Calendars.Queries.GetCalendarHolidays;
+namespace AgendaManager.Application.Calendars.Queries.GetCalendarHolidaysInYear;
 
 [Authorize(Permissions = SystemPermissions.CalendarHolidays.Read)]
-public record GetCalendarHolidaysQuery(Guid CalendarId, int Year) : IQuery<List<GetCalendarHolidaysQueryResponse>>;
+public record GetCalendarHolidaysInYearQuery(Guid CalendarId, int Year) : IQuery<List<GetCalendarHolidaysInYearQueryResponse>>;
