@@ -16,4 +16,8 @@ public static class CalendarHolidayErrors
     public static Error NameAlreadyExists => Error.Validation(
         code: nameof(CalendarHoliday.Name),
         description: "A holiday with the same name already exists in the calendar.");
+
+    public static Error CalendarHolidayNotFound => Error.NotFound(
+        code: "CalendarHolidayErrors.CalendarHolidayNotFound",
+        description: "The requested holiday was not found in the calendar.");
 }
