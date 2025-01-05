@@ -1,5 +1,4 @@
 ﻿using AgendaManager.Domain.Calendars.Entities;
-using AgendaManager.Domain.Calendars.Events;
 using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
@@ -11,7 +10,7 @@ public class CalendarHolidayUpdateTests
     private readonly CalendarHoliday _holiday = CalendarHolidayFactory.CreateCalendarHoliday();
 
     [Fact]
-    public void CalendarHoliday_ShouldSucceed_WhenValidUpdatesProvided()
+    public void CalendarHoliday_ShouldReturnTrue_WhenValidUpdatesProvided()
     {
         // Arrange
         const string newName = "New Holiday Name";
@@ -19,25 +18,21 @@ public class CalendarHolidayUpdateTests
         var newPeriod = Period.From(newDate, newDate);
 
         // Act
-        _holiday.Update(newPeriod, newName);
+        var result = _holiday.Update(newPeriod, newName);
 
         // Assert
         _holiday.Period.Should().Be(newPeriod);
         _holiday.Name.Should().Be(newName);
+        result.Should().BeTrue();
     }
 
     [Fact]
-    public void CalendarHolidayUpdate_ShouldRaiseDomainEvent_WhenHolidayIsUpdated()
+    public void CalendarHolidayUpdate_ShouldReturnFalse_WhenHolidayIsUpdated()
     {
-        // Arrange
-        const string newName = "New Holiday Name";
-        var newDate = new DateTime(2023, 1, 1);
-        var newPeriod = Period.From(newDate, newDate);
-
         // Act
-        _holiday.Update(newPeriod, newName);
+        var result = _holiday.Update(_holiday.Period, _holiday.Name);
 
         // Assert
-        _holiday.DomainEvents.Should().Contain(x => x is CalendarHolidayUpdatedDomainEvent);
+        result.Should().BeFalse();
     }
 }

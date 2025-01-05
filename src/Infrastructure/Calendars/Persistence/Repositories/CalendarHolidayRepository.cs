@@ -25,6 +25,23 @@ public class CalendarHolidayRepository(AppDbContext context) : ICalendarHolidayR
         return holidays ? CalendarHolidayErrors.HolidaysOverlap : Result.Success();
     }
 
+    public async Task<Result> IsOverlappingInPeriodByCalendarIdExcludeSelfAsync(
+        CalendarId calendarId,
+        CalendarHolidayId calendarHolidayId,
+        Period period,
+        CancellationToken cancellationToken = default)
+    {
+        var holidays = await context.CalendarHolidays
+            .AnyAsync(
+                ch => ch.CalendarId == calendarId
+                    && ch.Id != calendarHolidayId
+                    && ch.Period.Start <= period.End
+                    && ch.Period.End >= period.Start,
+                cancellationToken);
+
+        return holidays ? CalendarHolidayErrors.HolidaysOverlap : Result.Success();
+    }
+
     public async Task<bool> ExistsHolidayNameAsync(
         CalendarId calendarId,
         CalendarHolidayId calendarHolidayId,

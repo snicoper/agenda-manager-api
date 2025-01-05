@@ -53,14 +53,19 @@ public sealed class CalendarHoliday : AuditableEntity
         return calendarHoliday;
     }
 
-    internal void Update(Period period, string name)
+    internal bool Update(Period period, string name)
     {
         GuardAgainstInvalidName(name);
+
+        if (Name == name && Period == period)
+        {
+            return false;
+        }
 
         Period = period;
         Name = name;
 
-        AddDomainEvent(new CalendarHolidayUpdatedDomainEvent(Id));
+        return true;
     }
 
     private static void GuardAgainstInvalidName(string name)

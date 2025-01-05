@@ -11,6 +11,12 @@ public interface ICalendarHolidayRepository
         Period period,
         CancellationToken cancellationToken = default);
 
+    Task<Result> IsOverlappingInPeriodByCalendarIdExcludeSelfAsync(
+        CalendarId calendarId,
+        CalendarHolidayId calendarHolidayId,
+        Period period,
+        CancellationToken cancellationToken = default);
+
     Task<bool> ExistsHolidayNameAsync(
         CalendarId calendarId,
         CalendarHolidayId calendarHolidayId,

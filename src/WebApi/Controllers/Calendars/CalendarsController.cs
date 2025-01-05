@@ -3,6 +3,7 @@ using AgendaManager.Application.Calendars.Commands.CreateCalendarHoliday;
 using AgendaManager.Application.Calendars.Commands.ToggleIsActive;
 using AgendaManager.Application.Calendars.Commands.UpdateAvailableDays;
 using AgendaManager.Application.Calendars.Commands.UpdateCalendar;
+using AgendaManager.Application.Calendars.Commands.UpdateCalendarHoliday;
 using AgendaManager.Application.Calendars.Commands.UpdateCalendarSettings;
 using AgendaManager.Application.Calendars.Queries.GetCalendarById;
 using AgendaManager.Application.Calendars.Queries.GetCalendarHolidayById;
@@ -178,6 +179,29 @@ public class CalendarsController : ApiControllerBase
             AppointmentOverlapping: request.AppointmentOverlapping,
             HolidayConflict: request.HolidayConflict,
             ResourceScheduleValidation: request.ResourceScheduleValidation);
+        var result = await Sender.Send(command);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Update a holiday for a calendar.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpPut("{calendarId:guid}/holidays/{calendarHolidayId:guid}")]
+    public async Task<ActionResult<Result>> UpdateCalendarHoliday(
+        Guid calendarId,
+        Guid calendarHolidayId,
+        CalendarHolidayUpdateRequest request)
+    {
+        var command = new UpdateCalendarHolidayCommand(
+            calendarId,
+            calendarHolidayId,
+            request.Name,
+            request.Start,
+            request.End);
         var result = await Sender.Send(command);
 
         return result.ToActionResult();

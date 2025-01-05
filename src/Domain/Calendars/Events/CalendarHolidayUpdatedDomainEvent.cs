@@ -3,4 +3,5 @@ using AgendaManager.Domain.Common.Interfaces;
 
 namespace AgendaManager.Domain.Calendars.Events;
 
-public record CalendarHolidayUpdatedDomainEvent(CalendarHolidayId CalendarHolidayId) : IDomainEvent;
+public record CalendarHolidayUpdatedDomainEvent(CalendarId CalendarId, CalendarHolidayId CalendarHolidayId)
+    : IDomainEvent;

@@ -3,6 +3,7 @@ using AgendaManager.Domain.Calendars.Events;
 using AgendaManager.Domain.Calendars.Exceptions;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Abstractions;
+using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Common.WekDays;
 
 namespace AgendaManager.Domain.Calendars;
@@ -157,6 +158,18 @@ public sealed class Calendar : AggregateRoot
         AvailableDays = availableDays;
 
         AddDomainEvent(new CalendarAvailableDaysUpdatedDomainEvent(Id));
+    }
+
+    internal void UpdateHoliday(CalendarHoliday holiday, Period period, string name)
+    {
+        var hasUpdated = holiday.Update(period, name);
+
+        if (!hasUpdated)
+        {
+            return;
+        }
+
+        AddDomainEvent(new CalendarHolidayUpdatedDomainEvent(Id, holiday.Id));
     }
 
     private static void GuardAgainstInvalidName(string name)
