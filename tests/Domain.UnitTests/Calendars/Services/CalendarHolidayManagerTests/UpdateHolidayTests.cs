@@ -22,7 +22,7 @@ public class UpdateHolidayTests : CalendarHolidayManagerTestsBase
 
         SetupCalendarRepositoryGetByIdWithHolidays(calendar);
         SetupCalendarHolidayRepositoryExistsHolidayNameAsync(exists: false);
-        SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdExcludeSelfAsync(overlaps: false);
+        SetupCalendarHolidayAvailabilityExcludeSelfPolicyIsAvailable(overlaps: false);
 
         // Act
         var result = await SutUpdateHolidayAsync(calendar);
@@ -60,7 +60,7 @@ public class UpdateHolidayTests : CalendarHolidayManagerTestsBase
 
         SetupCalendarRepositoryGetByIdWithHolidays(calendar);
         SetupCalendarHolidayRepositoryExistsHolidayNameAsync(exists: false);
-        SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdExcludeSelfAsync(overlaps: true);
+        SetupCalendarHolidayAvailabilityExcludeSelfPolicyIsAvailable(overlaps: true);
 
         // Act
         var result = await SutUpdateHolidayAsync(calendar);
@@ -100,13 +100,13 @@ public class UpdateHolidayTests : CalendarHolidayManagerTestsBase
             .Returns(exists);
     }
 
-    private void SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdExcludeSelfAsync(bool overlaps)
+    private void SetupCalendarHolidayAvailabilityExcludeSelfPolicyIsAvailable(bool overlaps)
     {
-        CalendarHolidayRepository.IsOverlappingInPeriodByCalendarIdExcludeSelfAsync(
+        CalendarHolidayAvailabilityExcludeSelfPolicy.IsAvailableAsync(
                 Arg.Any<CalendarId>(),
                 Arg.Any<CalendarHolidayId>(),
                 Arg.Any<Period>(),
                 Arg.Any<CancellationToken>())
-            .Returns(overlaps);
+            .Returns(overlaps ? CalendarHolidayErrors.HolidaysOverlap : Result.Success());
     }
 }

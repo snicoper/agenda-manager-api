@@ -22,7 +22,7 @@ public class CreateHolidayTests : CalendarHolidayManagerTestsBase
         // Arrange
         var calendar = CalendarFactory.CreateCalendar();
         SetupCalendarHolidayRepositoryExistsHolidayNameAsync(false);
-        SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdAsync(false);
+        SetupCalendarHolidayAvailabilityPolicyIsAvailable(false);
         SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
         SetupAppointmentRepositoryGetOverlappingAppointments([]);
 
@@ -55,7 +55,7 @@ public class CreateHolidayTests : CalendarHolidayManagerTestsBase
         // Arrange
         var calendar = CalendarFactory.CreateCalendar();
         SetupCalendarHolidayRepositoryExistsHolidayNameAsync(false);
-        SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdAsync(true);
+        SetupCalendarHolidayAvailabilityPolicyIsAvailable(true);
 
         // Act
         var result = await SutCreateHolidayAsync(calendar.Id);
@@ -71,7 +71,7 @@ public class CreateHolidayTests : CalendarHolidayManagerTestsBase
         // Arrange
         var calendar = CalendarFactory.CreateCalendar();
         SetupCalendarHolidayRepositoryExistsHolidayNameAsync(false);
-        SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdAsync(false);
+        SetupCalendarHolidayAvailabilityPolicyIsAvailable(false);
         SetupCalendarRepositoryGetByIdWithSettingsAsync(null);
 
         // Act
@@ -89,7 +89,7 @@ public class CreateHolidayTests : CalendarHolidayManagerTestsBase
         var settings = CalendarSettingsFactory.CreateCalendarSettings(holidayConflict: HolidayConflictStrategy.Reject);
         var calendar = CalendarFactory.CreateCalendar(settings: settings);
         SetupCalendarHolidayRepositoryExistsHolidayNameAsync(false);
-        SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdAsync(false);
+        SetupCalendarHolidayAvailabilityPolicyIsAvailable(false);
         SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
         SetupAppointmentRepositoryGetOverlappingAppointments();
 
@@ -108,7 +108,7 @@ public class CreateHolidayTests : CalendarHolidayManagerTestsBase
         var settings = CalendarSettingsFactory.CreateCalendarSettings(holidayConflict: HolidayConflictStrategy.Cancel);
         var calendar = CalendarFactory.CreateCalendar(settings: settings);
         SetupCalendarHolidayRepositoryExistsHolidayNameAsync(false);
-        SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdAsync(false);
+        SetupCalendarHolidayAvailabilityPolicyIsAvailable(false);
         SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
 
         // Act
@@ -128,7 +128,7 @@ public class CreateHolidayTests : CalendarHolidayManagerTestsBase
         var settings = CalendarSettingsFactory.CreateCalendarSettings(holidayConflict: HolidayConflictStrategy.Allow);
         var calendar = CalendarFactory.CreateCalendar(settings: settings);
         SetupCalendarHolidayRepositoryExistsHolidayNameAsync(false);
-        SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdAsync(false);
+        SetupCalendarHolidayAvailabilityPolicyIsAvailable(false);
         SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
         SetupAppointmentRepositoryGetOverlappingAppointments();
 
@@ -161,13 +161,13 @@ public class CreateHolidayTests : CalendarHolidayManagerTestsBase
             .Returns(exists);
     }
 
-    private void SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdAsync(bool exists)
+    private void SetupCalendarHolidayAvailabilityPolicyIsAvailable(bool exists)
     {
-        CalendarHolidayRepository.IsOverlappingInPeriodByCalendarIdAsync(
+        CalendarHolidayAvailabilityPolicy.IsAvailableAsync(
                 Arg.Any<CalendarId>(),
                 Arg.Any<Period>(),
                 Arg.Any<CancellationToken>())
-            .Returns(exists);
+            .Returns(exists ? CalendarHolidayErrors.HolidaysOverlap : Result.Success());
     }
 
     private void SetupCalendarRepositoryGetByIdWithSettingsAsync(Calendar? calendarResult)

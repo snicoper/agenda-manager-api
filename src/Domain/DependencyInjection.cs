@@ -59,6 +59,9 @@ public static class DependencyInjection
         services.AddScoped<CalendarHolidayManager>();
 
         services.AddTransient<ICalendarHolidayAvailabilityPolicy, CalendarHolidayAvailabilityPolicy>();
+        services.AddTransient<
+            ICalendarHolidayAvailabilityExcludeSelfPolicy,
+            CalendarHolidayAvailabilityExcludeSelfPolicy>();
         services.AddTransient<ICalendarWeekDayAvailabilityPolicy, CalendarWeekDayAvailabilityPolicy>();
     }
 

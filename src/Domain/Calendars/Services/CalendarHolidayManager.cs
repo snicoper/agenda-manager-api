@@ -14,6 +14,8 @@ namespace AgendaManager.Domain.Calendars.Services;
 public sealed class CalendarHolidayManager(
     ICalendarRepository calendarRepository,
     ICalendarHolidayRepository calendarHolidayRepository,
+    ICalendarHolidayAvailabilityPolicy calendarHolidayAvailabilityPolicy,
+    ICalendarHolidayAvailabilityExcludeSelfPolicy calendarHolidayAvailabilityExcludeSelfPolicy,
     IAppointmentRepository appointmentRepository)
 {
     public async Task<Result<CalendarHoliday>> CreateHolidayAsync(
@@ -30,14 +32,14 @@ public sealed class CalendarHolidayManager(
         }
 
         // Check if holiday overlaps with another holiday.
-        var overlappingHoliday = await calendarHolidayRepository.IsOverlappingInPeriodByCalendarIdAsync(
+        var overlappingHoliday = await calendarHolidayAvailabilityPolicy.IsAvailableAsync(
             calendarId: calendarId,
             period: period,
             cancellationToken: cancellationToken);
 
-        if (overlappingHoliday)
+        if (overlappingHoliday.IsFailure)
         {
-            return CalendarHolidayErrors.HolidaysOverlap;
+            return overlappingHoliday.MapToValue<CalendarHoliday>();
         }
 
         // Get calendar and check if exists.
@@ -113,15 +115,15 @@ public sealed class CalendarHolidayManager(
         }
 
         // Check if holiday overlaps with another holiday.
-        var overlappingHoliday = await calendarHolidayRepository.IsOverlappingInPeriodByCalendarIdExcludeSelfAsync(
+        var overlappingHoliday = await calendarHolidayAvailabilityExcludeSelfPolicy.IsAvailableAsync(
             calendarId: calendarId,
             calendarHolidayId: calendarHolidayId,
             period: period,
             cancellationToken: cancellationToken);
 
-        if (overlappingHoliday)
+        if (overlappingHoliday.IsFailure)
         {
-            return CalendarHolidayErrors.HolidaysOverlap;
+            return overlappingHoliday;
         }
 
         // Update holiday.
