@@ -26,9 +26,20 @@ public class CalendarRemoveHolidayTests
     public void RemoveHoliday_ShouldRaiseEvent_WhenValidHolidayProvided()
     {
         // Act
+        _calendar.AddHoliday(_holiday);
         _calendar.RemoveHoliday(_holiday);
 
         // Assert
         _calendar.DomainEvents.Should().Contain(x => x is CalendarHolidayRemovedDomainEvent);
+    }
+
+    [Fact]
+    public void RemoveHoliday_ShouldNotRaiseEvent_WhenHolidayNotExists()
+    {
+        // Act
+        _calendar.RemoveHoliday(_holiday);
+
+        // Assert
+        _calendar.DomainEvents.Should().NotContain(x => x is CalendarHolidayRemovedDomainEvent);
     }
 }

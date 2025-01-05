@@ -89,6 +89,11 @@ public sealed class Calendar : AggregateRoot
 
     public void RemoveHoliday(CalendarHoliday holiday)
     {
+        if (_holidays.All(ch => ch.Id != holiday.Id))
+        {
+            return;
+        }
+
         _holidays.Remove(holiday);
 
         AddDomainEvent(new CalendarHolidayRemovedDomainEvent(Id, holiday.Id));
