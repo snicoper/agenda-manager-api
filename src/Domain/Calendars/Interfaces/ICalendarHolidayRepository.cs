@@ -1,5 +1,4 @@
 ﻿using AgendaManager.Domain.Calendars.ValueObjects;
-using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects;
 
 namespace AgendaManager.Domain.Calendars.Interfaces;
@@ -11,7 +10,7 @@ public interface ICalendarHolidayRepository
         Period period,
         CancellationToken cancellationToken = default);
 
-    Task<Result> IsOverlappingInPeriodByCalendarIdExcludeSelfAsync(
+    Task<bool> IsOverlappingInPeriodByCalendarIdExcludeSelfAsync(
         CalendarId calendarId,
         CalendarHolidayId calendarHolidayId,
         Period period,

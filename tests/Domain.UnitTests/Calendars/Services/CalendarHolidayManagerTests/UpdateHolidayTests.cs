@@ -107,6 +107,6 @@ public class UpdateHolidayTests : CalendarHolidayManagerTestsBase
                 Arg.Any<CalendarHolidayId>(),
                 Arg.Any<Period>(),
                 Arg.Any<CancellationToken>())
-            .Returns(overlaps ? CalendarHolidayErrors.HolidaysOverlap : Result.Success());
+            .Returns(overlaps);
     }
 }

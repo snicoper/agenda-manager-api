@@ -1,7 +1,5 @@
-﻿using AgendaManager.Domain.Calendars.Errors;
-using AgendaManager.Domain.Calendars.Interfaces;
+﻿using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.ValueObjects;
-using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +23,7 @@ public class CalendarHolidayRepository(AppDbContext context) : ICalendarHolidayR
         return holidays;
     }
 
-    public async Task<Result> IsOverlappingInPeriodByCalendarIdExcludeSelfAsync(
+    public async Task<bool> IsOverlappingInPeriodByCalendarIdExcludeSelfAsync(
         CalendarId calendarId,
         CalendarHolidayId calendarHolidayId,
         Period period,
@@ -39,7 +37,7 @@ public class CalendarHolidayRepository(AppDbContext context) : ICalendarHolidayR
                     && ch.Period.End >= period.Start,
                 cancellationToken);
 
-        return holidays ? CalendarHolidayErrors.HolidaysOverlap : Result.Success();
+        return holidays;
     }
 
     public async Task<bool> ExistsHolidayNameAsync(

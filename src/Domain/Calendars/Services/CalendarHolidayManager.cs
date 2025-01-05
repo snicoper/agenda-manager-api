@@ -119,9 +119,9 @@ public sealed class CalendarHolidayManager(
             period: period,
             cancellationToken: cancellationToken);
 
-        if (overlappingHoliday.IsFailure)
+        if (overlappingHoliday)
         {
-            return overlappingHoliday;
+            return CalendarHolidayErrors.HolidaysOverlap;
         }
 
         // Update holiday.
