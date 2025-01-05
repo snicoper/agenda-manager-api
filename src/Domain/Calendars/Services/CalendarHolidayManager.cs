@@ -35,9 +35,9 @@ public sealed class CalendarHolidayManager(
             period: period,
             cancellationToken: cancellationToken);
 
-        if (overlappingHoliday.IsFailure)
+        if (overlappingHoliday)
         {
-            return overlappingHoliday.MapToValue<CalendarHoliday>();
+            return CalendarHolidayErrors.HolidaysOverlap;
         }
 
         // Get calendar and check if exists.

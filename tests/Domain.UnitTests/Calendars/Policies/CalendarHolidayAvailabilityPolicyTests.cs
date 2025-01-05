@@ -30,7 +30,7 @@ public class CalendarHolidayAvailabilityPolicyTests
                 Arg.Any<CalendarId>(),
                 Arg.Any<Period>(),
                 Arg.Any<CancellationToken>())
-            .Returns(Result.Success());
+            .Returns(false);
 
         // Act
         var result = await _sut.IsAvailableAsync(
@@ -51,7 +51,7 @@ public class CalendarHolidayAvailabilityPolicyTests
                 Arg.Any<CalendarId>(),
                 Arg.Any<Period>(),
                 Arg.Any<CancellationToken>())
-            .Returns(CalendarHolidayErrors.HolidaysOverlap);
+            .Returns(true);
 
         // Act
         var result = await _sut.IsAvailableAsync(

@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Calendars.Interfaces;
+﻿using AgendaManager.Domain.Calendars.Errors;
+using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects;
@@ -18,6 +19,6 @@ public class CalendarHolidayAvailabilityPolicy(ICalendarHolidayRepository holida
             period: period,
             cancellationToken: cancellationToken);
 
-        return isOverlapping.IsFailure ? isOverlapping : Result.Success();
+        return isOverlapping ? CalendarHolidayErrors.HolidaysOverlap : Result.Success();
     }
 }

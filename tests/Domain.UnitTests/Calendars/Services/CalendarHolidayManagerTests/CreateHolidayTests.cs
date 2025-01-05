@@ -22,7 +22,7 @@ public class CreateHolidayTests : CalendarHolidayManagerTestsBase
         // Arrange
         var calendar = CalendarFactory.CreateCalendar();
         SetupCalendarHolidayRepositoryExistsHolidayNameAsync(false);
-        SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdAsync(Result.Success());
+        SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdAsync(false);
         SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
         SetupAppointmentRepositoryGetOverlappingAppointments([]);
 
@@ -55,7 +55,7 @@ public class CreateHolidayTests : CalendarHolidayManagerTestsBase
         // Arrange
         var calendar = CalendarFactory.CreateCalendar();
         SetupCalendarHolidayRepositoryExistsHolidayNameAsync(false);
-        SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdAsync(CalendarHolidayErrors.HolidaysOverlap);
+        SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdAsync(true);
 
         // Act
         var result = await SutCreateHolidayAsync(calendar.Id);
@@ -71,7 +71,7 @@ public class CreateHolidayTests : CalendarHolidayManagerTestsBase
         // Arrange
         var calendar = CalendarFactory.CreateCalendar();
         SetupCalendarHolidayRepositoryExistsHolidayNameAsync(false);
-        SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdAsync(Result.Success());
+        SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdAsync(false);
         SetupCalendarRepositoryGetByIdWithSettingsAsync(null);
 
         // Act
@@ -89,7 +89,7 @@ public class CreateHolidayTests : CalendarHolidayManagerTestsBase
         var settings = CalendarSettingsFactory.CreateCalendarSettings(holidayConflict: HolidayConflictStrategy.Reject);
         var calendar = CalendarFactory.CreateCalendar(settings: settings);
         SetupCalendarHolidayRepositoryExistsHolidayNameAsync(false);
-        SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdAsync(Result.Success());
+        SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdAsync(false);
         SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
         SetupAppointmentRepositoryGetOverlappingAppointments();
 
@@ -108,7 +108,7 @@ public class CreateHolidayTests : CalendarHolidayManagerTestsBase
         var settings = CalendarSettingsFactory.CreateCalendarSettings(holidayConflict: HolidayConflictStrategy.Cancel);
         var calendar = CalendarFactory.CreateCalendar(settings: settings);
         SetupCalendarHolidayRepositoryExistsHolidayNameAsync(false);
-        SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdAsync(Result.Success());
+        SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdAsync(false);
         SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
 
         // Act
@@ -128,7 +128,7 @@ public class CreateHolidayTests : CalendarHolidayManagerTestsBase
         var settings = CalendarSettingsFactory.CreateCalendarSettings(holidayConflict: HolidayConflictStrategy.Allow);
         var calendar = CalendarFactory.CreateCalendar(settings: settings);
         SetupCalendarHolidayRepositoryExistsHolidayNameAsync(false);
-        SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdAsync(Result.Success());
+        SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdAsync(false);
         SetupCalendarRepositoryGetByIdWithSettingsAsync(calendar);
         SetupAppointmentRepositoryGetOverlappingAppointments();
 
@@ -161,7 +161,7 @@ public class CreateHolidayTests : CalendarHolidayManagerTestsBase
             .Returns(exists);
     }
 
-    private void SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdAsync(Result exists)
+    private void SetupCalendarHolidayRepositoryIsOverlappingInPeriodByCalendarIdAsync(bool exists)
     {
         CalendarHolidayRepository.IsOverlappingInPeriodByCalendarIdAsync(
                 Arg.Any<CalendarId>(),

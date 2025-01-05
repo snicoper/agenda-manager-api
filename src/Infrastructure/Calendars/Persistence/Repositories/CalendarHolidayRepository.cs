@@ -10,7 +10,7 @@ namespace AgendaManager.Infrastructure.Calendars.Persistence.Repositories;
 
 public class CalendarHolidayRepository(AppDbContext context) : ICalendarHolidayRepository
 {
-    public async Task<Result> IsOverlappingInPeriodByCalendarIdAsync(
+    public async Task<bool> IsOverlappingInPeriodByCalendarIdAsync(
         CalendarId calendarId,
         Period period,
         CancellationToken cancellationToken = default)
@@ -22,7 +22,7 @@ public class CalendarHolidayRepository(AppDbContext context) : ICalendarHolidayR
                     && ch.Period.End >= period.Start,
                 cancellationToken);
 
-        return holidays ? CalendarHolidayErrors.HolidaysOverlap : Result.Success();
+        return holidays;
     }
 
     public async Task<Result> IsOverlappingInPeriodByCalendarIdExcludeSelfAsync(

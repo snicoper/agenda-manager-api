@@ -6,7 +6,7 @@ namespace AgendaManager.Domain.Calendars.Interfaces;
 
 public interface ICalendarHolidayRepository
 {
-    Task<Result> IsOverlappingInPeriodByCalendarIdAsync(
+    Task<bool> IsOverlappingInPeriodByCalendarIdAsync(
         CalendarId calendarId,
         Period period,
         CancellationToken cancellationToken = default);
