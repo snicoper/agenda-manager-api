@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Application.Calendars.Commands.CreateCalendar;
 using AgendaManager.Application.Calendars.Commands.CreateCalendarHoliday;
+using AgendaManager.Application.Calendars.Commands.DeleteCalendarHoliday;
 using AgendaManager.Application.Calendars.Commands.ToggleIsActive;
 using AgendaManager.Application.Calendars.Commands.UpdateAvailableDays;
 using AgendaManager.Application.Calendars.Commands.UpdateCalendar;
@@ -217,6 +218,21 @@ public class CalendarsController : ApiControllerBase
     public async Task<ActionResult<Result>> ToggleIsActive(Guid calendarId)
     {
         var command = new ToggleIsActiveCommand(calendarId);
+        var result = await Sender.Send(command);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Delete a holiday from a calendar.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpDelete("{calendarId:guid}/holidays/{calendarHolidayId:guid}")]
+    public async Task<ActionResult<Result>> DeleteCalendarHoliday(Guid calendarId, Guid calendarHolidayId)
+    {
+        var command = new DeleteCalendarHolidayCommand(calendarId, calendarHolidayId);
         var result = await Sender.Send(command);
 
         return result.ToActionResult();
