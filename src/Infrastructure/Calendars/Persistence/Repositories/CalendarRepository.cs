@@ -13,6 +13,13 @@ public class CalendarRepository(AppDbContext context) : ICalendarRepository
         return context.Calendars.AsQueryable();
     }
 
+    public async Task<List<Calendar>> GetCalendarsAsync(CancellationToken cancellationToken = default)
+    {
+        var calendars = await context.Calendars.ToListAsync(cancellationToken);
+
+        return calendars;
+    }
+
     public async Task<Calendar?> GetByIdAsync(CalendarId id, CancellationToken cancellationToken = default)
     {
         var calendar = await context.Calendars.FirstOrDefaultAsync(c => c.Id.Equals(id), cancellationToken);

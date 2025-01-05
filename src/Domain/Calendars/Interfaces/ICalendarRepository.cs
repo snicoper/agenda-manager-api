@@ -6,6 +6,8 @@ public interface ICalendarRepository
 {
     IQueryable<Calendar> GetQueryable();
 
+    Task<List<Calendar>> GetCalendarsAsync(CancellationToken cancellationToken = default);
+
     Task<Calendar?> GetByIdAsync(CalendarId id, CancellationToken cancellationToken = default);
 
     Task<Calendar?> GetByIdWithSettingsAsync(CalendarId calendarId, CancellationToken cancellationToken = default);

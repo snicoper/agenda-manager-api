@@ -9,6 +9,7 @@ using AgendaManager.Application.Calendars.Commands.UpdateCalendarSettings;
 using AgendaManager.Application.Calendars.Queries.GetCalendarById;
 using AgendaManager.Application.Calendars.Queries.GetCalendarHolidayById;
 using AgendaManager.Application.Calendars.Queries.GetCalendarHolidaysInYear;
+using AgendaManager.Application.Calendars.Queries.GetCalendars;
 using AgendaManager.Application.Calendars.Queries.GetCalendarSettings;
 using AgendaManager.Application.Calendars.Queries.GetCalendarsPaginated;
 using AgendaManager.Application.Common.Http;
@@ -32,6 +33,19 @@ public class CalendarsController : ApiControllerBase
         [FromQuery] RequestData requestData)
     {
         var query = new GetCalendarsPaginatedQuery(requestData);
+        var result = await Sender.Send(query);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Get list of calendars.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [HttpGet]
+    public async Task<ActionResult<Result<List<GetCalendarsQueryResponse>>>> GetCalendars()
+    {
+        var query = new GetCalendarsQuery();
         var result = await Sender.Send(query);
 
         return result.ToActionResult();
