@@ -1,11 +1,11 @@
 ﻿using AgendaManager.Application.Common.Http;
 using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Domain.Common.Responses;
-using AgendaManager.Domain.ResourceManagement.Resources.Interfaces;
+using AgendaManager.Domain.ResourceManagement.ResourceTypes.Interfaces;
 
 namespace AgendaManager.Application.ResourceManagement.ResourceTypes.Queries.GetResourceTypesPaginated;
 
-internal class GetResourceTypesPaginatedQueryHandler(IResourceRepository resourceRepository)
+internal class GetResourceTypesPaginatedQueryHandler(IResourceTypeRepository resourceTypeRepository)
     : IQueryHandler<GetResourceTypesPaginatedQuery,
         ResponseData<GetResourceTypesPaginatedQueryResponse>>
 {
@@ -13,11 +13,11 @@ internal class GetResourceTypesPaginatedQueryHandler(IResourceRepository resourc
         GetResourceTypesPaginatedQuery request,
         CancellationToken cancellationToken)
     {
-        // 1. Get the resource types queryable from the repository.
-        var resourceTypes = resourceRepository.GetQueryable()
+        // Get the resource types queryable from the repository.
+        var resourceTypes = resourceTypeRepository.GetQueryable()
             .AsQueryable();
 
-        // 2. Create the response data.
+        // Create the response data.
         var responseData = await ResponseData<GetResourceTypesPaginatedQueryResponse>.CreateAsync(
             source: resourceTypes,
             projection: rt => new GetResourceTypesPaginatedQueryResponse(
@@ -28,7 +28,7 @@ internal class GetResourceTypesPaginatedQueryHandler(IResourceRepository resourc
             request: request.RequestData,
             cancellationToken: cancellationToken);
 
-        // 3. Return the response data.
+        // Return the response data.
         return Result.Success(responseData);
     }
 }

@@ -5,7 +5,6 @@ using AgendaManager.Domain.ResourceManagement.Resources;
 using AgendaManager.Domain.ResourceManagement.Resources.Enums;
 using AgendaManager.Domain.ResourceManagement.Resources.Interfaces;
 using AgendaManager.Domain.ResourceManagement.Resources.ValueObjects;
-using AgendaManager.Domain.ResourceManagement.ResourceTypes;
 using AgendaManager.Domain.ResourceManagement.ResourceTypes.ValueObjects;
 using AgendaManager.Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -14,9 +13,9 @@ namespace AgendaManager.Infrastructure.ResourceManagement.Resources.Persistence.
 
 public class ResourceRepository(AppDbContext context) : IResourceRepository
 {
-    public IQueryable<ResourceType> GetQueryable()
+    public IQueryable<Resource> GetQueryable()
     {
-        return context.ResourceTypes.AsQueryable();
+        return context.Resources.AsQueryable();
     }
 
     public async Task<Resource?> GetByIdAsync(ResourceId resourceId, CancellationToken cancellationToken = default)

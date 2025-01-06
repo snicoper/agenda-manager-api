@@ -34,8 +34,4 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\Resources\"/>
-  </ItemGroup>
-
 </Project>

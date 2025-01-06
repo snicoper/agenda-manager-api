@@ -8,6 +8,11 @@ namespace AgendaManager.Infrastructure.ResourceManagement.ResourceTypes.Reposito
 
 public class ResourceTypeRepository(AppDbContext context) : IResourceTypeRepository
 {
+    public IQueryable<ResourceType> GetQueryable()
+    {
+        return context.ResourceTypes.AsQueryable();
+    }
+
     public Task<ResourceType?> GetByIdAsync(
         ResourceTypeId resourceTypeId,
         CancellationToken cancellationToken = default)

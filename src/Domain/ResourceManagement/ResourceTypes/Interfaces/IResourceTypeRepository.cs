@@ -4,6 +4,8 @@ namespace AgendaManager.Domain.ResourceManagement.ResourceTypes.Interfaces;
 
 public interface IResourceTypeRepository
 {
+    IQueryable<ResourceType> GetQueryable();
+
     Task<ResourceType?> GetByIdAsync(ResourceTypeId resourceTypeId, CancellationToken cancellationToken = default);
 
     Task<bool> ExistsByNameAsync(ResourceTypeId resourceTypeId, string name, CancellationToken cancellationToken);
