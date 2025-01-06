@@ -8,6 +8,7 @@ using AgendaManager.Application.Users.Accounts.Commands.ResetPassword;
 using AgendaManager.Application.Users.Accounts.Commands.ToggleIsActive;
 using AgendaManager.Application.Users.Accounts.Commands.UpdateAccount;
 using AgendaManager.Application.Users.Accounts.Commands.VerifyEmail;
+using AgendaManager.Application.Users.Accounts.FilterAccounts;
 using AgendaManager.Application.Users.Accounts.Queries.GetAccountById;
 using AgendaManager.Application.Users.Accounts.Queries.GetAccountsPaginated;
 using AgendaManager.Domain.Common.Responses;
@@ -31,6 +32,20 @@ public class AccountsController : ApiControllerBase
         [FromQuery] RequestData requestData)
     {
         var query = new GetAccountsPaginatedQuery(requestData);
+        var result = await Sender.Send(query);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Filter accounts by email, first name and lastname.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [HttpGet("filter")]
+    public async Task<ActionResult<Result<List<FilterAccountsQueryResponse>>>> FilterAccounts(
+        [FromQuery] FilterAccountsRequest request)
+    {
+        var query = new FilterAccountsQuery(Term: request.Term, PageSize: request.PageSize);
         var result = await Sender.Send(query);
 
         return result.ToActionResult();
