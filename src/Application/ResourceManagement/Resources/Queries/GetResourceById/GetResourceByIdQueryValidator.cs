@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace AgendaManager.Application.Resources.Queries.GetResourceById;
+namespace AgendaManager.Application.ResourceManagement.Resources.Queries.GetResourceById;
 
 public class GetResourceByIdQueryValidator : AbstractValidator<GetResourceByIdQuery>
 {

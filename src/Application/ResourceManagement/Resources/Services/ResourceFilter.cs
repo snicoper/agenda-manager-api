@@ -5,7 +5,7 @@ using AgendaManager.Application.Common.Serializers;
 using AgendaManager.Domain.Common.Extensions;
 using AgendaManager.Domain.ResourceManagement.Resources;
 
-namespace AgendaManager.Application.Resources.Services;
+namespace AgendaManager.Application.ResourceManagement.Resources.Services;
 
 public static class ResourceFilter
 {

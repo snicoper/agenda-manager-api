@@ -3,6 +3,7 @@ using AgendaManager.Application.ResourceManagement.ResourceTypes.Commands.Create
 using AgendaManager.Application.ResourceManagement.ResourceTypes.Commands.DeleteResourceType;
 using AgendaManager.Application.ResourceManagement.ResourceTypes.Commands.UpdateResourceType;
 using AgendaManager.Application.ResourceManagement.ResourceTypes.Queries.GetResourceTypeById;
+using AgendaManager.Application.ResourceManagement.ResourceTypes.Queries.GetResourceTypes;
 using AgendaManager.Application.ResourceManagement.ResourceTypes.Queries.GetResourceTypesPaginated;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Controllers.ResourceManagement.ResourceTypes.Contracts;
@@ -24,6 +25,19 @@ public class ResourceTypesController : ApiControllerBase
         GetResourceTypesPaginated([FromQuery] RequestData requestData)
     {
         var query = new GetResourceTypesPaginatedQuery(requestData);
+        var result = await Sender.Send(query);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Get all resource types.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [HttpGet]
+    public async Task<ActionResult<Result<List<GetResourceTypesQueryResponse>>>> GetResourceTypes()
+    {
+        var query = new GetResourceTypesQuery();
         var result = await Sender.Send(query);
 
         return result.ToActionResult();

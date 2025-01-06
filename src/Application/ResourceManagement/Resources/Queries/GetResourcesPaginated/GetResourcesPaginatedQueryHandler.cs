@@ -1,11 +1,11 @@
 ﻿using AgendaManager.Application.Common.Http;
 using AgendaManager.Application.Common.Interfaces.Messaging;
-using AgendaManager.Application.Resources.Services;
+using AgendaManager.Application.ResourceManagement.Resources.Services;
 using AgendaManager.Application.Users.Services;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.ResourceManagement.Resources.Interfaces;
 
-namespace AgendaManager.Application.Resources.Queries.GetResourcesPaginated;
+namespace AgendaManager.Application.ResourceManagement.Resources.Queries.GetResourcesPaginated;
 
 internal class GetResourcesPaginatedQueryHandler(
     IResourceRepository resourceRepository,

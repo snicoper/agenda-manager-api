@@ -1,6 +1,6 @@
-﻿namespace AgendaManager.Application.Resources.Queries.GetResourceById;
+﻿namespace AgendaManager.Application.ResourceManagement.Resources.Queries.GetResourcesPaginated;
 
-public record GetResourceByIdQueryResponse(
+public record GetResourcesPaginatedQueryResponse(
     Guid ResourceId,
     string Name,
     string Description,

@@ -4,7 +4,7 @@ using AgendaManager.Domain.ResourceManagement.Resources.Errors;
 using AgendaManager.Domain.ResourceManagement.Resources.Interfaces;
 using AgendaManager.Domain.ResourceManagement.Resources.ValueObjects;
 
-namespace AgendaManager.Application.Resources.Queries.GetResourceById;
+namespace AgendaManager.Application.ResourceManagement.Resources.Queries.GetResourceById;
 
 internal class GetResourceByIdQueryHandler(IResourceRepository resourceRepository)
     : IQueryHandler<GetResourceByIdQuery, GetResourceByIdQueryResponse>

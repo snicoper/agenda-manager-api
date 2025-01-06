@@ -1,12 +1,14 @@
 ﻿using AgendaManager.Application.Common.Http;
-using AgendaManager.Application.Resources.Queries.GetResourceById;
-using AgendaManager.Application.Resources.Queries.GetResourcesPaginated;
+using AgendaManager.Application.ResourceManagement.Resources.Commands.CreateResource;
+using AgendaManager.Application.ResourceManagement.Resources.Queries.GetResourceById;
+using AgendaManager.Application.ResourceManagement.Resources.Queries.GetResourcesPaginated;
 using AgendaManager.Domain.Common.Responses;
+using AgendaManager.WebApi.Controllers.ResourceManagement.Resources.Contracts;
 using AgendaManager.WebApi.Infrastructure;
 using AgendaManager.WebApi.Infrastructure.Results;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AgendaManager.WebApi.Controllers.Resources;
+namespace AgendaManager.WebApi.Controllers.ResourceManagement.Resources;
 
 [Route("api/v{version:apiVersion}/resources")]
 public class ResourcesController : ApiControllerBase
@@ -36,6 +38,25 @@ public class ResourcesController : ApiControllerBase
     {
         var query = new GetResourceByIdQuery(resourceId);
         var result = await Sender.Send(query);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Create a new resource.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [HttpPost]
+    public async Task<ActionResult<Result>> CreateResource(CreateResourceRequest request)
+    {
+        var command = new CreateResourceCommand(
+            request.Name,
+            request.Description,
+            request.Category,
+            request.TextColor,
+            request.BackgroundColor);
+        var result = await Sender.Send(command);
 
         return result.ToActionResult();
     }

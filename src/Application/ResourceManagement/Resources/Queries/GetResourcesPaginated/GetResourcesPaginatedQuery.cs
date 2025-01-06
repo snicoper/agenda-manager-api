@@ -3,7 +3,7 @@ using AgendaManager.Application.Common.Http;
 using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Domain.Authorization.Constants;
 
-namespace AgendaManager.Application.Resources.Queries.GetResourcesPaginated;
+namespace AgendaManager.Application.ResourceManagement.Resources.Queries.GetResourcesPaginated;
 
 [Authorize(Permissions = SystemPermissions.Resources.Read)]
 public record GetResourcesPaginatedQuery(RequestData RequestData)
