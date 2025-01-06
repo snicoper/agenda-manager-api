@@ -1,4 +1,5 @@
 ﻿using AgendaManager.Application.Common.Http;
+using AgendaManager.Application.Resources.Queries.GetResourceById;
 using AgendaManager.Application.Resources.Queries.GetResourcesPaginated;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Infrastructure;
@@ -19,6 +20,21 @@ public class ResourcesController : ApiControllerBase
         [FromQuery] RequestData requestData)
     {
         var query = new GetResourcesPaginatedQuery(requestData);
+        var result = await Sender.Send(query);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Get resource by id.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpGet("{resourceId:guid}")]
+    public async Task<ActionResult<Result<GetResourceByIdQueryResponse>>> GetResourceById(Guid resourceId)
+    {
+        var query = new GetResourceByIdQuery(resourceId);
         var result = await Sender.Send(query);
 
         return result.ToActionResult();
