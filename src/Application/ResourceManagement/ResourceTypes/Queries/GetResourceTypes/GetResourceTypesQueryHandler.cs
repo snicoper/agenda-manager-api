@@ -14,7 +14,9 @@ internal class GetResourceTypesQueryHandler(IResourceTypeRepository resourceType
     {
         var resourceTypes = await resourceTypeRepository.GetQueryable().ToListAsync(cancellationToken);
 
-        var response = resourceTypes.Select(x => new GetResourceTypesQueryResponse(x.Id.Value, x.Name)).ToList();
+        var response = resourceTypes
+            .Select(rt => new GetResourceTypesQueryResponse(rt.Id.Value, rt.Name, rt.Category))
+            .ToList();
 
         return Result.Success(response);
     }

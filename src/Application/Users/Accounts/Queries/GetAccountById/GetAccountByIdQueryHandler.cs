@@ -4,13 +4,13 @@ using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
 
-namespace AgendaManager.Application.Users.Accounts.Queries.GetAccountDetails;
+namespace AgendaManager.Application.Users.Accounts.Queries.GetAccountById;
 
-internal class GetAccountDetailsQueryHandler(IUserRepository userRepository)
-    : IQueryHandler<GetAccountDetailsQuery, GetAccountDetailsQueryResponse>
+internal class GetAccountByIdQueryHandler(IUserRepository userRepository)
+    : IQueryHandler<GetAccountByIdQuery, GetAccountByIdQueryResponse>
 {
-    public async Task<Result<GetAccountDetailsQueryResponse>> Handle(
-        GetAccountDetailsQuery request,
+    public async Task<Result<GetAccountByIdQueryResponse>> Handle(
+        GetAccountByIdQuery request,
         CancellationToken cancellationToken)
     {
         // 1. Get user by id and check if it exists.
@@ -22,7 +22,7 @@ internal class GetAccountDetailsQueryHandler(IUserRepository userRepository)
         }
 
         // 2. Map user to response.
-        var response = new GetAccountDetailsQueryResponse(
+        var response = new GetAccountByIdQueryResponse(
             UserId: user.Id.Value,
             Email: user.Email.Value,
             FirstName: user.Profile.FirstName,
@@ -37,10 +37,10 @@ internal class GetAccountDetailsQueryHandler(IUserRepository userRepository)
         return response;
     }
 
-    private static GetAccountDetailsQueryResponse.PhoneNumberResponse? MapPhoneNumber(PhoneNumber? phone)
+    private static GetAccountByIdQueryResponse.PhoneNumberResponse? MapPhoneNumber(PhoneNumber? phone)
     {
         var mapPhoneNumber = phone is not null
-            ? new GetAccountDetailsQueryResponse.PhoneNumberResponse(
+            ? new GetAccountByIdQueryResponse.PhoneNumberResponse(
                 Number: phone.Number,
                 CountryCode: phone.CountryCode)
             : null;
@@ -48,10 +48,10 @@ internal class GetAccountDetailsQueryHandler(IUserRepository userRepository)
         return mapPhoneNumber;
     }
 
-    private static GetAccountDetailsQueryResponse.AddressResponse? MapAddress(Address? address)
+    private static GetAccountByIdQueryResponse.AddressResponse? MapAddress(Address? address)
     {
         var mapAddress = address is not null
-            ? new GetAccountDetailsQueryResponse.AddressResponse(
+            ? new GetAccountByIdQueryResponse.AddressResponse(
                 Street: address?.Street,
                 City: address?.City,
                 State: address?.State,
@@ -62,11 +62,11 @@ internal class GetAccountDetailsQueryHandler(IUserRepository userRepository)
         return mapAddress;
     }
 
-    private static GetAccountDetailsQueryResponse.IdentityDocumentResponse? MapIdentityDocument(
+    private static GetAccountByIdQueryResponse.IdentityDocumentResponse? MapIdentityDocument(
         IdentityDocument? identityDocument)
     {
         var mapIdentityDocument = identityDocument is not null
-            ? new GetAccountDetailsQueryResponse.IdentityDocumentResponse(
+            ? new GetAccountByIdQueryResponse.IdentityDocumentResponse(
                 Number: identityDocument?.Value,
                 CountryCode: identityDocument?.CountryCode,
                 Type: identityDocument?.Type)

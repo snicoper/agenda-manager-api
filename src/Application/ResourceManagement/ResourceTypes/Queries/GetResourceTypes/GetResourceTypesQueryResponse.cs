@@ -1,3 +1,5 @@
-﻿namespace AgendaManager.Application.ResourceManagement.ResourceTypes.Queries.GetResourceTypes;
+﻿using AgendaManager.Domain.ResourceManagement.Shared.Enums;
 
-public record GetResourceTypesQueryResponse(Guid ResourceTypeId, string Name);
+namespace AgendaManager.Application.ResourceManagement.ResourceTypes.Queries.GetResourceTypes;
+
+public record GetResourceTypesQueryResponse(Guid ResourceTypeId, string Name, ResourceCategory Category);

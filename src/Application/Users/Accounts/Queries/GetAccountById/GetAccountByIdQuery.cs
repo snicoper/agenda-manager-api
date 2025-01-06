@@ -2,7 +2,7 @@
 using AgendaManager.Application.Common.Interfaces.Messaging;
 using AgendaManager.Domain.Authorization.Constants;
 
-namespace AgendaManager.Application.Users.Accounts.Queries.GetAccountDetails;
+namespace AgendaManager.Application.Users.Accounts.Queries.GetAccountById;
 
 [Authorize(Permissions = SystemPermissions.Users.Read)]
-public record GetAccountDetailsQuery(Guid UserId) : IQuery<GetAccountDetailsQueryResponse>;
+public record GetAccountByIdQuery(Guid UserId) : IQuery<GetAccountByIdQueryResponse>;

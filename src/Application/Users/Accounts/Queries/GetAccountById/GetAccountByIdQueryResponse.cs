@@ -1,8 +1,8 @@
 ﻿using AgendaManager.Domain.Users.Enums;
 
-namespace AgendaManager.Application.Users.Accounts.Queries.GetAccountDetails;
+namespace AgendaManager.Application.Users.Accounts.Queries.GetAccountById;
 
-public record GetAccountDetailsQueryResponse(
+public record GetAccountByIdQueryResponse(
     Guid UserId,
     string Email,
     string FirstName,
@@ -10,9 +10,9 @@ public record GetAccountDetailsQueryResponse(
     bool IsEmailConfirmed,
     bool IsActive,
     DateTimeOffset CreatedAt,
-    GetAccountDetailsQueryResponse.PhoneNumberResponse? PhoneNumber,
-    GetAccountDetailsQueryResponse.AddressResponse? Address,
-    GetAccountDetailsQueryResponse.IdentityDocumentResponse? IdentityDocument)
+    GetAccountByIdQueryResponse.PhoneNumberResponse? PhoneNumber,
+    GetAccountByIdQueryResponse.AddressResponse? Address,
+    GetAccountByIdQueryResponse.IdentityDocumentResponse? IdentityDocument)
 {
     public record PhoneNumberResponse(string? Number, string? CountryCode);
 
