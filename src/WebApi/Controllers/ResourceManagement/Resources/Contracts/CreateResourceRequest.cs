@@ -1,10 +1,9 @@
-﻿using AgendaManager.Domain.ResourceManagement.Shared.Enums;
-
-namespace AgendaManager.WebApi.Controllers.ResourceManagement.Resources.Contracts;
+﻿namespace AgendaManager.WebApi.Controllers.ResourceManagement.Resources.Contracts;
 
 public record CreateResourceRequest(
+    Guid? UserId,
+    Guid ResourceTypeId,
     string Name,
     string Description,
-    ResourceCategory Category,
     string TextColor,
     string BackgroundColor);

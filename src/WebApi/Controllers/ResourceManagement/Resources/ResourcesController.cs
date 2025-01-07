@@ -51,9 +51,10 @@ public class ResourcesController : ApiControllerBase
     public async Task<ActionResult<Result>> CreateResource(CreateResourceRequest request)
     {
         var command = new CreateResourceCommand(
+            request.UserId,
+            request.ResourceTypeId,
             request.Name,
             request.Description,
-            request.Category,
             request.TextColor,
             request.BackgroundColor);
         var result = await Sender.Send(command);

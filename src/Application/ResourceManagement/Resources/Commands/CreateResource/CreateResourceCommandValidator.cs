@@ -6,6 +6,9 @@ public class CreateResourceCommandValidator : AbstractValidator<CreateResourceCo
 {
     public CreateResourceCommandValidator()
     {
+        RuleFor(x => x.ResourceTypeId)
+            .NotEmpty().WithMessage("Resource type is required.");
+
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Name is required.")
             .MaximumLength(50).WithMessage("Name must not exceed 50 characters.");
@@ -13,9 +16,6 @@ public class CreateResourceCommandValidator : AbstractValidator<CreateResourceCo
         RuleFor(x => x.Description)
             .NotEmpty().WithMessage("Description is required.")
             .MaximumLength(500).WithMessage("Description must not exceed 500 characters.");
-
-        RuleFor(x => x.Category)
-            .IsInEnum().WithMessage("Invalid category.");
 
         RuleFor(x => x.TextColor)
             .NotEmpty().WithMessage("Text color is required.")
