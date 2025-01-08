@@ -26,4 +26,10 @@ public static partial class DomainRegex
     /// </summary>
     [GeneratedRegex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", RegexOptions.Compiled)]
     public static partial Regex StrongPassword();
+
+    /// <summary>
+    /// Verificación de color hexadecimal.
+    /// </summary>
+    [GeneratedRegex("^#[0-9A-Fa-f]{6}$", RegexOptions.Compiled)]
+    public static partial Regex ValidHexColor();
 }
