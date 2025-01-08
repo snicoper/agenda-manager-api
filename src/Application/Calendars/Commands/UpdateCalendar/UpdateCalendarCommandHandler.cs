@@ -13,7 +13,7 @@ internal class UpdateCalendarCommandHandler(
 {
     public async Task<Result> Handle(UpdateCalendarCommand request, CancellationToken cancellationToken)
     {
-        // 1. Update the calendar and check has update the calendar.
+        // Update the calendar and check has update the calendar.
         var updateResult = await calendarManager.UpdateCalendarAsync(
             CalendarId.From(request.CalendarId),
             request.Name,
@@ -25,7 +25,7 @@ internal class UpdateCalendarCommandHandler(
             return updateResult;
         }
 
-        // 2. Save changes.
+        // Save changes.
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.NoContent();

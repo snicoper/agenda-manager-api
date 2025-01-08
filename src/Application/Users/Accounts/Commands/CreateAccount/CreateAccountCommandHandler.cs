@@ -21,10 +21,10 @@ internal class CreateAccountCommandHandler(
         CreateAccountCommand request,
         CancellationToken cancellationToken)
     {
-        // 1. Generate the raw password.
+        // Generate the raw password.
         var passwordRaw = PasswordGenerator.GeneratePassword();
 
-        // 2. Create user.
+        // Create user.
         var email = EmailAddress.From(request.Email);
         var userId = UserId.Create();
 
@@ -41,9 +41,8 @@ internal class CreateAccountCommandHandler(
             return userResultCreated.MapTo<CreateAccountCommandResponse>();
         }
 
-        // 3. Create user token.
+        // Create user token.
         var tokenResult = userResultCreated.Value?.CreateUserToken(UserTokenType.AdminCreatedAccount);
-
         if (tokenResult!.IsFailure)
         {
             return tokenResult.MapTo<CreateAccountCommandResponse>();
@@ -51,7 +50,7 @@ internal class CreateAccountCommandHandler(
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        // 4. Add roles to user.
+        // Add roles to user.
         foreach (var roleId in request.Roles)
         {
             var addRoleResult = await authorizationService.AddRoleToUserAsync(
@@ -65,9 +64,10 @@ internal class CreateAccountCommandHandler(
             }
         }
 
-        // 5. Save changes.
+        // Save changes.
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
+        // Return the response.
         var resultResponse = new CreateAccountCommandResponse(userId.Value);
 
         return Result.Create(resultResponse);

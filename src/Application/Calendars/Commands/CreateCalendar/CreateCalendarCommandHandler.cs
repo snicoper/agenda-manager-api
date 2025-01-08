@@ -14,7 +14,7 @@ internal class CreateCalendarCommandHandler(CalendarManager calendarManager, IUn
         CreateCalendarCommand request,
         CancellationToken cancellationToken)
     {
-        // 1. Create a new calendar.
+        // Create a new calendar.
         var calendarId = CalendarId.Create();
         var ianaTimeZone = IanaTimeZone.FromIana(request.IanaTimeZone);
 
@@ -30,10 +30,10 @@ internal class CreateCalendarCommandHandler(CalendarManager calendarManager, IUn
             return createResult.MapToValue<CreateCalendarCommandResponse>();
         }
 
-        // 2. Save changes.
+        // Save changes.
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        // 3. Return the response.
+        // Return the response.
         var response = new CreateCalendarCommandResponse(createResult.Value!.Id.Value);
 
         return Result.Create(response);

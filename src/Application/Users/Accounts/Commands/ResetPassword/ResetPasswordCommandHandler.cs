@@ -17,16 +17,15 @@ internal class ResetPasswordCommandHandler(
 {
     public async Task<Result> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
     {
-        // 1. Check if user with token exists.
+        // Check if user with token exists.
         var user = await userRepository.GetByTokenValueWithTokensAsync(request.Token, cancellationToken);
-
         if (user is null)
         {
             return UserTokenErrors.UserTokenNotFoundOrExpired;
         }
 
+        // Check if token is expired and remove it.
         var userToken = user.Tokens.First(x => x.Token.Value == request.Token);
-
         if (userToken.IsExpired)
         {
             await RemoveTokenFromUserAsync(user, userToken, cancellationToken);
@@ -34,9 +33,8 @@ internal class ResetPasswordCommandHandler(
             return UserTokenErrors.UserTokenNotFoundOrExpired;
         }
 
-        // 2. Update the password and remove the token.
+        // Update the password and remove the token.
         var updatePasswordResult = userManager.UpdatePassword(user, request.NewPassword);
-
         if (updatePasswordResult.IsFailure)
         {
             await RemoveTokenFromUserAsync(user, userToken, cancellationToken);
@@ -44,7 +42,7 @@ internal class ResetPasswordCommandHandler(
             return updatePasswordResult;
         }
 
-        // 3. Remove the token.
+        // Remove the token.
         await RemoveTokenFromUserAsync(user, userToken, cancellationToken);
 
         return Result.NoContent();

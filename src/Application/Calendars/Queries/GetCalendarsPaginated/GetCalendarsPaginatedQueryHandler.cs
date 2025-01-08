@@ -12,11 +12,11 @@ internal class GetCalendarsPaginatedQueryHandler(ICalendarRepository calendarRep
         GetCalendarsPaginatedQuery request,
         CancellationToken cancellationToken)
     {
-        // 1. Get the calendars queryable from the repository.
+        // Get the calendars queryable from the repository.
         var calendars = calendarRepository.GetQueryable()
             .AsQueryable();
 
-        // 2. Create the response data.
+        // Create the response data.
         var responseData = await ResponseData<GetCalendarsPaginatedQueryResponse>.CreateAsync(
             source: calendars,
             projection: c => new GetCalendarsPaginatedQueryResponse(
@@ -27,7 +27,6 @@ internal class GetCalendarsPaginatedQueryHandler(ICalendarRepository calendarRep
             request: request.RequestData,
             cancellationToken: cancellationToken);
 
-        // 3. Return the response data.
         return Result.Success(responseData);
     }
 }

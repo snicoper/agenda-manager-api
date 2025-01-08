@@ -16,7 +16,7 @@ internal class CreateCalendarHolidayCommandHandler(
         CreateCalendarHolidayCommand request,
         CancellationToken cancellationToken)
     {
-        // 1. Create holiday and check is valid.
+        // Create holiday and check is valid.
         var result = await calendarHolidayManager.CreateHolidayAsync(
             CalendarId.From(request.CalendarId),
             Period.From(request.Start, request.End),
@@ -28,10 +28,10 @@ internal class CreateCalendarHolidayCommandHandler(
             return result.MapTo<CreateCalendarHolidayCommandResponse>();
         }
 
-        // 2. Save changes.
+        // Save changes.
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        // 3. Return response.
+        // Return response.
         var response = new CreateCalendarHolidayCommandResponse(result.Value?.Id.Value ?? Guid.Empty);
 
         return Result.Create(response);

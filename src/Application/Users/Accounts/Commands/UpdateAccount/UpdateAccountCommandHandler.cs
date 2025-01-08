@@ -16,15 +16,14 @@ internal class UpdateAccountCommandHandler(
 {
     public async Task<Result> Handle(UpdateAccountCommand request, CancellationToken cancellationToken)
     {
-        // 1. Get user by id and check if it exists.
+        // Get user by id and check if it exists.
         var user = await userRepository.GetByIdWithProfileAsync(UserId.From(request.UserId), cancellationToken);
-
         if (user is null)
         {
             return UserErrors.UserNotFound;
         }
 
-        // 2. Update user profile.
+        // Update user profile.
         var updateUserProfileResult = await userProfileManager.UpdateUserProfile(
             user: user,
             firstName: request.FirstName,
@@ -39,10 +38,9 @@ internal class UpdateAccountCommandHandler(
             return updateUserProfileResult;
         }
 
-        // 3. Save changes.
+        // Save changes.
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        // 4. Return success.
         return Result.NoContent();
     }
 

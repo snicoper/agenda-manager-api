@@ -13,15 +13,14 @@ internal class GetAccountByIdQueryHandler(IUserRepository userRepository)
         GetAccountByIdQuery request,
         CancellationToken cancellationToken)
     {
-        // 1. Get user by id and check if it exists.
+        // Get user by id and check if it exists.
         var user = await userRepository.GetByIdWithAllInfoAsync(UserId.From(request.UserId), cancellationToken);
-
         if (user is null)
         {
             return UserErrors.UserNotFound;
         }
 
-        // 2. Map user to response.
+        // Map user to response.
         var response = new GetAccountByIdQueryResponse(
             UserId: user.Id.Value,
             Email: user.Email.Value,

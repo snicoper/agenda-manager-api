@@ -16,21 +16,20 @@ internal class ConfirmAccountCommandHandler(
 {
     public async Task<Result> Handle(ConfirmAccountCommand request, CancellationToken cancellationToken)
     {
-        // 1. Check if user exists.
+        // Check if user exists.
         var user = await userRepository.GetByTokenValueWithTokensAsync(request.Token, cancellationToken);
-
         if (user == null)
         {
             return UserTokenErrors.UserTokenNotFoundOrExpired;
         }
 
-        // 2. Hash and update the password.
+        // Hash and update the password.
         userManager.UpdatePassword(user, request.NewPassword);
 
-        // 3. Remove the token.
+        // Remove the token.
         user.ConsumeUserToken(user.Tokens.First(t => t.Type == UserTokenType.AdminCreatedAccount).Id, request.Token);
 
-        // 4. Save changes.
+        // Save changes.
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.NoContent();

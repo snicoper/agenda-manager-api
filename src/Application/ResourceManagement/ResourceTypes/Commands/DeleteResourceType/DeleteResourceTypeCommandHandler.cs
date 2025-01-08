@@ -11,7 +11,7 @@ internal class DeleteResourceTypeCommandHandler(ResourceTypeManager resourceType
 {
     public async Task<Result> Handle(DeleteResourceTypeCommand request, CancellationToken cancellationToken)
     {
-        // 1. Check if can delete resource type.
+        // Check if can delete resource type.
         var deleteResult = await resourceTypeManager.DeleteResourceTypeAsync(
             ResourceTypeId.From(request.ResourceTypeId),
             cancellationToken);
@@ -21,7 +21,7 @@ internal class DeleteResourceTypeCommandHandler(ResourceTypeManager resourceType
             return deleteResult;
         }
 
-        // 2. Save changes.
+        // Save changes.
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.NoContent();

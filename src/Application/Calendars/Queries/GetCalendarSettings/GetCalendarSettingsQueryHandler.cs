@@ -13,7 +13,7 @@ internal class GetCalendarSettingsQueryHandler(ICalendarRepository calendarRepos
         GetCalendarSettingsQuery request,
         CancellationToken cancellationToken)
     {
-        // 1. Get the calendar by id and check if exists.
+        // Get the calendar by id and check if exists.
         var calendar = await calendarRepository.GetByIdWithSettingsAsync(
             CalendarId.From(request.CalendarId),
             cancellationToken);
@@ -23,7 +23,7 @@ internal class GetCalendarSettingsQueryHandler(ICalendarRepository calendarRepos
             return CalendarErrors.CalendarNotFound;
         }
 
-        // 2. Map the calendar settings to the response.
+        // Map the calendar settings to the response.
         var response = new GetCalendarSettingsQueryResponse(
             CalendarId: calendar.Id.Value,
             TimeZone: calendar.Settings.TimeZone.Value,
@@ -32,7 +32,6 @@ internal class GetCalendarSettingsQueryHandler(ICalendarRepository calendarRepos
             HolidayConflict: calendar.Settings.HolidayConflict,
             ResourceScheduleValidation: calendar.Settings.ResourceScheduleValidation);
 
-        // 3. Return the response.
         return Result.Success(response);
     }
 }

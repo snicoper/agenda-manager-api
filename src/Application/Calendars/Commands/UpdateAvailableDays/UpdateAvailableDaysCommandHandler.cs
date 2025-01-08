@@ -11,7 +11,7 @@ internal class UpdateAvailableDaysCommandHandler(CalendarManager calendarManager
 {
     public async Task<Result> Handle(UpdateAvailableDaysCommand request, CancellationToken cancellationToken)
     {
-        // 1. Update the Available days in the calendar.
+        // Update the Available days in the calendar.
         var updateResult = await calendarManager.UpdateAvailableDaysAsync(
             CalendarId.From(request.CalendarId),
             request.AvailableDays,
@@ -22,7 +22,7 @@ internal class UpdateAvailableDaysCommandHandler(CalendarManager calendarManager
             return updateResult;
         }
 
-        // 2. Save changes.
+        // Save changes.
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.NoContent();

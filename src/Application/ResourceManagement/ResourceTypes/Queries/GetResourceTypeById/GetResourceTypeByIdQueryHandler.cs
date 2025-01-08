@@ -13,7 +13,7 @@ internal class GetResourceTypeByIdQueryHandler(IResourceTypeRepository resourceT
         GetResourceTypeByIdQuery request,
         CancellationToken cancellationToken)
     {
-        // 1. Get the resource type by id and check if exists.
+        // Get the resource type by id and check if exists.
         var resourceType = await resourceTypeRepository.GetByIdAsync(
             ResourceTypeId.From(request.ResourceTypeId),
             cancellationToken);
@@ -23,14 +23,13 @@ internal class GetResourceTypeByIdQueryHandler(IResourceTypeRepository resourceT
             return ResourceTypeErrors.ResourceTypeNotFound;
         }
 
-        // 2. Map the resource type to response.
+        // Map the resource type to response.
         var response = new GetResourceTypeByIdQueryResponse(
             resourceType.Id.Value,
             resourceType.Name,
             resourceType.Description,
             resourceType.Category);
 
-        // 3. Return the response.
         return Result.Success(response);
     }
 }

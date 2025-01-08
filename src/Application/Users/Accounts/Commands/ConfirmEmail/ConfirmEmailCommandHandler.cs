@@ -13,7 +13,7 @@ internal class ConfirmEmailCommandHandler(IUserRepository userRepository, IUnitO
 {
     public async Task<Result> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
     {
-        // 1. Get user by id and check if it exists.
+        // Get user by id and check if it exists.
         var user = await userRepository.GetByIdWithTokensAsync(UserId.From(request.UserId), cancellationToken);
 
         if (user is null)
@@ -21,7 +21,7 @@ internal class ConfirmEmailCommandHandler(IUserRepository userRepository, IUnitO
             return UserErrors.UserNotFound;
         }
 
-        // 2. Check if user have token to confirm email and delete.
+        // Check if user have token to confirm email and delete.
         var userToken = user.Tokens.FirstOrDefault(x => x.Type == UserTokenType.EmailConfirmation);
 
         if (userToken is not null)
@@ -29,12 +29,13 @@ internal class ConfirmEmailCommandHandler(IUserRepository userRepository, IUnitO
             user.ConsumeUserToken(userToken.Id, userToken.Token.Value);
         }
 
-        // 3. Check if user is active and confirm email.
+        // Check if user is active and confirm email.
         if (user.IsEmailConfirmed)
         {
             return Result.Success();
         }
 
+        // Confirm the email and save changes.
         user.ConfirmEmail();
         await unitOfWork.SaveChangesAsync(cancellationToken);
 

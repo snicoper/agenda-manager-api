@@ -14,23 +14,22 @@ internal class GetAvailableRolesByUserIdQueryHandler(IUserRepository userReposit
         GetAvailableRolesByUserIdQuery request,
         CancellationToken cancellationToken)
     {
-        // 1. Get user by id and check if it exists.
+        // Get user by id and check if it exists.
         var user = await userRepository.GetByIdWithRolesAsync(UserId.From(request.UserId), cancellationToken);
-
         if (user is null)
         {
             return UserErrors.UserNotFound;
         }
 
-        // 2. Get roles ids from user.
+        // Get roles ids from user.
         var rolesIds = user.UserRoles
             .Select(x => x.RoleId)
             .ToList();
 
-        // 3. Get all roles.
+        // Get all roles.
         var roles = await roleRepository.GetAllRolesAsync(cancellationToken);
 
-        // 4. Map roles to response.
+        // Map roles to response.
         var response = roles
             .Select(
                 role => new GetAvailableRolesByUserIdQueryResponse(
@@ -39,7 +38,6 @@ internal class GetAvailableRolesByUserIdQueryHandler(IUserRepository userReposit
                     IsAssigned: rolesIds.Any(r => r == role.Id)))
             .ToList();
 
-        // 5. Return response.
         return Result.Success(response);
     }
 }

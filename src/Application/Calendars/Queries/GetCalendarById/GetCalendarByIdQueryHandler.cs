@@ -13,15 +13,14 @@ internal class GetCalendarByIdQueryHandler(ICalendarRepository calendarRepositor
         GetCalendarByIdQuery request,
         CancellationToken cancellationToken)
     {
-        // 1. Get the calendar by id and check if exists.
+        // Get the calendar by id and check if exists.
         var calendar = await calendarRepository.GetByIdAsync(CalendarId.From(request.CalendarId), cancellationToken);
-
         if (calendar == null)
         {
             return CalendarErrors.CalendarNotFound;
         }
 
-        // 2. Map the calendar to the response.
+        // Map the calendar to the response.
         var response = new GetCalendarByIdQueryResponse(
             CalendarId: calendar.Id.Value,
             Name: calendar.Name,

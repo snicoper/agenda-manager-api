@@ -12,15 +12,14 @@ internal class ToggleIsActiveCommandHandler(ICalendarRepository calendarReposito
 {
     public async Task<Result> Handle(ToggleIsActiveCommand request, CancellationToken cancellationToken)
     {
-        // 1. Get the calendar by id and check if exists.
+        // Get the calendar by id and check if exists.
         var calendar = await calendarRepository.GetByIdAsync(CalendarId.From(request.CalendarId), cancellationToken);
-
         if (calendar == null)
         {
             return CalendarErrors.CalendarNotFound;
         }
 
-        // 2. Toggle the IsActive property.
+        // Toggle the IsActive property.
         if (calendar.IsActive)
         {
             calendar.Deactivate();
@@ -30,7 +29,7 @@ internal class ToggleIsActiveCommandHandler(ICalendarRepository calendarReposito
             calendar.Activate();
         }
 
-        // 3. Save the changes.
+        // Save the changes.
         calendarRepository.Update(calendar);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 

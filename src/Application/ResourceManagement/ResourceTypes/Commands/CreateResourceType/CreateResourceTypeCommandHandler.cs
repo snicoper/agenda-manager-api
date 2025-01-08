@@ -13,7 +13,7 @@ internal class CreateResourceTypeCommandHandler(ResourceTypeManager resourceType
         CreateResourceTypeCommand request,
         CancellationToken cancellationToken)
     {
-        // 1. Create a new resource type.
+        // Create a new resource type.
         var createResult = await resourceTypeManager.CreateResourceTypeAsync(
             resourceTypeId: ResourceTypeId.Create(),
             name: request.Name,
@@ -26,10 +26,10 @@ internal class CreateResourceTypeCommandHandler(ResourceTypeManager resourceType
             return createResult.MapTo<CreateResourceTypeCommandResponse>();
         }
 
-        // 2. Save changes.
+        // Save changes.
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        // 3. Return the result.
+        // Map the result to the response.
         var response = new CreateResourceTypeCommandResponse(createResult.Value?.Id.Value ?? Guid.Empty);
 
         return Result.Create(response);

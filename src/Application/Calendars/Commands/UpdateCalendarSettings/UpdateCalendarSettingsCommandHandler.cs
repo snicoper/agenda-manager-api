@@ -13,7 +13,7 @@ internal class UpdateCalendarSettingsCommandHandler(
 {
     public async Task<Result> Handle(UpdateCalendarSettingsCommand request, CancellationToken cancellationToken)
     {
-        // 1. Validate the command and change values.
+        // Validate the command and change values.
         var calendarUpdateResult = await calendarSettingsManager.UpdateCalendarSettings(
             calendarId: CalendarId.From(request.CalendarId),
             timeZone: IanaTimeZone.FromIana(request.TimeZone),
@@ -27,7 +27,7 @@ internal class UpdateCalendarSettingsCommandHandler(
             return calendarUpdateResult;
         }
 
-        // 2. Save changes.
+        // Save changes.
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
