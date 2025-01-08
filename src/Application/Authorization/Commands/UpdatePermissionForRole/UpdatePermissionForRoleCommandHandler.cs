@@ -11,6 +11,7 @@ internal class UpdatePermissionForRoleCommandHandler(AuthorizationService author
 {
     public async Task<Result> Handle(UpdatePermissionForRoleCommand request, CancellationToken cancellationToken)
     {
+        // Add or remove permission from role.
         var result = request.IsAssigned
             ? await AddPermissionToRole(request.RoleId, request.PermissionId, cancellationToken)
             : await RemovePermissionFromRole(request.RoleId, request.PermissionId, cancellationToken);
@@ -25,6 +26,7 @@ internal class UpdatePermissionForRoleCommandHandler(AuthorizationService author
 
     private async Task<Result> AddPermissionToRole(Guid roleId, Guid permissionId, CancellationToken cancellationToken)
     {
+        // Add permission to role.
         var result = await authorizationService.AddPermissionToRoleAsync(
             RoleId.From(roleId),
             PermissionId.From(permissionId),
@@ -38,6 +40,7 @@ internal class UpdatePermissionForRoleCommandHandler(AuthorizationService author
         Guid permissionId,
         CancellationToken cancellationToken)
     {
+        // Remove permission from role.
         var result = await authorizationService.RemovePermissionFromRoleAsync(
             RoleId.From(roleId),
             PermissionId.From(permissionId),

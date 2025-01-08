@@ -14,10 +14,13 @@ internal class GetUsersNotInRoleIdPaginatedCommandHandler(IUserRepository userRe
         GetUsersNotInRoleIdPaginatedCommand request,
         CancellationToken cancellationToken)
     {
+        // Get users not in role id.
         var users = userRepository.GetQueryableUsersNotInRoleId(RoleId.From(request.RoleId));
 
+        // Apply filters.
         users = UserFilter.ApplyFilters(users, request.RequestData);
 
+        // Map users to response.
         var responseData = await ResponseData<GetUsersNotInRoleIdPaginatedCommandResponse>.CreateAsync(
             source: users,
             projection: u => new GetUsersNotInRoleIdPaginatedCommandResponse(u.Id.Value, u.Email.Value),

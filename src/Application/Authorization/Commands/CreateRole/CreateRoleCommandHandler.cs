@@ -13,6 +13,7 @@ internal class CreateRoleCommandHandler(RoleManager roleManager, IUnitOfWork uni
         CreateRoleCommand request,
         CancellationToken cancellationToken)
     {
+        // Create role.
         var roleResult = await roleManager.CreateRoleAsync(
             roleId: RoleId.Create(),
             name: request.Name,
@@ -25,8 +26,10 @@ internal class CreateRoleCommandHandler(RoleManager roleManager, IUnitOfWork uni
             return roleResult.MapToValue<CreateRoleCommandResponse>();
         }
 
+        // Save changes.
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
+        // Return response.
         var response = new CreateRoleCommandResponse(roleResult.Value!.Id.Value);
 
         return Result.Create(response);

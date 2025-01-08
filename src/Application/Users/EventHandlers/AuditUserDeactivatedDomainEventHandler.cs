@@ -22,6 +22,7 @@ public class AuditUserDeactivatedDomainEventHandler(
     {
         var domain = typeof(User);
 
+        // Create the audit record.
         var auditRecord = AuditRecord.Create(
             id: AuditRecordId.Create(),
             aggregateId: nameof(User),
@@ -32,6 +33,7 @@ public class AuditUserDeactivatedDomainEventHandler(
             newValue: false.ToString(),
             actionType: AuditRecordActionType.Update);
 
+        // Add and save the audit record.
         await auditRecordRepository.AddAsync(auditRecord, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }

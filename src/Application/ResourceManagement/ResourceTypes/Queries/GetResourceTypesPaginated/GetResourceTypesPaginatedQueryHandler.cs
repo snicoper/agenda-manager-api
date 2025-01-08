@@ -28,7 +28,6 @@ internal class GetResourceTypesPaginatedQueryHandler(IResourceTypeRepository res
             request: request.RequestData,
             cancellationToken: cancellationToken);
 
-        // Return the response data.
         return Result.Success(responseData);
     }
 }

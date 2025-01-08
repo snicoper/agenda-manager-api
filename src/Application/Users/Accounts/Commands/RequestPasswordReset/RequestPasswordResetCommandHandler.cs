@@ -13,6 +13,7 @@ internal class RequestPasswordResetCommandHandler(IUserRepository userRepository
 {
     public async Task<Result> Handle(RequestPasswordResetCommand request, CancellationToken cancellationToken)
     {
+        // Get user by email and check if it exists.
         var email = EmailAddress.From(request.Email);
         var user = await userRepository.GetByEmailAsync(email, cancellationToken);
 
@@ -21,16 +22,19 @@ internal class RequestPasswordResetCommandHandler(IUserRepository userRepository
             return UserErrors.UserNotFound;
         }
 
+        // Check if user is active.
         if (!user.IsActive)
         {
             return UserErrors.UserIsNotActive;
         }
 
+        // Check if user have email confirmed.
         if (!user.IsEmailConfirmed)
         {
             return UserErrors.EmailIsNotConfirmed;
         }
 
+        // Create the token and save it.
         var userToken = user.CreateUserToken(UserTokenType.PasswordReset);
         userRepository.Update(user);
         await unitOfWork.SaveChangesAsync(cancellationToken);

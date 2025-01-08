@@ -22,13 +22,14 @@ public class UserTokenCreatedDomainEventHandler(
         UserTokenCreatedDomainEvent notification,
         CancellationToken cancellationToken)
     {
+        // Get the user and check if it exists.
         var user = await userRepository.GetByIdAsync(notification.UserToken.UserId, cancellationToken);
-
         if (user is null)
         {
             throw new ApplicationEventHandlerException(UserErrors.UserNotFound.FirstError()?.Description!);
         }
 
+        // Send the email based on the token type.
         switch (notification.UserToken.Type)
         {
             case UserTokenType.EmailConfirmation:

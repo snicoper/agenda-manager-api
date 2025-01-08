@@ -13,13 +13,14 @@ internal class UpdateRoleCommandHandler(RoleManager roleManager, IRoleRepository
 {
     public async Task<Result> Handle(UpdateRoleCommand request, CancellationToken cancellationToken)
     {
+        // Get role and check if exists.
         var role = await roleRepository.GetByIdAsync(RoleId.From(request.RoleId), cancellationToken);
-
         if (role is null)
         {
             return RoleErrors.RoleNotFound;
         }
 
+        // Update role.
         var result = await roleManager.UpdateRoleAsync(
             role,
             request.Name,

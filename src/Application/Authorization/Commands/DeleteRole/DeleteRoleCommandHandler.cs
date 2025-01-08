@@ -11,8 +11,8 @@ internal class DeleteRoleCommandHandler(RoleManager roleManager, IUnitOfWork uni
 {
     public async Task<Result> Handle(DeleteRoleCommand request, CancellationToken cancellationToken)
     {
+        // Delete role.
         var result = await roleManager.DeleteRoleAsync(RoleId.From(request.RoleId), cancellationToken);
-
         if (result.IsSuccess)
         {
             await unitOfWork.SaveChangesAsync(cancellationToken);

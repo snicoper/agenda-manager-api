@@ -15,12 +15,14 @@ internal class GetRolePermissionsByIdQueryHandler(
         GetRolePermissionsByIdQuery request,
         CancellationToken cancellationToken)
     {
+        // Get role and check if exists.
         var role = await repository.GetByIdWithPermissionsAsync(RoleId.From(request.RoleId), cancellationToken);
         if (role is null)
         {
             return RoleErrors.RoleNotFound;
         }
 
+        // Get all permissions from role.
         var permissionIdsFromRole = role.Permissions
             .Select(x => x)
             .ToHashSet();
@@ -40,6 +42,7 @@ internal class GetRolePermissionsByIdQueryHandler(
                             IsAssigned: permissionIdsFromRole.Any(rp => rp.Id == p.Id))).ToList()))
             .ToList();
 
+        // Map to response.
         var response = new GetRolePermissionsByIdQueryResponse(
             RoleId: role.Id.Value,
             RoleName: role.Name,

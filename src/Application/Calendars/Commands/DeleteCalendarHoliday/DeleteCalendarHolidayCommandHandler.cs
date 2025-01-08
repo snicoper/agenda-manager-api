@@ -16,6 +16,7 @@ internal class DeleteCalendarHolidayCommandHandler(ICalendarRepository calendarR
         var calendar = await calendarRepository.GetByIdWithHolidaysAsync(
             CalendarId.From(request.CalendarId),
             cancellationToken);
+
         if (calendar == null)
         {
             return CalendarErrors.CalendarNotFound;

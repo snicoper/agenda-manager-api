@@ -12,11 +12,13 @@ internal class UnAssignedUserFromRoleCommandHandler(AuthorizationService authori
 {
     public async Task<Result> Handle(UnAssignedUserFromRoleCommand request, CancellationToken cancellationToken)
     {
+        // Remove role from user.
         var result = await authorizationService.RemoveRoleFromUserAsync(
             UserId.From(request.UserId),
             RoleId.From(request.RoleId),
             cancellationToken);
 
+        // Save changes.
         if (result.IsSuccess)
         {
             await unitOfWork.SaveChangesAsync(cancellationToken);

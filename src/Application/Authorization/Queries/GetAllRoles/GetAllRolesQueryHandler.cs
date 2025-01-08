@@ -11,8 +11,10 @@ internal sealed class GetAllRolesQueryHandler(IRoleRepository roleRepository)
         GetAllRolesQuery request,
         CancellationToken cancellationToken)
     {
+        // Get all roles with permissions.
         var roles = await roleRepository.GetAllWithPermissionsAsync(cancellationToken);
 
+        // Map to response.
         var result = roles.Select(
             r => new GetAllRolesQueryResponse(
                 Id: r.Id.Value,

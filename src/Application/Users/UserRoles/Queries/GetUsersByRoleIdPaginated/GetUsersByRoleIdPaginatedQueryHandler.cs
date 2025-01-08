@@ -14,9 +14,11 @@ internal class GetUsersByRoleIdPaginatedQueryHandler(IUserRepository userReposit
         GetUsersByRoleIdPaginatedQuery request,
         CancellationToken cancellationToken)
     {
+        // Get users by role id.
         var users = userRepository.GetQueryableUsersByRoleId(RoleId.From(request.RoleId));
         users = UserFilter.ApplyFilters(users, request.RequestData);
 
+        // Map users to response.
         var responseData = await ResponseData<GetUsersByRoleIdPaginatedQueryResponse>.CreateAsync(
             source: users,
             projection: u => new GetUsersByRoleIdPaginatedQueryResponse(u.Id.Value, u.Email.Value),

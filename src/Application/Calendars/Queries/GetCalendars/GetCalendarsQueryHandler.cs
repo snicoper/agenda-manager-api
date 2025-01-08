@@ -11,8 +11,10 @@ internal class GetCalendarsQueryHandler(ICalendarRepository calendarRepository)
         GetCalendarsQuery request,
         CancellationToken cancellationToken)
     {
+        // Get all calendars.
         var calendars = await calendarRepository.GetCalendarsAsync(cancellationToken);
 
+        // Map to response.
         var response = calendars.Select(c => new GetCalendarsQueryResponse(c.Id.Value, c.Name)).ToList();
 
         return Result.Success(response);

@@ -6,21 +6,15 @@ using AgendaManager.Domain.Common.Responses;
 
 namespace AgendaManager.Application.Calendars.Queries.GetCalendarHolidaysInYear;
 
-internal class GetCalendarHolidaysInYearHandler
+internal class GetCalendarHolidaysInYearHandler(ICalendarRepository calendarRepository)
     : IQueryHandler<GetCalendarHolidaysInYearQuery, List<GetCalendarHolidaysInYearQueryResponse>>
 {
-    private readonly ICalendarRepository _calendarRepository;
-
-    public GetCalendarHolidaysInYearHandler(ICalendarRepository calendarRepository)
-    {
-        _calendarRepository = calendarRepository;
-    }
-
     public async Task<Result<List<GetCalendarHolidaysInYearQueryResponse>>> Handle(
         GetCalendarHolidaysInYearQuery request,
         CancellationToken cancellationToken)
     {
-        var calendar = await _calendarRepository.GetByIdWithHolidaysAsync(
+        // Get the calendar by id and check if exists.
+        var calendar = await calendarRepository.GetByIdWithHolidaysAsync(
             CalendarId.From(request.CalendarId),
             cancellationToken);
 
@@ -29,9 +23,11 @@ internal class GetCalendarHolidaysInYearHandler
             return CalendarErrors.CalendarNotFound;
         }
 
+        // Get the holidays in the year.
         var holidays = calendar.Holidays
             .Where(holiday => holiday.Period.Start.Year == request.Year || holiday.Period.End.Year == request.Year);
 
+        // Map to response.
         var response = holidays.Select(
             holiday => new GetCalendarHolidaysInYearQueryResponse(
                 CalendarHolidayId: holiday.Id.Value,

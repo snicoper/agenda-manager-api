@@ -12,11 +12,13 @@ internal class AssignUserToRoleCommandHandler(AuthorizationService authorization
 {
     public async Task<Result> Handle(AssignUserToRoleCommand request, CancellationToken cancellationToken)
     {
+        // Add role to user.
         var result = await authorizationService.AddRoleToUserAsync(
             UserId.From(request.UserId),
             RoleId.From(request.RoleId),
             cancellationToken);
 
+        // Save changes.
         if (result.IsSuccess)
         {
             await unitOfWork.SaveChangesAsync(cancellationToken);

@@ -12,14 +12,16 @@ internal class GetRolesPaginatedQueryHandler(IRoleRepository roleRepository)
         GetRolesPaginatedQuery request,
         CancellationToken cancellationToken)
     {
+        // Get queryable roles.
         var roles = roleRepository.GetQueryAbleRoles();
 
+        // Filter, order and map to response.
         var responseData = await ResponseData<GetRolesPaginatedQueryResponse>.CreateAsync(
             source: roles,
             projection: r => new GetRolesPaginatedQueryResponse(r.Id.Value, r.Name, r.Description, r.IsEditable),
             request: request.RequestData,
             cancellationToken: cancellationToken);
 
-        return responseData;
+        return Result.Success(responseData);
     }
 }

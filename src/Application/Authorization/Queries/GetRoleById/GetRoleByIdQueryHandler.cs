@@ -13,13 +13,14 @@ internal class GetRoleByIdQueryHandler(IRoleRepository roleRepository)
         GetRoleByIdQuery request,
         CancellationToken cancellationToken)
     {
+        // Get role and check if exists.
         var role = await roleRepository.GetByIdAsync(RoleId.From(request.Id), cancellationToken);
-
         if (role is null)
         {
             return RoleErrors.RoleNotFound;
         }
 
+        // Map to response.
         var response = new GetRoleByIdQueryResponse(
             role.Id.Value,
             role.Name,
