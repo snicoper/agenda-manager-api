@@ -27,4 +27,8 @@ public interface IResourceRepository
         CancellationToken cancellationToken = default);
 
     Task<bool> HasResourcesInCalendarAsync(CalendarId calendarId, CancellationToken cancellationToken = default);
+
+    Task AddAsync(Resource resource, CancellationToken cancellationToken = default);
+
+    void Update(Resource resource);
 }

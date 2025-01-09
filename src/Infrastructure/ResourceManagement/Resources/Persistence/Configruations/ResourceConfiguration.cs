@@ -16,6 +16,9 @@ public class ResourceConfiguration : IEntityTypeConfiguration<Resource>
 
         builder.HasKey(c => c.Id);
 
+        builder.HasIndex(r => new { r.CalendarId, r.Name })
+            .IsUnique();
+
         builder.Property(r => r.Id)
             .HasConversion(
                 id => id.Value,

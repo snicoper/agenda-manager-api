@@ -42,7 +42,9 @@ public class ResourceManager(IResourceRepository resourceRepository)
             colorScheme: colorScheme,
             isActive: isActive);
 
-        return resource;
+        await resourceRepository.AddAsync(resource, cancellationToken);
+
+        return Result.Success(resource);
     }
 
     public async Task<Result<Resource>> UpdateResourceAsync(
@@ -71,7 +73,9 @@ public class ResourceManager(IResourceRepository resourceRepository)
 
         resource.Update(name, description, colorScheme);
 
-        return resource;
+        resourceRepository.Update(resource);
+
+        return Result.Success(resource);
     }
 
     private async Task<bool> ExistsByNameAsync(ResourceId resourceId, string name, CancellationToken cancellationToken)

@@ -602,9 +602,10 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Resources_CalendarId",
+                name: "IX_Resources_CalendarId_Name",
                 table: "Resources",
-                column: "CalendarId");
+                columns: new[] { "CalendarId", "Name" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Resources_TypeId",

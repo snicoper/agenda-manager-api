@@ -1,5 +1,7 @@
 ﻿using AgendaManager.Application.Common.Http;
+using AgendaManager.Application.ResourceManagement.Resources.ActivateResource;
 using AgendaManager.Application.ResourceManagement.Resources.Commands.CreateResource;
+using AgendaManager.Application.ResourceManagement.Resources.Commands.DeactivateResource;
 using AgendaManager.Application.ResourceManagement.Resources.Queries.GetResourceById;
 using AgendaManager.Application.ResourceManagement.Resources.Queries.GetResourcesPaginated;
 using AgendaManager.Domain.Common.Responses;
@@ -57,6 +59,36 @@ public class ResourcesController : ApiControllerBase
             request.Description,
             request.TextColor,
             request.BackgroundColor);
+        var result = await Sender.Send(command);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Desactivar un recurso.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpPut("{resourceId:guid}/deactivate")]
+    public async Task<ActionResult<Result>> DeactivateResource(Guid resourceId, DeactivateResourceRequest request)
+    {
+        var command = new DeactivateResourceCommand(resourceId, request.DeactivationReason);
+        var result = await Sender.Send(command);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Activar un recurso.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpPut("{resourceId:guid}/activate")]
+    public async Task<ActionResult<Result>> ActivateResource(Guid resourceId)
+    {
+        var command = new ActivateResourceCommand(resourceId);
         var result = await Sender.Send(command);
 
         return result.ToActionResult();

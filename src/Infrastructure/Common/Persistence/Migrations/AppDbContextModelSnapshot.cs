@@ -540,11 +540,12 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CalendarId");
-
                     b.HasIndex("TypeId");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("CalendarId", "Name")
+                        .IsUnique();
 
                     b.ToTable("Resources", (string)null);
                 });

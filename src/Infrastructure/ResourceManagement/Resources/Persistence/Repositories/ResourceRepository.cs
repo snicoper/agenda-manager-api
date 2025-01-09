@@ -100,4 +100,14 @@ public class ResourceRepository(AppDbContext context) : IResourceRepository
 
         return hasResources;
     }
+
+    public async Task AddAsync(Resource resource, CancellationToken cancellationToken = default)
+    {
+        await context.Resources.AddAsync(resource, cancellationToken);
+    }
+
+    public void Update(Resource resource)
+    {
+        context.Resources.Update(resource);
+    }
 }
