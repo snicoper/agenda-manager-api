@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using AgendaManager.Domain.Common.Utils;
+using FluentValidation;
 
 namespace AgendaManager.Application.Authentication.Commands.Login;
 
@@ -8,9 +9,9 @@ public class LoginCommandValidator : AbstractValidator<LoginCommand>
     {
         RuleFor(r => r.Email)
             .NotEmpty()
-            .EmailAddress();
+            .Matches(DomainRegex.ValidEmail()).WithMessage("Invalid email.");
 
         RuleFor(r => r.Password)
-            .NotEmpty();
+            .NotEmpty().WithMessage("Password is required.");
     }
 }

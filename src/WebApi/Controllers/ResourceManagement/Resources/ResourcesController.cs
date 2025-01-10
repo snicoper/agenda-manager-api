@@ -2,6 +2,7 @@
 using AgendaManager.Application.ResourceManagement.Resources.ActivateResource;
 using AgendaManager.Application.ResourceManagement.Resources.Commands.CreateResource;
 using AgendaManager.Application.ResourceManagement.Resources.Commands.DeactivateResource;
+using AgendaManager.Application.ResourceManagement.Resources.Commands.UpdateResource;
 using AgendaManager.Application.ResourceManagement.Resources.Queries.GetResourceById;
 using AgendaManager.Application.ResourceManagement.Resources.Queries.GetResourcesPaginated;
 using AgendaManager.Domain.Common.Responses;
@@ -65,9 +66,29 @@ public class ResourcesController : ApiControllerBase
     }
 
     /// <summary>
+    /// Update a resource.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpPut("{resourceId:guid}")]
+    public async Task<ActionResult<Result>> UpdateResource(Guid resourceId, UpdateResourceRequest request)
+    {
+        var command = new UpdateResourceCommand(
+            resourceId,
+            request.Name,
+            request.Description,
+            request.TextColor,
+            request.BackgroundColor);
+        var result = await Sender.Send(command);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
     /// Desactivar un recurso.
     /// </summary>
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpPut("{resourceId:guid}/deactivate")]
@@ -82,7 +103,7 @@ public class ResourcesController : ApiControllerBase
     /// <summary>
     /// Activar un recurso.
     /// </summary>
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpPut("{resourceId:guid}/activate")]

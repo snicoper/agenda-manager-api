@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using AgendaManager.Domain.Common.Utils;
+using FluentValidation;
 
 namespace AgendaManager.Application.ResourceManagement.Resources.Commands.CreateResource;
 
@@ -19,10 +20,10 @@ public class CreateResourceCommandValidator : AbstractValidator<CreateResourceCo
 
         RuleFor(x => x.TextColor)
             .NotEmpty().WithMessage("Text color is required.")
-            .MaximumLength(7).WithMessage("Text color must not exceed 7 characters.");
+            .Matches(DomainRegex.ValidHexColor()).WithMessage("Text color must be a valid hex color.");
 
         RuleFor(x => x.BackgroundColor)
             .NotEmpty().WithMessage("Background color is required.")
-            .MaximumLength(7).WithMessage("Background color must not exceed 7 characters.");
+            .Matches(DomainRegex.ValidHexColor()).WithMessage("Text color must be a valid hex color.");
     }
 }
