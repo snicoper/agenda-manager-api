@@ -69,7 +69,6 @@ public static class DependencyInjection
     {
         services.AddScoped<ResourceTypeManager>();
 
-        services.AddTransient<IResourceAvailabilityPolicy, ResourceAvailabilityPolicy>();
         services.AddTransient<ICanDeleteResourceTypePolicy, CanDeleteResourceTypePolicy>();
     }
 
@@ -78,6 +77,8 @@ public static class DependencyInjection
         services.AddScoped<ResourceManager>();
 
         services.AddTransient<IHasResourcesInCalendarPolicy, HasResourcesInCalendarPolicy>();
+        services.AddTransient<IResourceAvailabilityPolicy, ResourceAvailabilityPolicy>();
+        services.AddTransient<ICanDeleteResourcePolicy, CanDeleteResourcePolicy>();
     }
 
     private static void AddServicesDomain(this IServiceCollection services)

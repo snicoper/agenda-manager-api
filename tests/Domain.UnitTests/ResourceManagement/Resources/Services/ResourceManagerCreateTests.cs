@@ -20,8 +20,9 @@ public class ResourceManagerCreateTests
     public ResourceManagerCreateTests()
     {
         _resourceRepository = Substitute.For<IResourceRepository>();
+        var canDeleteResourcePolicy = Substitute.For<ICanDeleteResourcePolicy>();
 
-        _sut = new ResourceManager(_resourceRepository);
+        _sut = new ResourceManager(_resourceRepository, canDeleteResourcePolicy);
     }
 
     [Fact]
@@ -70,13 +71,18 @@ public class ResourceManagerCreateTests
 
     private void SetupExistsByNameResourceRepository(bool returnValue)
     {
-        _resourceRepository.ExistsByNameAsync(Arg.Any<ResourceId>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
+        _resourceRepository.ExistsByNameAsync(
+                Arg.Any<CalendarId>(),
+                Arg.Any<ResourceId>(),
+                Arg.Any<string>(),
+                Arg.Any<CancellationToken>())
             .Returns(returnValue);
     }
 
     private void SetupExistsDescriptionResourceRepository(bool returnValue)
     {
         _resourceRepository.ExistsByDescriptionAsync(
+                Arg.Any<CalendarId>(),
                 Arg.Any<ResourceId>(),
                 Arg.Any<string>(),
                 Arg.Any<CancellationToken>())

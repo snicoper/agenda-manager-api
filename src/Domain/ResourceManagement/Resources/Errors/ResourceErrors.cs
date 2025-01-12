@@ -19,4 +19,8 @@ public static class ResourceErrors
     public static Error ResourceNotAvailable => Error.Conflict(
         code: "ResourceErrors.ResourceNotAvailable",
         description: "The resource is not available.");
+
+    public static Error CannotDelete => Error.Conflict(
+        code: "ResourceErrors.CannotDelete",
+        description: "The resource cannot be deleted.");
 }

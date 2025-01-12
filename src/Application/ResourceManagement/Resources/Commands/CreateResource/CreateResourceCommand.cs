@@ -11,4 +11,4 @@ public record CreateResourceCommand(
     string Name,
     string Description,
     string TextColor,
-    string BackgroundColor) : ICommand;
+    string BackgroundColor) : ICommand<CreateResourceCommandResponse>;

@@ -35,22 +35,26 @@ public class ResourceRepository(AppDbContext context) : IResourceRepository
     }
 
     public async Task<bool> ExistsByNameAsync(
-        ResourceId resourceId,
-        string name,
-        CancellationToken cancellationToken = default)
-    {
-        var exists = await context.Resources.AnyAsync(r => r.Id != resourceId && r.Name == name, cancellationToken);
-
-        return exists;
-    }
-
-    public async Task<bool> ExistsByDescriptionAsync(
+        CalendarId calendarId,
         ResourceId resourceId,
         string name,
         CancellationToken cancellationToken = default)
     {
         var exists = await context.Resources.AnyAsync(
-            r => r.Id != resourceId && r.Description == name,
+            r => r.Id != resourceId && r.CalendarId == calendarId && r.Name == name,
+            cancellationToken);
+
+        return exists;
+    }
+
+    public async Task<bool> ExistsByDescriptionAsync(
+        CalendarId calendarId,
+        ResourceId resourceId,
+        string name,
+        CancellationToken cancellationToken = default)
+    {
+        var exists = await context.Resources.AnyAsync(
+            r => r.Id != resourceId && r.CalendarId == calendarId && r.Description == name,
             cancellationToken);
 
         return exists;
@@ -109,5 +113,10 @@ public class ResourceRepository(AppDbContext context) : IResourceRepository
     public void Update(Resource resource)
     {
         context.Resources.Update(resource);
+    }
+
+    public void Delete(Resource resource)
+    {
+        context.Resources.Remove(resource);
     }
 }

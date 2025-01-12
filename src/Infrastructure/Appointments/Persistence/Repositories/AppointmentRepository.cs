@@ -6,6 +6,7 @@ using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Common.WekDays;
+using AgendaManager.Domain.ResourceManagement.Resources.ValueObjects;
 using AgendaManager.Domain.Services.ValueObjects;
 using AgendaManager.Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -86,6 +87,17 @@ public class AppointmentRepository(AppDbContext context, IDateTimeProvider dateT
             .AnyAsync(a => a.CalendarId == calendarId, cancellationToken);
 
         return hasAppointments;
+    }
+
+    public async Task<bool> ExistsByResourceIdAsync(
+        ResourceId resourceId,
+        CancellationToken cancellationToken = default)
+    {
+        var exists = await context.Appointments
+            .Include(a => a.Resources)
+            .AnyAsync(a => a.Resources.Any(r => r.Id == resourceId), cancellationToken);
+
+        return exists;
     }
 
     public async Task AddAsync(Result<Appointment> appointment, CancellationToken cancellationToken = default)

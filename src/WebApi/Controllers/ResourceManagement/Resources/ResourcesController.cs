@@ -2,6 +2,7 @@
 using AgendaManager.Application.ResourceManagement.Resources.ActivateResource;
 using AgendaManager.Application.ResourceManagement.Resources.Commands.CreateResource;
 using AgendaManager.Application.ResourceManagement.Resources.Commands.DeactivateResource;
+using AgendaManager.Application.ResourceManagement.Resources.Commands.DeleteResource;
 using AgendaManager.Application.ResourceManagement.Resources.Commands.UpdateResource;
 using AgendaManager.Application.ResourceManagement.Resources.Queries.GetResourceById;
 using AgendaManager.Application.ResourceManagement.Resources.Queries.GetResourcesPaginated;
@@ -51,7 +52,7 @@ public class ResourcesController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpPost]
-    public async Task<ActionResult<Result>> CreateResource(CreateResourceRequest request)
+    public async Task<ActionResult<Result<CreateResourceCommandResponse>>> CreateResource(CreateResourceRequest request)
     {
         var command = new CreateResourceCommand(
             request.UserId,
@@ -110,6 +111,21 @@ public class ResourcesController : ApiControllerBase
     public async Task<ActionResult<Result>> ActivateResource(Guid resourceId)
     {
         var command = new ActivateResourceCommand(resourceId);
+        var result = await Sender.Send(command);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Emliminar un recurso.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpDelete("{resourceId:guid}")]
+    public async Task<ActionResult<Result>> DeleteResource(Guid resourceId)
+    {
+        var command = new DeleteResourceCommand(resourceId);
         var result = await Sender.Send(command);
 
         return result.ToActionResult();

@@ -3,6 +3,7 @@ using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Common.WekDays;
+using AgendaManager.Domain.ResourceManagement.Resources.ValueObjects;
 using AgendaManager.Domain.Services.ValueObjects;
 
 namespace AgendaManager.Domain.Appointments.Interfaces;
@@ -29,6 +30,8 @@ public interface IAppointmentRepository
         CancellationToken cancellationToken = default);
 
     Task<bool> HasAppointmentsInCalendarAsync(CalendarId calendarId, CancellationToken cancellationToken = default);
+
+    Task<bool> ExistsByResourceIdAsync(ResourceId resourceId, CancellationToken cancellationToken = default);
 
     Task AddAsync(Result<Appointment> appointment, CancellationToken cancellationToken = default);
 

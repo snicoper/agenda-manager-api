@@ -9,7 +9,7 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.ResourceManagement.Resources.Services;
 
-public class ResourceManager(IResourceRepository resourceRepository)
+public class ResourceManager(IResourceRepository resourceRepository, ICanDeleteResourcePolicy canDeleteResourcePolicy)
 {
     public async Task<Result<Resource>> CreateResourceAsync(
         ResourceId resourceId,
@@ -22,12 +22,12 @@ public class ResourceManager(IResourceRepository resourceRepository)
         bool isActive,
         CancellationToken cancellationToken)
     {
-        if (await ExistsByNameAsync(resourceId, name, cancellationToken))
+        if (await ExistsByNameAsync(calendarId, resourceId, name, cancellationToken))
         {
             return ResourceErrors.NameAlreadyExists;
         }
 
-        if (await ExistsByDescriptionAsync(resourceId, description, cancellationToken))
+        if (await ExistsByDescriptionAsync(calendarId, resourceId, description, cancellationToken))
         {
             return ResourceErrors.DescriptionAlreadyExists;
         }
@@ -61,12 +61,12 @@ public class ResourceManager(IResourceRepository resourceRepository)
             return ResourceErrors.NotFound;
         }
 
-        if (await ExistsByNameAsync(resourceId, name, cancellationToken))
+        if (await ExistsByNameAsync(resource.CalendarId, resourceId, name, cancellationToken))
         {
             return ResourceErrors.NameAlreadyExists;
         }
 
-        if (await ExistsByDescriptionAsync(resourceId, description, cancellationToken))
+        if (await ExistsByDescriptionAsync(resource.CalendarId, resourceId, description, cancellationToken))
         {
             return ResourceErrors.DescriptionAlreadyExists;
         }
@@ -78,19 +78,51 @@ public class ResourceManager(IResourceRepository resourceRepository)
         return Result.Success(resource);
     }
 
-    private async Task<bool> ExistsByNameAsync(ResourceId resourceId, string name, CancellationToken cancellationToken)
+    public async Task<Result> DeleteResourceAsync(ResourceId resourceId, CancellationToken cancellationToken)
     {
-        var exists = await resourceRepository.ExistsByNameAsync(resourceId, name, cancellationToken);
+        var resource = await resourceRepository.GetByIdAsync(resourceId, cancellationToken);
+
+        if (resource is null)
+        {
+            return ResourceErrors.NotFound;
+        }
+
+        if (!await canDeleteResourcePolicy.CanDeleteAsync(resource.Id, cancellationToken))
+        {
+            return ResourceErrors.CannotDelete;
+        }
+
+        resourceRepository.Delete(resource);
+
+        return Result.Success();
+    }
+
+    private async Task<bool> ExistsByNameAsync(
+        CalendarId calendarId,
+        ResourceId resourceId,
+        string name,
+        CancellationToken cancellationToken)
+    {
+        var exists = await resourceRepository.ExistsByNameAsync(
+            calendarId: calendarId,
+            resourceId: resourceId,
+            name: name,
+            cancellationToken: cancellationToken);
 
         return exists;
     }
 
     private async Task<bool> ExistsByDescriptionAsync(
+        CalendarId calendarId,
         ResourceId resourceId,
         string name,
         CancellationToken cancellationToken)
     {
-        var exists = await resourceRepository.ExistsByDescriptionAsync(resourceId, name, cancellationToken);
+        var exists = await resourceRepository.ExistsByDescriptionAsync(
+            calendarId: calendarId,
+            resourceId: resourceId,
+            name: name,
+            cancellationToken: cancellationToken);
 
         return exists;
     }

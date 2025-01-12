@@ -14,13 +14,17 @@ internal class CreateResourceCommandHandler(
     ResourceManager resourceManager,
     ICurrentUserProvider currentUserProvider,
     IUnitOfWork unitOfWork)
-    : ICommandHandler<CreateResourceCommand>
+    : ICommandHandler<CreateResourceCommand, CreateResourceCommandResponse>
 {
-    public async Task<Result> Handle(CreateResourceCommand request, CancellationToken cancellationToken)
+    public async Task<Result<CreateResourceCommandResponse>> Handle(
+        CreateResourceCommand request,
+        CancellationToken cancellationToken)
     {
+        // Get the current user and the selected calendar.
         var calendarId = currentUserProvider.GetSelectedCalendarId();
 
-        var result = await resourceManager.CreateResourceAsync(
+        // Create the new resource.
+        var createdResult = await resourceManager.CreateResourceAsync(
             resourceId: ResourceId.From(request.ResourceTypeId),
             userId: request.UserId is not null ? UserId.From(request.UserId.Value) : null,
             calendarId: calendarId,
@@ -31,13 +35,17 @@ internal class CreateResourceCommandHandler(
             isActive: true,
             cancellationToken: cancellationToken);
 
-        if (result.IsFailure)
+        if (createdResult.IsFailure)
         {
-            return result;
+            return createdResult.MapTo<CreateResourceCommandResponse>();
         }
 
+        // Save the changes to the database.
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Create();
+        // Map the result to the response.
+        var response = new CreateResourceCommandResponse(createdResult.Value?.CalendarId.Value ?? Guid.Empty);
+
+        return Result.Create(response);
     }
 }

@@ -13,9 +13,14 @@ public interface IResourceRepository
 
     Task<bool> AnyByTypeIdAsync(ResourceTypeId resourceTypeId, CancellationToken cancellationToken = default);
 
-    Task<bool> ExistsByNameAsync(ResourceId resourceId, string name, CancellationToken cancellationToken = default);
+    Task<bool> ExistsByNameAsync(
+        CalendarId calendarId,
+        ResourceId resourceId,
+        string name,
+        CancellationToken cancellationToken = default);
 
     Task<bool> ExistsByDescriptionAsync(
+        CalendarId calendarId,
         ResourceId resourceId,
         string name,
         CancellationToken cancellationToken = default);
@@ -31,4 +36,6 @@ public interface IResourceRepository
     Task AddAsync(Resource resource, CancellationToken cancellationToken = default);
 
     void Update(Resource resource);
+
+    void Delete(Resource resource);
 }
