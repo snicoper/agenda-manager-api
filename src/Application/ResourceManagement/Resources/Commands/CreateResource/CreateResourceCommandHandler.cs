@@ -25,7 +25,7 @@ internal class CreateResourceCommandHandler(
 
         // Create the new resource.
         var createdResult = await resourceManager.CreateResourceAsync(
-            resourceId: ResourceId.From(request.ResourceTypeId),
+            resourceId: ResourceId.Create(),
             userId: request.UserId is not null ? UserId.From(request.UserId.Value) : null,
             calendarId: calendarId,
             typeId: ResourceTypeId.From(request.ResourceTypeId),
@@ -44,7 +44,7 @@ internal class CreateResourceCommandHandler(
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         // Map the result to the response.
-        var response = new CreateResourceCommandResponse(createdResult.Value?.CalendarId.Value ?? Guid.Empty);
+        var response = new CreateResourceCommandResponse(createdResult.Value?.Id.Value ?? Guid.Empty);
 
         return Result.Create(response);
     }

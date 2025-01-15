@@ -41,7 +41,7 @@ public record Result
 
     public static Result<TValue> Create<TValue>(TValue? value)
     {
-        return new Result<TValue>(value, default) { ResultType = ResultType.Created };
+        return new Result<TValue>(value, null) { ResultType = ResultType.Created };
     }
 
     public static Result Success()
