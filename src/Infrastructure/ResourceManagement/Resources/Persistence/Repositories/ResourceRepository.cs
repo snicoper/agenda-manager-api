@@ -2,6 +2,7 @@
 using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Common.WekDays;
 using AgendaManager.Domain.ResourceManagement.Resources;
+using AgendaManager.Domain.ResourceManagement.Resources.Entities;
 using AgendaManager.Domain.ResourceManagement.Resources.Enums;
 using AgendaManager.Domain.ResourceManagement.Resources.Interfaces;
 using AgendaManager.Domain.ResourceManagement.Resources.ValueObjects;
@@ -16,6 +17,19 @@ public class ResourceRepository(AppDbContext context) : IResourceRepository
     public IQueryable<Resource> GetQueryable()
     {
         return context.Resources.AsQueryable();
+    }
+
+    public async Task<ICollection<ResourceSchedule>> GetSchedulesByResourceIdAsync(
+        ResourceId resourceId,
+        CalendarId calendarId,
+        CancellationToken cancellationToken = default)
+    {
+        var schedules = await context.Resources
+            .Where(r => r.Id == resourceId && r.CalendarId == calendarId)
+            .SelectMany(r => r.Schedules)
+            .ToListAsync(cancellationToken);
+
+        return schedules;
     }
 
     public async Task<Resource?> GetByIdAsync(ResourceId resourceId, CancellationToken cancellationToken = default)

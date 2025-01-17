@@ -6,6 +6,7 @@ using AgendaManager.Application.ResourceManagement.Resources.Commands.DeleteReso
 using AgendaManager.Application.ResourceManagement.Resources.Commands.UpdateResource;
 using AgendaManager.Application.ResourceManagement.Resources.Queries.GetResourceById;
 using AgendaManager.Application.ResourceManagement.Resources.Queries.GetResourcesPaginated;
+using AgendaManager.Application.ResourceManagement.Resources.Queries.GetSchedulesByResourceId;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Controllers.ResourceManagement.Resources.Contracts;
 using AgendaManager.WebApi.Infrastructure;
@@ -47,6 +48,21 @@ public class ResourcesController : ApiControllerBase
     }
 
     /// <summary>
+    /// Get all schedules by resource id.
+    /// <para>Get schedules from a CalendarId selected in headers.</para>
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [HttpGet("{resourceId:guid}/schedules")]
+    public async Task<ActionResult<Result<ICollection<GetSchedulesByResourceIdQueryResponse>>>>
+        GetSchedulesByResourceId(Guid resourceId)
+    {
+        var query = new GetSchedulesByResourceIdQuery(resourceId);
+        var result = await Sender.Send(query);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
     /// Create a new resource.
     /// </summary>
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -55,12 +71,12 @@ public class ResourcesController : ApiControllerBase
     public async Task<ActionResult<Result<CreateResourceCommandResponse>>> CreateResource(CreateResourceRequest request)
     {
         var command = new CreateResourceCommand(
-            request.UserId,
-            request.ResourceTypeId,
-            request.Name,
-            request.Description,
-            request.TextColor,
-            request.BackgroundColor);
+            UserId: request.UserId,
+            ResourceTypeId: request.ResourceTypeId,
+            Name: request.Name,
+            Description: request.Description,
+            TextColor: request.TextColor,
+            BackgroundColor: request.BackgroundColor);
         var result = await Sender.Send(command);
 
         return result.ToActionResult();
@@ -117,7 +133,7 @@ public class ResourcesController : ApiControllerBase
     }
 
     /// <summary>
-    /// Emliminar un recurso.
+    /// Eliminar un recurso.
     /// </summary>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

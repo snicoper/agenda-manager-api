@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.ValueObjects;
+using AgendaManager.Domain.ResourceManagement.Resources.Entities;
 using AgendaManager.Domain.ResourceManagement.Resources.ValueObjects;
 using AgendaManager.Domain.ResourceManagement.ResourceTypes.ValueObjects;
 
@@ -8,6 +9,11 @@ namespace AgendaManager.Domain.ResourceManagement.Resources.Interfaces;
 public interface IResourceRepository
 {
     IQueryable<Resource> GetQueryable();
+
+    Task<ICollection<ResourceSchedule>> GetSchedulesByResourceIdAsync(
+        ResourceId resourceId,
+        CalendarId calendarId,
+        CancellationToken cancellationToken = default);
 
     Task<Resource?> GetByIdAsync(ResourceId resourceId, CancellationToken cancellationToken = default);
 
