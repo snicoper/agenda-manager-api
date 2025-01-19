@@ -120,6 +120,9 @@ public static class DependencyInjection
         // Resources.
         services.AddScoped<IResourceRepository, ResourceRepository>();
 
+        // ResourceSchedules.
+        services.AddScoped<IResourceScheduleRepository, ResourceScheduleRepository>();
+
         // Services.
         services.AddScoped<IServiceRepository, ServiceRepository>();
 

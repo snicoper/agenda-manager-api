@@ -7,7 +7,7 @@ using AgendaManager.Application.ResourceManagement.Resources.Commands.DeleteReso
 using AgendaManager.Application.ResourceManagement.Resources.Commands.UpdateResource;
 using AgendaManager.Application.ResourceManagement.Resources.Queries.GetResourceById;
 using AgendaManager.Application.ResourceManagement.Resources.Queries.GetResourcesPaginated;
-using AgendaManager.Application.ResourceManagement.Resources.Queries.GetSchedulesByResourceId;
+using AgendaManager.Application.ResourceManagement.Resources.Queries.GetSchedulesByResourceIdPaginated;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.WebApi.Controllers.ResourceManagement.Resources.Contracts;
 using AgendaManager.WebApi.Infrastructure;
@@ -34,6 +34,21 @@ public class ResourcesController : ApiControllerBase
     }
 
     /// <summary>
+    /// Get all schedules by resource id.
+    /// <para>Get schedules from a CalendarId selected in headers.</para>
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [HttpGet("{resourceId:guid}/schedules/paginated")]
+    public async Task<ActionResult<Result<ResponseData<GetSchedulesByResourceIdPaginatedQueryResponse>>>>
+        GetSchedulesByResourceIdPaginated(Guid resourceId, [FromQuery] RequestData requestData)
+    {
+        var query = new GetSchedulesByResourceIdPaginatedQuery(resourceId, requestData);
+        var result = await Sender.Send(query);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
     /// Get resource by id.
     /// </summary>
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -43,21 +58,6 @@ public class ResourcesController : ApiControllerBase
     public async Task<ActionResult<Result<GetResourceByIdQueryResponse>>> GetResourceById(Guid resourceId)
     {
         var query = new GetResourceByIdQuery(resourceId);
-        var result = await Sender.Send(query);
-
-        return result.ToActionResult();
-    }
-
-    /// <summary>
-    /// Get all schedules by resource id.
-    /// <para>Get schedules from a CalendarId selected in headers.</para>
-    /// </summary>
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [HttpGet("{resourceId:guid}/schedules")]
-    public async Task<ActionResult<Result<ICollection<GetSchedulesByResourceIdQueryResponse>>>>
-        GetSchedulesByResourceId(Guid resourceId)
-    {
-        var query = new GetSchedulesByResourceIdQuery(resourceId);
         var result = await Sender.Send(query);
 
         return result.ToActionResult();
