@@ -25,12 +25,6 @@ public interface IResourceRepository
         string name,
         CancellationToken cancellationToken = default);
 
-    Task<bool> ExistsByDescriptionAsync(
-        CalendarId calendarId,
-        ResourceId resourceId,
-        string name,
-        CancellationToken cancellationToken = default);
-
     Task<bool> AreResourcesAvailableInPeriodAsync(
         CalendarId calendarId,
         List<Resource> resources,

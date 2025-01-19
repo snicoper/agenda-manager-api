@@ -34,7 +34,6 @@ public class ResourceManagerUpdateTests
         // Arrange
         SetupGetByIdResourceRepository(_resourceUpdated);
         SetupExistsByNameResourceRepository(false);
-        SetupExistsDescriptionResourceRepository(false);
 
         // Act
         var result = await UpdateResourceAsync();
@@ -73,22 +72,6 @@ public class ResourceManagerUpdateTests
         result.Error?.FirstError().Should().Be(ResourceErrors.NameAlreadyExists.FirstError());
     }
 
-    [Fact]
-    public async Task UpdateResource_ShouldFailure_WhenDescriptionExists()
-    {
-        // Arrange
-        SetupGetByIdResourceRepository(_resourceUpdated);
-        SetupExistsByNameResourceRepository(false);
-        SetupExistsDescriptionResourceRepository(true);
-
-        // Act
-        var result = await UpdateResourceAsync();
-
-        // Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error?.FirstError().Should().Be(ResourceErrors.DescriptionAlreadyExists.FirstError());
-    }
-
     private void SetupGetByIdResourceRepository(Resource? returnValue)
     {
         _resourceRepository.GetByIdAsync(Arg.Any<ResourceId>(), Arg.Any<CancellationToken>())
@@ -98,16 +81,6 @@ public class ResourceManagerUpdateTests
     private void SetupExistsByNameResourceRepository(bool returnValue)
     {
         _resourceRepository.ExistsByNameAsync(
-                Arg.Any<CalendarId>(),
-                Arg.Any<ResourceId>(),
-                Arg.Any<string>(),
-                Arg.Any<CancellationToken>())
-            .Returns(returnValue);
-    }
-
-    private void SetupExistsDescriptionResourceRepository(bool returnValue)
-    {
-        _resourceRepository.ExistsByDescriptionAsync(
                 Arg.Any<CalendarId>(),
                 Arg.Any<ResourceId>(),
                 Arg.Any<string>(),

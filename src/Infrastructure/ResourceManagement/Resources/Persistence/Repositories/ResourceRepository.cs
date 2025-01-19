@@ -61,19 +61,6 @@ public class ResourceRepository(AppDbContext context) : IResourceRepository
         return exists;
     }
 
-    public async Task<bool> ExistsByDescriptionAsync(
-        CalendarId calendarId,
-        ResourceId resourceId,
-        string name,
-        CancellationToken cancellationToken = default)
-    {
-        var exists = await context.Resources.AnyAsync(
-            r => r.Id != resourceId && r.CalendarId == calendarId && r.Description == name,
-            cancellationToken);
-
-        return exists;
-    }
-
     public async Task<bool> AreResourcesAvailableInPeriodAsync(
         CalendarId calendarId,
         List<Resource> resources,

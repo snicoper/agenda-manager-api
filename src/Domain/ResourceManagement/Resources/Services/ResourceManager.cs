@@ -27,11 +27,6 @@ public class ResourceManager(IResourceRepository resourceRepository, ICanDeleteR
             return ResourceErrors.NameAlreadyExists;
         }
 
-        if (await ExistsByDescriptionAsync(calendarId, resourceId, description, cancellationToken))
-        {
-            return ResourceErrors.DescriptionAlreadyExists;
-        }
-
         var resource = Resource.Create(
             id: resourceId,
             userId: userId,
@@ -64,11 +59,6 @@ public class ResourceManager(IResourceRepository resourceRepository, ICanDeleteR
         if (await ExistsByNameAsync(resource.CalendarId, resourceId, name, cancellationToken))
         {
             return ResourceErrors.NameAlreadyExists;
-        }
-
-        if (await ExistsByDescriptionAsync(resource.CalendarId, resourceId, description, cancellationToken))
-        {
-            return ResourceErrors.DescriptionAlreadyExists;
         }
 
         resource.Update(name, description, colorScheme);
@@ -104,21 +94,6 @@ public class ResourceManager(IResourceRepository resourceRepository, ICanDeleteR
         CancellationToken cancellationToken)
     {
         var exists = await resourceRepository.ExistsByNameAsync(
-            calendarId: calendarId,
-            resourceId: resourceId,
-            name: name,
-            cancellationToken: cancellationToken);
-
-        return exists;
-    }
-
-    private async Task<bool> ExistsByDescriptionAsync(
-        CalendarId calendarId,
-        ResourceId resourceId,
-        string name,
-        CancellationToken cancellationToken)
-    {
-        var exists = await resourceRepository.ExistsByDescriptionAsync(
             calendarId: calendarId,
             resourceId: resourceId,
             name: name,

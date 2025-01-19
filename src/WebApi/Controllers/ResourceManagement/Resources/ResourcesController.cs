@@ -1,6 +1,7 @@
 ﻿using AgendaManager.Application.Common.Http;
 using AgendaManager.Application.ResourceManagement.Resources.ActivateResource;
 using AgendaManager.Application.ResourceManagement.Resources.Commands.CreateResource;
+using AgendaManager.Application.ResourceManagement.Resources.Commands.CreateSchedule;
 using AgendaManager.Application.ResourceManagement.Resources.Commands.DeactivateResource;
 using AgendaManager.Application.ResourceManagement.Resources.Commands.DeleteResource;
 using AgendaManager.Application.ResourceManagement.Resources.Commands.UpdateResource;
@@ -77,6 +78,30 @@ public class ResourcesController : ApiControllerBase
             Description: request.Description,
             TextColor: request.TextColor,
             BackgroundColor: request.BackgroundColor);
+        var result = await Sender.Send(command);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>
+    /// Create a new schedule.
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpPost("{resourceId:guid}/schedules")]
+    public async Task<ActionResult<Result<CreateScheduleCommandResponse>>> CreateSchedule(
+        Guid resourceId,
+        CreateScheduleRequest request)
+    {
+        var command = new CreateScheduleCommand(
+            resourceId,
+            request.Name,
+            request.Description,
+            request.Type,
+            request.AvailableDays,
+            request.Start,
+            request.End);
         var result = await Sender.Send(command);
 
         return result.ToActionResult();

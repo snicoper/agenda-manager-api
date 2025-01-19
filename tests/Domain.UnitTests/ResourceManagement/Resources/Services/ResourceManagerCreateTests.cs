@@ -30,7 +30,6 @@ public class ResourceManagerCreateTests
     {
         // Arrange
         SetupExistsByNameResourceRepository(false);
-        SetupExistsDescriptionResourceRepository(false);
 
         // Act
         var result = await CreateResourceAsync();
@@ -55,33 +54,9 @@ public class ResourceManagerCreateTests
         result.IsFailure.Should().BeTrue();
     }
 
-    [Fact]
-    public async Task CreateResource_ShouldFailure_WhenDescriptionAlreadyExists()
-    {
-        // Arrange
-        SetupExistsByNameResourceRepository(false);
-        SetupExistsDescriptionResourceRepository(true);
-
-        // Act
-        var result = await CreateResourceAsync();
-
-        // Assert
-        result.IsFailure.Should().BeTrue();
-    }
-
     private void SetupExistsByNameResourceRepository(bool returnValue)
     {
         _resourceRepository.ExistsByNameAsync(
-                Arg.Any<CalendarId>(),
-                Arg.Any<ResourceId>(),
-                Arg.Any<string>(),
-                Arg.Any<CancellationToken>())
-            .Returns(returnValue);
-    }
-
-    private void SetupExistsDescriptionResourceRepository(bool returnValue)
-    {
-        _resourceRepository.ExistsByDescriptionAsync(
                 Arg.Any<CalendarId>(),
                 Arg.Any<ResourceId>(),
                 Arg.Any<string>(),
