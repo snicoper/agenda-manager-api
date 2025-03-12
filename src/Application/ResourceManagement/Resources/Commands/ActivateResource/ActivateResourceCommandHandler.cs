@@ -5,7 +5,7 @@ using AgendaManager.Domain.ResourceManagement.Resources.Errors;
 using AgendaManager.Domain.ResourceManagement.Resources.Interfaces;
 using AgendaManager.Domain.ResourceManagement.Resources.ValueObjects;
 
-namespace AgendaManager.Application.ResourceManagement.Resources.ActivateResource;
+namespace AgendaManager.Application.ResourceManagement.Resources.Commands.ActivateResource;
 
 internal class ActivateResourceCommandHandler(IResourceRepository resourceRepository, IUnitOfWork unitOfWork)
     : ICommandHandler<ActivateResourceCommand>

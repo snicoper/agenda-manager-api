@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace AgendaManager.Application.ResourceManagement.Resources.ActivateResource;
+namespace AgendaManager.Application.ResourceManagement.Resources.Commands.ActivateResource;
 
 public class ActivateResourceCommandValidator : AbstractValidator<ActivateResourceCommand>
 {
