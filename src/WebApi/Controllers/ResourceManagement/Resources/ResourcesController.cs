@@ -1,5 +1,5 @@
-﻿using AgendaManager.Application.Common.Http;
-using AgendaManager.Application.ResourceManagement.Resources.ActivateResource;
+using AgendaManager.Application.Common.Http;
+using AgendaManager.Application.ResourceManagement.Resources.Commands.ActivateResource;
 using AgendaManager.Application.ResourceManagement.Resources.Commands.CreateResource;
 using AgendaManager.Application.ResourceManagement.Resources.Commands.CreateSchedule;
 using AgendaManager.Application.ResourceManagement.Resources.Commands.DeactivateResource;
