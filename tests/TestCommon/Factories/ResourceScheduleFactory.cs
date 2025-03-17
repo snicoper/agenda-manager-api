@@ -1,6 +1,6 @@
 ﻿using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.ValueObjects;
-using AgendaManager.Domain.Common.WekDays;
+using AgendaManager.Domain.Common.WeekDays;
 using AgendaManager.Domain.ResourceManagement.Resources.Entities;
 using AgendaManager.Domain.ResourceManagement.Resources.Enums;
 using AgendaManager.Domain.ResourceManagement.Resources.ValueObjects;

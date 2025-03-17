@@ -17,4 +17,8 @@
     <InternalsVisibleTo Include="AgendaManager.TestCommon"/>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Common\Messaging\" />
+  </ItemGroup>
+
 </Project>

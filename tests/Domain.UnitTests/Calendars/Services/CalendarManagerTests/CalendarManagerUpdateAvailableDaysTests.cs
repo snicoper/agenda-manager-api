@@ -5,7 +5,7 @@ using AgendaManager.Domain.Calendars.Enums;
 using AgendaManager.Domain.Calendars.Errors;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.ValueObjects;
-using AgendaManager.Domain.Common.WekDays;
+using AgendaManager.Domain.Common.WeekDays;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 using NSubstitute;

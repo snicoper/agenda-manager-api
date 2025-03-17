@@ -1,6 +1,6 @@
-﻿using AgendaManager.Domain.Common.WekDays;
-using AgendaManager.Domain.Common.WekDays.Exceptions;
-using AgendaManager.Domain.Common.WekDays.Extensions;
+﻿using AgendaManager.Domain.Common.WeekDays;
+using AgendaManager.Domain.Common.WeekDays.Exceptions;
+using AgendaManager.Domain.Common.WeekDays.Extensions;
 using FluentAssertions;
 
 namespace AgendaManager.Domain.UnitTests.Common.WebDays;

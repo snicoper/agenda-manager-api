@@ -1,6 +1,6 @@
-﻿using AgendaManager.Domain.Common.WekDays.Exceptions;
+﻿using AgendaManager.Domain.Common.WeekDays.Exceptions;
 
-namespace AgendaManager.Domain.Common.WekDays.Extensions;
+namespace AgendaManager.Domain.Common.WeekDays.Extensions;
 
 public static class WeekDaysExtensions
 {

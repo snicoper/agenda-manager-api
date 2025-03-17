@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.Common.WekDays;
+﻿using AgendaManager.Domain.Common.WeekDays;
 
 namespace AgendaManager.WebApi.Controllers.Calendars.Contracts;
 

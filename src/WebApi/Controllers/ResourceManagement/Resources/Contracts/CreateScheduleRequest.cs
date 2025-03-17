@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.Common.WekDays;
+﻿using AgendaManager.Domain.Common.WeekDays;
 using AgendaManager.Domain.ResourceManagement.Resources.Enums;
 
 namespace AgendaManager.WebApi.Controllers.ResourceManagement.Resources.Contracts;
