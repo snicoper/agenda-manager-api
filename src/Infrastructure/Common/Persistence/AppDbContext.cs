@@ -7,6 +7,7 @@ using AgendaManager.Domain.Authorization.Entities;
 using AgendaManager.Domain.Calendars;
 using AgendaManager.Domain.Calendars.Entities;
 using AgendaManager.Domain.Common.Interfaces;
+using AgendaManager.Domain.Common.Messaging;
 using AgendaManager.Domain.ResourceManagement.Resources;
 using AgendaManager.Domain.ResourceManagement.Resources.Entities;
 using AgendaManager.Domain.ResourceManagement.ResourceTypes;
@@ -29,6 +30,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<CalendarSettings> CalendarSettings => Set<CalendarSettings>();
 
     public DbSet<AuditRecord> ChangeLogs => Set<AuditRecord>();
+
+    public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
 
     public DbSet<Resource> Resources => Set<Resource>();
 

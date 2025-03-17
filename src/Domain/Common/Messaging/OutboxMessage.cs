@@ -43,13 +43,13 @@ public sealed class OutboxMessage
         return outboxMessage;
     }
 
-    public void Processed()
+    public void MarkAsProcessed()
     {
         Status = OutboxStatus.Processed;
         ProcessedOn = DateTimeOffset.UtcNow;
     }
 
-    public void AddError(string error)
+    public void MarkAsFailed(string error)
     {
         Status = OutboxStatus.Failed;
         Error = error;

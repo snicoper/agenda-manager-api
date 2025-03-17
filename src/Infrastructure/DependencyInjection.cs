@@ -22,6 +22,10 @@ using AgendaManager.Infrastructure.Common.Clock;
 using AgendaManager.Infrastructure.Common.Emails;
 using AgendaManager.Infrastructure.Common.Emails.Interfaces;
 using AgendaManager.Infrastructure.Common.Emails.Options;
+using AgendaManager.Infrastructure.Common.Messaging.HostedServices;
+using AgendaManager.Infrastructure.Common.Messaging.Interfaces;
+using AgendaManager.Infrastructure.Common.Messaging.Options;
+using AgendaManager.Infrastructure.Common.Messaging.Services;
 using AgendaManager.Infrastructure.Common.Options;
 using AgendaManager.Infrastructure.Common.Persistence;
 using AgendaManager.Infrastructure.Common.Persistence.Interceptors;
@@ -61,6 +65,8 @@ public static class DependencyInjection
 
         AddAuthentication(services, configuration);
 
+        services.AddHostedService<OutboxMessageProcessorHostedService>();
+
         return services;
     }
 
@@ -85,6 +91,11 @@ public static class DependencyInjection
             .Bind(configuration.GetSection(ClientApiSettings.SectionName))
             .ValidateDataAnnotations()
             .ValidateOnStart();
+
+        services.AddOptions<RabbitMqSettings>()
+            .Bind(configuration.GetSection(RabbitMqSettings.SectionName))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
     }
 
     private static void AddGlobalInjections(IServiceCollection services)
@@ -94,6 +105,9 @@ public static class DependencyInjection
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
         services.AddTransient<IEmailService, EmailService>();
         services.AddTransient<IRazorViewToStringRenderer, RazorViewToStringRenderer>();
+
+        // Messaging.
+        services.AddSingleton<IRabbitMqClient, RabbitMqClient>();
 
         // AuditRecords.
         services.AddScoped<IAuditRecordRepository, AuditRecordRepository>();
