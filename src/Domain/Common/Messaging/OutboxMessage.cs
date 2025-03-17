@@ -1,11 +1,10 @@
-﻿using AgendaManager.Domain.Common.Abstractions;
-using AgendaManager.Domain.Common.Messaging.Enums;
+﻿using AgendaManager.Domain.Common.Messaging.Enums;
 using AgendaManager.Domain.Common.Messaging.Exceptions;
 using AgendaManager.Domain.Common.Messaging.ValueObjects;
 
 namespace AgendaManager.Domain.Common.Messaging;
 
-public sealed class OutboxMessage : AggregateRoot
+public sealed class OutboxMessage
 {
     private OutboxMessage(OutboxMessageId outboxMessageId, string type, string payload)
     {
