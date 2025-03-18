@@ -2,4 +2,5 @@
 
 public interface IOutboxMessageRepository
 {
+    Task<List<OutboxMessage>> GetPendingMessagesAsync(CancellationToken cancellationToken = default);
 }

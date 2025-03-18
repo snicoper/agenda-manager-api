@@ -1,7 +1,6 @@
-﻿using AgendaManager.Domain.Common.Messaging.Enums;
+﻿using AgendaManager.Domain.Common.Messaging.Interfaces;
 using AgendaManager.Infrastructure.Common.Messaging.Interfaces;
 using AgendaManager.Infrastructure.Common.Persistence;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -24,12 +23,8 @@ public class OutboxMessageProcessorHostedService(
             {
                 using var scope = scopeFactory.CreateScope();
                 var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-
-                var messages = await dbContext.OutboxMessages
-                    .Where(x => x.MessageStatus == OutboxMessageStatus.Pending)
-                    .OrderBy(x => x.OccurredOn)
-                    .Take(20)
-                    .ToListAsync(cancellationToken);
+                var outboxMessageRepository = scope.ServiceProvider.GetRequiredService<IOutboxMessageRepository>();
+                var messages = await outboxMessageRepository.GetPendingMessagesAsync(cancellationToken);
 
                 foreach (var message in messages)
                 {

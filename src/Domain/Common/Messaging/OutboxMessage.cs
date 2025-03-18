@@ -26,7 +26,7 @@ public sealed class OutboxMessage
 
     public DateTimeOffset OccurredOn { get; private set; }
 
-    public string Type { get; private set; } = null!;
+    public string Type { get; } = null!;
 
     public string Payload { get; private set; } = null!;
 
