@@ -36,7 +36,7 @@ public class IntegrationEventDispatcher(IServiceProvider serviceProvider) : IInt
         var method = handlerType.GetMethod("Handle");
         if (method is null)
         {
-            throw new InvalidOperationException($"Handler para {routingKey} no implementa HandleAsync");
+            throw new InvalidOperationException($"Handler para {routingKey} no implementa Handle");
         }
 
         await (Task)method.Invoke(handler, [domainEvent, cancellationToken])!;
