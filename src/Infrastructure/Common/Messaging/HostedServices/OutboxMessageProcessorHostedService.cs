@@ -26,7 +26,7 @@ public class OutboxMessageProcessorHostedService(
                 var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
                 var messages = await dbContext.OutboxMessages
-                    .Where(x => x.Status == OutboxStatus.Pending)
+                    .Where(x => x.MessageStatus == OutboxMessageStatus.Pending)
                     .OrderBy(x => x.OccurredOn)
                     .Take(20)
                     .ToListAsync(cancellationToken);

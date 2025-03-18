@@ -15,7 +15,7 @@ public sealed class OutboxMessage
         Type = type;
         Payload = payload;
         OccurredOn = DateTimeOffset.UtcNow;
-        Status = OutboxStatus.Pending;
+        MessageStatus = OutboxMessageStatus.Pending;
     }
 
     private OutboxMessage()
@@ -30,7 +30,7 @@ public sealed class OutboxMessage
 
     public string Payload { get; private set; } = null!;
 
-    public OutboxStatus Status { get; private set; }
+    public OutboxMessageStatus MessageStatus { get; private set; }
 
     public DateTimeOffset? ProcessedOn { get; private set; }
 
@@ -45,13 +45,13 @@ public sealed class OutboxMessage
 
     public void MarkAsProcessed()
     {
-        Status = OutboxStatus.Processed;
+        MessageStatus = OutboxMessageStatus.Processed;
         ProcessedOn = DateTimeOffset.UtcNow;
     }
 
     public void MarkAsFailed(string error)
     {
-        Status = OutboxStatus.Failed;
+        MessageStatus = OutboxMessageStatus.Failed;
         Error = error;
     }
 

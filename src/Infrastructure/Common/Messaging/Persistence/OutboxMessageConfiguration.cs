@@ -27,7 +27,7 @@ public class OutboxMessageConfiguration : IEntityTypeConfiguration<OutboxMessage
         builder.Property(om => om.Payload)
             .IsRequired();
 
-        builder.Property(om => om.Status)
+        builder.Property(om => om.MessageStatus)
             .IsRequired();
 
         builder.Property(om => om.ProcessedOn)

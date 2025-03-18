@@ -1,6 +1,6 @@
 ﻿namespace AgendaManager.Domain.Common.Messaging.Enums;
 
-public enum OutboxStatus
+public enum OutboxMessageStatus
 {
     Pending = 1,
     Processed = 2,
