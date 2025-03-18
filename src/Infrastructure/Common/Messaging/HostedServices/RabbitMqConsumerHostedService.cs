@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using AgendaManager.Infrastructure.Common.Messaging.Interfaces;
 using AgendaManager.Infrastructure.Common.Messaging.Options;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -11,19 +12,19 @@ namespace AgendaManager.Infrastructure.Common.Messaging.HostedServices;
 
 public class RabbitMqConsumerHostedService : BackgroundService
 {
+    private readonly IServiceScopeFactory _serviceScopeFactory;
     private readonly ILogger<RabbitMqConsumerHostedService> _logger;
     private readonly IConnection _connection;
     private readonly IChannel _channel;
-    private readonly IIntegrationEventDispatcher _dispatcher;
     private readonly RabbitMqSettings _settings;
 
     public RabbitMqConsumerHostedService(
+        IServiceScopeFactory serviceScopeFactory,
         ILogger<RabbitMqConsumerHostedService> logger,
-        IOptions<RabbitMqSettings> settings,
-        IIntegrationEventDispatcher dispatcher)
+        IOptions<RabbitMqSettings> settings)
     {
+        _serviceScopeFactory = serviceScopeFactory;
         _logger = logger;
-        _dispatcher = dispatcher;
         _settings = settings.Value;
 
         var factory = new ConnectionFactory
@@ -52,7 +53,7 @@ public class RabbitMqConsumerHostedService : BackgroundService
 
         await _channel.ExchangeDeclareAsync(
             exchange: _settings.Exchange,
-            type: ExchangeType.Direct,
+            type: ExchangeType.Topic,
             durable: true,
             cancellationToken: stoppingToken);
 
@@ -80,7 +81,9 @@ public class RabbitMqConsumerHostedService : BackgroundService
 
             try
             {
-                await _dispatcher.DispatchAsync(routingKey, message, stoppingToken);
+                using var scope = _serviceScopeFactory.CreateScope();
+                var dispatcher = scope.ServiceProvider.GetRequiredService<IIntegrationEventDispatcher>();
+                await dispatcher.DispatchAsync(routingKey, message, stoppingToken);
             }
             catch (Exception ex)
             {

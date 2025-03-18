@@ -67,8 +67,6 @@ public static class DependencyInjection
 
         AddAuthentication(services, configuration);
 
-        services.AddHostedService<OutboxMessageProcessorHostedService>();
-
         return services;
     }
 
@@ -112,6 +110,9 @@ public static class DependencyInjection
         services.AddSingleton<IRabbitMqClient, RabbitMqClient>();
         services.AddScoped<IOutboxMessageRepository, OutboxMessageRepository>();
         services.AddScoped<IIntegrationEventDispatcher, IntegrationEventDispatcher>();
+
+        services.AddHostedService<OutboxMessageProcessorHostedService>();
+        services.AddHostedService<RabbitMqConsumerHostedService>();
 
         // AuditRecords.
         services.AddScoped<IAuditRecordRepository, AuditRecordRepository>();

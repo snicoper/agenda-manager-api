@@ -26,27 +26,7 @@ public class PersistDomainEventsToOutbox : SaveChangesInterceptor
         return await base.SavingChangesAsync(eventData, result, cancellationToken);
     }
 
-    private static async Task SaveOutboxMessageDomainEvents(
-        DbContext context,
-        List<IDomainEvent> domainEvents,
-        CancellationToken cancellationToken)
-    {
-        if (domainEvents.Count == 0)
-        {
-            return;
-        }
-
-        var outboxMessages = domainEvents.Select(
-            domainEvent =>
-                OutboxMessage.Create(
-                    OutboxMessageId.Create(),
-                    domainEvent.GetType().Name,
-                    JsonSerializer.Serialize(domainEvent)));
-
-        await context.Set<OutboxMessage>().AddRangeAsync(outboxMessages, cancellationToken);
-    }
-
-    private async Task DispatchDomainEvents(DbContext? context, CancellationToken cancellationToken = default)
+    private static async Task DispatchDomainEvents(DbContext? context, CancellationToken cancellationToken = default)
     {
         if (context is null)
         {
@@ -69,5 +49,25 @@ public class PersistDomainEventsToOutbox : SaveChangesInterceptor
         }
 
         await SaveOutboxMessageDomainEvents(context, domainEvents, cancellationToken);
+    }
+
+    private static async Task SaveOutboxMessageDomainEvents(
+        DbContext context,
+        List<IDomainEvent> domainEvents,
+        CancellationToken cancellationToken)
+    {
+        if (domainEvents.Count == 0)
+        {
+            return;
+        }
+
+        var outboxMessages = domainEvents.Select(
+            domainEvent =>
+                OutboxMessage.Create(
+                    OutboxMessageId.Create(),
+                    domainEvent.GetType().Name,
+                    JsonSerializer.Serialize(domainEvent)));
+
+        await context.Set<OutboxMessage>().AddRangeAsync(outboxMessages, cancellationToken);
     }
 }
