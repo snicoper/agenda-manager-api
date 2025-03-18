@@ -1,7 +1,6 @@
 using AgendaManager.Application;
 using AgendaManager.Domain;
 using AgendaManager.Infrastructure;
-using AgendaManager.Infrastructure.Common.Middlewares;
 using AgendaManager.Infrastructure.Common.Persistence.Seeds;
 using AgendaManager.WebApi;
 using Serilog;
@@ -19,7 +18,6 @@ builder.Services.AddWebApi(builder.Configuration);
 
 var app = builder.Build();
 
-app.UseInfrastructureMiddleware();
 await app.InitialiseDatabaseAsync();
 
 if (app.Environment.IsDevelopment())

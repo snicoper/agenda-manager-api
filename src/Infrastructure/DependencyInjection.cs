@@ -153,7 +153,9 @@ public static class DependencyInjection
         IWebHostEnvironment environment)
     {
         services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
-        services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
+        services.AddScoped<ISaveChangesInterceptor, PersistDomainEventsToOutbox>();
+
+        // services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
         services.AddDbContext<AppDbContext>(
             (provider, options) =>
             {
