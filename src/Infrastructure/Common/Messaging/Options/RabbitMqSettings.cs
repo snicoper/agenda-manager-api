@@ -20,4 +20,7 @@ public class RabbitMqSettings
 
     [Required]
     public string Exchange { get; set; } = null!;
+
+    [Required]
+    public string QueueName { get; set; } = null!;
 }

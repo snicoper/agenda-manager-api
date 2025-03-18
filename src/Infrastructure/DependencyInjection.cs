@@ -111,6 +111,7 @@ public static class DependencyInjection
         // Messaging.
         services.AddSingleton<IRabbitMqClient, RabbitMqClient>();
         services.AddScoped<IOutboxMessageRepository, OutboxMessageRepository>();
+        services.AddScoped<IIntegrationEventDispatcher, IntegrationEventDispatcher>();
 
         // AuditRecords.
         services.AddScoped<IAuditRecordRepository, AuditRecordRepository>();
