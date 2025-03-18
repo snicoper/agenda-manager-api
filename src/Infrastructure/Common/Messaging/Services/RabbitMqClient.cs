@@ -6,8 +6,9 @@ using RabbitMQ.Client;
 
 namespace AgendaManager.Infrastructure.Common.Messaging.Services;
 
-public class RabbitMqClient : IRabbitMqClient
+public class RabbitMqClient : IRabbitMqClient, IAsyncDisposable
 {
+    private readonly IConnection _connection;
     private readonly IChannel _channel;
     private readonly RabbitMqSettings _rabbitMqSettings;
 
@@ -23,9 +24,8 @@ public class RabbitMqClient : IRabbitMqClient
             Password = _rabbitMqSettings.Password
         };
 
-        var connection = factory.CreateConnectionAsync().GetAwaiter().GetResult();
-
-        _channel = connection.CreateChannelAsync().GetAwaiter().GetResult();
+        _connection = factory.CreateConnectionAsync().GetAwaiter().GetResult();
+        _channel = _connection.CreateChannelAsync().GetAwaiter().GetResult();
 
         _channel.ExchangeDeclareAsync(
             exchange: _rabbitMqSettings.Exchange,
@@ -46,5 +46,11 @@ public class RabbitMqClient : IRabbitMqClient
             routingKey: routingKey,
             body: body,
             cancellationToken: cancellationToken);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await _channel.DisposeAsync();
+        await _connection.DisposeAsync();
     }
 }
