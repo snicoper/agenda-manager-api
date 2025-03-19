@@ -2,6 +2,7 @@
 using AgendaManager.Domain.Users.Events;
 using AgendaManager.Infrastructure.Common.Messaging.Interfaces;
 using MediatR;
+using Newtonsoft.Json;
 
 namespace AgendaManager.Infrastructure.Common.Messaging.Services;
 
@@ -19,7 +20,7 @@ public class IntegrationEventDispatcher(IServiceProvider serviceProvider) : IInt
             throw new InvalidOperationException($"Tipo de evento desconocido: {routingKey}");
         }
 
-        var domainEvent = JsonSerializer.Deserialize(payload, eventType)
+        var domainEvent = JsonConvert.DeserializeObject(payload, eventType)
             ?? throw new InvalidOperationException("No se pudo deserializar el evento.");
 
         var handlerType = typeof(INotificationHandler<>).MakeGenericType(eventType);

@@ -4,6 +4,7 @@ using AgendaManager.Domain.Common.Messaging;
 using AgendaManager.Domain.Common.Messaging.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Newtonsoft.Json;
 
 namespace AgendaManager.Infrastructure.Common.Persistence.Interceptors;
 
@@ -66,7 +67,7 @@ public class PersistDomainEventsToOutbox : SaveChangesInterceptor
                 OutboxMessage.Create(
                     OutboxMessageId.Create(),
                     domainEvent.GetType().Name,
-                    JsonSerializer.Serialize(domainEvent)));
+                    JsonConvert.SerializeObject(domainEvent)));
 
         await context.Set<OutboxMessage>().AddRangeAsync(outboxMessages, cancellationToken);
     }
