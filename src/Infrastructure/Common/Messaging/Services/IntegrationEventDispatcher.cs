@@ -7,7 +7,7 @@ namespace AgendaManager.Infrastructure.Common.Messaging.Services;
 
 public class IntegrationEventDispatcher(IMediator mediator) : IIntegrationEventDispatcher
 {
-    private static readonly Dictionary<string, Type> DomainEventTypeMap = typeof(IEntity)
+    private static readonly Dictionary<string, Type> DomainEventTypeMap = typeof(IDomainEvent)
         .Assembly
         .GetTypes()
         .Where(t => typeof(INotification).IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface)
@@ -23,6 +23,6 @@ public class IntegrationEventDispatcher(IMediator mediator) : IIntegrationEventD
         var domainEvent = JsonConvert.DeserializeObject(payload, eventType)
             ?? throw new InvalidOperationException("No se pudo deserializar el evento.");
 
-        await mediator.Publish((INotification)domainEvent, cancellationToken);
+        await mediator.Publish((IDomainEvent)domainEvent, cancellationToken);
     }
 }
