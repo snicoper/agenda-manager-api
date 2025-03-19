@@ -19,25 +19,16 @@ public class IntegrationEventDispatcher(IServiceProvider serviceProvider) : IInt
             throw new InvalidOperationException($"Tipo de evento desconocido: {routingKey}");
         }
 
-        var domainEvent = JsonSerializer.Deserialize(payload, eventType);
-        if (domainEvent is null)
-        {
-            throw new InvalidOperationException("No se pudo deserializar el evento.");
-        }
+        var domainEvent = JsonSerializer.Deserialize(payload, eventType)
+            ?? throw new InvalidOperationException("No se pudo deserializar el evento.");
 
         var handlerType = typeof(INotificationHandler<>).MakeGenericType(eventType);
 
-        var handler = serviceProvider.GetService(handlerType);
-        if (handler is null)
-        {
-            throw new InvalidOperationException($"No se encontró handler para el evento: {routingKey}");
-        }
+        var handler = serviceProvider.GetService(handlerType)
+            ?? throw new InvalidOperationException($"No se encontró handler para el evento: {routingKey}");
 
-        var method = handlerType.GetMethod("Handle");
-        if (method is null)
-        {
-            throw new InvalidOperationException($"Handler para {routingKey} no implementa Handle");
-        }
+        var method = handlerType.GetMethod("Handle")
+            ?? throw new InvalidOperationException($"Handler para {routingKey} no implementa Handle");
 
         await (Task)method.Invoke(handler, [domainEvent, cancellationToken])!;
     }

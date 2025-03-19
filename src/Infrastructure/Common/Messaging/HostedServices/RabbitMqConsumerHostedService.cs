@@ -71,11 +71,11 @@ public class RabbitMqConsumerHostedService : BackgroundService
             cancellationToken: stoppingToken);
 
         var consumer = new AsyncEventingBasicConsumer(_channel);
-        consumer.ReceivedAsync += async (_, ea) =>
+        consumer.ReceivedAsync += async (_, eventArgs) =>
         {
-            var body = ea.Body.ToArray();
+            var body = eventArgs.Body.ToArray();
             var message = Encoding.UTF8.GetString(body);
-            var routingKey = ea.RoutingKey;
+            var routingKey = eventArgs.RoutingKey;
 
             _logger.LogInformation("Mensaje recibido: {RoutingKey} - {Message}", routingKey, message);
 
@@ -83,6 +83,7 @@ public class RabbitMqConsumerHostedService : BackgroundService
             {
                 using var scope = _serviceScopeFactory.CreateScope();
                 var dispatcher = scope.ServiceProvider.GetRequiredService<IIntegrationEventDispatcher>();
+
                 await dispatcher.DispatchAsync(routingKey, message, stoppingToken);
             }
             catch (Exception ex)
