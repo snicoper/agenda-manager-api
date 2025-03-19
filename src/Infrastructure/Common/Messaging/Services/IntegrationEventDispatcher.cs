@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using AgendaManager.Domain.Common.Interfaces;
+﻿using AgendaManager.Domain.Common.Interfaces;
 using AgendaManager.Infrastructure.Common.Messaging.Interfaces;
 using MediatR;
 using Newtonsoft.Json;
