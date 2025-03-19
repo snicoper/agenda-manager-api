@@ -65,9 +65,9 @@ public class PersistDomainEventsToOutbox : SaveChangesInterceptor
         var outboxMessages = domainEvents.Select(
             domainEvent =>
                 OutboxMessage.Create(
-                    OutboxMessageId.Create(),
-                    domainEvent.GetType().Name,
-                    JsonConvert.SerializeObject(domainEvent)));
+                    outboxMessageId: OutboxMessageId.Create(),
+                    type: domainEvent.GetType().Name,
+                    payload: JsonConvert.SerializeObject(domainEvent)));
 
         await context.Set<OutboxMessage>().AddRangeAsync(outboxMessages, cancellationToken);
     }
