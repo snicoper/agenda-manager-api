@@ -6,7 +6,7 @@ Agenda Manager API es el backend que gestiona la lógica de negocio para la admi
 
 ## 🔎 Tecnologías Utilizadas
 
-- **.NET Core [Versión]** - Framework principal
+- **.NET Core 9** - Framework principal
 - **Entity Framework Core** - ORM para acceso a datos
 - **CQRS** - Separación entre comandos y consultas
 - **MediatR** - Manejo de eventos y patrones de mensajería
