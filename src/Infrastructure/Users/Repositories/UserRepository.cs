@@ -1,6 +1,7 @@
 ﻿using AgendaManager.Domain.Authorization.ValueObjects;
 using AgendaManager.Domain.Common.ValueObjects;
 using AgendaManager.Domain.Users;
+using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
 using AgendaManager.Infrastructure.Common.Persistence;
@@ -38,6 +39,18 @@ public class UserRepository(AppDbContext context) : IUserRepository
         var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
 
         return user;
+    }
+
+    public async Task<(User User, UserToken Token)?> GetUserWithSpecificTokenAsync(
+        UserTokenId userTokenId,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await context.Users
+            .Where(u => u.Tokens.Any(t => t.Id == userTokenId))
+            .Select(u => new { User = u, Token = u.Tokens.First(t => t.Id == userTokenId) })
+            .FirstOrDefaultAsync(cancellationToken);
+
+        return result is null ? null : (result.User, result.Token);
     }
 
     public async Task<User?> GetByIdWithRolesAsync(UserId userId, CancellationToken cancellationToken = default)

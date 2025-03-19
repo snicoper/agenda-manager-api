@@ -147,7 +147,7 @@ public sealed class User : AggregateRoot
 
         AddUserToken(userToken);
 
-        userToken.AddDomainEvent(new UserTokenCreatedDomainEvent(userToken));
+        userToken.AddDomainEvent(new UserTokenCreatedDomainEvent(userToken.Id));
 
         return Result.Create(userToken);
     }

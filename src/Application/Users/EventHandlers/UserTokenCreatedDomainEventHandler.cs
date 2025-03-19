@@ -2,6 +2,7 @@
 using AgendaManager.Application.Common.Exceptions;
 using AgendaManager.Application.Users.Interfaces;
 using AgendaManager.Domain.Users;
+using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.Enums;
 using AgendaManager.Domain.Users.Errors;
 using AgendaManager.Domain.Users.Events;
@@ -23,23 +24,26 @@ public class UserTokenCreatedDomainEventHandler(
         CancellationToken cancellationToken)
     {
         // Get the user and check if it exists.
-        var user = await userRepository.GetByIdAsync(notification.UserToken.UserId, cancellationToken);
-        if (user is null)
+        var result = await userRepository.GetUserWithSpecificTokenAsync(notification.UserTokenId, cancellationToken);
+
+        if (result is null)
         {
             throw new ApplicationEventHandlerException(UserErrors.UserNotFound.FirstError()?.Description!);
         }
 
+        var (user, token) = result.Value;
+
         // Send the email based on the token type.
-        switch (notification.UserToken.Type)
+        switch (token?.Type)
         {
             case UserTokenType.EmailConfirmation:
-                await SendResentEmailConfirmationAsync(user, notification, cancellationToken);
+                await SendResentEmailConfirmationAsync(user, token, cancellationToken);
                 break;
             case UserTokenType.PasswordReset:
-                await SendRequestPasswordResetAsync(user, notification, cancellationToken);
+                await SendRequestPasswordResetAsync(user, token, cancellationToken);
                 break;
             case UserTokenType.AdminCreatedAccount:
-                await SendConfirmAccountEmailAsync(user, notification, cancellationToken);
+                await SendConfirmAccountEmailAsync(user, token, cancellationToken);
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -48,25 +52,25 @@ public class UserTokenCreatedDomainEventHandler(
 
     private async Task SendResentEmailConfirmationAsync(
         User user,
-        UserTokenCreatedDomainEvent notification,
+        UserToken userToken,
         CancellationToken cancellationToken)
     {
-        await resentEmailConfirmationService.SendAsync(user, notification.UserToken.Token.Value, cancellationToken);
+        await resentEmailConfirmationService.SendAsync(user, userToken.Token.Value, cancellationToken);
     }
 
     private async Task SendRequestPasswordResetAsync(
         User user,
-        UserTokenCreatedDomainEvent notification,
+        UserToken userToken,
         CancellationToken cancellationToken)
     {
-        await requestPasswordResetService.SendAsync(user, notification.UserToken.Token.Value, cancellationToken);
+        await requestPasswordResetService.SendAsync(user, userToken.Token.Value, cancellationToken);
     }
 
     private async Task SendConfirmAccountEmailAsync(
         User user,
-        UserTokenCreatedDomainEvent notification,
+        UserToken userToken,
         CancellationToken cancellationToken)
     {
-        await confirmAccountService.SendAsync(user, notification.UserToken.Token.Value, cancellationToken);
+        await confirmAccountService.SendAsync(user, userToken.Token.Value, cancellationToken);
     }
 }
