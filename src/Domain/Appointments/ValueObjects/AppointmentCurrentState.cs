@@ -1,12 +1,14 @@
 ﻿using AgendaManager.Domain.Appointments.Enums;
 using AgendaManager.Domain.Appointments.Errors;
 using AgendaManager.Domain.Common.Responses;
+using Newtonsoft.Json;
 
 namespace AgendaManager.Domain.Appointments.ValueObjects;
 
 public sealed record AppointmentCurrentState
 {
-    private AppointmentCurrentState(AppointmentStatus value)
+    [JsonConstructor]
+    internal AppointmentCurrentState(AppointmentStatus value)
     {
         Value = value;
     }
