@@ -52,5 +52,6 @@ public class RabbitMqClient : IRabbitMqClient, IAsyncDisposable
     {
         await _channel.DisposeAsync();
         await _connection.DisposeAsync();
+        GC.SuppressFinalize(this);
     }
 }

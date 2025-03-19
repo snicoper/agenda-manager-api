@@ -48,7 +48,7 @@ public class RabbitMqConsumerHostedService : BackgroundService
         GC.SuppressFinalize(this);
     }
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("RabbitMqConsumerHostedService started");
 
@@ -56,20 +56,20 @@ public class RabbitMqConsumerHostedService : BackgroundService
             exchange: _settings.Exchange,
             type: ExchangeType.Topic,
             durable: true,
-            cancellationToken: stoppingToken);
+            cancellationToken: cancellationToken);
 
         await _channel.QueueDeclareAsync(
             queue: _settings.QueueName,
             durable: true,
             exclusive: false,
             autoDelete: false,
-            cancellationToken: stoppingToken);
+            cancellationToken: cancellationToken);
 
         await _channel.QueueBindAsync(
             queue: _settings.QueueName,
             exchange: _settings.Exchange,
             routingKey: "#",
-            cancellationToken: stoppingToken);
+            cancellationToken: cancellationToken);
 
         var consumer = new AsyncEventingBasicConsumer(_channel);
         consumer.ReceivedAsync += async (_, eventArgs) =>
@@ -85,7 +85,7 @@ public class RabbitMqConsumerHostedService : BackgroundService
                 using var scope = _serviceScopeFactory.CreateScope();
                 var dispatcher = scope.ServiceProvider.GetRequiredService<IIntegrationEventDispatcher>();
 
-                await dispatcher.DispatchAsync(routingKey, message, stoppingToken);
+                await dispatcher.DispatchAsync(routingKey, message, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -93,6 +93,10 @@ public class RabbitMqConsumerHostedService : BackgroundService
             }
         };
 
-        await _channel.BasicConsumeAsync(queue: _settings.QueueName, autoAck: true, consumer: consumer, stoppingToken);
+        await _channel.BasicConsumeAsync(
+            queue: _settings.QueueName,
+            autoAck: true,
+            consumer: consumer,
+            cancellationToken: cancellationToken);
     }
 }
