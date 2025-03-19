@@ -23,7 +23,7 @@ public static class CalendarSeed
             description: "Calendario principal de la aplicación",
             cancellationToken: CancellationToken.None);
 
-        if (calendarResult.IsFailure || calendarResult.Value == null)
+        if (calendarResult.IsFailure || calendarResult.Value is null)
         {
             throw new Exception("No se pudo crear el seed: Calendario Principal");
         }

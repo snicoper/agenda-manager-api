@@ -18,7 +18,7 @@ internal class ConfirmAccountCommandHandler(
     {
         // Check if user exists.
         var user = await userRepository.GetByTokenValueWithTokensAsync(request.Token, cancellationToken);
-        if (user == null)
+        if (user is null)
         {
             return UserTokenErrors.UserTokenNotFoundOrExpired;
         }

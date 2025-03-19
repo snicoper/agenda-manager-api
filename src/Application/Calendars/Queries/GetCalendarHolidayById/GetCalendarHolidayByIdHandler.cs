@@ -18,7 +18,7 @@ internal class GetCalendarHolidayByIdHandler(ICalendarRepository calendarReposit
             CalendarId.From(request.CalendarId),
             cancellationToken);
 
-        if (calendar == null)
+        if (calendar is null)
         {
             return CalendarErrors.CalendarNotFound;
         }

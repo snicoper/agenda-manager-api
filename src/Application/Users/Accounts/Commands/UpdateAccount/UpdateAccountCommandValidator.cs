@@ -59,7 +59,7 @@ public class UpdateAccountCommandValidator : AbstractValidator<UpdateAccountComm
         When(
             x => !string.IsNullOrEmpty(x.IdentityDocument?.Number) ||
                  !string.IsNullOrEmpty(x.IdentityDocument?.CountryCode) ||
-                 x.IdentityDocument?.Type != null,
+                 x.IdentityDocument?.Type is not null,
             () =>
             {
                 RuleFor(x => x.IdentityDocument!.Number)

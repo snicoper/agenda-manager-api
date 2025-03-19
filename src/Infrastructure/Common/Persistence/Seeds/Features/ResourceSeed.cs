@@ -36,7 +36,7 @@ public static class ResourceSeed
             isActive: true,
             cancellationToken: CancellationToken.None);
 
-        if (resourceResult.IsFailure || resourceResult.Value == null)
+        if (resourceResult.IsFailure || resourceResult.Value is null)
         {
             throw new Exception("Could not create the resource seed.");
         }

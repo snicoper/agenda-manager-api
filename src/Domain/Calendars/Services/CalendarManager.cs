@@ -59,7 +59,7 @@ public class CalendarManager(
         CancellationToken cancellationToken)
     {
         var calendar = await calendarRepository.GetByIdAsync(calendarId, cancellationToken);
-        if (calendar == null)
+        if (calendar is null)
         {
             return CalendarErrors.CalendarNotFound;
         }
@@ -83,7 +83,7 @@ public class CalendarManager(
     {
         // 1. Get calendar and check if exists.
         var calendar = await calendarRepository.GetByIdWithSettingsAsync(calendarId, cancellationToken);
-        if (calendar == null)
+        if (calendar is null)
         {
             return CalendarErrors.CalendarNotFound;
         }
