@@ -1,8 +1,11 @@
-﻿namespace AgendaManager.Domain.AuditRecords.ValueObjects;
+﻿using Newtonsoft.Json;
+
+namespace AgendaManager.Domain.AuditRecords.ValueObjects;
 
 public sealed record AuditRecordId
 {
-    private AuditRecordId(Guid value)
+    [JsonConstructor]
+    internal AuditRecordId(Guid value)
     {
         ArgumentNullException.ThrowIfNull(value);
 

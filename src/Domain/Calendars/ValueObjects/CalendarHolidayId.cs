@@ -1,8 +1,11 @@
-﻿namespace AgendaManager.Domain.Calendars.ValueObjects;
+﻿using Newtonsoft.Json;
+
+namespace AgendaManager.Domain.Calendars.ValueObjects;
 
 public sealed record CalendarHolidayId
 {
-    private CalendarHolidayId(Guid value)
+    [JsonConstructor]
+    internal CalendarHolidayId(Guid value)
     {
         ArgumentNullException.ThrowIfNull(value);
 

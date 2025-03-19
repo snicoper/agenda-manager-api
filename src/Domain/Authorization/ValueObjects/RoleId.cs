@@ -1,8 +1,11 @@
-﻿namespace AgendaManager.Domain.Authorization.ValueObjects;
+﻿using Newtonsoft.Json;
+
+namespace AgendaManager.Domain.Authorization.ValueObjects;
 
 public sealed record RoleId
 {
-    private RoleId(Guid value)
+    [JsonConstructor]
+    internal RoleId(Guid value)
     {
         ArgumentNullException.ThrowIfNull(value);
 

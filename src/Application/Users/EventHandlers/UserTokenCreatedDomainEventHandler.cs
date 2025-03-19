@@ -23,7 +23,7 @@ public class UserTokenCreatedDomainEventHandler(
         UserTokenCreatedDomainEvent notification,
         CancellationToken cancellationToken)
     {
-        // Get the user and check if it exists.
+        // Get the user with token and check if it exists.
         var result = await userRepository.GetUserWithSpecificTokenAsync(notification.UserTokenId, cancellationToken);
 
         if (result is null)
