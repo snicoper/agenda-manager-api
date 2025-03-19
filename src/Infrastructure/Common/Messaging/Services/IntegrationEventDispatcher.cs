@@ -1,7 +1,7 @@
-﻿using System.Text.Json;
-using AgendaManager.Domain.Users.Events;
+﻿using AgendaManager.Domain.Users.Events;
 using AgendaManager.Infrastructure.Common.Messaging.Interfaces;
 using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
 namespace AgendaManager.Infrastructure.Common.Messaging.Services;
@@ -23,14 +23,8 @@ public class IntegrationEventDispatcher(IServiceProvider serviceProvider) : IInt
         var domainEvent = JsonConvert.DeserializeObject(payload, eventType)
             ?? throw new InvalidOperationException("No se pudo deserializar el evento.");
 
-        var handlerType = typeof(INotificationHandler<>).MakeGenericType(eventType);
+        var mediator = serviceProvider.GetRequiredService<IMediator>();
 
-        var handler = serviceProvider.GetService(handlerType)
-            ?? throw new InvalidOperationException($"No se encontró handler para el evento: {routingKey}");
-
-        var method = handlerType.GetMethod("Handle")
-            ?? throw new InvalidOperationException($"Handler para {routingKey} no implementa Handle");
-
-        await (Task)method.Invoke(handler, [domainEvent, cancellationToken])!;
+        await mediator.Publish((INotification)domainEvent, cancellationToken);
     }
 }
