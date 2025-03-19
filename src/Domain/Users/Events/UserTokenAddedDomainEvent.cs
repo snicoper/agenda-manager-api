@@ -4,11 +4,4 @@ using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users.Events;
 
-public record UserTokenAddedDomainEvent(UserId UserId, UserTokenId UserTokenId) : IDomainEvent
-{
-    [JsonInclude]
-    public UserId UserId { get; init; } = UserId;
-
-    [JsonInclude]
-    public UserTokenId UserTokenId { get; init; } = UserTokenId;
-}
+public record UserTokenAddedDomainEvent(UserId UserId, UserTokenId UserTokenId) : IDomainEvent;

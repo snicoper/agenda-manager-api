@@ -4,8 +4,4 @@ using AgendaManager.Domain.Users.Entities;
 
 namespace AgendaManager.Domain.Users.Events;
 
-public record UserTokenCreatedDomainEvent(UserToken UserToken) : IDomainEvent
-{
-    [JsonInclude]
-    public UserToken UserToken { get; init; } = UserToken;
-}
+public record UserTokenCreatedDomainEvent(UserToken UserToken) : IDomainEvent;
