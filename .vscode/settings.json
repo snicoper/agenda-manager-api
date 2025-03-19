@@ -6,6 +6,7 @@
     "dotnet",
     "Hasher",
     "Mediat",
+    "Newtonsoft",
     "Npgsql",
     "Postgre",
     "Serilog",

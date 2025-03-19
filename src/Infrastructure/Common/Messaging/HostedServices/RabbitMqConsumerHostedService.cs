@@ -45,6 +45,7 @@ public class RabbitMqConsumerHostedService : BackgroundService
         _connection.Dispose();
 
         base.Dispose();
+        GC.SuppressFinalize(this);
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
