@@ -120,7 +120,7 @@ public class AuditableEntityInterceptor(ICurrentUserProvider currentUserProvider
                 UpdateAuditableCreateFields(entry, currentUserId, currentDateTime);
             }
 
-            if (entry.State != EntityState.Added && entry.State != EntityState.Modified &&
+            if (entry.State is not EntityState.Added && entry.State is not EntityState.Modified &&
                 !entry.HasChangedOwnedEntities())
             {
                 continue;
