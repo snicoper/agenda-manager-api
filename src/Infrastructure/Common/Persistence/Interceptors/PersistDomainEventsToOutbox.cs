@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using AgendaManager.Domain.Common.Interfaces;
+﻿using AgendaManager.Domain.Common.Interfaces;
 using AgendaManager.Domain.Common.Messaging;
 using AgendaManager.Domain.Common.Messaging.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +26,11 @@ public class PersistDomainEventsToOutbox : SaveChangesInterceptor
         return await base.SavingChangesAsync(eventData, result, cancellationToken);
     }
 
+    internal static List<OutboxMessage> GenerateMessagesForTesting(IEnumerable<IEntity> entities)
+    {
+        return GenerateOutboxMessages(entities);
+    }
+
     private static async Task DispatchDomainEvents(DbContext? context, CancellationToken cancellationToken = default)
     {
         if (context is null)
@@ -40,35 +44,42 @@ public class PersistDomainEventsToOutbox : SaveChangesInterceptor
             .Select(e => e.Entity)
             .ToArray();
 
-        var domainEvents = entities
-            .SelectMany(e => e.DomainEvents)
-            .ToList();
+        var outboxMessages = GenerateOutboxMessages(entities);
 
         foreach (var entity in entities)
         {
             entity.ClearDomainEvents();
         }
 
-        await SaveOutboxMessageDomainEvents(context, domainEvents, cancellationToken);
+        await context.Set<OutboxMessage>().AddRangeAsync(outboxMessages, cancellationToken);
     }
 
-    private static async Task SaveOutboxMessageDomainEvents(
-        DbContext context,
-        List<IDomainEvent> domainEvents,
-        CancellationToken cancellationToken)
+    private static List<OutboxMessage> GenerateOutboxMessages(IEnumerable<IEntity> entities)
     {
+        var enumerable = entities as IEntity[] ?? entities.ToArray();
+
+        var domainEvents = enumerable
+            .SelectMany(e => e.DomainEvents)
+            .ToList();
+
         if (domainEvents.Count == 0)
         {
-            return;
+            return [];
         }
 
-        var outboxMessages = domainEvents.Select(
-            domainEvent =>
-                OutboxMessage.Create(
-                    outboxMessageId: OutboxMessageId.Create(),
-                    type: domainEvent.GetType().Name,
-                    payload: JsonConvert.SerializeObject(domainEvent)));
+        var messages = domainEvents.Select(
+                domainEvent =>
+                    OutboxMessage.Create(
+                        OutboxMessageId.Create(),
+                        domainEvent.GetType().Name,
+                        JsonConvert.SerializeObject(domainEvent)))
+            .ToList();
 
-        await context.Set<OutboxMessage>().AddRangeAsync(outboxMessages, cancellationToken);
+        foreach (var entity in enumerable)
+        {
+            entity.ClearDomainEvents();
+        }
+
+        return messages;
     }
 }
