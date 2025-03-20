@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Common.Messaging.Exceptions;
+﻿using AgendaManager.Domain.Common.Messaging.Enums;
+using AgendaManager.Domain.Common.Messaging.Exceptions;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 
@@ -14,6 +15,16 @@ public class OutboxMessageCreateTests
 
         // Assert
         outbox.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void Create_ShouldStatusPending_WhenIsCreated()
+    {
+        // Arrange
+        var outbox = OutboxMessageFactory.CreateOutboxMessage();
+
+        // Assert
+        outbox.MessageStatus.Should().Be(OutboxMessageStatus.Pending);
     }
 
     [Fact]
