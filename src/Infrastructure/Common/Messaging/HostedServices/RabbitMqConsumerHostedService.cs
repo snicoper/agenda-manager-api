@@ -78,7 +78,7 @@ public class RabbitMqConsumerHostedService : BackgroundService
             var message = Encoding.UTF8.GetString(body);
             var routingKey = eventArgs.RoutingKey;
 
-            _logger.LogInformation("Mensaje recibido: {RoutingKey} - {Message}", routingKey, message);
+            _logger.LogInformation("Message published: {RoutingKey} - {Message}", routingKey, message);
 
             try
             {
@@ -89,7 +89,7 @@ public class RabbitMqConsumerHostedService : BackgroundService
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al despachar evento {RoutingKey}", routingKey);
+                _logger.LogError(ex, "Error dispatching event {RoutingKey}", routingKey);
             }
         };
 

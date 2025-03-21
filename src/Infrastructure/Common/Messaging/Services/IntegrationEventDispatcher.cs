@@ -17,11 +17,11 @@ public class IntegrationEventDispatcher(IMediator mediator) : IIntegrationEventD
     {
         if (!DomainEventTypeMap.TryGetValue(routingKey, out var eventType))
         {
-            throw new InvalidOperationException($"Tipo de evento desconocido: {routingKey}");
+            throw new InvalidOperationException($"Unknown event type: {routingKey}");
         }
 
         var domainEvent = JsonConvert.DeserializeObject(payload, eventType)
-            ?? throw new InvalidOperationException("No se pudo deserializar el evento.");
+            ?? throw new InvalidOperationException("Failed to deserialize the event.");
 
         await mediator.Publish((IDomainEvent)domainEvent, cancellationToken);
     }
