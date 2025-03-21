@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250318205013_UpdateModel")]
-    partial class UpdateModel
+    [Migration("20250321145957_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -403,6 +403,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<string>("Error")
                         .HasColumnType("text");
 
+                    b.Property<DateTimeOffset?>("LastAttemptOn")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("MessageStatus")
                         .HasColumnType("integer");
 
@@ -413,8 +416,11 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("ProcessedOn")
+                    b.Property<string>("PublishedOn")
                         .HasColumnType("text");
+
+                    b.Property<int>("RetryCount")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Type")
                         .IsRequired()

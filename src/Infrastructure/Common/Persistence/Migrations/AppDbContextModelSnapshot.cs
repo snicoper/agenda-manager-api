@@ -400,6 +400,9 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.Property<string>("Error")
                         .HasColumnType("text");
 
+                    b.Property<DateTimeOffset?>("LastAttemptOn")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("MessageStatus")
                         .HasColumnType("integer");
 
@@ -410,8 +413,11 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("ProcessedOn")
+                    b.Property<string>("PublishedOn")
                         .HasColumnType("text");
+
+                    b.Property<int>("RetryCount")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Type")
                         .IsRequired()

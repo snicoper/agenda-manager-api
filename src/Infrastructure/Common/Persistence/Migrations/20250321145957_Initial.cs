@@ -63,9 +63,11 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     OccurredOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     Type = table.Column<string>(type: "text", nullable: false),
                     Payload = table.Column<string>(type: "text", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
-                    ProcessedOn = table.Column<string>(type: "text", nullable: true),
-                    Error = table.Column<string>(type: "text", nullable: true)
+                    MessageStatus = table.Column<int>(type: "integer", nullable: false),
+                    PublishedOn = table.Column<string>(type: "text", nullable: true),
+                    Error = table.Column<string>(type: "text", nullable: true),
+                    RetryCount = table.Column<int>(type: "integer", nullable: false),
+                    LastAttemptOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
