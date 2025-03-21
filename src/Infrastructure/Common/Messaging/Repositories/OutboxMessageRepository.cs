@@ -8,11 +8,13 @@ namespace AgendaManager.Infrastructure.Common.Messaging.Repositories;
 
 public class OutboxMessageRepository(AppDbContext context) : IOutboxMessageRepository
 {
-    public async Task<List<OutboxMessage>> GetPendingMessagesAsync(CancellationToken cancellationToken = default)
+    public async Task<List<OutboxMessage>> GetMessagesForPublishAsync(CancellationToken cancellationToken = default)
     {
         var messages = await context.OutboxMessages
-            .Where(x => x.MessageStatus == OutboxMessageStatus.Pending)
-            .OrderBy(x => x.OccurredOn)
+            .Where(
+                om => om.MessageStatus == OutboxMessageStatus.Pending
+                    || om.MessageStatus == OutboxMessageStatus.Failed)
+            .OrderBy(om => om.OccurredOn)
             .Take(20)
             .ToListAsync(cancellationToken);
 

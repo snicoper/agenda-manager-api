@@ -24,10 +24,15 @@ public class OutboxMessageProcessorHostedService(
                 using var scope = scopeFactory.CreateScope();
                 var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                 var outboxMessageRepository = scope.ServiceProvider.GetRequiredService<IOutboxMessageRepository>();
-                var messages = await outboxMessageRepository.GetPendingMessagesAsync(cancellationToken);
+                var messages = await outboxMessageRepository.GetMessagesForPublishAsync(cancellationToken);
 
                 foreach (var message in messages)
                 {
+                    if (!message.ShouldRetry())
+                    {
+                        continue;
+                    }
+
                     try
                     {
                         var routingKey = message.Type;
