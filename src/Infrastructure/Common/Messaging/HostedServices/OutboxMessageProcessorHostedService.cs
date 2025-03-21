@@ -35,7 +35,7 @@ public class OutboxMessageProcessorHostedService(
 
                         await rabbitMqClient.PublishAsync(routingKey, payload, cancellationToken);
 
-                        message.MarkAsProcessed();
+                        message.MarkAsPublished();
                     }
                     catch (Exception ex)
                     {

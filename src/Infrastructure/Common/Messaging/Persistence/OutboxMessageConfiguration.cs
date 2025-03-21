@@ -30,10 +30,15 @@ public class OutboxMessageConfiguration : IEntityTypeConfiguration<OutboxMessage
         builder.Property(om => om.MessageStatus)
             .IsRequired();
 
-        builder.Property(om => om.ProcessedOn)
+        builder.Property(om => om.PublishedOn)
             .HasColumnType("text");
 
         builder.Property(om => om.Error)
             .HasColumnType("text");
+
+        builder.Property(om => om.RetryCount)
+            .IsRequired();
+
+        builder.Property(om => om.LastAttemptOn);
     }
 }

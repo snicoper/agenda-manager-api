@@ -13,9 +13,9 @@ public class OutboxMessageMarkAsProcessedTests
         var outbox = OutboxMessageFactory.CreateOutboxMessage();
 
         // Act
-        outbox.MarkAsProcessed();
+        outbox.MarkAsPublished();
 
         // Assert
-        outbox.MessageStatus.Should().Be(OutboxMessageStatus.Processed);
+        outbox.MessageStatus.Should().Be(OutboxMessageStatus.Published);
     }
 }
