@@ -12,8 +12,8 @@ public abstract class OutboxMessageFactory
     {
         var outboxMessage = OutboxMessage.Create(
             outboxMessageId: id ?? OutboxMessageId.Create(),
-            type: type ?? "test",
-            payload: payload ?? "test");
+            type: type ?? "test.routing.key",
+            payload: payload ?? "{ \"test\": true }");
 
         return outboxMessage;
     }

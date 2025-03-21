@@ -1,5 +1,6 @@
 using AgendaManager.Application.Common.Interfaces.Clock;
 using AgendaManager.Infrastructure.Common.Persistence;
+using AgendaManager.TestCommon.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;

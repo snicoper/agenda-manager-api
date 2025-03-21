@@ -111,6 +111,7 @@ public static class DependencyInjection
         services.AddScoped<IOutboxMessageRepository, OutboxMessageRepository>();
         services.AddScoped<IIntegrationEventDispatcher, IntegrationEventDispatcher>();
 
+        services.AddScoped<OutboxMessageProcessor>();
         services.AddHostedService<OutboxMessageProcessorHostedService>();
         services.AddHostedService<RabbitMqConsumerHostedService>();
 
@@ -174,6 +175,7 @@ public static class DependencyInjection
             });
 
         services.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<AppDbContext>());
+        services.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
         services.AddScoped<AppDbContextInitialize>();
     }
 

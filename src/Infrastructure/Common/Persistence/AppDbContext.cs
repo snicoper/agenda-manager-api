@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Domain.Appointments;
 using AgendaManager.Domain.AuditRecords;
 using AgendaManager.Domain.Authorization;
@@ -19,7 +18,7 @@ using Microsoft.EntityFrameworkCore;
 namespace AgendaManager.Infrastructure.Common.Persistence;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options)
-    : DbContext(options), IUnitOfWork
+    : DbContext(options), IAppDbContext
 {
     public DbSet<Appointment> Appointments => Set<Appointment>();
 
