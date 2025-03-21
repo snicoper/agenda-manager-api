@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Common.Messaging.Interfaces;
+﻿using AgendaManager.Domain.Common.Messaging;
+using AgendaManager.Domain.Common.Messaging.Interfaces;
 using AgendaManager.Infrastructure.Common.Messaging.Interfaces;
 using AgendaManager.Infrastructure.Common.Persistence;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,28 +27,7 @@ public class OutboxMessageProcessorHostedService(
                 var outboxMessageRepository = scope.ServiceProvider.GetRequiredService<IOutboxMessageRepository>();
                 var messages = await outboxMessageRepository.GetMessagesForPublishAsync(cancellationToken);
 
-                foreach (var message in messages)
-                {
-                    if (!message.ShouldRetry())
-                    {
-                        continue;
-                    }
-
-                    try
-                    {
-                        var routingKey = message.Type;
-                        var payload = message.Payload;
-
-                        await rabbitMqClient.PublishAsync(routingKey, payload, cancellationToken);
-
-                        message.MarkAsPublished();
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogError(ex, "Error publishing OutboxMessage Id: {Id}", message.Id);
-                        message.MarkAsFailed(ex.Message);
-                    }
-                }
+                await ProcessMessagesAsync(messages, cancellationToken);
 
                 await dbContext.SaveChangesAsync(cancellationToken);
             }
@@ -60,5 +40,25 @@ public class OutboxMessageProcessorHostedService(
         }
 
         logger.LogInformation("Outbox Processor stopped");
+    }
+
+    private async Task ProcessMessagesAsync(List<OutboxMessage> messages, CancellationToken cancellationToken)
+    {
+        foreach (var message in messages.Where(message => message.ShouldRetry()))
+        {
+            var routingKey = message.Type;
+            var payload = message.Payload;
+
+            try
+            {
+                await rabbitMqClient.PublishAsync(routingKey, payload, cancellationToken);
+                message.MarkAsPublished();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error publishing OutboxMessage Id: {Id}", message.Id);
+                message.MarkAsFailed(ex.Message);
+            }
+        }
     }
 }
