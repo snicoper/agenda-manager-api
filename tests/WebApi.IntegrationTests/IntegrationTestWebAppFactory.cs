@@ -1,4 +1,5 @@
 using AgendaManager.Application.Common.Interfaces.Clock;
+using AgendaManager.Infrastructure.Common.Messaging.Options;
 using AgendaManager.Infrastructure.Common.Persistence;
 using AgendaManager.TestCommon.Services;
 using Microsoft.AspNetCore.Hosting;
@@ -23,7 +24,7 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
         .WithImage("rabbitmq:3-management-alpine")
         .WithEnvironment("RABBITMQ_DEFAULT_USER", "guest")
         .WithEnvironment("RABBITMQ_DEFAULT_PASS", "guest")
-        .WithPortBinding(5674, 5672)
+        .WithPortBinding(0, 5672)
         .WithCleanUp(true)
         .Build();
 
@@ -82,6 +83,21 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
                         options.UseNpgsql(_dbContainer.GetConnectionString());
                         options.EnableSensitiveDataLogging();
                     });
+
+                var config = new ConfigurationBuilder()
+                    .AddInMemoryCollection(
+                        new Dictionary<string, string?>
+                        {
+                            ["RabbitMq:Host"] = _rabbitMqContainer.Hostname,
+                            ["RabbitMq:Port"] = _rabbitMqContainer.GetMappedPublicPort(5672).ToString(),
+                            ["RabbitMq:User"] = "guest",
+                            ["RabbitMq:Password"] = "guest",
+                            ["RabbitMq:Exchange"] = "agenda.exchange",
+                            ["RabbitMq:QueueName"] = "agenda.event.queue"
+                        })
+                    .Build();
+
+                services.Configure<RabbitMqSettings>(config.GetSection("RabbitMq"));
             });
     }
 
