@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RabbitMQ.Client;
 using Testcontainers.PostgreSql;
+using Testcontainers.RabbitMq;
 
 namespace AgendaManager.WebApi.UnitTests;
 
@@ -17,14 +19,28 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
         .WithImage("postgres:latest")
         .Build();
 
+    private readonly RabbitMqContainer _rabbitMqContainer = new RabbitMqBuilder()
+        .WithImage("rabbitmq:3-management-alpine")
+        .WithEnvironment("RABBITMQ_DEFAULT_USER", "guest")
+        .WithEnvironment("RABBITMQ_DEFAULT_PASS", "guest")
+        .WithPortBinding(5674, 5672)
+        .WithCleanUp(true)
+        .Build();
+
     public async Task InitializeAsync()
     {
-        await _dbContainer.StartAsync();
+        await Task.WhenAll(
+            _dbContainer.StartAsync(),
+            _rabbitMqContainer.StartAsync());
+
+        await WaitForRabbitMqAsync();
     }
 
     public new async Task DisposeAsync()
     {
-        await _dbContainer.DisposeAsync();
+        await Task.WhenAll(
+            _dbContainer.DisposeAsync().AsTask(),
+            _rabbitMqContainer.DisposeAsync().AsTask());
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -37,7 +53,13 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
                 configBuilder.AddInMemoryCollection(
                     new Dictionary<string, string?>
                     {
-                        ["ConnectionStrings:DefaultConnection"] = _dbContainer.GetConnectionString()
+                        ["ConnectionStrings:DefaultConnection"] = _dbContainer.GetConnectionString(),
+                        ["RabbitMq:Host"] = _rabbitMqContainer.Hostname,
+                        ["RabbitMq:Port"] = _rabbitMqContainer.GetMappedPublicPort(5672).ToString(),
+                        ["RabbitMq:User"] = "guest",
+                        ["RabbitMq:Password"] = "guest",
+                        ["RabbitMq:Exchange"] = "agenda.exchange",
+                        ["RabbitMq:QueueName"] = "agenda.event.queue"
                     });
             });
 
@@ -61,5 +83,34 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
                         options.EnableSensitiveDataLogging();
                     });
             });
+    }
+
+    private async Task WaitForRabbitMqAsync()
+    {
+        var factory = new ConnectionFactory
+        {
+            HostName = _rabbitMqContainer.Hostname,
+            Port = _rabbitMqContainer.GetMappedPublicPort(5672),
+            UserName = "guest",
+            Password = "guest"
+        };
+
+        var tries = 20;
+        while (tries-- > 0)
+        {
+            try
+            {
+                await using var connection = await factory.CreateConnectionAsync();
+
+                return;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                await Task.Delay(1000);
+            }
+        }
+
+        throw new Exception("RabbitMQ container did not become ready in time.");
     }
 }

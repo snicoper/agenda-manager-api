@@ -10,7 +10,8 @@ public class IntegrationEventDispatcher(IMediator mediator) : IIntegrationEventD
     private static readonly Dictionary<string, Type> DomainEventTypeMap = typeof(IDomainEvent)
         .Assembly
         .GetTypes()
-        .Where(type => typeof(INotification).IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface)
+        .Where(
+            type => typeof(INotification).IsAssignableFrom(type) && type is { IsAbstract: false, IsInterface: false })
         .ToDictionary(type => type.Name, t => t);
 
     public async Task DispatchAsync(string routingKey, string payload, CancellationToken cancellationToken = default)
