@@ -147,7 +147,7 @@ public sealed class User : AggregateRoot
 
         AddUserToken(userToken);
 
-        userToken.AddDomainEvent(new UserTokenCreatedDomainEvent(userToken));
+        userToken.AddDomainEvent(new UserTokenCreatedDomainEvent(userToken.Id));
 
         return Result.Create(userToken);
     }
@@ -207,7 +207,7 @@ public sealed class User : AggregateRoot
         }
 
         _userRoles.Add(userRole);
-        AddDomainEvent(new UserRoleAddedDomainEvent(userRole));
+        AddDomainEvent(new UserRoleAddedDomainEvent(userRole.UserId, userRole.RoleId));
 
         return Result.Success();
     }
@@ -220,7 +220,7 @@ public sealed class User : AggregateRoot
         }
 
         _userRoles.Remove(userRole);
-        AddDomainEvent(new UserRoleRemovedDomainEvent(userRole));
+        AddDomainEvent(new UserRoleRemovedDomainEvent(userRole.UserId, userRole.RoleId));
 
         return Result.Success();
     }

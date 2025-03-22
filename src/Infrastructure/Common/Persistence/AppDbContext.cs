@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using AgendaManager.Application.Common.Interfaces.Persistence;
 using AgendaManager.Domain.Appointments;
 using AgendaManager.Domain.AuditRecords;
 using AgendaManager.Domain.Authorization;
@@ -7,6 +6,7 @@ using AgendaManager.Domain.Authorization.Entities;
 using AgendaManager.Domain.Calendars;
 using AgendaManager.Domain.Calendars.Entities;
 using AgendaManager.Domain.Common.Interfaces;
+using AgendaManager.Domain.Common.Messaging;
 using AgendaManager.Domain.ResourceManagement.Resources;
 using AgendaManager.Domain.ResourceManagement.Resources.Entities;
 using AgendaManager.Domain.ResourceManagement.ResourceTypes;
@@ -18,7 +18,7 @@ using Microsoft.EntityFrameworkCore;
 namespace AgendaManager.Infrastructure.Common.Persistence;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options)
-    : DbContext(options), IUnitOfWork
+    : DbContext(options), IAppDbContext
 {
     public DbSet<Appointment> Appointments => Set<Appointment>();
 
@@ -29,6 +29,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<CalendarSettings> CalendarSettings => Set<CalendarSettings>();
 
     public DbSet<AuditRecord> ChangeLogs => Set<AuditRecord>();
+
+    public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
 
     public DbSet<Resource> Resources => Set<Resource>();
 

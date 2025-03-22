@@ -392,6 +392,42 @@ namespace AgendaManager.Infrastructure.Common.Persistence.Migrations
                     b.ToTable("CalendarSettings", (string)null);
                 });
 
+            modelBuilder.Entity("AgendaManager.Domain.Common.Messaging.OutboxMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Error")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset?>("LastAttemptOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("MessageStatus")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("OccurredOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Payload")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PublishedOn")
+                        .HasColumnType("text");
+
+                    b.Property<int>("RetryCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OutboxMessages", (string)null);
+                });
+
             modelBuilder.Entity("AgendaManager.Domain.ResourceManagement.ResourceTypes.ResourceType", b =>
                 {
                     b.Property<Guid>("Id")

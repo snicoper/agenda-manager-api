@@ -8,7 +8,7 @@ using AgendaManager.Domain.Calendars.Interfaces;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects;
-using AgendaManager.Domain.Common.WekDays;
+using AgendaManager.Domain.Common.WeekDays;
 using AgendaManager.Domain.ResourceManagement.Resources.Interfaces;
 using AgendaManager.Domain.Services.Interfaces;
 
@@ -59,7 +59,7 @@ public class CalendarManager(
         CancellationToken cancellationToken)
     {
         var calendar = await calendarRepository.GetByIdAsync(calendarId, cancellationToken);
-        if (calendar == null)
+        if (calendar is null)
         {
             return CalendarErrors.CalendarNotFound;
         }
@@ -83,7 +83,7 @@ public class CalendarManager(
     {
         // 1. Get calendar and check if exists.
         var calendar = await calendarRepository.GetByIdWithSettingsAsync(calendarId, cancellationToken);
-        if (calendar == null)
+        if (calendar is null)
         {
             return CalendarErrors.CalendarNotFound;
         }

@@ -1,4 +1,4 @@
-﻿namespace AgendaManager.Domain.Common.WekDays;
+﻿namespace AgendaManager.Domain.Common.WeekDays;
 
 [Flags]
 public enum WeekDays

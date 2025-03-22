@@ -1,8 +1,11 @@
-﻿namespace AgendaManager.Domain.ResourceManagement.Resources.ValueObjects;
+﻿using Newtonsoft.Json;
+
+namespace AgendaManager.Domain.ResourceManagement.Resources.ValueObjects;
 
 public sealed record ResourceScheduleId
 {
-    private ResourceScheduleId(Guid value)
+    [JsonConstructor]
+    internal ResourceScheduleId(Guid value)
     {
         ArgumentNullException.ThrowIfNull(value);
 

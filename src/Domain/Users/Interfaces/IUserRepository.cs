@@ -1,5 +1,6 @@
 ﻿using AgendaManager.Domain.Authorization.ValueObjects;
 using AgendaManager.Domain.Common.ValueObjects;
+using AgendaManager.Domain.Users.Entities;
 using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users.Interfaces;
@@ -13,6 +14,10 @@ public interface IUserRepository
     IQueryable<User> GetQueryableUsersNotInRoleId(RoleId roleId);
 
     Task<User?> GetByIdAsync(UserId userId, CancellationToken cancellationToken = default);
+
+    Task<(User User, UserToken Token)?> GetUserWithSpecificTokenAsync(
+        UserTokenId userTokenId,
+        CancellationToken cancellationToken = default);
 
     Task<User?> GetByIdWithRolesAsync(UserId userId, CancellationToken cancellationToken = default);
 

@@ -15,7 +15,7 @@ internal class GetResourceByIdQueryHandler(IResourceRepository resourceRepositor
     {
         // Get resource by id and check if it exists.
         var resource = await resourceRepository.GetByIdAsync(ResourceId.From(request.ResourceId), cancellationToken);
-        if (resource == null)
+        if (resource is null)
         {
             return ResourceErrors.NotFound;
         }

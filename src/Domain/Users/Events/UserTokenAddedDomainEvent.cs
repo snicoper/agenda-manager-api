@@ -1,4 +1,5 @@
-﻿using AgendaManager.Domain.Common.Interfaces;
+﻿using System.Text.Json.Serialization;
+using AgendaManager.Domain.Common.Interfaces;
 using AgendaManager.Domain.Users.ValueObjects;
 
 namespace AgendaManager.Domain.Users.Events;

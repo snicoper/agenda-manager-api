@@ -5,7 +5,7 @@ using AgendaManager.Domain.Appointments.ValueObjects;
 using AgendaManager.Domain.Calendars.ValueObjects;
 using AgendaManager.Domain.Common.Responses;
 using AgendaManager.Domain.Common.ValueObjects;
-using AgendaManager.Domain.Common.WekDays;
+using AgendaManager.Domain.Common.WeekDays;
 using AgendaManager.Domain.ResourceManagement.Resources.ValueObjects;
 using AgendaManager.Domain.Services.ValueObjects;
 using AgendaManager.Infrastructure.Common.Persistence;

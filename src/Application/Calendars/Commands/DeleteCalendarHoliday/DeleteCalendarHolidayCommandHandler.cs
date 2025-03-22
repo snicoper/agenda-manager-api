@@ -17,14 +17,14 @@ internal class DeleteCalendarHolidayCommandHandler(ICalendarRepository calendarR
             CalendarId.From(request.CalendarId),
             cancellationToken);
 
-        if (calendar == null)
+        if (calendar is null)
         {
             return CalendarErrors.CalendarNotFound;
         }
 
         // Get the holiday and check if it exists.
         var holiday = calendar.Holidays.FirstOrDefault(x => x.Id == CalendarHolidayId.From(request.CalendarHolidayId));
-        if (holiday == null)
+        if (holiday is null)
         {
             return CalendarHolidayErrors.CalendarHolidayNotFound;
         }

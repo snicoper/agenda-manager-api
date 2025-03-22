@@ -16,8 +16,8 @@ services:
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://agenda-manager-jeager:4317
     depends_on:
       - agenda-manager-db
-      - agenda-manager-keycloak
       - agenda-manager-seq
+      - agenda-manager-rabbitmq
     volumes:
       - ./.containers/https:/https
     networks:
@@ -44,30 +44,6 @@ services:
       timeout: 5s
       retries: 5
 
-  #  agenda-manager-keycloak:
-  #    image: quay.io/keycloak/keycloak:latest
-  #    container_name: agenda-manager-keycloak
-  #    command: start-dev
-  #    restart: always
-  #    environment:
-  #      - KC_HEALTH_ENABLED=true
-  #      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
-  #      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
-  #    volumes:
-  #      - ./.containers/keycloak:/opt/keycloak/data
-  #      - ./keycloak-config.json:/opt/keycloak/keycloak-config.json
-  #    ports:
-  #      - "18080:8080"
-  #    depends_on:
-  #      - agenda-manager-db
-  #    networks:
-  #      - agenda-net
-  #    healthcheck:
-  #      test: [ "CMD-SHELL", "curl -f http://localhost:8080/auth || exit 1" ]
-  #      interval: 30s
-  #      timeout: 10s
-  #      retries: 3
-
   agenda-manager-seq:
     image: datalust/seq:latest
     container_name: agenda-manager-serilog-seq
@@ -92,6 +68,21 @@ services:
       - agenda-manager-api
     networks:
       - agenda-net
+
+  agenda-manager-rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: agenda-manager-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    volumes:
+      - ./.containers/rabbitmq:/var/lib/rabbitmq
+    networks:
+      - agenda-net
+    restart: unless-stopped
 
 networks:
   agenda-net:

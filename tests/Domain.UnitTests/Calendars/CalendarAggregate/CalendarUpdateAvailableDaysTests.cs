@@ -1,5 +1,5 @@
 ﻿using AgendaManager.Domain.Calendars.Events;
-using AgendaManager.Domain.Common.WekDays;
+using AgendaManager.Domain.Common.WeekDays;
 using AgendaManager.TestCommon.Factories;
 using FluentAssertions;
 

@@ -27,7 +27,7 @@ public static class QueryableFilterExtensions
                 {
                     var propertyInfo = typeof(TEntity).GetProperty(PropertyNameToUpper(filter.PropertyName));
 
-                    return propertyInfo != null && !IsValueObject(propertyInfo.PropertyType);
+                    return propertyInfo is not null && !IsValueObject(propertyInfo.PropertyType);
                 })
             .ToArray();
 

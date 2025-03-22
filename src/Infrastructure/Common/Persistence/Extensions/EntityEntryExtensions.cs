@@ -9,7 +9,7 @@ public static class EntityEntryExtensions
     {
         return entry.References.Any(
             r =>
-                r.TargetEntry != null &&
+                r.TargetEntry is not null &&
                 r.TargetEntry.Metadata.IsOwned() &&
                 r.TargetEntry.State is EntityState.Added or EntityState.Modified);
     }

@@ -143,7 +143,7 @@ public sealed class Appointment : AggregateRoot
         }
 
         UpdatePeriodAndResources(period, resources);
-        AddDomainEvent(new AppointmentUpdatedDomainEvent(Id, period, resources));
+        AddDomainEvent(new AppointmentUpdatedDomainEvent(Id));
 
         return Result.Success();
     }

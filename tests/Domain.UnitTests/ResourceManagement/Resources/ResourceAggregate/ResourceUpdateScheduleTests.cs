@@ -1,4 +1,4 @@
-﻿using AgendaManager.Domain.Common.WekDays;
+﻿using AgendaManager.Domain.Common.WeekDays;
 using AgendaManager.Domain.ResourceManagement.Resources.Errors;
 using AgendaManager.Domain.ResourceManagement.Resources.Events;
 using AgendaManager.Domain.ResourceManagement.Resources.ValueObjects;

@@ -1,8 +1,11 @@
-﻿namespace AgendaManager.Domain.Appointments.ValueObjects;
+﻿using Newtonsoft.Json;
+
+namespace AgendaManager.Domain.Appointments.ValueObjects;
 
 public sealed record AppointmentId
 {
-    private AppointmentId(Guid value)
+    [JsonConstructor]
+    internal AppointmentId(Guid value)
     {
         ArgumentNullException.ThrowIfNull(value);
 

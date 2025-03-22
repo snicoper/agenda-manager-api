@@ -14,7 +14,7 @@ internal class ToggleIsActiveCommandHandler(ICalendarRepository calendarReposito
     {
         // Get the calendar by id and check if exists.
         var calendar = await calendarRepository.GetByIdAsync(CalendarId.From(request.CalendarId), cancellationToken);
-        if (calendar == null)
+        if (calendar is null)
         {
             return CalendarErrors.CalendarNotFound;
         }

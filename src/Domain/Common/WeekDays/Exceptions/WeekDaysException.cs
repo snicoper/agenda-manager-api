@@ -1,4 +1,4 @@
-﻿namespace AgendaManager.Domain.Common.WekDays.Exceptions;
+﻿namespace AgendaManager.Domain.Common.WeekDays.Exceptions;
 
 public class WeekDaysException : Exception
 {

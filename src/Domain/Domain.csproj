@@ -10,6 +10,7 @@
     <PackageReference Include="libphonenumber-csharp"/>
     <PackageReference Include="MediatR.Contracts"/>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions"/>
+    <PackageReference Include="Newtonsoft.Json" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,8 +1,11 @@
-﻿namespace AgendaManager.Domain.Users.ValueObjects;
+﻿using Newtonsoft.Json;
+
+namespace AgendaManager.Domain.Users.ValueObjects;
 
 public sealed record UserTokenId
 {
-    private UserTokenId(Guid value)
+    [JsonConstructor]
+    internal UserTokenId(Guid value)
     {
         ArgumentNullException.ThrowIfNull(value);
 

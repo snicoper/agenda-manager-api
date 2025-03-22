@@ -9,6 +9,7 @@ using AgendaManager.Domain.Appointments.Interfaces;
 using AgendaManager.Domain.AuditRecords.Interfaces;
 using AgendaManager.Domain.Authorization.Interfaces;
 using AgendaManager.Domain.Calendars.Interfaces;
+using AgendaManager.Domain.Common.Messaging.Interfaces;
 using AgendaManager.Domain.ResourceManagement.Resources.Interfaces;
 using AgendaManager.Domain.ResourceManagement.ResourceTypes.Interfaces;
 using AgendaManager.Domain.Services.Interfaces;
@@ -22,6 +23,11 @@ using AgendaManager.Infrastructure.Common.Clock;
 using AgendaManager.Infrastructure.Common.Emails;
 using AgendaManager.Infrastructure.Common.Emails.Interfaces;
 using AgendaManager.Infrastructure.Common.Emails.Options;
+using AgendaManager.Infrastructure.Common.Messaging.HostedServices;
+using AgendaManager.Infrastructure.Common.Messaging.Interfaces;
+using AgendaManager.Infrastructure.Common.Messaging.Options;
+using AgendaManager.Infrastructure.Common.Messaging.Repositories;
+using AgendaManager.Infrastructure.Common.Messaging.Services;
 using AgendaManager.Infrastructure.Common.Options;
 using AgendaManager.Infrastructure.Common.Persistence;
 using AgendaManager.Infrastructure.Common.Persistence.Interceptors;
@@ -85,6 +91,11 @@ public static class DependencyInjection
             .Bind(configuration.GetSection(ClientApiSettings.SectionName))
             .ValidateDataAnnotations()
             .ValidateOnStart();
+
+        services.AddOptions<RabbitMqSettings>()
+            .Bind(configuration.GetSection(RabbitMqSettings.SectionName))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
     }
 
     private static void AddGlobalInjections(IServiceCollection services)
@@ -94,6 +105,15 @@ public static class DependencyInjection
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
         services.AddTransient<IEmailService, EmailService>();
         services.AddTransient<IRazorViewToStringRenderer, RazorViewToStringRenderer>();
+
+        // Messaging.
+        services.AddSingleton<IRabbitMqClient, RabbitMqClient>();
+        services.AddScoped<IOutboxMessageRepository, OutboxMessageRepository>();
+        services.AddScoped<IIntegrationEventDispatcher, IntegrationEventDispatcher>();
+
+        services.AddScoped<OutboxMessageProcessor>();
+        services.AddHostedService<OutboxMessageProcessorHostedService>();
+        services.AddHostedService<RabbitMqConsumerHostedService>();
 
         // AuditRecords.
         services.AddScoped<IAuditRecordRepository, AuditRecordRepository>();
@@ -136,7 +156,9 @@ public static class DependencyInjection
         IWebHostEnvironment environment)
     {
         services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
-        services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
+        services.AddScoped<ISaveChangesInterceptor, PersistDomainEventsToOutbox>();
+
+        // services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
         services.AddDbContext<AppDbContext>(
             (provider, options) =>
             {
@@ -153,6 +175,7 @@ public static class DependencyInjection
             });
 
         services.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<AppDbContext>());
+        services.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
         services.AddScoped<AppDbContextInitialize>();
     }
 
