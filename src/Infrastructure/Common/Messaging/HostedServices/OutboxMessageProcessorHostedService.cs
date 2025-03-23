@@ -8,7 +8,6 @@ namespace AgendaManager.Infrastructure.Common.Messaging.HostedServices;
 
 public class OutboxMessageProcessorHostedService(
     IServiceScopeFactory scopeFactory,
-    OutboxMessageProcessor processor,
     ILogger<OutboxMessageProcessorHostedService> logger)
     : BackgroundService
 {
@@ -20,6 +19,7 @@ public class OutboxMessageProcessorHostedService(
 
         var dbContext = scope.ServiceProvider.GetRequiredService<IAppDbContext>();
         var outboxRepository = scope.ServiceProvider.GetRequiredService<IOutboxMessageRepository>();
+        var processor = scope.ServiceProvider.GetRequiredService<OutboxMessageProcessor>();
 
         while (!cancelationToken.IsCancellationRequested)
         {

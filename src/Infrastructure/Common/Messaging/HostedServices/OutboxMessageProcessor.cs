@@ -5,9 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AgendaManager.Infrastructure.Common.Messaging.HostedServices;
 
-public class OutboxMessageProcessor(
-    IRabbitMqClient rabbitMqClient,
-    ILogger<OutboxMessageProcessor> logger)
+internal sealed class OutboxMessageProcessor(IRabbitMqClient rabbitMqClient, ILogger<OutboxMessageProcessor> logger)
 {
     public async Task ProcessMessagesAsync(
         IAppDbContext dbContext,
