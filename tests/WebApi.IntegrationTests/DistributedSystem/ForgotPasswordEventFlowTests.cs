@@ -45,7 +45,6 @@ public class ForgotPasswordEventFlowTests(IntegrationTestWebAppFactory factory)
 
         for (var i = 0; i < maxRetries; i++)
         {
-            Console.WriteLine(i);
             message = await dbContext.OutboxMessages
                 .OrderByDescending(om => om.PublishedOn)
                 .FirstOrDefaultAsync(
