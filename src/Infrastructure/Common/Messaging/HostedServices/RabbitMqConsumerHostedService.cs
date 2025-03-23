@@ -10,7 +10,7 @@ using RabbitMQ.Client.Events;
 
 namespace AgendaManager.Infrastructure.Common.Messaging.HostedServices;
 
-public class RabbitMqConsumerHostedService : BackgroundService
+internal sealed class RabbitMqConsumerHostedService : BackgroundService
 {
     private readonly IServiceScopeFactory _serviceScopeFactory;
     private readonly ILogger<RabbitMqConsumerHostedService> _logger;

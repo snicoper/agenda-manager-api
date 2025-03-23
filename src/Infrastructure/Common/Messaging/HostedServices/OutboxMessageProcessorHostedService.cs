@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AgendaManager.Infrastructure.Common.Messaging.HostedServices;
 
-public class OutboxMessageProcessorHostedService(
+internal sealed class OutboxMessageProcessorHostedService(
     IServiceScopeFactory scopeFactory,
     ILogger<OutboxMessageProcessorHostedService> logger)
     : BackgroundService
