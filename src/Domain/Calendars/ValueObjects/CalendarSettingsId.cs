@@ -2,7 +2,7 @@
 
 namespace AgendaManager.Domain.Calendars.ValueObjects;
 
-public record CalendarSettingsId
+public sealed record CalendarSettingsId
 {
     [JsonConstructor]
     internal CalendarSettingsId(Guid value)
