@@ -1,6 +1,6 @@
 ﻿namespace AgendaManager.Domain.Calendars.ValueObjects;
 
-public record CalendarConfigurationOptionId
+public sealed record CalendarConfigurationOptionId
 {
     private CalendarConfigurationOptionId(Guid value)
     {
