@@ -8,8 +8,8 @@ namespace AgendaManager.Infrastructure.Common.Messaging.Services;
 
 public class RabbitMqClient : IRabbitMqClient, IAsyncDisposable
 {
-    private readonly IConnection _connection;
     private readonly IChannel _channel;
+    private readonly IConnection _connection;
     private readonly RabbitMqSettings _rabbitMqSettings;
 
     public RabbitMqClient(IOptions<RabbitMqSettings> rabbitMqSettings)
@@ -34,6 +34,13 @@ public class RabbitMqClient : IRabbitMqClient, IAsyncDisposable
             autoDelete: false).GetAwaiter().GetResult();
     }
 
+    public async ValueTask DisposeAsync()
+    {
+        await _channel.DisposeAsync();
+        await _connection.DisposeAsync();
+        GC.SuppressFinalize(this);
+    }
+
     public async Task PublishAsync(
         string routingKey,
         string message,
@@ -46,12 +53,5 @@ public class RabbitMqClient : IRabbitMqClient, IAsyncDisposable
             routingKey: routingKey,
             body: body,
             cancellationToken: cancellationToken);
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        await _channel.DisposeAsync();
-        await _connection.DisposeAsync();
-        GC.SuppressFinalize(this);
     }
 }

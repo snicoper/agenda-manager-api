@@ -7,7 +7,8 @@ public static partial class DomainRegex
     /// <summary>
     /// Verificación de email.
     /// </summary>
-    [GeneratedRegex(@"^(?![\.-])([\w\.\-]+)(?<![\.-])@(?![\.-])([\w\-]+)(?<![\.-])((\.([a-zA-Z]){2,3})+)$", RegexOptions.Compiled)]
+    [GeneratedRegex(@"^(?![\.-])([\w\.\-]+)(?<![\.-])@(?![\.-])([\w\-]+)(?<![\.-])((\.([a-zA-Z]){2,3})+)$",
+        RegexOptions.Compiled)]
     public static partial Regex ValidEmail();
 
     /// <summary>
