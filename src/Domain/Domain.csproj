@@ -18,4 +18,8 @@
     <InternalsVisibleTo Include="AgendaManager.TestCommon"/>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Authorization\Constants\" />
+  </ItemGroup>
+
 </Project>

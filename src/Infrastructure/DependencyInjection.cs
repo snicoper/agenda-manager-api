@@ -159,20 +159,19 @@ public static class DependencyInjection
         services.AddScoped<ISaveChangesInterceptor, PersistDomainEventsToOutbox>();
 
         // services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
-        services.AddDbContext<AppDbContext>(
-            (provider, options) =>
+        services.AddDbContext<AppDbContext>((provider, options) =>
+        {
+            var connectionString = configuration.GetConnectionString("DefaultConnection") ??
+                throw new NullReferenceException("No connection string found in configuration");
+
+            options.AddInterceptors(provider.GetServices<ISaveChangesInterceptor>());
+            options.UseNpgsql(connectionString);
+
+            if (!environment.IsProduction())
             {
-                var connectionString = configuration.GetConnectionString("DefaultConnection") ??
-                    throw new NullReferenceException("No connection string found in configuration");
-
-                options.AddInterceptors(provider.GetServices<ISaveChangesInterceptor>());
-                options.UseNpgsql(connectionString);
-
-                if (!environment.IsProduction())
-                {
-                    options.EnableSensitiveDataLogging();
-                }
-            });
+                options.EnableSensitiveDataLogging();
+            }
+        });
 
         services.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<AppDbContext>());
         services.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
@@ -191,20 +190,19 @@ public static class DependencyInjection
         services.AddSingleton(Options.Create(jwtSettings));
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(
-                options =>
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = jwtSettings.Issuer,
-                        ValidAudience = jwtSettings.Audience,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key)),
-                        ClockSkew = TimeSpan.Zero
-                    };
-                });
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtSettings.Issuer,
+                    ValidAudience = jwtSettings.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key)),
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
     }
 }

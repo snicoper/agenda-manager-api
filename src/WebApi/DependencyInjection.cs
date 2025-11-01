@@ -21,17 +21,16 @@ public static class DependencyInjection
         AddCustomCors(services, configuration);
 
         services.AddControllersWithViews()
-            .AddJsonOptions(
-                options => { options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; })
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            })
             .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-            .AddDataAnnotationsLocalization(
-                options =>
-                {
-                    // ReSharper disable once DelegateAnonymousParameter
-                    // ReSharper disable once DelegateTypeParameter
-                    options.DataAnnotationLocalizerProvider = (type, factory) =>
-                        factory.Create(typeof(SharedResource));
-                });
+            .AddDataAnnotationsLocalization(options =>
+            {
+                options.DataAnnotationLocalizerProvider = (_, factory) =>
+                    factory.Create(typeof(SharedResource));
+            });
 
         services.AddRouting(options => { options.LowercaseUrls = true; });
 
@@ -45,6 +44,7 @@ public static class DependencyInjection
         AddOpenTelemetry(services);
 
         AddRazorViewsForEmails(services);
+
         return services;
     }
 
@@ -55,47 +55,43 @@ public static class DependencyInjection
 
     private static void AddApiVersioning(IServiceCollection services)
     {
-        var apiVersioningBuilder = services.AddApiVersioning(
-            options =>
-            {
-                options.ReportApiVersions = true;
-                options.DefaultApiVersion = new ApiVersion(1, 0);
-                options.AssumeDefaultVersionWhenUnspecified = true;
-                options.ApiVersionReader = new UrlSegmentApiVersionReader();
-            });
+        var apiVersioningBuilder = services.AddApiVersioning(options =>
+        {
+            options.ReportApiVersions = true;
+            options.DefaultApiVersion = new ApiVersion(1, 0);
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.ApiVersionReader = new UrlSegmentApiVersionReader();
+        });
 
-        apiVersioningBuilder.AddApiExplorer(
-            options =>
-            {
-                options.GroupNameFormat = "'v'VVV";
-                options.SubstituteApiVersionInUrl = true;
-            });
+        apiVersioningBuilder.AddApiExplorer(options =>
+        {
+            options.GroupNameFormat = "'v'VVV";
+            options.SubstituteApiVersionInUrl = true;
+        });
     }
 
     private static void AddOpenTelemetry(IServiceCollection services)
     {
         services.AddOpenTelemetry()
             .ConfigureResource(resource => resource.AddService("AgendaManager.WebApi"))
-            .WithTracing(
-                tracing =>
-                {
-                    tracing.AddAspNetCoreInstrumentation()
-                        .AddHttpClientInstrumentation();
+            .WithTracing(tracing =>
+            {
+                tracing.AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation();
 
-                    tracing.AddOtlpExporter();
-                });
+                tracing.AddOtlpExporter();
+            });
     }
 
     private static void AddRazorViewsForEmails(IServiceCollection services)
     {
-        services.Configure<RazorViewEngineOptions>(
-            options =>
-            {
-                options.ViewLocationFormats.Clear();
-                options.ViewLocationFormats.Add("/Views/{1}/{0}" + RazorViewEngine.ViewExtension);
-                options.ViewLocationFormats.Add("/Views/Emails/{0}" + RazorViewEngine.ViewExtension);
-                options.ViewLocationFormats.Add("/Views/Shared/{0}" + RazorViewEngine.ViewExtension);
-            });
+        services.Configure<RazorViewEngineOptions>(options =>
+        {
+            options.ViewLocationFormats.Clear();
+            options.ViewLocationFormats.Add("/Views/{1}/{0}" + RazorViewEngine.ViewExtension);
+            options.ViewLocationFormats.Add("/Views/Emails/{0}" + RazorViewEngine.ViewExtension);
+            options.ViewLocationFormats.Add("/Views/Shared/{0}" + RazorViewEngine.ViewExtension);
+        });
     }
 
     private static void AddCustomCors(
@@ -116,20 +112,19 @@ public static class DependencyInjection
             Console.WriteLine($"Allowed domain: {domain}");
         }
 
-        services.AddCors(
-            options =>
-            {
-                options.AddPolicy(
-                    corsSettings.DefaultPolicyName,
-                    builder =>
-                    {
-                        builder
-                            .WithOrigins(corsSettings.AllowedDomains.ToArray()) // Cambiamos a WithOrigins
-                            .WithMethods(corsSettings.AllowedMethods)
-                            .WithHeaders(corsSettings.AllowedHeaders)
-                            .WithExposedHeaders(corsSettings.ExposedHeaders)
-                            .AllowCredentials();
-                    });
-            });
+        services.AddCors(options =>
+        {
+            options.AddPolicy(
+                corsSettings.DefaultPolicyName,
+                builder =>
+                {
+                    builder
+                        .WithOrigins(corsSettings.AllowedDomains.ToArray()) // Cambiamos a WithOrigins
+                        .WithMethods(corsSettings.AllowedMethods)
+                        .WithHeaders(corsSettings.AllowedHeaders)
+                        .WithExposedHeaders(corsSettings.ExposedHeaders)
+                        .AllowCredentials();
+                });
+        });
     }
 }

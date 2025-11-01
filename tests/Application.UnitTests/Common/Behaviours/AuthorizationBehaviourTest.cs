@@ -45,8 +45,10 @@ public class AuthorizationBehaviourTest
         TestRequest request = new();
 
         // Assert
-        await Assert.ThrowsAsync<AuthorizationRequiredException>(
-            () => _sut.Handle(request, () => Task.FromResult(Result.Success()), CancellationToken.None));
+        await Assert.ThrowsAsync<AuthorizationRequiredException>(() => _sut.Handle(
+            request,
+            () => Task.FromResult(Result.Success()),
+            CancellationToken.None));
     }
 
     [Fact]

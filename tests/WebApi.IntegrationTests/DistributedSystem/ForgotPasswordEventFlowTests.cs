@@ -47,10 +47,9 @@ public class ForgotPasswordEventFlowTests(IntegrationTestWebAppFactory factory)
         {
             message = await dbContext.OutboxMessages
                 .OrderByDescending(om => om.PublishedOn)
-                .FirstOrDefaultAsync(
-                    om =>
-                        om.Type.Contains(eventType) &&
-                        om.MessageStatus == OutboxMessageStatus.Published);
+                .FirstOrDefaultAsync(om =>
+                    om.Type.Contains(eventType) &&
+                    om.MessageStatus == OutboxMessageStatus.Published);
 
             if (message is not null)
             {
